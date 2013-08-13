@@ -1,0 +1,22 @@
+{% extends '::base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+    
+{% block title %}Chant pour tous title!{% endblock %}
+
+{% block main_content %}
+
+{% include 'CptBlogBundle:Post:comment_javascript.js.twig' %}
+
+
+{# renders each post #}
+{% for post in pager.getResults() %}
+    {% include 'CptBlogBundle:Post:view_post_part.html.twig' %}
+{% else %}
+    {{ 'no_post_found'|trans({}, 'CptBlogBundle') }}
+{% endfor %}
+
+
+{% endblock %}

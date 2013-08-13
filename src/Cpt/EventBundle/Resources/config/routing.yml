@@ -1,0 +1,31 @@
+event_homepage:
+    path:     /
+    defaults: { _controller: CptEventBundle:Event:index }
+    
+event_new:
+    path:     /edit/{id}
+    defaults: { _controller: CptEventBundle:Event:new, id: -1  }
+    requirements:
+        id:  \d+
+
+
+event_was_updated:
+    path:     /edit/{id}/wasupdated/{unixtimestamp}
+    defaults: { _controller: CptEventBundle:Event:wasEventUpdated }
+    requirements:
+        id:  \d+
+        unixtimestamp: \d+
+
+event_download_attendees:
+    path:     /downloadattendees/{eventid}
+    defaults: { _controller: CptEventBundle:Event:downloadAttendees  }
+    requirements:
+        eventid:  \d+
+    
+cpt_search_user:
+    pattern: /usersearch
+    defaults: { _controller: CptEventBundle:Event:userSearch }
+    
+cpt_user_getsearchresult:
+    pattern: /usersearch/query
+    defaults: { _controller: CptEventBundle:Event:userGetSearchResult }

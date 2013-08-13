@@ -1,0 +1,28 @@
+/* 
+    Document   : userselector
+    Created on : Aug 4, 2013, 4:30:48 AM
+    Author     : cyril
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+ul.cpt_usr_selector {
+    list-style-type: none;
+    background-color: transparent;
+    display: inline;
+}
+
+ul.cpt_usr_selector li{
+    list-style-type: none;
+    border-radius: 10px;
+    background-color: lightblue;
+    display: inline;
+    margin: 10px;
+}
+
+ul.cpt_usr_selector button{
+     border-radius: 20px;
+     background-color: lightblue;
+     color: white;
+     margin: 6px;
+}

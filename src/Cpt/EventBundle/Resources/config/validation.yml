@@ -1,0 +1,115 @@
+Cpt\EventBundle\Entity\Event:
+  getters:
+      id:
+        - NotBlank: ~
+        - Type:
+                type: integer        
+      begindatetime:
+        - NotBlank: ~
+        - Type:
+                type: datetime
+      description:
+        - NotBlank: ~
+        - Type:
+                type: string 
+      title:
+        - NotBlank: ~
+        - Type:
+                type: string 
+        - Length:
+                min: 5
+                max: 50
+                minMessage: "Le titre doit faire au moins {{ limit }} caractères"
+                maxMessage: "Le titre ne peut pas être plus long que {{ limit }} caractères"
+      maxnumattendees:
+        - NotBlank: ~
+        - Type:
+                type: integer
+        - Range:
+                min: 2
+                minMessage: Le nombre de participant maximum doit etre au minimum de {{ min }}
+      enddatetime:
+        - Type:
+                type: datetime 
+      createdAt:
+        - Type:
+                type: datetime 
+      updatedAt:
+        - Type:
+                type: datetime 
+      countqueuedattendees:
+        - Type:
+                type: integer
+      counttotalattendees:
+        - Type:
+                type: integer
+      published:
+        - Type:
+                type: bool
+      restricted:
+        - Type:
+                type: bool
+      approved:
+        - Type:
+                type: bool
+      cptevent:
+        - NotBlank: ~
+        - Type:
+                type: bool       
+      countrycode:
+        - NotBlank: ~
+        - Country:
+        - Length:
+                min: 2
+                max: 2
+      cityname:
+        - NotBlank: ~
+        - Type:
+                type: string         
+        - Length:
+                min: 2
+                max: 30
+                minMessage: "La ville doit faire au moins {{ limit }} caractères"
+                maxMessage: "La vgooille ne peut pas être plus longue que {{ limit }} caractères"
+      citypostalcode:
+        - Type:
+                type: string  
+      street:
+        - Type:
+                type: string   
+        - Length:
+                min: 2
+                max: 50
+                minMessage: "La rue doit faire au moins {{ limit }} caractères"
+                maxMessage: "La rue ne peut pas être plus longue que {{ limit }} caractères"
+      streetnumber:
+        - Type:
+                type: string
+        - Length:
+                min: 1
+                max: 5
+                minMessage: "Le numéro de rue doit faire au moins {{ limit }} caractères"
+                maxMessage: "Le numéro de ne peut pas être plus longue que {{ limit }} caractères"        
+      additionaladdress:
+        - Type:
+                type: string
+        - Length:
+                min: 2
+                max: 80
+                minMessage: "Le complément d'adresse doit faire au moins {{ limit }} caractères"
+                maxMessage: "Le complément d'adresse ne peut pas être plus longue que {{ limit }} caractères"      
+      corporatename:
+        - NotBlank: ~
+        - Type:
+                type: string
+        - Length:
+                min: 2
+                max: 30
+                minMessage: "La ville doit faire au moins {{ limit }} caractères"
+                maxMessage: "La ville ne peut pas être plus longue que {{ limit }} caractères"
+      googlemapurl:
+        - Url:
+
+Cpt\EventBundle\Entity\Registration:
+      constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: user, event

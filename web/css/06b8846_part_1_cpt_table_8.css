@@ -1,0 +1,14 @@
+.cpt_table{
+    opacity: 0.75;
+    padding: 20px;
+    width: 100%;
+}
+
+table.cpt_table td{
+    padding: 20px;
+    opacity: 0.90;
+}
+
+table.cpt_table th{
+    padding: 20px;
+}

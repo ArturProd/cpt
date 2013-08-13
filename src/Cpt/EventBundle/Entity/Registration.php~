@@ -1,0 +1,65 @@
+<?php
+
+namespace Cpt\EventBundle\Entity;
+
+
+class Registration extends BaseRegistration
+{
+    
+    protected $user;
+    
+    protected $event;
+    
+    public function __construct()
+    {
+        $this->user = null;
+        $this->event = null;
+    }
+
+
+    /**
+     * Set event
+     *
+     * @param \Cpt\EventBundle\Entity\Event $event
+     * @return Registration
+     */
+    public function setEvent(\Cpt\EventBundle\Entity\Event $event = null)
+    {
+        $this->event = $event;
+
+        return $this;
+    }
+
+    /**
+     * Get event
+     *
+     * @return \Cpt\EventBundle\Entity\Event 
+     */
+    public function getEvent()
+    {
+        return $this->event;
+    }
+
+    /**
+     * Set user
+     *
+     * @param \Application\Sonata\UserBundle\Entity\User $user
+     * @return Registration
+     */
+    public function setUser(\Application\Sonata\UserBundle\Entity\User $user = null)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get user
+     *
+     * @return \Application\Sonata\UserBundle\Entity\User 
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+}

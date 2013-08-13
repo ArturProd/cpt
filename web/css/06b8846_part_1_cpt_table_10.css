@@ -1,0 +1,16 @@
+table{
+    background-color: transparent;
+}
+
+.cpt_table{
+    opacity: 0.75;
+    width: 100%;
+}
+
+table.cpt_table td{
+    opacity: 0.90;
+}
+
+table.cpt_table th{
+
+}

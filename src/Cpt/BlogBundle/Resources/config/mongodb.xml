@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="cpt.blog.manager.comment.class">Cpt\BlogBundle\Document\CommentManager</parameter>
+        <parameter key="cpt.blog.manager.comment.entity">Cpt\BlogBundle\Document\Comment</parameter>
+        <parameter key="cpt.blog.manager.post.class">Cpt\BlogBundle\Document\PostManager</parameter>
+        <parameter key="cpt.blog.manager.post.entity">Cpt\BlogBundle\Document\Tag</parameter>
+        <parameter key="cpt.blog.manager.category.class">Cpt\BlogBundle\Document\CategoryManager</parameter>
+        <parameter key="cpt.blog.manager.category.entity">Cpt\BlogBundle\Document\Category</parameter>
+        <parameter key="cpt.blog.manager.tag.class">Cpt\BlogBundle\Document\TagManager</parameter>
+        <parameter key="cpt.blog.manager.tag.entity">Cpt\BlogBundle\Document\Post</parameter>
+    </parameters>
+
+    <services>
+        <service id="cpt.blog.document_manager" alias="doctrine.odm.default_document_manager" />
+
+        <service id="cpt.blog.manager.comment" class="%cpt.blog.manager.comment.class%">
+            <argument type="service" id="cpt.blog.document_manager" />
+            <argument>%cpt.blog.manager.comment.document%</argument>
+        </service>
+
+        <service id="cpt.blog.manager.category" class="%cpt.blog.manager.category.class%">
+            <argument type="service" id="cpt.blog.document_manager" />
+            <argument>%cpt.blog.manager.category.entity%</argument>
+        </service>
+
+        <service id="cpt.blog.manager.tag" class="%cpt.blog.manager.tag.class%">
+            <argument type="service" id="cpt.blog.document_manager" />
+            <argument>%cpt.blog.manager.post.entity%</argument>
+        </service>
+
+        <service id="cpt.blog.manager.post" class="%cpt.blog.manager.post.class%">
+           <argument type="service" id="cpt.blog.document_manager" />
+           <argument>%cpt.blog.manager.tag.entity%</argument>
+        </service>
+
+    </services>
+</container>

@@ -1,0 +1,12 @@
+{# renders pagination #}
+<div class="sonata-blog-post-pagination">
+    {% if pager.haveToPaginate() %}
+        {% if pager.page != pager.previouspage %}
+            <a href="{{ url(route, route_parameters|merge({'page': pager.previouspage})) }}" title="{{ 'link_previous_page'|trans({}, 'CptBlogBundle') }}">{{ 'link_previous_page'|trans({}, 'CptBlogBundle') }}</a>
+        {% endif %}
+
+        {% if pager.page != pager.nextpage %}
+            <a href="{{ url(route, route_parameters|merge({'page': pager.nextpage})) }}" title="{{ 'link_next_page'|trans({}, 'CptBlogBundle') }}">{{ 'link_next_page'|trans({}, 'CptBlogBundle') }}</a>
+        {% endif %}
+    {% endif %}
+</div>

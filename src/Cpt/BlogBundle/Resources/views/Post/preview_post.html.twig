@@ -1,0 +1,14 @@
+<h3 class="post_header">
+    {{ post.title }}
+    <small>{{ 'archive_author'|trans({'%author%': post.author }, 'CptBlogBundle') }}</small>
+    {% if post.CanBeModified %}
+            <button onclick="parent.location='{{ url('cpt_blog_post_edit', { 'id': post.id }) }}'" class="btn btn-success btn-small pull-right">Editer</button>
+    {% endif %}
+</h3>
+
+<div class="post_body">
+        {{ post.rawcontent|raw }}
+</div>
+<div class="post_footer">Crée le {{post.createdAt|date('Y-m-d H:i:s') }} | {% if post.updatedAt is not null %} Modifié le {{ post.updatedAt|date('Y-m-d H:i:s') }} {% endif %}
+</div>
+

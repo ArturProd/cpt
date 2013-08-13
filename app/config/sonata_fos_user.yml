@@ -1,0 +1,21 @@
+services:
+    custom_user_manager:
+      class: Cpt\MainBundle\Manager\UserManager
+      parent: fos_user.user_manager.default
+      
+#friend of symfony/user bundle configuration
+fos_user:
+    db_driver: orm
+    firewall_name: main
+    user_class: Application\Sonata\UserBundle\Entity\User
+    service:
+        user_manager: custom_user_manager
+
+
+
+sonata_user:
+    security_acl:           false
+    impersonating_route:    cpt_main_home # or any route you want to use
+    class:
+        user:               Application\Sonata\UserBundle\Entity\User
+        group:              Application\Sonata\UserBundle\Entity\Group

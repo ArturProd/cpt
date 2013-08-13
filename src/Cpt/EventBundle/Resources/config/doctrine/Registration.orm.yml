@@ -1,0 +1,40 @@
+Cpt\EventBundle\Entity\Registration:
+  type: entity
+  repositoryClass: Cpt\EventBundle\Entity\RegistrationRepository
+  id:
+    id:
+      type: integer
+      generator:
+        strategy: AUTO
+  manyToOne:
+      user:
+        targetEntity: Application\Sonata\UserBundle\Entity\User
+        inversedBy: registrations
+        joinColumn:
+          name: user_id
+          referencedColumnName: id
+      event:
+        targetEntity: Event
+        inversedBy: registrations
+        joinColumn:
+          name: event_id
+          referencedColumnName: id
+  lifecycleCallbacks:
+        prePersist: [prePersist]
+        preUpdate: [preUpdate]
+  uniqueConstraints:
+    event_user:
+      columns:
+        - event_id
+        - user_id
+  fields:
+    createdAt:
+        type: datetime
+    updatedAt:
+        type: datetime
+    numparticipant:
+      type: integer
+    numqueuedparticipant:
+      type: integer
+    organizer:
+      type: boolean

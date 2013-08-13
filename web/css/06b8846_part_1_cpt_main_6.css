@@ -1,0 +1,107 @@
+/* 
+    Document   : main.css
+    Created on : Apr 21, 2013, 11:11:21 AM
+    Author     : cyril
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+root { 
+    display: block;
+}
+
+body{
+    background-color: white;
+}
+
+* {
+  font-family: sans-serif, Geneva, 'Gill Sans', Tahoma, 'GentiumBasicRegular';
+  font-size: 10px;
+}
+
+.test{
+      font-family: 'Gill Sans';
+}
+
+h1, h2 
+{
+    text-shadow: 2px 2x 3px #ab0000;
+    filter: dropshadow(color=#ab0000, offx=1, offy=1);
+}
+
+
+.col_bleu1{
+ color: #132537;
+}
+
+.col_bleu2{
+ color: #006C80;
+}
+
+.col_beige{
+    color: #EBCAB8;
+}
+
+.col_orange1{
+    color: #FE8315;
+}
+
+.col_orange2{
+    color: #FA3113;
+}
+
+
+
+.horizontal_list li{
+    display: inline;
+    list-style: none;
+    padding: 10px;
+    font-size: 15px;    
+}
+
+.menu li{
+}
+
+
+
+.upperleft{
+    position: absolute;
+    margin-top: 0px;
+    margin-right: 0px;
+    float: right;
+}
+
+
+
+
+.main_section{
+  
+    height: 100%;
+    padding: 10px;
+    
+    margin-bottom: 50px;
+
+}
+
+#page_opacity_mask{
+    background:#000;
+    opacity:0.7;
+    display:none;
+    height:100%;
+    left:0;
+    position:absolute;
+    top:0;
+    width:100%;
+    z-index:5;
+ }
+
+
+#popup_new_event{
+
+    position:absolute;
+    opacity:1;
+    top:20%;/*or whatever*/
+    left:30%; /*or whatever*/
+    width:900px;
+    z-index:6;
+ }

@@ -1,0 +1,12 @@
+{% extends '::base.html.twig' %}
+
+{% block main_content %}
+<div class="row-fluid">
+    <div class="span8 left">
+
+{# Includes the post with its comments #}   
+{% include 'CptBlogBundle:Post:view_post_part.html.twig' %}
+
+    </div>
+</div>
+{% endblock %}

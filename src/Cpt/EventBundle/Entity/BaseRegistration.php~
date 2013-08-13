@@ -1,0 +1,178 @@
+<?php
+
+namespace Cpt\EventBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * BaseRegistration
+ */
+class BaseRegistration
+{
+    public function prePersist()
+    {
+        $this->setCreatedAt(new \DateTime);
+        $this->setUpdatedAt(new \DateTime);
+    }
+    
+    public function preUpdate()
+    {
+        $this->setUpdatedAt(new \DateTime);
+    }
+    
+    /**
+     * @var integer
+     */
+    private $id;
+
+    /**
+     * @var \DateTime
+     */
+    private $createdAt;
+
+    /**
+     * @var integer
+     */
+    private $numparticipant;
+
+    /**
+     * @var integer
+     */
+    private $numqueuedparticipant;
+
+
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set createdAt
+     *
+     * @param \DateTime $createdAt
+     * @return BaseRegistration
+     */
+    public function setCreatedAt($createdAt)
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    /**
+     * Get createdAt
+     *
+     * @return \DateTime 
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * Set numparticipant
+     *
+     * @param integer $numparticipant
+     * @return BaseRegistration
+     */
+    public function setNumparticipant($numparticipant)
+    {
+        $this->numparticipant = $numparticipant;
+
+        return $this;
+    }
+
+    /**
+     * Get numparticipant
+     *
+     * @return integer 
+     */
+    public function getNumparticipant()
+    {
+        return $this->numparticipant;
+    }
+
+    /**
+     * Set numqueuedparticipant
+     *
+     * @param integer $numqueuedparticipant
+     * @return BaseRegistration
+     */
+    public function setNumqueuedparticipant($numqueuedparticipant)
+    {
+        $this->numqueuedparticipant = $numqueuedparticipant;
+
+        return $this;
+    }
+
+    /**
+     * Get numqueuedparticipant
+     *
+     * @return integer 
+     */
+    public function getNumqueuedparticipant()
+    {
+        return $this->numqueuedparticipant;
+    }
+    /**
+     * @var \DateTime
+     */
+    private $updatedAt;
+
+
+    /**
+     * Set updatedAt
+     *
+     * @param \DateTime $updatedAt
+     * @return BaseRegistration
+     */
+    public function setUpdatedAt($updatedAt)
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    /**
+     * Get updatedAt
+     *
+     * @return \DateTime 
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
+    }
+    /**
+     * @var boolean
+     */
+    private $organizer;
+
+
+    /**
+     * Set organizer
+     *
+     * @param boolean $organizer
+     * @return BaseRegistration
+     */
+    public function setOrganizer($organizer)
+    {
+        $this->organizer = $organizer;
+
+        return $this;
+    }
+
+    /**
+     * Get organizer
+     *
+     * @return boolean 
+     */
+    public function getOrganizer()
+    {
+        return $this->organizer;
+    }
+}

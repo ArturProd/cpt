@@ -1,0 +1,55 @@
+<script type="text/javascript">
+{# Returns ajax plain html comments for this post #}
+ $(function() {         
+     $.ajax({
+        url : '{{ url('get_comment_plainhtml', { 'postId': post.id }) }}',
+        type : 'GET',
+        dataType : 'html', // On désire recevoir du HTML
+        success : function(code_html, statut){ // code_html contient le HTML renvoyé
+           $("#comment_placeholder_{{ post.id }}").append(code_html);
+           $('#button_showhide_comment_{{ post.id }}').show();
+
+        }
+     });
+  });
+</script>
+<script type="text/javascript">
+    {# hide a comment on deletion #}      
+    $(function() {
+        $('#comment_placeholder_{{ post.id }}').hide();
+        $('#button_showhide_comment_{{ post.id }}').hide();
+    });
+</script>
+{# Renders additional javascript to handle comment deletion and comment submit #}
+{% include 'CptBlogBundle:Post:comment_javascript.js.twig' %}
+
+{# Main post content section #}
+<section>
+        {% include 'CptBlogBundle:Post:preview_post.html.twig' %}
+</section>        
+
+{# Comments section #}
+<section>
+     <div>
+         <div class="span10 offset1">
+            <button class="btn btn-info btn-block btn-small" onclick="$('#comment_placeholder_{{ post.id }}').toggle('blind');" id="button_showhide_comment_{{ post.id }}">Afficher / Masquer {{ post.commentsCount }} commentaires</button>
+         </div>
+     </div>
+             
+     <div>
+
+         <div id="comment_placeholder_{{ post.id }}">
+        {% if post.canBeCommented %}
+            {% render(controller('CptBlogBundle:Post:addCommentForm', {
+                'postId': post.id,
+                'form': form
+            })) %}
+        {% else %}
+                {{ 'message_comments_are_closed'|trans({}, 'CptBlogBundle') }}
+        {% endif %}
+                {# comments are inserted here after ajax request #}
+        </div>
+    </div>
+</section>
+
+<div class="post_separator"></div>

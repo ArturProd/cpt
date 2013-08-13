@@ -1,0 +1,20 @@
+ivory_ck_editor:
+    plugins:
+      oembed:
+          path: "bundles/applicationivoryckeditor/plugins/oembed/"
+          filename: "plugin.js"
+    configs:
+        my_config:
+            toolbar:                [ [ "DocProps", "-", "Preview", "-", "Print", "Maximize" ], "/", [ "Bold", "Italic", "Underline", "Subscript", "Superscript", "-", "RemoveFormat", "-", "oembed"] ]
+            ui_color:               "#ffffff"
+            extraPlugins:           "oembed"
+            language:               "fr"
+            height:                 "700px"
+            width:                  "100%"
+        evt_config:
+            toolbar:                [ [ "DocProps", "-", "Preview", "-", "Print", "Maximize" ], "/", [ "Bold", "Italic", "Underline", "Subscript", "Superscript", "-", "RemoveFormat", "-", "oembed"] ]
+            ui_color:               "#ffffff"
+            extraPlugins:           "oembed"
+            language:               "fr"
+            height:                 "300px"
+            width:                  "100%"

@@ -1,0 +1,52 @@
+{% extends '::base.html.twig' %}
+
+{% block main_content %}
+
+<div class="row-fluid">
+    <div class="span11 left">
+        {% include 'CptBlogBundle:Post:pagination.html.twig' %}
+
+        <table class="table table-striped cpt_table">
+            <thead>
+                <th>Titre</th>
+                <th>Publié</th>
+                <th>Résumé</th>
+                <th>Comment.</th>
+                <th>Publication</th>
+                <th>Création</th>
+                <th>Modification</th>         
+              {% if is_granted('ROLE_ADMIN') %}
+                 <th>Homepage</th>
+                  <th>Auteur</th>
+                {% endif %}
+            </thead>
+            <tbody>
+                {% set colspan =  is_granted('ROLE_ADMIN') ? 9 : 7 %}
+                {% set olddate = date('1900-01-01') %}
+                {% for post in pager.getResults() %}
+
+                    {% if post.publicationDateStart|default('1900-01-01')|date('Y')!=olddate|date('Y') %}
+                    <tr>
+                        <td colspan="{{colspan}}">
+                            {% if post.publicationDateStart is not null %}
+                                <h2>{{post.publicationDateStart|date('Y')}}</h2></td>
+                            {% else %}
+                                <h2>Non publiés</h2>
+                            {% endif %}
+                    </tr>
+                    {% endif %}
+
+                    {% include 'CptBlogBundle:Post:list_row_part.html.twig' %}
+
+                     {% set olddate = post.publicationDateStart %}
+                {% else %}
+                    {{ 'no_post_found'|trans({}, 'CptBlogBundle') }}
+                {% endfor %}
+           </tbody>
+        </table>
+
+        {% include 'CptBlogBundle:Post:pagination.html.twig' %}
+
+    </div>
+</div>
+{% endblock %}

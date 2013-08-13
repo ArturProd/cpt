@@ -1,0 +1,67 @@
+    <td><input type='checkbox' id='resa_organizer_"+ reservation.user +"' onload=\"check_checkbox('resa_organizer_" + reservation.user + "'," + reservation.organizer + ");\"></td>
+
+
+Cpt\EventBundle\Entity\BaseEvent:
+    type: mappedSuperclass
+    id:
+      id:
+        type: integer
+        generator:
+          strategy: AUTO
+    lifecycleCallbacks:
+        prePersist: [prePersist]
+        preUpdate: [preUpdate]
+    oneToMany:
+      registrations:
+        targetEntity: Registration
+        mappedBy: event
+    fields:
+      createdAt:
+        type: datetime
+      updatedAt:
+        type: datetime
+      begindatetime:
+        type: datetime
+      enddatetime:  
+        type: datetime
+      description:
+        type: text
+      title:
+        type: text
+      maxnumattendees:
+        type: integer
+      count_queued_attendees:
+        type: integer
+      count_total_attendees:
+        type: integer
+      published:
+        type: boolean
+      restricted:
+        type: boolean
+      approved:
+        type: boolean
+      cpt_event:
+        type: boolean        
+      country_code:
+        type: text
+      city_name:
+        type: text
+      city_postal_code:
+        type: text
+        nullable: true
+      street:
+        type: text
+        nullable: true
+      street_number:
+        type: text
+        nullable: true
+      additional_address:
+        type: text
+        nullable: true
+      corporate_name:
+        type: text
+      google_map_url:
+        type: text
+        nullable: true
+
+        

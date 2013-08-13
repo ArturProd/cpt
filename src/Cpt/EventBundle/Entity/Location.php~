@@ -1,0 +1,251 @@
+<?php
+
+namespace Cpt\EventBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Location
+ */
+class Location
+{
+    /**
+     * @var integer
+     */
+    private $id;
+
+    /**
+     * @var string
+     */
+    private $country_code;
+
+    /**
+     * @var string
+     */
+    private $city_name;
+
+    /**
+     * @var string
+     */
+    private $city_postal_code;
+
+    /**
+     * @var string
+     */
+    private $street;
+
+    /**
+     * @var string
+     */
+    private $street_number;
+
+    /**
+     * @var string
+     */
+    private $additional_address;
+
+    /**
+     * @var string
+     */
+    private $corporate_name;
+
+    /**
+     * @var string
+     */
+    private $google_map_url;
+
+
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set country_code
+     *
+     * @param string $countryCode
+     * @return Location
+     */
+    public function setCountryCode($countryCode)
+    {
+        $this->country_code = $countryCode;
+
+        return $this;
+    }
+
+    /**
+     * Get country_code
+     *
+     * @return string 
+     */
+    public function getCountryCode()
+    {
+        return $this->country_code;
+    }
+
+    /**
+     * Set city_name
+     *
+     * @param string $cityName
+     * @return Location
+     */
+    public function setCityName($cityName)
+    {
+        $this->city_name = $cityName;
+
+        return $this;
+    }
+
+    /**
+     * Get city_name
+     *
+     * @return string 
+     */
+    public function getCityName()
+    {
+        return $this->city_name;
+    }
+
+    /**
+     * Set city_postal_code
+     *
+     * @param string $cityPostalCode
+     * @return Location
+     */
+    public function setCityPostalCode($cityPostalCode)
+    {
+        $this->city_postal_code = $cityPostalCode;
+
+        return $this;
+    }
+
+    /**
+     * Get city_postal_code
+     *
+     * @return string 
+     */
+    public function getCityPostalCode()
+    {
+        return $this->city_postal_code;
+    }
+
+    /**
+     * Set street
+     *
+     * @param string $street
+     * @return Location
+     */
+    public function setStreet($street)
+    {
+        $this->street = $street;
+
+        return $this;
+    }
+
+    /**
+     * Get street
+     *
+     * @return string 
+     */
+    public function getStreet()
+    {
+        return $this->street;
+    }
+
+    /**
+     * Set street_number
+     *
+     * @param string $streetNumber
+     * @return Location
+     */
+    public function setStreetNumber($streetNumber)
+    {
+        $this->street_number = $streetNumber;
+
+        return $this;
+    }
+
+    /**
+     * Get street_number
+     *
+     * @return string 
+     */
+    public function getStreetNumber()
+    {
+        return $this->street_number;
+    }
+
+    /**
+     * Set additional_address
+     *
+     * @param string $additionalAddress
+     * @return Location
+     */
+    public function setAdditionalAddress($additionalAddress)
+    {
+        $this->additional_address = $additionalAddress;
+
+        return $this;
+    }
+
+    /**
+     * Get additional_address
+     *
+     * @return string 
+     */
+    public function getAdditionalAddress()
+    {
+        return $this->additional_address;
+    }
+
+    /**
+     * Set corporate_name
+     *
+     * @param string $corporateName
+     * @return Location
+     */
+    public function setCorporateName($corporateName)
+    {
+        $this->corporate_name = $corporateName;
+
+        return $this;
+    }
+
+    /**
+     * Get corporate_name
+     *
+     * @return string 
+     */
+    public function getCorporateName()
+    {
+        return $this->corporate_name;
+    }
+
+    /**
+     * Set google_map_url
+     *
+     * @param string $googleMapUrl
+     * @return Location
+     */
+    public function setGoogleMapUrl($googleMapUrl)
+    {
+        $this->google_map_url = $googleMapUrl;
+
+        return $this;
+    }
+
+    /**
+     * Get google_map_url
+     *
+     * @return string 
+     */
+    public function getGoogleMapUrl()
+    {
+        return $this->google_map_url;
+    }
+}

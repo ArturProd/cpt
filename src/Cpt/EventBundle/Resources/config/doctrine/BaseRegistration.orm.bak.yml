@@ -1,0 +1,21 @@
+Cpt\EventBundle\Entity\BaseRegistration:
+  type: mappedSuperclass
+  id:
+    event:
+      type: entity
+    user:
+      type: entity
+  lifecycleCallbacks:
+        prePersist: [prePersist]
+        preUpdate: [preUpdate]
+  fields:
+    createdAt:
+        type: datetime
+    updatedAt:
+        type: datetime
+    numparticipant:
+      type: integer
+    numqueuedparticipant:
+      type: integer
+    organizer:
+      type: boolean

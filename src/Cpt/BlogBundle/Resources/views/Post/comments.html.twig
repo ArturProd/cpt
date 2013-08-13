@@ -1,0 +1,9 @@
+<ul class="comment" id="comment_list_{{post_id}}">
+    {# renders each comment #}
+    {% for comment in pager.results %}
+            {% include 'CptBlogBundle:Post:comment.html.twig'
+                    with {'comment': comment }
+            %}
+    {% endfor %}  
+</ul>
+

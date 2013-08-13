@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <service id="cpt.blog.form.type.comment" class="Cpt\BlogBundle\Form\Type\CommentType">
+            <tag name="form.type" alias="sonata_post_comment" />
+        </service>
+        <service id="cpt.blog.form.type.post" class="Cpt\BlogBundle\Form\Type\PostType">
+            <tag name="form.type" alias="cpt_blog_edit_post" />
+        </service>
+
+    </services>
+</container>

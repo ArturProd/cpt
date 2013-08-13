@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+
+        <!-- permalink generator -->
+        <service id="cpt.blog.permalink.date" class="Cpt\BlogBundle\Permalink\DatePermalink">
+            <argument />
+        </service>
+
+        <service id="cpt.blog.permalink.category" class="Cpt\BlogBundle\Permalink\CategoryPermalink" />
+
+        <!-- email security token -->
+        <service id="cpt.blog.hash.generator" class="Cpt\BlogBundle\Util\HashGenerator">
+            <argument />
+        </service>
+
+        <service id="cpt.blog.mailer" class="Cpt\BlogBundle\Mailer\Mailer">
+            <argument type="service" id="mailer" />
+            <argument type="service" id="cpt.blog.blog" />
+            <argument type="service" id="cpt.blog.hash.generator" />
+            <argument type="service" id="router" />
+            <argument type="service" id="templating" />
+            <argument />
+        </service>
+    </services>
+</container>

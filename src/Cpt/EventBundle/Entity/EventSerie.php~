@@ -1,0 +1,70 @@
+<?php
+// NE PAS FAIRE CA!!!!
+// FAIRE UN EVENT GENERATOR QUI GENERE DES SINGLE EVENT EN DB
+namespace Cpt\EventBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+
+/**
+ * @ORM\Entity
+ * @UniqueEntity(fields="email", message="Email already taken")
+ */
+class EventSerie extends BaseEventSerie
+{
+    /**
+     * @ORM\Id
+     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+   
+    protected $author;
+    
+    protected $events;
+    
+    public function getAuthor() {
+        return $this->author;
+    }
+
+    public function setAuthor($author) {
+        $this->author = $author;
+    }
+
+    public function getEvents() {
+        return $this->events;
+    }
+
+    public function setEvents($events) {
+        $this->events = $events;
+    }
+
+        public function __construct()
+    {
+        $this->events = new ArrayCollection();
+        $this->author = null;
+    }
+
+    /**
+     * Add events
+     *
+     * @param \Cpt\EventBundle\Entity\Event $events
+     * @return EventSerie
+     */
+    public function addEvent(\Cpt\EventBundle\Entity\Event $events)
+    {
+        $this->events[] = $events;
+
+        return $this;
+    }
+
+    /**
+     * Remove events
+     *
+     * @param \Cpt\EventBundle\Entity\Event $events
+     */
+    public function removeEvent(\Cpt\EventBundle\Entity\Event $events)
+    {
+        $this->events->removeElement($events);
+    }
+}

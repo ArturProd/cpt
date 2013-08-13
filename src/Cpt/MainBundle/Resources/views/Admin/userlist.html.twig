@@ -1,0 +1,51 @@
+{% extends '::base.html.twig' %}
+
+{% block main_content %}
+
+{% if is_granted('ROLE_ADMIN') %}
+
+<div class="row-fluid">
+    <div class="span11 left">
+
+        <table class="table table-striped cpt_table">
+            <thead>
+              <th>Nom</th>
+                <th>Email</th>
+                <th>Activé</th>
+                <th>Dernier Login</th>
+                <th>Evènements</th>
+                <th>Posts</th>
+                <th>Droits</th>
+                <th></th>
+
+            </thead>
+            <tbody>              
+                {% for user in users %}
+                <tr>
+                    <td>{{ user.username }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.enabled }}</td>
+                    <td>{{ user.lastlogin|date("d/m/Y h:m") }}</td>
+                    <td>N/A</td>
+                    <td>N/A</td>
+                    <td>
+                        <select>
+                            <option value="ROLE_USER" {{ permissions[user.id] == "ROLE_USER" ? "Selected": "" }} >1. Utilisateur normal</option>
+                            <option value="ROLE_EVT_CREATOR" {{ permissions[user.id] == "ROLE_EVT_CREATOR" ? "Selected": "" }} >2. Créateur d'évènements</option>
+                            <option value="ROLE_PUBLISHER" {{ permissions[user.id] == "ROLE_PUBLISHER" ? "Selected": "" }} >3. Publication d'articles</option>
+                            <option value="ROLE_ORGA" {{ permissions[user.id] == "ROLE_ORGA" ? "Selected": "" }} >4. Orga</option>
+                            <option value="ROLE_ADMIN" {{ permissions[user.id] == "ROLE_ADMIN" ? "Selected": "" }} >5. Administrateur</option>
+                        </select>
+                    </td>
+                    <td><button type="submit">Enregistrer</button></td>
+                </tr>
+                {% endfor %}
+           </tbody>
+        </table>
+
+    </div>
+</div>
+{% else %}
+Vous n'avez pas la permission d'accéder à cette resource.
+{% endif %}
+{% endblock %}

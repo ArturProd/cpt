@@ -1,0 +1,34 @@
+form.not_valid_number.title:        Valeur non valide
+form.not_valid_number.content:      "<p>Cette valeur n'est pas un nombre valide.</p><p>Veuillez entrer un nombre (ex: 10).</p>"
+form.ok:                              Ok
+form.save:                            Enregistrer
+form.event.authorize_reservations:  Autoriser les réservations
+form.event.cpt_event:               Evenement chant pour tous
+form.event.title:                   Titre
+form.event.num_attendees_max:       Nombre max de participants
+form.event.begin_date_time:           Dates et heures de début
+form.event.end_date_time:           Dates et heures de fin
+form.event.city:                     Ville
+form.event.postal_code:                    Code Postal
+form.event.street_number:                    N°
+form.event.street:                    Rue
+form.event.additional_address:      Complément
+form.event.location_name:            Nom du Lieu
+form.event.google_map_url:          URL Google Map
+event.download_atendees_list:       Télécharger la liste des participants
+event.changes_detected.title:       Changements détéctés sur cet évènement
+event.changes_detected.content: "   <p>L'évènement que vous éditez à été mis à jour ou bien de nouvelles personnes se sont inscrites.</p><p>Vos modifications doivent être abandonnées pour ne pas rentrer en conflit avec ces changements.</p><p>Ces modifications vont être chargées.</p>"
+event.no_reservation.title:         Ne pas autoriser les réservations
+event.no_reservation.content.begin: "<p>En supprimant la possibilité de réserver pour votre évènement, vous allez supprimer toutes les réservations déjà effectuées lors de l'enregistrement de votre évènement.</p>"
+event.no_reservation.content.attendees_alert: "<p>Les participants déjà inscrits seront avertis de cette suppression lors de l'enregistrement.</p>"
+event.no_reservation.content.end:   "<p><b>Etes-vous sur de vouloir continuer?</b></p>"
+event.no_reservation.yes:             "Oui, les réservations seront effacées"
+event.no_reservation.no:              "Non"
+event.tab.description:                "Description"
+event.tab.place_and_date:          "Lieu et dates"
+event.tab.attendees:                  "Participants"
+event.show_hide_attendeelist:       "Afficher/Masquer la liste des participants"
+event.attendeequeue.rank:             Rang
+event.attendeequeue.name:             Nom
+event.attendeequeue.requested_seats: Places
+event.attendeequeue.queued:           Fil d'attente?

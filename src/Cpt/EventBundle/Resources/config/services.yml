@@ -1,0 +1,16 @@
+# app/config/config.yml
+parameters:
+    EventManager.class:      Cpt\EventBundle\Manager\EventManager
+
+services:
+    EventManager:
+        class:        "%EventManager.class%"
+        arguments: ['@service_container', '@doctrine.orm.default_entity_manager']
+    cpt_edit_event:
+      class: Cpt\EventBundle\Form\Type\EventType
+      tags:
+         -  { name: form.type }
+    cpt.twig.make_js_string_extension:
+        class: Cpt\EventBundle\Twig\MakeJsStringExtension
+        tags:
+            - { name: twig.extension }

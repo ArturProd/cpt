@@ -1,0 +1,3 @@
+{% for registration in event.registrations %}
+"{{registration.user.username}}","{{registration.numparticipant}}","{{registration.organizer}}","{{registration.numqueuedparticipant}}"
+{% endfor %}

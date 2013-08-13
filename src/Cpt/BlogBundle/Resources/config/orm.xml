@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="cpt.blog.manager.comment.class">Cpt\BlogBundle\Entity\CommentManager</parameter>
+        <parameter key="cpt.blog.manager.post.class">Cpt\BlogBundle\Entity\PostManager</parameter>
+        <parameter key="cpt.blog.manager.category.class">Cpt\BlogBundle\Entity\CategoryManager</parameter>
+        <parameter key="cpt.blog.manager.tag.class">Cpt\BlogBundle\Entity\TagManager</parameter>
+    </parameters>
+
+    <services>
+        <service id="cpt.blog.entity_manager" alias="doctrine.orm.default_entity_manager" />
+
+        <service id="cpt.blog.manager.comment" class="%cpt.blog.manager.comment.class%">
+            <argument type="service" id="cpt.blog.entity_manager" />
+            <argument>%cpt.blog.manager.comment.entity%</argument>
+            <argument type="service" id="cpt.blog.manager.post" />
+        </service>
+
+        <service id="cpt.blog.manager.category" class="%cpt.blog.manager.category.class%">
+            <argument type="service" id="cpt.blog.entity_manager" />
+            <argument>%cpt.blog.manager.category.entity%</argument>
+        </service>
+
+        <service id="cpt.blog.manager.tag" class="%cpt.blog.manager.tag.class%">
+            <argument type="service" id="cpt.blog.entity_manager" />
+            <argument>%cpt.blog.manager.tag.entity%</argument>
+        </service>
+
+        <service id="cpt.blog.manager.post" class="%cpt.blog.manager.post.class%">
+           <argument type="service" id="cpt.blog.entity_manager" />
+           <argument>%cpt.blog.manager.post.entity%</argument>
+        </service>
+
+    </services>
+</container>

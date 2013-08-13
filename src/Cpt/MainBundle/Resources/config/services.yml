@@ -1,0 +1,8 @@
+# app/config/config.yml
+parameters:
+    PermissionManager.class:      Cpt\MainBundle\Model\PermissionsManager
+
+services:
+    PermissionManager:
+        class:        "%PermissionManager.class%"
+        arguments: ['@service_container']

@@ -1,0 +1,11 @@
+cpt_main_home:
+    pattern:  /home
+    defaults: { _controller: CptMainBundle:Default:index }
+
+cpt_main_useradmin:
+  pattern:  /useradmin
+  defaults: { _controller: CptMainBundle:UserAdmin:index }
+  
+cpt_main_maquette:
+    pattern:  /maquette
+    defaults: { _controller: CptMainBundle:Default:maquette }

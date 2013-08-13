@@ -1,0 +1,65 @@
+{% extends '::base.html.twig' %}
+
+{% block main_content %}
+       <script type="text/javascript">
+           
+                  
+            $(function() {
+                $( "#post_accordion" ).toggle();
+ 
+              //On click any <a> within the container
+                $('#post_accordion h3').click(function(e) {
+                        //Close all <div> but the <div> right after the clicked <a>
+                    $(e.target).next('div').siblings('div').slideUp();
+                        //Toggle open/close on the <div> after the <a>, opening it if not open.
+                        $(e.target).next('div').slideToggle();
+                });
+         
+                $("#post_accordion h3:first-child").siblings('div').slideUp( 'fast', function() {
+                    $( "#post_accordion" ).toggle( );
+                  });
+                var options = {};
+                //$( "#post_accordion" ).show( 'Puff', options, 500, callback );
+
+            
+        });
+
+        </script>
+              
+    <div class="row-fluid">
+        <div class="span9">
+              <?
+              // 1      Creator
+              // 1..n   Organizers
+              // 0..n   Participants [ Queued / Approved, Sure / Not Sure, Date Inscription ]
+              // MaxParticipants
+              // AuthorizeNotSure
+              // 
+              //
+              // Au plus rapide
+              ?>
+        </div>
+    </div>
+ 
+ 
+        
+
+        
+{% endblock %}
+        
+        
+        
+{% block side_content %}
+        <div class="sidebar">
+            <h2>Evenements</h2>
+            
+            <div class="event_menu">
+                <h2>Chant pour tous</h2>
+                <div>Venez nombreux participer au chant pour tous!</div>
+            </div>
+            <div class="event_menu">
+                <h2>Chant pour tous</h2>
+                <div>Venez nombreux participer au chant pour tous!</div>
+            </div>
+        </div>
+{% endblock %}

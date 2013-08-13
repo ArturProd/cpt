@@ -1,0 +1,18 @@
+<tr>
+    {% if post.enabled %}
+    <td><a href="{{ url('sonata_news_view', { 'permalink': sonata_news_permalink(post) }) }}">{{post.title}}</a></td>
+    {% else %}
+    <td><a href="{{ url('cpt_blog_post_edit', { 'id': post.id }) }}">{{post.title}}</a></td>
+    {% endif %}
+    
+    <td>{{post.enabled ? 'oui' : 'non'}}</td>    
+    <td><small>{{post.abstract|slice(0,80)}}</small></td>
+    <td>{{post.commentsCount}}</td>
+    <td>{{post.publicationDateStart|date('Y-m-d H:i:s')}}</td>
+    <td>{{post.createdAt|date('Y-m-d H:i:s') }}</td>   
+    <td>{{ post.updatedAt|date('Y-m-d H:i:s') }}</td> 
+    {% if is_granted('ROLE_ADMIN') %}
+        <td>{{post.publishedhomepage ? 'oui' : 'non'}}</td>
+        <td>{{post.author}}</td>
+    {% endif %}
+</tr>

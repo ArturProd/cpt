@@ -1,0 +1,7 @@
+# MyBundle/Resources/config/admin.yml
+services:
+    cpt.main.admin.test:  
+        class: Cpt\MainBundle\Admin\TestAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: user, label: "Test" }
+        arguments: [null, Cpt\MainBundle\Entity\Test, CptMainBundle:TestAdmin]

@@ -1,0 +1,31 @@
+.comment_textarea,
+
+.comment{
+    list-style: none;
+}
+
+.comment > li{
+    margin-top: 20px;
+    background-color: white;
+    opacity: 0.75;
+    margin-top: 5px;
+    padding: 30px;
+    padding-top: 0px;
+    height: 100%;
+}
+
+.comment li ul{
+    margin-bottom: 15px;
+    margin-left: 0px;
+    width: 100%;
+}
+
+.comment li ul li:nth-child(3){
+    float: right;
+}
+
+.comment_textarea{
+  width: 80%;
+  margin-left: 10%;
+  margin-right: 10%;
+}
