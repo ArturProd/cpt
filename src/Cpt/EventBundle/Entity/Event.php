@@ -31,12 +31,13 @@ class Event
         $this->street_number = "";
         $this->additional_address = "";
         $this->corporate_name = "";
-        $this->google_map_url = "";
         $this->cpt_event = true;
         $this->registrations = new ArrayCollection();
         $this->queue = Array();
         $this->allowedattendees = true;
         $this->registration_allowed = true;
+        $this->location_show_map = true;
+        
 
     }
        
@@ -481,12 +482,7 @@ class Event
      */
     private $corporate_name;
 
-    /**
-     * @var string
-     */
-    private $google_map_url;
-
-
+  
     /**
      * Set country_code
      *
@@ -649,28 +645,6 @@ class Event
     }
 
     /**
-     * Set google_map_url
-     *
-     * @param string $googleMapUrl
-     * @return BaseEvent
-     */
-    public function setGoogleMapUrl($googleMapUrl)
-    {
-        $this->google_map_url = $googleMapUrl;
-
-        return $this;
-    }
-
-    /**
-     * Get google_map_url
-     *
-     * @return string 
-     */
-    public function getGoogleMapUrl()
-    {
-        return $this->google_map_url;
-    }
-    /**
      * @var boolean
      */
     private $cpt_event;
@@ -815,5 +789,89 @@ class Event
     public function getRegistrationAllowed()
     {
         return $this->registration_allowed;
+    }
+    /**
+     * @var boolean
+     */
+    private $location_show_map;
+
+    /**
+     * @var string
+     */
+    private $location_long;
+
+    /**
+     * @var string
+     */
+    private $location_lat;
+
+
+    /**
+     * Set location_show_map
+     *
+     * @param boolean $locationShowMap
+     * @return Event
+     */
+    public function setLocationShowMap($locationShowMap)
+    {
+        $this->location_show_map = $locationShowMap;
+    
+        return $this;
+    }
+
+    /**
+     * Get location_show_map
+     *
+     * @return boolean 
+     */
+    public function getLocationShowMap()
+    {
+        return $this->location_show_map;
+    }
+
+    /**
+     * Set location_long
+     *
+     * @param string $locationLong
+     * @return Event
+     */
+    public function setLocationLong($locationLong)
+    {
+        $this->location_long = $locationLong;
+    
+        return $this;
+    }
+
+    /**
+     * Get location_long
+     *
+     * @return string 
+     */
+    public function getLocationLong()
+    {
+        return $this->location_long;
+    }
+
+    /**
+     * Set location_lat
+     *
+     * @param string $locationLat
+     * @return Event
+     */
+    public function setLocationLat($locationLat)
+    {
+        $this->location_lat = $locationLat;
+    
+        return $this;
+    }
+
+    /**
+     * Get location_lat
+     *
+     * @return string 
+     */
+    public function getLocationLat()
+    {
+        return $this->location_lat;
     }
 }

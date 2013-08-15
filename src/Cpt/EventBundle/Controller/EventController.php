@@ -44,7 +44,8 @@ class EventController extends BaseController
             
         } else 
         {
-            $event = $this->get("EventManager")->createEvent();
+            $author = $this->container->get('security.context')->getToken()->getUser();
+            $event = $this->get("EventManager")->createEvent($author);
         }
         
 

@@ -17,7 +17,7 @@ class Event
         $this->begindatetime = new \DateTime;
         $this->enddatetime = new \DateTime;
         $this->description = "";
-        $this->maxnumattendees = 50;
+        $this->maxnumattendees = 3;
         $this->count_queued_attendees = 0;
         $this->count_total_attendees = 0;
         $this->published = true;
@@ -34,6 +34,9 @@ class Event
         $this->google_map_url = "";
         $this->cpt_event = true;
         $this->registrations = new ArrayCollection();
+        $this->queue = Array();
+        $this->allowedattendees = true;
+        $this->registration_allowed = true;
 
     }
        
@@ -712,11 +715,11 @@ class Event
     //  <editor-fold defaultstate="collapsed" desc="Getters and Setters">
  
     public function getAuthor() {
-        return $this->creator;
+        return $this->author;
     }
 
-    public function setAuthor($creator) {
-        $this->creator = $creator;
+    public function setAuthor($author) {
+        $this->author = $author;
     }
 
 
@@ -756,5 +759,61 @@ class Event
     public function getComments()
     {
         return $this->comments;
+    }
+    /**
+     * @var array
+     */
+    private $queue;
+
+    /**
+     * @var boolean
+     */
+    private $registration_allowed;
+
+
+    /**
+     * Set queue
+     *
+     * @param array $queue
+     * @return Event
+     */
+    public function setQueue($queue)
+    {
+        $this->queue = $queue;
+    
+        return $this;
+    }
+
+    /**
+     * Get queue
+     *
+     * @return array 
+     */
+    public function getQueue()
+    {
+        return $this->queue;
+    }
+
+    /**
+     * Set registration_allowed
+     *
+     * @param boolean $registrationAllowed
+     * @return Event
+     */
+    public function setRegistrationAllowed($registrationAllowed)
+    {
+        $this->registration_allowed = $registrationAllowed;
+    
+        return $this;
+    }
+
+    /**
+     * Get registration_allowed
+     *
+     * @return boolean 
+     */
+    public function getRegistrationAllowed()
+    {
+        return $this->registration_allowed;
     }
 }

@@ -14,7 +14,6 @@ namespace Cpt\EventBundle\Form\Type;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\AbstractType;
-use Ivory\GoogleMap\Places\AutocompleteType;
 
 class EventType extends AbstractType
 {
@@ -170,17 +169,7 @@ class EventType extends AbstractType
                     'class' => 'input_text',
                     'maxlength'  => '50',
                     ),
-             )) 
- 
-             // Google Map
-             ->add('google_map_url', 'url', array(                 
-                'label' => 'form.event.google_map_url',
-                'required' => false,
-                'attr' => array(                    
-                    'class' => 'input_text',
-                    'maxlength'  => '300',
-                    ),
-             )); 
+             ));
 
     }
 

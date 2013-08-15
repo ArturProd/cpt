@@ -63,7 +63,13 @@ Cpt\EventBundle\Entity\Event:
         nullable: true
       corporate_name:
         type: text
-      google_map_url:
+      location_show_map:
+        type: boolean
+        nullable: false
+      location_long:
+        type: text
+        nullable: true
+      location_lat:
         type: text
         nullable: true
 

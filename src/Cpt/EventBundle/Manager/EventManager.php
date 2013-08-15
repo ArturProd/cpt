@@ -11,26 +11,24 @@ class EventManager
 {
     protected $em;
 
-    protected $container;
     
     /**
      * @param \Doctrine\ORM\EntityManager $em
      * @param string                      $class
      */
-    public function __construct($container, EntityManager $em)
+    public function __construct(EntityManager $em)
     {
-        $this->container = $container;
         $this->em    = $em;
     }
     
     // <editor-fold defaultstate="collapsed" desc="Public: Event related">
 
-    public function createEvent($author = null)
+    public function createEvent($author)
     {
         $event = new Event();
         
-         if (!$author)         // Setting the author to currently logged user
-            $author = $this->container->get('security.context')->getToken()->getUser();
+         if (!$author)
+             throw new \InvalidArgumentException("Cannot create an event without creator (null)");
 
         $event->setAuthor($author);
         

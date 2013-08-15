@@ -2,8 +2,8 @@ parameters:
     database_driver: pdo_mysql
     database_host: 127.0.0.1
     database_port: null
-    database_name: chantpourtous2
-    database_user: chantpourtous
+    database_name: cpt
+    database_user: cpt
     database_password: cpt
     mailer_transport: smtp
     mailer_host: 127.0.0.1
@@ -12,3 +12,4 @@ parameters:
     locale: en
     secret: ee2386abbbe9a4ce5a9d8ce8cf69ec6d859f2fd3
     database_path: null
+    domain: localhost

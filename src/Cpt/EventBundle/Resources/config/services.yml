@@ -5,7 +5,7 @@ parameters:
 services:
     EventManager:
         class:        "%EventManager.class%"
-        arguments: ['@service_container', '@doctrine.orm.default_entity_manager']
+        arguments: ['@doctrine.orm.default_entity_manager']
     cpt_edit_event:
       class: Cpt\EventBundle\Form\Type\EventType
       tags:
