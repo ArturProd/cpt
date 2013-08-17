@@ -19,8 +19,13 @@
         {{ form_start(eventform, {'action': path('event_new',  { 'id': event.id }), 'method': 'POST' }) }}
         {{ form_widget(eventform.restricted) }}
         {{ form_widget(eventform.approved) }}
-
-        <button type="submit">{{'form.save'|trans}}</button>
+        {{ form_widget(eventform.location_long) }}
+        {{ form_widget(eventform.location_lat) }}
+        <input id="copy_field" name="copy_field" type="hidden" value="0"/>
+        <button id="save_button" type="submit">{{'form.save'|trans}}</button>
+        {% if event.id != -1 %}
+        <button id="copy_button" type="submit">{{'form.event.copy'|trans}}</button>
+        {% endif %}
         <input type="hidden" value="{{ event.queue|join(',') }}" id="event_queue_json" name="event_queue_json" /> {# populated with the array of event.queu #}
         <input type="hidden" id="registration_list_json" name="registration_list_json" /> {# will hold the json value of the list_participant array before submitting the form  #}
     <div id="tabs">
@@ -30,6 +35,8 @@
             <li><a href="#tabs-3">{{'event.tab.attendees'|trans}}</a></li>
         </ul>
             {{ google_map_css(map) }}
+            {{ form_label(eventform.location_show_map) }}
+            {{ form_widget(eventform.location_show_map) }}
 
             {{ google_map_container(map) }}
             {{ google_map_js(map) }}
@@ -493,7 +500,8 @@ function InitializeEventPage()
        
        {############################################}
        {# Unbind the events (reinit) #}
-       $('#submitbutton').off();
+       $('#save_button').off();
+       $('#copy_button').off();
        $( "#event_registration_allowed" ).off();
        $('#event_maxnumattendees').off();
 
@@ -518,6 +526,12 @@ function InitializeEventPage()
                     }
 
         });
+ 
+       {############################################}
+       {# Handling the "copy" button #}
+        $('#copy_button').on("click", function( e ){
+            $("#copy_field").val(1); {# Setting value to 1 will make a copy #}
+        });
 
        {############################################}
        {# Making the form ajax #}
@@ -527,7 +541,7 @@ function InitializeEventPage()
             AjaxPostForm(  $(this), function( response ){
                 $("#eventformdiv").html(response);
             });
-
+            $('#eventform').find('input, textarea, button, select').attr('disabled','disabled');
             return true;
         });
 
@@ -633,6 +647,8 @@ function InitializeEventPage()
                             position: results[0].geometry.location
                         });
                         markers.push(marker);
+                        $("#{{ eventform.location_long.vars.id }}").val(results[0].geometry.location.lng());
+                        $("#{{ eventform.location_lat.vars.id }}").val(results[0].geometry.location.lat());
                       } else {
                         alert("Geocode was not successful for the following reason: " + status);
                       }

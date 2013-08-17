@@ -37,7 +37,8 @@ class Event
         $this->allowedattendees = true;
         $this->registration_allowed = true;
         $this->location_show_map = true;
-        
+        $this->location_long = "";
+        $this->location_lat = "";
 
     }
        
@@ -298,7 +299,7 @@ class Event
     public function setPublished($published)
     {
         $this->published = $published == null ? false : $published;;
-        $this->published = false; // TODO: feature not implemented
+        $this->published = true; // TODO: feature not implemented
 
         return $this;
     }
@@ -434,7 +435,7 @@ class Event
     public function setApproved($approved)
     {
         $this->approved = $approved == null ? false : $approved;
-        $this->approved = false; // TODO: Feature not implemented
+        $this->approved = true; // TODO: Feature not implemented
         return $this;
     }
 
@@ -734,6 +735,16 @@ class Event
     {
         return $this->comments;
     }
+    
+        /**
+     * Set comments
+     *
+     */
+    public function setComments($comments)
+    {
+        $this->comments = $comments;
+    }
+    
     /**
      * @var array
      */

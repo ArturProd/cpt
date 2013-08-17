@@ -107,8 +107,6 @@ Cpt\EventBundle\Entity\Event:
                 max: 30
                 minMessage: "La ville doit faire au moins {{ limit }} caractères"
                 maxMessage: "La ville ne peut pas être plus longue que {{ limit }} caractères"
-      googlemapurl:
-        - Url:
 
 Cpt\EventBundle\Entity\Registration:
       constraints:

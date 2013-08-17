@@ -21,6 +21,7 @@ class AppKernel extends Kernel
             new JMS\SecurityExtraBundle\JMSSecurityExtraBundle(),
             new Cpt\EventBundle\CptEventBundle(),
             new Cpt\MainBundle\CptMainBundle(),
+            new Cpt\TestBundle\CptTestBundle(),
             new FOS\UserBundle\FOSUserBundle(),
             
             new Sonata\IntlBundle\SonataIntlBundle(),
@@ -43,7 +44,8 @@ class AppKernel extends Kernel
             new Application\Sonata\MediaBundle\ApplicationSonataMediaBundle(),
             new Thrace\FormBundle\ThraceFormBundle(),
             new Ivory\GoogleMapBundle\IvoryGoogleMapBundle(),
-        );
+            new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
+       );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
             $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();

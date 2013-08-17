@@ -30,7 +30,6 @@ class EventController extends BaseController
         $this->RestrictAccessToAjax();
         
         $request = $this->getRequest();
-
         
         // ****************************************************
         // Checking if new event or if it has to be loaded from db
@@ -40,14 +39,13 @@ class EventController extends BaseController
             $event = $this->get("EventManager")->getEventById($id);
             
             $this->RestrictResourceNotFound($event);
-            $this->RestrictAccessToUser($event->getAuthor()->getId());
-            
+            $this->RestrictAccessToUser($event->getAuthor()->getId());      
         } else 
         {
             $author = $this->container->get('security.context')->getToken()->getUser();
             $event = $this->get("EventManager")->createEvent($author);
         }
-        
+
 
         // ****************************************************
         // Creating the form
@@ -59,31 +57,32 @@ class EventController extends BaseController
         if ($request->isMethod('POST')) {
         
             $form->bind($request);
-           
+            
+
             // Get the organizers and event queue
             try{
-                  $registrationlist_json_array = json_decode($request->get('registration_list_json'));
-                  $eventqueue_json_array = json_decode($request->get('event_queue_json'));
+                // If it is a copy action, copy the event
+                if (($event->getId() != -1) && ( $request->request->get('copy_field') == 1))
+                    $event = $this->get("EventManager")->CopyEvent($event);
+                else // If not, process the event queue
+                {
+                      $registrationlist_json_array = json_decode($request->get('registration_list_json'));
+                      $eventqueue_json_array = json_decode($request->get('event_queue_json'));
 
-                  if ((!$registrationlist_json_array )|| (!$eventqueue_json_array))
-                      throw new \InvalidArgumentException("decoded json is null");
-                  
-                  $event->setQueue($eventqueue_json_array);
-                  $this->SetJsonRegistrationCollection($event, $registrationlist_json_array);
-                  
+                      if ((!$registrationlist_json_array )|| (!$eventqueue_json_array))
+                          throw new \InvalidArgumentException("decoded json is null");
+
+                      $event->setQueue($eventqueue_json_array);
+                      $this->SetJsonRegistrationCollection($event, $registrationlist_json_array);
+                }
             } catch (Exception $e)
             {
                 return new Response("Paramètre incorrects", 400);
             }
             
              if ($form->isValid()) {
-
-                //$this->get("EventManager")->save($event);
-                //$this->set_registrations($event, $registrationlist, $eventqueue); // !!! Must be called after saving the event
-
+                 
                 $this->get("EventManager")->SaveEvent($event);
-                //return $this->GetRedirectToPostViewResponse($post);
-                //return $this->redirect($this->generateUrl('cpt_main_home'));
             } 
             
             return $this->GetEventEditView($event, $form);
@@ -152,18 +151,7 @@ class EventController extends BaseController
     { 
         $map = $this->get('ivory_google_map.map');
         $map->setLanguage($this->get('request')->getLocale());
-//        $gmapevent = new GMapEvent();
-//
-//        // Configure your event
-//        $gmapevent->setInstance($map->getJavascriptVariable());
-//        $gmapevent->setEventName("load");
-//        $gmapevent->setHandle("function(){alert('The event has been triggered');}");
-//
-//        // It can only be used with a DOM event
-//        // By default, the capture flag is false
-//        $gmapevent->setCapture(true);
-//        $map->getEventManager()->addDomEventOnce($gmapevent);
-        
+
         return $this->render('CptEventBundle:Event:new.html.twig', array(
                 'event' => $event,    
                 'eventform' => $form->createView(),

@@ -6,6 +6,7 @@ use Doctrine\ORM\EntityManager;
 use Cpt\EventBundle\Manager\BaseManager;
 use Cpt\EventBundle\Entity\Event as Event;
 use Cpt\EventBundle\Entity\Registration as Registration;
+use Doctrine\Common\Collections\ArrayCollection as ArrayCollection;
 
 class EventManager
 {
@@ -23,21 +24,21 @@ class EventManager
     
     // <editor-fold defaultstate="collapsed" desc="Public: Event related">
 
-    public function createEvent($author)
+    public function createEvent($author, $published=true, $approved=true, $restricted=false)
     {
         $event = new Event();
         
          if (!$author)
              throw new \InvalidArgumentException("Cannot create an event without creator (null)");
 
+        $this->AddDefaultRegistration($event, $author);
+         
         $event->setAuthor($author);
+        $event->setPublished($published);
+        $event->setRestricted($restricted);
+        $event->setApproved($approved);
         
-        // By default, creator is also an organizer
-        $registration = new Registration($author, $event, 1, true);
-        
-        $this->AddRegistration($event,$registration);
-
-        return $event;
+         return $event;
     }
     
     public function SaveEvent(Event $event)
@@ -58,6 +59,21 @@ class EventManager
             $this->em->close();
             throw $e;
         }        
+    }
+    
+    public function CopyEvent(Event $event)
+    {
+        if (($event) && ($event->getId() != -1))
+        {
+            $event = clone $event;
+            $event->setId(-1);
+            $event->setRegistrations(new ArrayCollection());
+            $event->setComments(new ArrayCollection());
+            $event->setQueue(Array());
+            $this->AddDefaultRegistration($event);
+        }
+   
+        return $event;
     }
     
     public function getEventById($id)
@@ -142,6 +158,18 @@ class EventManager
         
     // <editor-fold defaultstate="collapsed" desc="Protected">
 
+    protected function AddDefaultRegistration(Event $event, $registred_user = null)
+    {
+        if (!$registred_user)
+            $registred_user = $event->getAuthor ();
+        
+        // By default, creator is also an organizer
+        $registration = new Registration($registred_user, $event, 1, true);
+        
+        $this->AddRegistration($event,$registration);
+
+    }
+    
     protected function ValidateBusinessRules(Event $event)
     {
         // Checking parameters

@@ -25,12 +25,12 @@ class EventType extends AbstractType
         $builder
                 ->add('save', 'submit', array(
                 ))
+                
+
             // ************************
             // GENERAL
             // ************************
- 
-            ->add('queue', 'hidden')    
-                
+                 
             // Published
             ->add('published', 'checkbox', array(
                 'required' => false,
@@ -110,7 +110,20 @@ class EventType extends AbstractType
             // ************************
             // LOCATION
             // ************************
-            
+            // Show google map
+             ->add('location_show_map', 'checkbox', array(
+                'required' => false,
+                'label' => 'form.event.location.show',
+
+                ))
+              // Longitude
+              ->add('location_long', 'hidden', array(
+                ))
+              
+              // Latitude
+              ->add('location_lat', 'hidden', array(
+                ))
+                
             // City
                 ->add('city_name', 'text', array(
                 'label' => 'form.event.city',

@@ -1,6 +1,6 @@
 <?php
 
-namespace Cpt\EventBundle\Tests;
+namespace Cpt\TestBundle\Lib;
 
 class BaseTestCase extends \PHPUnit_Framework_TestCase
 {

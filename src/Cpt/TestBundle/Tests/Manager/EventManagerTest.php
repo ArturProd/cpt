@@ -1,14 +1,13 @@
 <?php
-namespace Cpt\EventBundle\Tests\Manager;
+namespace Cpt\TestBundle\Tests\Manager;
 
 use Cpt\EventBundle\Manager\EventManager;
-use \Cpt\EventBundle\Tests\BaseTestCase as BaseTestCase;
+use Cpt\TestBundle\Lib\BaseTestCase as BaseTestCase;
 
 class EventManagerTest extends BaseTestCase
 {
     public function testCreateEvent()
     {
-                
         $eventmanager = new EventManager($this->em);
         
         $author = $this->getMock('\Application\Sonata\UserBundle\Entity\User');

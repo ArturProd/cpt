@@ -13,3 +13,4 @@ parameters:
     secret: ee2386abbbe9a4ce5a9d8ce8cf69ec6d859f2fd3
     database_path: null
     domain: localhost
+    event_autoapprove: true

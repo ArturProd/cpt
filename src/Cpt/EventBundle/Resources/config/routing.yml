@@ -4,9 +4,10 @@ event_homepage:
     
 event_new:
     path:     /edit/{id}
-    defaults: { _controller: CptEventBundle:Event:new, id: -1  }
+    defaults: { _controller: CptEventBundle:Event:new, id: -1, copy: 0  }
     requirements:
         id:  \d+
+        copy: 1|0
 
 
 event_was_updated:

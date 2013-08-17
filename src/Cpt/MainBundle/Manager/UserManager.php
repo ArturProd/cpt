@@ -47,7 +47,7 @@ class UserManager extends BaseUserManager
     {
         // Only search strings with 3 or more carachteres are accepted
         if (strlen($search_string) <= 3)
-            return new ArrayCollection();
+            return Array();
             
         return $this->objectManager->getRepository($this->class)
             ->createQueryBuilder('u')
