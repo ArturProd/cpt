@@ -76,6 +76,8 @@
                 $("#popup_new_event").load("{{ url('event_new')}}");
             {% endif %}
 
+            $("#event_calendar").load("{{ url('event_view_calendar')}}");
+
           });
           
 
@@ -86,8 +88,7 @@
                     <h2>&Eacute;vénements</h2>
                      {# Popup to load with pages (ex: create event, create article #}
                      <a id="newevent" href="#">Nouveau</a>
-                    <div id="post_accordion_alaune">
-                        {# preview_post.html.twig => loaded and appened by ajax request #}
+                     <div id="event_calendar">
                      </div>
                 </div>
             </div>
@@ -95,8 +96,9 @@
             <div class="span6">              
                 <div class="main_section">        
                     <h2>Articles<span class="span3 pull-right"><a href="{{ path('sonata_news_archive') }}" class="btn btn-primary btn-large">Voir tous les articles</a></span></h2>
-
-
+                    <div id="post_accordion_alaune">
+                        {# preview_post.html.twig => loaded and appened by ajax request #}
+                     </div>
                     <div id="post_accordion_articles">
                         {# preview_post.html.twig => loaded and appened by ajax request #}
                      </div>

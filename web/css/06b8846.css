@@ -882,8 +882,43 @@ button.close{padding:0;cursor:pointer;background:transparent;border:0;-webkit-ap
         Purpose of the stylesheet follows.
 */
 
-root { 
-    display: block;
+.cal_table tr td{
+    padding: 5px;
+    text-align: right;
+    border-right:solid black 1px;
+}
+
+.cal_table tr td:last-child{
+    border: none;
+}
+
+.cal_day_inmonth_withevents,
+.cal_day_inmonth_noevents,
+.cal_day_outmonth_withevents,
+.cal_day_outmonth_noevents
+{
+    border-radius: 50%;
+    font-size: 18px;
+    min-height: 80%;
+    min-width: 80%;
+}
+
+.cal_day_inmonth_withevents{
+    background-color: lightblue;
+}
+
+.cal_day_inmonth_noevents{
+    background-color: transparent;
+}
+
+.cal_day_outmonth_withevents{
+    background-color: grey;
+    color: lightgrey;
+}
+
+.cal_day_outmonth_noevents{
+    background-color: lightblue;
+    color: lightgrey;
 }
 
 

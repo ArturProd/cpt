@@ -1,23 +1,24 @@
-<table class="cpt_calendar">
-<tr>
-    <td>
-    + {{ month_name }} -
-    </td>
-</tr>
-<tr>
-    <table>
-        <tr>
-            <td>{{ monday_name }}</td>
-            <td>{{ tuesday_name }}</td>
-            <td>{{ wednesday_name }}</td>    
-            <td>{{ thursday_name }}</td>    
-            <td>{{ friday_name }}</td>    
-            <td>{{ saturday_name }}</td>    
-            <td>{{ sunday_name }}</td>
-        </tr>
-        <tr>
-
-        </tr>
-    </table>
-</tr>
+{% set month = calendr_month(year, month) %}
+{% set events = calendr_events(month) %}
+{% set cell_class = 'unknown' %}                       
+<table class="cal_table">
+    {% spaceless %}
+    {% for week in month %}
+    <tr>
+        {% for day in week %}
+                {% set dayevents = events.find(day) %}
+                {% if month.contains(day.begin) and (dayevents|length > 0) %}
+                    {% set cell_class = 'cal_day_inmonth_withevents' %}
+                {% elseif month.contains(day.begin) and (dayevents|length == 0) %}
+                    {% set cell_class = 'cal_day_inmonth_noevents' %}
+                {% elseif not month.contains(day.begin) and (dayevents|length > 0) %}
+                    {% set cell_class = 'cal_day_outmonth_withevents' %}
+                {% else %}{% set cell_class ='cal_day_outmonth_noevents'%}{% endif %}
+                <td class='cal_day'><span class="{{cell_class}}">{{day.begin|date("j") }}</span></td>
+        {% endfor %}
+    </tr>
+    {% endfor %}
+    {% endspaceless %}
 </table>
+
+{#<a href="#" class="cal_event">{{day.begin|date("d") }}</a>#}

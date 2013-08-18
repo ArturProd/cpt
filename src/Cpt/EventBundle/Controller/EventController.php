@@ -25,7 +25,8 @@ class EventController extends BaseController
      * @return type
      */
     public function newAction($id = null)
-    {                
+    {        
+
         $this->RestrictAccessToLoggedIn();
         $this->RestrictAccessToAjax();
         
@@ -142,9 +143,12 @@ class EventController extends BaseController
 
     }
     
-    public function calendarAction($month)
+    public function viewCalendarAction($year, $month)
     {
-        
+        return $this->render('CptEventBundle:Event:calendar.html.twig', array(
+                'month' => $month,    
+                'year' => $year
+                ));
     }
     
     protected function GetEventEditView($event, $form)

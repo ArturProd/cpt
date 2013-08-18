@@ -45,6 +45,7 @@ class AppKernel extends Kernel
             new Thrace\FormBundle\ThraceFormBundle(),
             new Ivory\GoogleMapBundle\IvoryGoogleMapBundle(),
             new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
+            new FrequenceWeb\Bundle\CalendRBundle\FrequenceWebCalendRBundle(),
        );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

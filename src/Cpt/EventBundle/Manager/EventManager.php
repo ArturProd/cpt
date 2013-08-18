@@ -7,8 +7,9 @@ use Cpt\EventBundle\Manager\BaseManager;
 use Cpt\EventBundle\Entity\Event as Event;
 use Cpt\EventBundle\Entity\Registration as Registration;
 use Doctrine\Common\Collections\ArrayCollection as ArrayCollection;
+use CalendR\Event\Provider\ProviderInterface as ProviderInterface;
 
-class EventManager
+class EventManager implements ProviderInterface
 {
     protected $em;
 
@@ -20,6 +21,11 @@ class EventManager
     public function __construct(EntityManager $em)
     {
         $this->em    = $em;
+    }
+    
+    public function getEvents( \DateTime $begin, \DateTime $end, array $options = array())
+    {
+        return Array();
     }
     
     // <editor-fold defaultstate="collapsed" desc="Public: Event related">

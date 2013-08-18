@@ -607,55 +607,76 @@ function InitializeEventPage()
        {# Setting timer to check for event update #}
        //CheckEventWasUpdated();
     }
-    var gres;
-    var markers = [];
-    function RemoveGoogleMarkers()
-    {
-        {# removes all markers #}
-        for (var i = 0; i < markers.length; i++) {
-            markers[i].setMap(null);
-        }
-        markers = [];
-    }
     
-    function UpdateGoogleMap() {
-        if ( typeof {{ map.JavascriptVariable() }} != "undefined") {# if the map is ready #}
-        {
-             if ($('#{{ eventform.city_name.vars.id }}').val() != "")
-             {
-                    address = "";
+{# ************************************************************************************************************************ #} 
+{# Removes the markers from the google map #}
+{# ************************************************************************************************************************ #} 
+var markers = [];
+function RemoveGoogleMarkers()
+{
+    {# removes all markers #}
+    for (var i = 0; i < markers.length; i++) {
+        markers[i].setMap(null);
+    }
+    markers = [];
+}
+   
+{# ************************************************************************************************************************ #} 
+{# Updates the google map with location data #}
+{# ************************************************************************************************************************ #} 
+ function UpdateGoogleMap() 
+ {
+    {##############################################}
+    {# The map javascript object must be created  #}     
+    if ( typeof {{ map.JavascriptVariable() }} != "undefined") {# if the map is ready #}
+    {        
+        {##############################################}
+        {# Only updates if the city name was provided #}    
+         if ($('#{{ eventform.city_name.vars.id }}').val() != "")
+         {
+                address = "";
+
+                {################################################################}
+                {# If street name is provided, add it to the adress to geolocate#} 
+                if ($('#{{ eventform.street.vars.id }}').val() != "")
+                {
+                    address += $('#{{ eventform.street_number.vars.id }}').val();
+                    address += " " + $('#{{ eventform.street.vars.id }}').val();
+                    address += " " + $('#{{ eventform.additional_address.vars.id }}').val() + ", ";
+                }
+                {###################################################################}
+                {# Add city and postal code information to the adress to geolocate #} 
+                address += $('#{{ eventform.city_postal_code.vars.id }}').val();
+                address += " " + $('#{{ eventform.city_name.vars.id }}').val();                   
+
+                {########################}
+                {# Execute google query #} 
+                map = {{ map.JavascriptVariable() }};
+                 geocoder = new google.maps.Geocoder();
+                geocoder.geocode( { 'address': address}, function(results, status) {
                     
-                    if ($('#{{ eventform.street.vars.id }}').val() != "")
-                    {
-                        address += $('#{{ eventform.street_number.vars.id }}').val();
-                        address += " " + $('#{{ eventform.street.vars.id }}').val();
-                        address += " " + $('#{{ eventform.additional_address.vars.id }}').val() + ", ";
-                    }
-                    address += $('#{{ eventform.city_postal_code.vars.id }}').val();
-                    address += " " + $('#{{ eventform.city_name.vars.id }}').val();                   
-        
-                    map = {{ map.JavascriptVariable() }};
-                     geocoder = new google.maps.Geocoder();
-                    geocoder.geocode( { 'address': address}, function(results, status) {
-                    gres = results;
+                
                     RemoveGoogleMarkers();
-                        {# if we have OK result from google, add the new marker to the map#}
-                      if (status === google.maps.GeocoderStatus.OK) {                  
+                    {##################################################################}
+                    {# if we have OK result from google, add the new marker to the map#}
+                  if (status === google.maps.GeocoderStatus.OK) {
+                        {###################################}
+                        {# Creates a new marker on the map #}                
                         map.setCenter(results[0].geometry.location);
                         var marker = new google.maps.Marker({
                             map: map,
                             position: results[0].geometry.location
                         });
                         markers.push(marker);
+                        {#####################################################}
+                        {# Updates form field with reslut longitude,latitude #} 
                         $("#{{ eventform.location_long.vars.id }}").val(results[0].geometry.location.lng());
                         $("#{{ eventform.location_lat.vars.id }}").val(results[0].geometry.location.lat());
-                      } else {
-                        alert("Geocode was not successful for the following reason: " + status);
-                      }
-                    });
-            }
+                   } 
+                });
         }
-  }
+    }
+}
 
     
   $(function() {

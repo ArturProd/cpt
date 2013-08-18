@@ -30,3 +30,11 @@ cpt_search_user:
 cpt_user_getsearchresult:
     pattern: /usersearch/query
     defaults: { _controller: CptEventBundle:Event:userGetSearchResult }
+
+event_view_calendar:
+    path:     /calendar/{year}/{month}
+    defaults: { _controller: CptEventBundle:Event:viewCalendar, year: 2013, month: 1  }
+    requirements:
+        year:  \d+
+        month: \d+
+        
