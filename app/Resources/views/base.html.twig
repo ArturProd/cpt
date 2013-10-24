@@ -20,10 +20,11 @@
         {% endblock %}
    
             
-        {# ******************************************************** #}            
-        {# CSS #}    
+        {# ******************************************************** 
         {% stylesheets '@CptMainBundle/Resources/public/css/*' 
-                        filter='cssrewrite' %}
+#}            
+        {# CSS #}    
+        {% stylesheets 'bundles/cptmain/css/*' filter='cssrewrite' %}
             <link rel="stylesheet" type="text/css" href="{{ asset_url }}" />
         {% endstylesheets %}
 
@@ -143,7 +144,7 @@
                         Chant pour tous
                         Vocal & Corporel - Improvisé - Ouvert à tous - Gratuit
                     </div>
-                    <div class="span7">
+                    <div class="span5">
 
                     {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
                         <ul class="nav">
@@ -156,7 +157,12 @@
                         </ul>
                     {% endif %}
                      </div>
-                     <div class="span2">
+                     <div class="span4">
+                         <ul class="banner_icons">
+                            <li><a href="www.lemonde.fr"></a></li>
+                            <li><a href="#"></a></li>
+                            <li><a href="#"></a></li>
+                        </ul>
                           {% if (not is_granted("IS_AUTHENTICATED_REMEMBERED")) %}
                             {% render controller("FOSUserBundle:Security:login") %}
                           {% endif %}

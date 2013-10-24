@@ -5,15 +5,23 @@
     Description:
         Purpose of the stylesheet follows.
 */
+.cal_table tr {
+        height: 18px;
+}
 
 .cal_table tr td{
-    padding: 5px;
-    text-align: right;
+    text-align: center;
     border-right:solid black 1px;
+    width: 18px;
 }
 
 .cal_table tr td:last-child{
     border: none;
+}
+
+.cal_table a
+{
+        font-size: 14px;
 }
 
 .cal_day_inmonth_withevents,
@@ -22,17 +30,18 @@
 .cal_day_outmonth_noevents
 {
     border-radius: 50%;
-    font-size: 18px;
-    min-height: 80%;
-    min-width: 80%;
+    padding: 2px;
+    margin: 2px;
 }
 
 .cal_day_inmonth_withevents{
     background-color: lightblue;
+    color: black;
 }
 
 .cal_day_inmonth_noevents{
     background-color: transparent;
+    color:  black;
 }
 
 .cal_day_outmonth_withevents{

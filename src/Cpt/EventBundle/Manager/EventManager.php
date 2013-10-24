@@ -23,10 +23,23 @@ class EventManager implements ProviderInterface
         $this->em    = $em;
     }
     
+
+    // <editor-fold defaultstate="collapsed" desc="Event ProviderInterface">
     public function getEvents( \DateTime $begin, \DateTime $end, array $options = array())
     {
-        return Array();
+         $events = $this->getEventRepository()
+            ->createQueryBuilder('e')
+                ->Where('e.begindatetime >= :from')
+                ->AndWhere('e.enddatetime < :to') // To should be exclude according to CalendR specifications
+                ->setParameter('from', $begin)
+                ->setParameter('to', $end)
+            ->getQuery()
+            ->getResult();
+         
+         return $events;
     }
+    // </editor-fold>
+
     
     // <editor-fold defaultstate="collapsed" desc="Public: Event related">
 
@@ -87,6 +100,21 @@ class EventManager implements ProviderInterface
         return $this->getEventRepository()->find($id);
     }
     
+    public function GetNextEventDateOrCurrent(\DateTime $current)
+    {
+          $event = $this->getEventRepository()
+            ->createQueryBuilder('e')
+                ->Where('e.begindatetime >= :from')
+                ->setMaxResults(1)
+                ->setParameter('from', $current)
+            ->getQuery()
+            ->getOneOrNullResult();
+          
+          if ($event)
+              return $event->getBegindatetime();
+          else
+              return $current;
+    }
     // </editor-fold>
     
     // <editor-fold defaultstate="collapsed" desc="Public: Registration related">

@@ -112,6 +112,7 @@ class EventController extends BaseController
         return $this->CreateJsonResponse($lastupdatedate > $unixtimestamp);
     }
     
+    
     public function downloadAttendeesAction($eventid)
     {
          $this->RestrictAccessToLoggedIn();
@@ -122,32 +123,26 @@ class EventController extends BaseController
          $filename = "attendees.csv";
          $content = $this->render('CptEventBundle:Event:attendees_list.html.twig', array('event' => $event));
          
-
-         $request = $this->getRequest();
-         
-         $response = new Response();
-         
-         $response->setContent($content);         
-         $response->setStatusCode(200);
-
-         $response->headers->set('Content-Type', 'text/csv');
-         $response->headers->set('Content-Description', 'Submissions Export');
-         $response->headers->set('Content-Disposition', 'attachment; filename='.$filename);
-         $response->headers->set('Content-Transfer-Encoding', 'binary');
-         $response->headers->set('Pragma', 'no-cache');
-         $response->headers->set('Expires', '0');
-         $response->setCharset('UTF-8');
-
-        $response->send();
-        //return $response;
+         $this->SendCsvFileResponse($content);
 
     }
     
-    public function viewCalendarAction($year, $month)
+    // TODO!!!!!!!!!
+    public function viewCalendarAction($year = null, $month = null)
     {
+        if ((!$year) || (!$month))
+        {
+            $showdate = $this->get("EventManager")->GetNextEventDateOrCurrent(new \Datetime);
+            
+         } else {
+             if ($month > 12)
+                 $this->RestrictResourceNotFound();
+             
+             $showdate = mktime(0,0,0,$month,$year);
+         }
+        
         return $this->render('CptEventBundle:Event:calendar.html.twig', array(
-                'month' => $month,    
-                'year' => $year
+                'currentdate' => $showdate
                 ));
     }
     

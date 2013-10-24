@@ -10,11 +10,31 @@ use Symfony\Component\Security\Core\Role\Role;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class BaseController extends Controller {
+    
     public function CreateJsonResponse($data)
     {
       $response = new JsonResponse();
       $response->setData($data);
       return $response;
+    }
+    
+    public function SendCSVFileResponse($content)
+    {
+        
+         $response = new Response();
+         
+         $response->setContent($content);         
+         $response->setStatusCode(200);
+
+         $response->headers->set('Content-Type', 'text/csv');
+         $response->headers->set('Content-Description', 'Submissions Export');
+         $response->headers->set('Content-Disposition', 'attachment; filename='.$filename);
+         $response->headers->set('Content-Transfer-Encoding', 'binary');
+         $response->headers->set('Pragma', 'no-cache');
+         $response->headers->set('Expires', '0');
+         $response->setCharset('UTF-8');
+
+        $response->send();
     }
     
     public function RestrictResourceNotFound($ressource=null)

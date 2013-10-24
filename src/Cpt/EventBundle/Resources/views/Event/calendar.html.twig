@@ -1,6 +1,17 @@
-{% set month = calendr_month(year, month) %}
+{#% set month = calendr_month(year, month) %#}
+{% set month = calendr_month(currentdate) %}
 {% set events = calendr_events(month) %}
-{% set cell_class = 'unknown' %}                       
+{% set cell_class = 'unknown' %}
+
+<div>
+    <ul>
+    <li>Up</li>
+    <li>{{month|trans}}</li>
+    <li>{{year|trans}}</li>
+    <li>Down</li>
+    </ul>
+</div>
+
 <table class="cal_table">
     {% spaceless %}
     {% for week in month %}
@@ -14,7 +25,7 @@
                 {% elseif not month.contains(day.begin) and (dayevents|length > 0) %}
                     {% set cell_class = 'cal_day_outmonth_withevents' %}
                 {% else %}{% set cell_class ='cal_day_outmonth_noevents'%}{% endif %}
-                <td class='cal_day'><span class="{{cell_class}}">{{day.begin|date("j") }}</span></td>
+                <td class='cal_day'><div class="{{cell_class}}"><a href="#">{{day.begin|date("j") }}</a></div></td>
         {% endfor %}
     </tr>
     {% endfor %}
