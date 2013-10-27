@@ -26,9 +26,11 @@ use Cpt\BlogBundle\Model\PostInterface;
 use Cpt\BlogBundle\Entity;
 use Cpt\BlogBundle\Form\Type;
 
+use Cpt\MainBundle\Controller\BaseController as BaseController;
 
 
-class PostController extends Controller
+
+class PostController extends BaseController
 {
     /**
      * @return RedirectResponse
@@ -138,7 +140,7 @@ class PostController extends Controller
         ));
     }
     
-    public function editPostAction(Request $request, $id = nul)
+    public function editPostAction(Request $request, $id = null)
     {
         // Only publisher can edit a post
         if (false === $this->get('security.context')->isGranted('ROLE_USER')) {
@@ -210,9 +212,12 @@ class PostController extends Controller
     public function deletePostAction($id)
     {
         $post = $this->getPostById($id);
+        if (!$post)
+            return $this->CreateJsonResponse(false);
+
         $this->EnsureCanModifyPost($id);
         $this->getPostManager()->delete($post);
-        return $this->RedirectPostList();
+        return $this->CreateJsonResponse(true);
     }
     
   // </editor-fold>

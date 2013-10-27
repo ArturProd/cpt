@@ -1,0 +1,16 @@
+article.delete.popuptitle: Suppression de l'article
+article.delete.popupcontent: Voulez-vous vraiment supprimer définitivement cet article?
+article.delete.okbutton: Oui, supprimer
+article.delete.cancelbutton: Non, annuler
+title_edit_post: Modifier l'article
+title_create_post: Nouvel article
+form_post_type_title: Titre
+new_article: Nouvel Article
+title_archive: Archive
+title_comments: Commentaires
+btn_add_comment: Ajouter un commentaire
+message_comments_are_closed: L'ajout de commentaire est fermé.
+no_post_found: Pas de news disponible.
+sidemenu.link_view_post: Voir
+sidemenu.link_view_comments: Commentaires
+breadcrumb.link_comment_create: Ajouter

@@ -1,65 +1,131 @@
 {% extends '::base.html.twig' %}
 
 {% block main_content %}
-       <script type="text/javascript">
-           
-                  
-            $(function() {
-                $( "#post_accordion" ).toggle();
- 
-              //On click any <a> within the container
-                $('#post_accordion h3').click(function(e) {
-                        //Close all <div> but the <div> right after the clicked <a>
-                    $(e.target).next('div').siblings('div').slideUp();
-                        //Toggle open/close on the <div> after the <a>, opening it if not open.
-                        $(e.target).next('div').slideToggle();
-                });
-         
-                $("#post_accordion h3:first-child").siblings('div').slideUp( 'fast', function() {
-                    $( "#post_accordion" ).toggle( );
-                  });
-                var options = {};
-                //$( "#post_accordion" ).show( 'Puff', options, 500, callback );
 
+       <script type="text/javascript">
+  
+       {# counters of completed ajax request completed, per container (key) #}
+       var counter_array = [ ];
+
+        
+        {# Setup an accordion in a container when all the articles ajax request have completed #}
+        function prepare_accordion(container_id, count_articles)
+        {
+            counter_array[container_id]++;
+            {# only prepare the accordion when all articles are loaded #}
+            if (counter_array[container_id] === count_articles)
+            {  
             
-        });
+                {# On click any h3 first container child element within the container #}
+                $(container_id +' > h3').click(function(e) {
+                    {# Close all <div> but the <div> right after the clicked h3 #}
+                    $(e.target).next('div').siblings('div').slideUp();
+                    {# Toggle open/close on the <div> after the h3, opening it if not open #}
+                    $(e.target).next('div').slideToggle();                    
+                });
+                {# Close all the divs below's the title, and open the whole container when it's done #}
+                $(container_id + " > h3:first-child").siblings('div').slideUp( 'fast', function() {
+                    $( container_id ).show( );
+                  });
+            }
+        }
+
+
+        {# Returns ajax plain html for this post #}
+         function ajax_article_load(postid, place_holder, count_articles)
+         {
+            $.ajax({
+               url : {{ajax_article_load_url|raw}}, {# The full string of the url, including "'" is provided by the controller #}
+               type : 'GET',
+               dataType : 'html', // On désire recevoir du HTML
+               success : function(code_html, statut)
+               { // code_html contient le HTML renvoyé
+                  $(place_holder).append(code_html);
+               },
+               complete : function()       
+               {
+                  {# prepare_accordion is called each time, but the accordion is really prepared only when all the ajax requests have been sent #}
+                  prepare_accordion(place_holder, count_articles);
+               }
+            }); 
+         }
+         
+         $(function() {
+             $( '#post_accordion_alaune' ).hide();             
+             counter_array['#post_accordion_alaune'] = 0;
+             $.each({{articles_alaune_array}}, function(index, value) {
+                ajax_article_load(value, '#post_accordion_alaune',{{articles_alaune_array}}.length);
+             });
+
+            $( '#post_accordion_articles' ).hide();             
+            counter_array['#post_accordion_articles'] = 0;
+             $.each({{articles_array}}, function(index, value) {
+  
+                ajax_article_load(value, '#post_accordion_articles',{{articles_array}}.length);
+             });
+             
+             $("a#newevent").on("click", function(){
+                $("#popup_new_event").show();
+                $("#page_opacity_mask").show();
+                
+            });
+            
+            {% if (event is defined) and (eventform is defined) %}
+                {% include 'CptEventBundle:Event:new.html.twig' with {'event' : event, 'eventform' : eventform } %}
+            {% else %}
+                $("#popup_new_event").hide();
+                $("#popup_new_event").load("{{ url('event_new')}}");
+            {% endif %}
+
+           // $("#event_calendar").load("{{ url('event_view_calendar')}}");
+
+          });
+          
 
         </script>
-              
-    <div class="row-fluid">
-        <div class="span9">
-              <?
-              // 1      Creator
-              // 1..n   Organizers
-              // 0..n   Participants [ Queued / Approved, Sure / Not Sure, Date Inscription ]
-              // MaxParticipants
-              // AuthorizeNotSure
-              // 
-              //
-              // Au plus rapide
-              ?>
-        </div>
-    </div>
- 
- 
-        
+        <div class="row-fluid">
+            <div class="span3">
+                <div class="main_section">   
+                    <div class="column_title_about">{{'main.title.about'|trans}}</div>
+                    <img src="{{ asset('bundles/cptmain/images/a-propos/image-apropos.jpg') }}">
+                    <p class="about_subtitle">{{'main.about.subtitle'|trans|raw}}</p>
+                    <p>{{'main.about.text'|trans|raw}}</p>
+                </div>
+            </div>
+            <div class="span4">
+                <div class="main_section">
+                    <div class="column_title_event">
+                        {{'main.title.events'|trans}}
+                        <a id="newevent" class="event_new_btn">{{'main.button.new'|trans}}</a>
+                    </div>
+                     {# Popup to load with pages (ex: create event, create article #}
+                     <div id="event_calendar">
+                     </div>
+                </div>
+            </div>
 
-        
-{% endblock %}
-        
-        
-        
-{% block side_content %}
-        <div class="sidebar">
-            <h2>Evenements</h2>
-            
-            <div class="event_menu">
-                <h2>Chant pour tous</h2>
-                <div>Venez nombreux participer au chant pour tous!</div>
-            </div>
-            <div class="event_menu">
-                <h2>Chant pour tous</h2>
-                <div>Venez nombreux participer au chant pour tous!</div>
+            <div class="span5">              
+                <div class="main_section">        
+                    <div class="column_title_article">
+                        {{'main.title.articles'|trans}}
+                        <a class="article_new_btn">{{'main.button.new'|trans}}</a>
+                    </div>
+                    <div id="post_accordion_alaune">
+                        {# preview_post.html.twig => loaded and appened by ajax request #}
+                     </div>
+                    <div id="post_accordion_articles">
+                        {# preview_post.html.twig => loaded and appened by ajax request #}
+                     </div>
+                </div>
             </div>
         </div>
+        
+        {# popup for creating new articles, evt etc. #}
+        <div id="popup_new_event">
+            {# external content to be loaded here #}
+        </div>
+        {# to change opacity of the page #}
+        <div id="page_opacity_mask"> 
+        </div>
+        
 {% endblock %}

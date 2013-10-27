@@ -1,39 +1,55 @@
+.form-signin{
+        margin-left: auto;
+    margin-right: 15px;
+    margin-top:15px;
+}
+
 .form-signin * {
     background-color: transparent;
     border: none;
     font-size: 10px;
+    text-align: right;
+
 }
 
 .form-signin li {
-    float: left;
     list-style: none;
-    padding-left: 10px;
 }
 
-.form-signin li:nth-child(4){
-    clear: both;
+.form-signin li:nth-child(1){
+    font-size: 15px;
+    color: white;
+   
 }
 
 .form-signin checkbox {
-    margin-bottom: 10px;
 }
 
 .form-signin label{
-    margin-right: 15px;
-    margin: 5px 5px 5px 5px;
+    display: inline-block;
+    width:50px;
+    color: white;
+    line-height: 8px;
+    text-align: left;
+    vertical-align: middle;
+    margin-bottom: 0px;
 }
 
 .form-signin input[type="submit"]{
-    background-color: #ff6600;
+    background: url('../images/bandeau/bandeau-bouton-connecte.jpg') no-repeat;
+    width: 64px;
+    height: 18px;
     color: white;
     padding: 2px;
+    font-size: 9px;
+    text-align:  center;
 }
 
 .form-signin checkbox,
 .form-signin input[type="text"],
 .form-signin input[type="password"] {
-    height: 10px;
+    height: 5px;
+    width: 120px;
     margin-bottom: 2px;
     padding: 7px 9px;
-    width: 150px;
 }

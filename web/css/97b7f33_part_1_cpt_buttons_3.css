@@ -1,0 +1,44 @@
+/* 
+    Document   : cpt_buttons
+    Created on : Oct 25, 2013, 2:00:21 AM
+    Author     : cyril
+    Description:
+        Purpose of the stylesheet follows.
+*/
+.btn-create-account{
+    background: url('../../bundles/cptmain/images/bandeau/bandeau-bouton-creer-compte.jpg');
+    height: 40px;
+    padding: 4px 6px 0px;
+    font-weight:normal;
+    -webkit-border-radius:4px;-moz-border-radius:4px;border-radius:4px;
+    text-decoration: none;
+    color: white;
+}
+
+.article_new_btn
+{
+      background: url('../../bundles/cptmain/images/articles/bouton-nouveau-articles.png') no-repeat;
+      height: 18px;
+      width: 65px;
+      float: right;
+      padding-left: 10px;
+      color: white;
+}
+
+.article_new_btn:hover{
+    cursor: pointer; cursor: hand;
+}
+
+.event_new_btn
+{
+      background: url('../../bundles/cptmain/images/evenements/bouton-nouveau-evenements.png') no-repeat;
+      height: 18px;
+      width: 65px;
+      float: right;
+      padding-left: 10px;
+      color: white;
+}
+
+.event_new_btn:hover{
+    cursor: pointer; cursor: hand;
+}

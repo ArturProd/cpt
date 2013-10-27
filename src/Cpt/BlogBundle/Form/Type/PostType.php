@@ -44,11 +44,11 @@ class PostType extends AbstractType
                 'attr' => array(
                     'maxlength'  => '80',
                     'placeholder' => 'Titre',
+                    'class' => 'article_edit_title'
                     ),
              ))
             ->add('rawcontent', 'ckeditor', array( 
-                    'config_name' => 'my_config',
-                    'attr' => array('height' => '5000px'),              
+                    'config_name' => 'article_config',
             ));
     }
 

@@ -160,9 +160,9 @@
                             <li><a href="#"></a></li>
                             <li><a href="#"></a></li>
                         </ul>
-                     {% if (not is_granted("IS_AUTHENTICATED_REMEMBERED")) %}
-                        {% render controller("FOSUserBundle:Security:login") %}
-                     {% endif %}
+                          {% if (not is_granted("IS_AUTHENTICATED_REMEMBERED")) %}
+                            {% render controller("FOSUserBundle:Security:login") %}
+                          {% endif %}
                     {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
                         <ul class="nav">
                             <li><a href="#">{{ app.user.username|upper }}</a></li>

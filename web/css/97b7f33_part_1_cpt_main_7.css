@@ -66,10 +66,6 @@ h1, h2
     color: #066FB2;
 }
 
-.cpt_bluebackground{
-    background-color: #066FB2;
-}
-
 .cpt_orange{
     color: #F29516;     
 }
@@ -78,13 +74,8 @@ h1, h2
         color: #D20F1F;
 }
 
-.cpt_redbackground{
-    background-color: #D20F1F;
-}
-
-
 .column_title_event{
-    background: url('../images/evenements/picto-entete-evenements.png') no-repeat;
+    background: url('../../bundles/cptmain/images/evenements/picto-entete-evenements.png') no-repeat;
     background-position:left top;
     min-width: 100px;
     padding-top:10px;
@@ -95,7 +86,7 @@ h1, h2
 }
 
 .column_title_article{
-    background: url('../images/articles/picto-entete-articles.png') no-repeat;
+    background: url('../../bundles/cptmain/images/articles/picto-entete-articles.png') no-repeat;
     background-position:left top;
     min-width: 100px;
     padding-top:10px;
@@ -106,7 +97,7 @@ h1, h2
 }
 
 .column_title_about{
-    background: url('../images/a-propos/picto-entete-apropos.png') no-repeat;
+    background: url('../../bundles/cptmain/images/a-propos/picto-entete-apropos.png') no-repeat;
     background-position:left top;
     min-width: 100px;
     padding-top:10px;
@@ -132,7 +123,7 @@ h1, h2
     background:#000;
     opacity:0.7;
     display:none;
-    height:500%;
+    height:100%;
     left:0;
     position:absolute;
     top:0;
@@ -149,48 +140,6 @@ h1, h2
     left:30%; /*or whatever*/
     width:900px;
     z-index:6;
- }
- 
- #popup_new_article{
-    position:absolute;
-    opacity:1;
-    top:5%;
-    left:20%;
-    width:60%;
-    min-height: 300px;
-    min-width: 150px;
-    height: 85%;
-    z-index:6;
-    background-color: white;
- }
- 
- #popup_new_article input[type=checkbox]
- {
-     height: 50px;
-     display: inline;
- }
- 
- #popup_new_article input[type=textbox]
- {
-     width: 80%;
- }
- 
- #popup_new_article label{
-     display: inline;
-     vertical-align: middle;
-     clear: right;
- }
- 
- .popup_title{
-    height: 20px;
-    color: white;
-    font-weight: bold;
-    font-size: 18px;
-    padding:5px;
- }
- 
- .article_edit_title{
-     width: 100%;
  }
  
  .ui-widget-header{

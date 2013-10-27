@@ -1,0 +1,16 @@
+article.delete.popuptitle: Delete article
+article.delete.popupcontent: Are you sure you want to definitively delete this article?
+article.delete.okbutton: Yes, delete
+article.delete.cancelbutton: No, cancel
+title_edit_post: Modify
+title_create_post: New
+form_post_type_title: Title
+new_article: New article
+title_archive: Archive
+title_comments: Comments
+btn_add_comment: Add a comment
+message_comments_are_closed: Possibility to add article is closed
+no_post_found: No news available
+sidemenu.link_view_post: See
+sidemenu.link_view_comments: Comments
+breadcrumb.link_comment_create: Add

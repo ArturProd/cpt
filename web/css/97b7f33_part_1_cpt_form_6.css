@@ -13,4 +13,6 @@
 }
 
 
-input[type=checkbox]:before { content:""; display:inline-block; width:12px; height:12px;}
+input[type=checkbox]:before { content:""; display:inline-block; width:12px; height:12px; background:red; }
+input[type=checkbox]:checked:before { background:green; }
+input[type=checkbox]:disabled:checked:before { background:lightgreen; }

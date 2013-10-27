@@ -2,6 +2,22 @@
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
     <file source-language="en" datatype="plaintext" original="" >
         <body>
+            <trans-unit id="article.delete.popuptitle">
+                <source>article.delete.popuptitle</source>
+                <target>Suppression de l'article</target>
+            </trans-unit>
+            <trans-unit id="article.delete.popupcontent">
+                <source>article.delete.popupcontent</source>
+                <target>Voulez-vous vraiment supprimer définitivement cet article?</target>
+            </trans-unit>
+            <trans-unit id="article.delete.okbutton">
+                <source>article.delete.okbutton</source>
+                <target>Oui, supprimer</target>
+            </trans-unit>
+            <trans-unit id="article.delete.cancelbutton">
+                <source>article.delete.cancelbutton</source>
+                <target>Non, annuler</target>
+            </trans-unit>
             <trans-unit id="title_edit_post">
                 <source>title_edit_post</source>
                 <target>Modifier l'article</target>

@@ -1,0 +1,12 @@
+/* 
+    Document   : cpt_jquery-ui_override
+    Created on : Oct 27, 2013, 3:57:40 PM
+    Author     : cyril
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+.ui-dialog-titlebar{
+    background-color: #D20F1F;
+}
+

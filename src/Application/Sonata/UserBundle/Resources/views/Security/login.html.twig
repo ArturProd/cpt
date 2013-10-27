@@ -3,6 +3,7 @@
 {% endif %}
 <script type="text/javascript">
     $(function() {
+        $('registerModal').hide()
         $( "#registerModal" ).dialog({
           autoOpen: false,
           show: {
@@ -26,28 +27,22 @@
         <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
 
     <ul>
+        <li>S'identifier</li>
         <li><input type="text" id="username" name="_username" value="{{ last_username }}" required="required" placeholder="{{ 'security.login.username'|trans({}) }}" /></li>
         <li><input type="password" id="password" name="_password" required="required" placeholder="{{ 'security.login.password'|trans({}) }}"/></li>
-        <li><input type="submit" id="_submit" name="_submit" value="{{ 'security.login.submit'|trans({}) }}" /></li>
-        <li><input type="checkbox" id="remember_me" name="_remember_me" value="on" /></li>
-        <li><label for="remember_me">{{ 'security.login.remember_me'|trans({}) }}</label></li>
-        <li><a id="registerformopener" href="#registerformopener" data-toggle="modal" class="btn btn-success">{{"main.menu.item.register"|trans}}</a></li>
+        <li><input type="checkbox" id="remember_me" name="_remember_me" value="on" /><label for="remember_me">{{ 'security.login.remember_me'|trans({}) }}</label>
+            <input type="submit" id="_submit" name="_submit" value="{{ 'security.login.submit'|trans({}) }}" /></li>
+        <li><a id="registerformopener" href="#registerformopener" data-toggle="modal" class="btn-create-account">{{"main.menu.item.register"|trans}}</a></li>
 
     </ul>
 </form>
 
 <!--registration modal popup-->
 <section>
-            <div id="registerModal" title="Créer un compte">
+            <div id="registerModal" title="{{"main.menu.item.register"|trans }}">
                 <div class="">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                    <h3 id="myModalLabel modal_autosize">{{"main.menu.item.register"|trans }}</h3>
                 </div>
-                <div class="">
-                    {% render controller("FOSUserBundle:Registration:register") %}   
-                </div>
-                <div class="">
-                    <button class="btn" data-dismiss="modal" aria-hidden="true">Fermer</button>
-                </div>
+                 {% render controller("FOSUserBundle:Registration:register") %}
             </div>
 </section>

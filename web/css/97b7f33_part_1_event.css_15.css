@@ -1,0 +1,15 @@
+/* 
+    Document   : event.css
+    Created on : Oct 27, 2013, 12:22:44 AM
+    Author     : cyril
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+root { 
+    display: block;
+}
+
+.event_new_popup{
+    width: 500px;
+}

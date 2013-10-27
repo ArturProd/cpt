@@ -10,6 +10,7 @@ class DefaultController extends Controller
 {
     public function indexAction()
     {
+      
         // The url to get a raw html article. The url is made to be included in the javascript.
         $ajax_article_load_url = \str_replace("____", "'+postid+'", "'".$this->generateUrl('cpt_blog_post_getpreview_plainhtml', array( 'id' => '____' ))."'");
 
@@ -40,7 +41,6 @@ class DefaultController extends Controller
             'articles_array' =>  json_encode($articles_array),
             'ajax_article_load_url' => $ajax_article_load_url,
             );
-
         
         return $this->render('CptMainBundle:Default:index.html.twig', $params );
     }

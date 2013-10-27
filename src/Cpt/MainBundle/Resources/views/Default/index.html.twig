@@ -1,6 +1,7 @@
 {% extends '::base.html.twig' %}
 
 {% block main_content %}
+
        <script type="text/javascript">
   
        {# counters of completed ajax request completed, per container (key) #}
@@ -63,17 +64,32 @@
                 ajax_article_load(value, '#post_accordion_articles',{{articles_array}}.length);
              });
              
-             $("a#newevent").on("click", function(){
-                $("#popup_new_event").show();
-                $("#page_opacity_mask").show();
-                
-            });
+            {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                {# Event Dialog setup #}
+                $("a#newevent").on("click", function(){
+                   $("#popup_new_event").show();
+                   $("#page_opacity_mask").show();
+               });
             
-            {% if (event is defined) and (eventform is defined) %}
-                {% include 'CptEventBundle:Event:new.html.twig' with {'event' : event, 'eventform' : eventform } %}
-            {% else %}
-                $("#popup_new_event").hide();
-                $("#popup_new_event").load("{{ url('event_new')}}");
+                {% if (event is defined) and (eventform is defined) %}
+                    {% include 'CptEventBundle:Event:new.html.twig' with {'event' : event, 'eventform' : eventform } %}
+                {% else %}
+                    $("#popup_new_event").hide();
+                    $("#popup_new_event").load("{{ url('event_new')}}");
+                {% endif %}
+                    
+               {# Articles Dialog Setup #}
+                $("a#newarticle").on("click", function(){
+                   $("#popup_new_article").show();
+                   $("#page_opacity_mask").show();
+               });
+
+                {% if (article is defined) and (articleform is defined) %}
+                    {% render controller("CptBlogBundle:Post:editPost") %}
+                {% else %}
+                    $("#popup_new_article").hide();
+                    $("#popup_new_article").load("{{ url('cpt_blog_post_new')}}");
+                {% endif %}
             {% endif %}
 
            // $("#event_calendar").load("{{ url('event_view_calendar')}}");
@@ -83,19 +99,36 @@
 
         </script>
         <div class="row-fluid">
-            <div class="span6">
-                <div class="main_section">        
-                    <h2>&Eacute;vénements</h2>
+            <div class="span3">
+                <div class="main_section">   
+                    <div class="column_title_about">{{'main.title.about'|trans}}</div>
+                    <img src="{{ asset('bundles/cptmain/images/a-propos/image-apropos.jpg') }}">
+                    <p class="about_subtitle">{{'main.about.subtitle'|trans|raw}}</p>
+                    <p>{{'main.about.text'|trans|raw}}</p>
+                </div>
+            </div>
+            <div class="span4">
+                <div class="main_section">
+                    <div class="column_title_event">
+                        {{'main.title.events'|trans}}
+                        {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                            <a id="newevent" class="event_new_btn">{{'main.button.new'|trans}}</a>
+                        {% endif %}
+                    </div>
                      {# Popup to load with pages (ex: create event, create article #}
-                     <a id="newevent" href="#">Nouveau</a>
                      <div id="event_calendar">
                      </div>
                 </div>
             </div>
 
-            <div class="span6">              
+            <div class="span5">              
                 <div class="main_section">        
-                    <h2>Articles<span class="span3 pull-right"><a href="{{ path('sonata_news_archive') }}" class="btn btn-primary btn-large">Voir tous les articles</a></span></h2>
+                    <div class="column_title_article">
+                        {{'main.title.articles'|trans}}
+                        {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                            <a id='newarticle' class="article_new_btn">{{'main.button.new'|trans}}</a>
+                        {% endif %}
+                    </div>
                     <div id="post_accordion_alaune">
                         {# preview_post.html.twig => loaded and appened by ajax request #}
                      </div>
@@ -106,10 +139,15 @@
             </div>
         </div>
         
+        {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
         {# popup for creating new articles, evt etc. #}
         <div id="popup_new_event">
             {# external content to be loaded here #}
         </div>
+        <div id="popup_new_article">
+        </div>
+        {% endif %}
+        
         {# to change opacity of the page #}
         <div id="page_opacity_mask"> 
         </div>

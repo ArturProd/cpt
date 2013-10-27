@@ -2,9 +2,9 @@
     width: 100%;
     height: 134px;
     background: 
-        url('../images/bandeau/logo.png') no-repeat,  
-        url('../images/bandeau/bandeau-forme-bleue.png') no-repeat,
-        url('../images/bandeau/bandeau-photo.jpg') no-repeat;  
+        url('../../bundles/cptmain/images/bandeau/logo.png') no-repeat,  
+        url('../../bundles/cptmain/images/bandeau/bandeau-forme-bleue.png') no-repeat,
+        url('../../bundles/cptmain/images/bandeau/bandeau-photo.jpg') no-repeat;  
     background-position:left bottom, right bottom, right bottom;
 }
 
@@ -31,14 +31,14 @@
 }
 
 .banner_icons li:nth-child(1) a
-{   background-image:url('../images/bandeau/bandeau-picto-contact.png');
+{   background-image:url('../../bundles/cptmain/images/bandeau/bandeau-picto-contact.png');
 
 }
 
 .banner_icons li:nth-child(2) a
-{   background-image:url('../images/bandeau/bandeau-picto-facebook.png');
+{   background-image:url('../../bundles/cptmain/images/bandeau/bandeau-picto-facebook.png');
 }
 
 .banner_icons li:nth-child(3) a
-{   background-image:url('../images/bandeau/bandeau-picto-youtube.png');
+{   background-image:url('../../bundles/cptmain/images/bandeau/bandeau-picto-youtube.png');
 }

@@ -1,0 +1,56 @@
+/* 
+    Document   : cpt_calendar
+    Created on : Jul 25, 2013, 5:10:07 PM
+    Author     : cyril
+    Description:
+        Purpose of the stylesheet follows.
+*/
+.cal_table tr {
+        height: 18px;
+}
+
+.cal_table tr td{
+    text-align: center;
+    border-right:solid black 1px;
+    width: 18px;
+}
+
+.cal_table tr td:last-child{
+    border: none;
+}
+
+.cal_table a
+{
+        font-size: 14px;
+}
+
+.cal_day_inmonth_withevents,
+.cal_day_inmonth_noevents,
+.cal_day_outmonth_withevents,
+.cal_day_outmonth_noevents
+{
+    border-radius: 50%;
+    padding: 2px;
+    margin: 2px;
+}
+
+.cal_day_inmonth_withevents{
+    background-color: lightblue;
+    color: black;
+}
+
+.cal_day_inmonth_noevents{
+    background-color: transparent;
+    color:  black;
+}
+
+.cal_day_outmonth_withevents{
+    background-color: grey;
+    color: lightgrey;
+}
+
+.cal_day_outmonth_noevents{
+    background-color: lightblue;
+    color: lightgrey;
+}
+
