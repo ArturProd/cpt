@@ -1,6 +1,12 @@
 {#% block main_content %#}
 <div id="eventformdiv">
-    
+ {# Header #}
+<div class="row-fluid">
+      <div class="span12 popup_title cpt_bluebackground">
+        {{event.id==-1 ? 'event.popup.create_title'|trans: 'event.popup.edit_title'|trans }}
+        <a id="close_edit_event" class="popup_close_button">X</a>
+      </div>
+</div>   
 {% block javascripts %}
 
     {% javascripts
@@ -34,38 +40,31 @@
             <li><a href="#tabs-2">{{'event.tab.place_and_date'|trans}}</a></li>
             <li><a href="#tabs-3">{{'event.tab.attendees'|trans}}</a></li>
         </ul>
+        <div id="tabs-1">
+           {{ form_label(eventform.registration_allowed) }}{{ form_errors(eventform.registration_allowed) }}
+           {{ form_widget(eventform.registration_allowed) }}
+
+            {{ form_label(eventform.published) }}{{ form_errors(eventform.published) }}
+            {{ form_widget(eventform.published) }}
+                
+            {{ form_label(eventform.cpt_event) }}{{ form_errors(eventform.cpt_event) }}
+            {{ form_widget(eventform.cpt_event) }}
+
+            {{ form_label(eventform.title) }}{{ form_errors(eventform.title) }}
+            {{ form_widget(eventform.title) }}
+
+            {{ form_label(eventform.description) }}{{ form_errors(eventform.description) }}
+            {{ form_widget(eventform.description) }}
+                
+        </div>
+
+        <div id="tabs-2">
             {{ google_map_css(map) }}
             {{ form_label(eventform.location_show_map) }}
             {{ form_widget(eventform.location_show_map) }}
 
             {{ google_map_container(map) }}
             {{ google_map_js(map) }}
-        <div id="tabs-1">
-            <table>
-                <tr>
-                    <td>{{ form_label(eventform.registration_allowed) }}{{ form_errors(eventform.registration_allowed) }}</td>
-                    <td>{{ form_widget(eventform.registration_allowed) }}</td>
-                </tr>
-                <tr>
-                    <td>{{ form_label(eventform.published) }}{{ form_errors(eventform.published) }}</td>
-                    <td>{{ form_widget(eventform.published) }}</td>
-                </tr>
-                <tr>
-                    <td>{{ form_label(eventform.cpt_event) }}{{ form_errors(eventform.cpt_event) }}</td>
-                    <td>{{ form_widget(eventform.cpt_event) }}</td>
-                </tr>
-                <tr>
-                    <td>{{ form_label(eventform.title) }}{{ form_errors(eventform.title) }}</td>
-                    <td>{{ form_widget(eventform.title) }}</td>
-                </tr>
-                <tr>
-                   <td>{{ form_label(eventform.description) }}{{ form_errors(eventform.description) }}</td>
-                   <td>{{ form_widget(eventform.description) }}</td>
-                </tr>
-            </table>
-        </div>
-
-        <div id="tabs-2">
             {# location #}
             <h2>Lieu</h2>
             <table>

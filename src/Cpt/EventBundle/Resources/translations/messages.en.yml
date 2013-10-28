@@ -1,3 +1,5 @@
+event.popup.create_title: Create an Event
+event.popup.edit_title: Edit an Event
 form.not_valid_number.title: Value is not valid
 form.not_valid_number.content: "<p>This is value is not a valid number.</p><p>Please enter a number (ex: 10).</p>"
 form.ok: Ok

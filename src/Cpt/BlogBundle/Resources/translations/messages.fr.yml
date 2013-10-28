@@ -2,8 +2,9 @@ article.delete.popuptitle: Suppression de l'article
 article.delete.popupcontent: Voulez-vous vraiment supprimer définitivement cet article?
 article.delete.okbutton: Oui, supprimer
 article.delete.cancelbutton: Non, annuler
-title_edit_post: Modifier l'article
-title_create_post: Nouvel article
+title_edit_post: Modifier un article
+title_create_post: Editer un article
+btn_create_post: Enregistrer
 form_post_type_title: Titre
 new_article: Nouvel Article
 title_archive: Archive

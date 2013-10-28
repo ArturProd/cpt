@@ -3,7 +3,8 @@ article.delete.popupcontent: Are you sure you want to definitively delete this a
 article.delete.okbutton: Yes, delete
 article.delete.cancelbutton: No, cancel
 title_edit_post: Modify
-title_create_post: New
+title_create_post: Edit Article
+btn_create_post: Save
 form_post_type_title: Title
 new_article: New article
 title_archive: Archive

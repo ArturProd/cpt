@@ -13,6 +13,11 @@ $(function() {
      $('#createarticle').click(function(){
          AjaxPostForm('cpt_blog_post_edit', delete_article_callback);
      });
+     
+     $('#close_edit_article').click(function(){
+         ArticlePopupDisplay(false);
+     });  
+     
 });
 
 
@@ -45,6 +50,7 @@ function delete_article_callback(data)
 <div class="row-fluid">
       <div class="span12 popup_title cpt_redbackground">
         {{post.id==-1 ? 'title_create_post'|trans: 'title_edit_post'|trans }}
+        <a id="close_edit_article" class="popup_close_button">X</a>
       </div>
 </div>
 {# Errors #}
@@ -61,7 +67,7 @@ function delete_article_callback(data)
             {{ form_widget(form.publishedhomepage) }}{{ form_label(form.publishedhomepage) }}
             {% endif %}
             <a id='createarticle' class="article_new_btn">{{'btn_create_post'|trans }}</a>
-            <a id='delete_post_button'>{{'Supprimer l article'|trans }}</a>
+            <a id='delete_post_button'>{{'Supprimer l article'|trans }}</a>            
         </div>
 </div>
 

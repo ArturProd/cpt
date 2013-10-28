@@ -3,7 +3,21 @@
 {% block main_content %}
 
        <script type="text/javascript">
-  
+{# ************************************************************************************************************************ #} 
+{# Show or hide article popup
+{#************************************************************************************************************************ #}     
+function ArticlePopupDisplay(visible)
+{
+    if (visible){
+        $("#popup_new_article").show();
+        $("#page_opacity_mask").show();
+    } else
+    {
+        $("#popup_new_article").hide();
+        $("#page_opacity_mask").hide();
+    }
+}
+
        {# counters of completed ajax request completed, per container (key) #}
        var counter_array = [ ];
 
@@ -80,8 +94,7 @@
                     
                {# Articles Dialog Setup #}
                 $("a#newarticle").on("click", function(){
-                   $("#popup_new_article").show();
-                   $("#page_opacity_mask").show();
+                    ArticlePopupDisplay(true);
                });
 
                 {% if (article is defined) and (articleform is defined) %}

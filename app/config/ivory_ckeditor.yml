@@ -16,5 +16,5 @@ ivory_ck_editor:
             ui_color:               "#ffffff"
             extraPlugins:           "oembed"
             language:               "fr"
-            height:                 "300px"
+            height:                 "200px"
             width:                  "100%"
