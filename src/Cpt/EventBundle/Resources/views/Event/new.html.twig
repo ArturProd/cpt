@@ -537,7 +537,7 @@ function InitializeEventPage()
         $('#eventform').on("submit", function( e ){
             e.preventDefault(); {# Prevents event propagation (prevents default behavior of form submission) #}
             PrepareEventFormSubmission();
-            AjaxPostForm(  $(this), function( response ){
+            AjaxPostForm(  $(this), null, function( response ){
                 $("#eventformdiv").html(response);
             });
             $('#eventform').find('input, textarea, button, select').attr('disabled','disabled');

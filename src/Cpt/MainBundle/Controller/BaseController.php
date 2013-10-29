@@ -73,5 +73,10 @@ class BaseController extends Controller {
         // 422 Unprocessable Entity
         throw new SymfonyException\HttpException(422, $error_message);    
     }
+    
+    public function ThrowInternalServerError($error_message = "Internal Error")
+    {
+        throw new Exception\HttpException(500,$error_message);
+    }
 }
 ?>

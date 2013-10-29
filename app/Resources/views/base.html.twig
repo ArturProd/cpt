@@ -84,7 +84,10 @@
                 });
             });
             
-            function AjaxPostForm( $form, callback ){
+            function AjaxPostForm( $form, precall, callback ){
+                if (precall)
+                    precall();
+                
                 /*
                  * Get all form values
                  */
@@ -104,8 +107,18 @@
                     callback( data );
                   },
                 });
-
-          }
+            }
+            
+            function AjaxForm(formid, precall, callback)
+            {
+                $('#'+formid).on("submit", function( e ){
+                e.preventDefault(); {# Prevents event propagation (prevents default behavior of form submission) #}
+                //PrepareEventFormSubmission();
+                AjaxPostForm( $(this), precall, callback);
+                $('#'+formid).find('input, textarea, button, select').attr('disabled','disabled');
+                return true;
+                });
+            }
             
        
             $(function() {

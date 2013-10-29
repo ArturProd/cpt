@@ -5,13 +5,17 @@
 <script type="text/javascript">
 
 {# handles the deletion of the post #}
-$(function() {         
+$(function() {
+    
+    AjaxForm("posteditform", prepare_postform_submission, save_post_callback)
+        
     $('#delete_post_button').click(function() {
             ModalDialog(delete_article, "{{ 'article.delete.popuptitle'|trans }}", "{{ 'article.delete.popupcontent'|trans }}", "{{ 'article.delete.okbutton'|trans }}", "{{ 'article.delete.cancelbutton'|trans }}");
      });
      
      $('#createarticle').click(function(){
-         AjaxPostForm('cpt_blog_post_edit', delete_article_callback);
+         //AjaxPostForm('cpt_blog_post_edit', delete_article_callback);
+         $('#posteditform').submit();
      });
      
      $('#close_edit_article').click(function(){
@@ -20,6 +24,10 @@ $(function() {
      
 });
 
+function prepare_postform_submission()
+{
+    CKEDITOR.instances['post_rawcontent'].updateElement();                {# update the entity field with CKEDIOR content #}
+}
 
 {#***********************************************#}
 {# Deletes current article #}
@@ -28,7 +36,7 @@ function delete_article(confirmed)
 {
     if (confirmed)
     {
-        AjaxPostForm('delete_post_form', delete_article_callback);
+        AjaxPostForm('delete_post_form', null, delete_article_callback);
     }
 }
 
@@ -40,12 +48,19 @@ function delete_article_callback(data)
     alert(data);
 }
 
+{#***********************************************#}
+{# Callback after Save the current post
+{#***********************************************#}
+function save_post_callback(data)
+{
+    alert(data);
+}
 </script>
 
-    <form action="{{ url('cpt_blog_post_delete', { 'id': post.id })}}" method="POST" id="delete_post_form" style="display:none;" ></form>
+    <form action="{{ url('cpt_blog_post_delete', { 'id': post.id, '_locale': app.request.locale })}}" method="POST" id="delete_post_form" style="display:none;" ></form>
 
-    <form action="{{ url('cpt_blog_post_edit', { 'id': post.id })}}" method="POST" >
 
+{{ form_start(posteditform, {'action': path('cpt_blog_post_edit', { 'id': post.id }), 'method': 'POST' }) }}
 {# Header #}
 <div class="row-fluid">
       <div class="span12 popup_title cpt_redbackground">
@@ -56,15 +71,15 @@ function delete_article_callback(data)
 {# Errors #}
 <div class="row-fluid">
     <div class="span10 offset1">
-        <p>{{ form_errors(form) }}</p>
+        <p>{{ form_errors(posteditform) }}</p>
     </div>
 </div>
 {# Controls #}
 <div class="row-fluid">
         <div class="span10 offset1">
-            {{ form_widget(form.enabled) }}{{ form_label(form.enabled) }}
+            {{ form_widget(posteditform.enabled) }}{{ form_label(posteditform.enabled) }}
             {% if is_granted('ROLE_ADMIN') %}
-            {{ form_widget(form.publishedhomepage) }}{{ form_label(form.publishedhomepage) }}
+            {{ form_widget(posteditform.publishedhomepage) }}{{ form_label(posteditform.publishedhomepage) }}
             {% endif %}
             <a id='createarticle' class="article_new_btn">{{'btn_create_post'|trans }}</a>
             <a id='delete_post_button'>{{'Supprimer l article'|trans }}</a>            
@@ -74,16 +89,17 @@ function delete_article_callback(data)
 {# Title #}
   <div class="row-fluid">
       <div class="span10 offset1">
-          {{ form_widget(form.title) }}
-          {{ form_errors(form.title) }}
+          {{ form_widget(posteditform.title) }}
+          {{ form_errors(posteditform.title) }}
       </div>
   </div>
 {# Content #}
    <div class="row-fluid">     
        <div class="span10 offset1">
           {#{ form_widget(form.rawcontent) }#}
-          {{ form_errors(form.rawcontent) }}
-          {{ form_widget(form.rawcontent) }}     
+          {{ form_errors(posteditform.rawcontent) }}
+          {{ form_widget(posteditform.rawcontent) }}     
       </div>
    </div>
-</form>
+    {{ form_end(posteditform) }}
+

@@ -545,7 +545,7 @@ class PostController extends BaseController
     {
         return $this->render('CptBlogBundle:Post:edit.html.twig', array(
                 'post' => $post,    
-                'form' => $form->createView(),
+                'posteditform' => $form->createView(),
                 ));
     }
     
@@ -678,7 +678,7 @@ class PostController extends BaseController
     
     protected function getPostEditForm(PostInterface $post)
     {
-        return $this->get('form.factory')->createNamed('post', 'cpt_blog_edit_post', $post);   
+        return $this->get('form.factory')->createNamed('post', 'cpt_blog_edit_post', $post, Array('attr'=> Array('id' => 'posteditform')));       
     }
     
     
