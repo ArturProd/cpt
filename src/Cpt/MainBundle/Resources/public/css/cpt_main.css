@@ -84,6 +84,16 @@ a:hover{
     background-color: #D20F1F;
 }
 
+.loading{
+    background: url('../images/loading.gif') no-repeat;    
+    background-position: left center;
+    font-size: 24px;
+    min-width: 100px;
+    height: 100px;
+    padding-left: 110px;
+    padding-top: 50px;
+    margin-top: 20px;
+}
 
 .column_title_event{
     background: url('../images/evenements/picto-entete-evenements.png') no-repeat;

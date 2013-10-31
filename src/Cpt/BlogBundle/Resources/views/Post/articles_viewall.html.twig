@@ -1,0 +1,102 @@
+<script type="text/javascript">
+
+var post_list = [ ];
+count_article_loaded = 0;
+
+function toogle_article(id,show,speed)
+{
+    {# closing an article => all article get closed #}
+    {# opening an article => only this article gets open #}
+    for (i = 0; i<post_list.length; ++i)
+    {
+        if (post_list[i]!==id)
+            $( "#post_body" + post_list[i] ).slideUp(speed);
+        
+        if (show)
+            $( "#post_body" + id ).slideDown(speed);
+        else
+            $( "#post_body" + id ).slideUp(speed);
+    }
+}
+
+{#**************************************************************************#}
+{# Retreives an array of post id from server, and call getAndAddPost
+{#**************************************************************************#}
+function getPostList(){
+    $('#articles').hide();
+    $('#loadingarticles').hide().fadeIn(2000);
+
+    $.getJSON( "{{ url('cpt_blog_getjsonlist') }}", function( data ) {
+        post_list = data;
+        for(i = 0; i<data.length ; ++i)
+            getAndAddPost(data[i]);
+   });
+}
+
+{#**************************************************************************#}
+{# Retreives the html view of a post from a server based on its id, and add it to the DOM
+{#**************************************************************************#}
+function getAndAddPost(id)
+{
+   {# add the div container for this post #}
+    jQuery('<div/>', {
+        id: 'postcontainer'+id,
+        class: 'postcontainer'
+    }).appendTo('#articles');
+
+    {# retreive post view from server and add it to container #}
+    $.get( "{{ url('cpt_blog_post_getjsonview') }}", {id:id} , function( data ) {
+        $( "#postcontainer" + id ).html( data );
+        
+        {# if this is the last one to be retreive, prepare the accordion #}
+        count_article_loaded ++;
+        if (count_article_loaded === post_list.length) {# finished loading all articles #}
+        {
+            toogle_article(post_list[0],true,0);
+            $('#articles').show();
+            $('#loadingarticles').hide();
+        }
+    });
+   
+   {# attach handler for click on header #}
+}
+
+
+function prepare_accordion(container_id, count_articles)
+{
+        counter_array[container_id]++;
+        {# only prepare the accordion when all articles are loaded #}
+        if (counter_array[container_id] === count_articles)
+        {  
+
+            {# On click any h3 first container child element within the container #}
+            $(container_id +' > h3').click(function(e) {
+                {# Close all <div> but the <div> right after the clicked h3 #}
+                $(e.target).next('div').siblings('div').slideUp();
+                {# Toggle open/close on the <div> after the h3, opening it if not open #}
+                $(e.target).next('div').slideToggle();                    
+            });
+            {# Close all the divs below's the title, and open the whole container when it's done #}
+            $(container_id + " > h3:first-child").siblings('div').slideUp( 'fast', function() {
+                $( container_id ).show( );
+              });
+        }
+}
+
+$(function() {
+    getPostList();     
+});
+</script>
+
+<div id="post_accordion_alaune">
+{# preview_post.html.twig => loaded and appened by ajax request #}
+</div>
+
+
+<div id="articles">
+{# preview_post.html.twig => loaded and appened by ajax request #}
+</div>
+<div id="loadingarticles" class="loading">
+    Loading articles...
+</div>
+

@@ -23,48 +23,13 @@ function ArticlePopupDisplay(visible)
 
         
         {# Setup an accordion in a container when all the articles ajax request have completed #}
-        function prepare_accordion(container_id, count_articles)
-        {
-            counter_array[container_id]++;
-            {# only prepare the accordion when all articles are loaded #}
-            if (counter_array[container_id] === count_articles)
-            {  
-            
-                {# On click any h3 first container child element within the container #}
-                $(container_id +' > h3').click(function(e) {
-                    {# Close all <div> but the <div> right after the clicked h3 #}
-                    $(e.target).next('div').siblings('div').slideUp();
-                    {# Toggle open/close on the <div> after the h3, opening it if not open #}
-                    $(e.target).next('div').slideToggle();                    
-                });
-                {# Close all the divs below's the title, and open the whole container when it's done #}
-                $(container_id + " > h3:first-child").siblings('div').slideUp( 'fast', function() {
-                    $( container_id ).show( );
-                  });
-            }
-        }
+        
 
 
-        {# Returns ajax plain html for this post #}
-         function ajax_article_load(postid, place_holder, count_articles)
-         {
-            $.ajax({
-               url : {{ajax_article_load_url|raw}}, {# The full string of the url, including "'" is provided by the controller #}
-               type : 'GET',
-               dataType : 'html', // On désire recevoir du HTML
-               success : function(code_html, statut)
-               { // code_html contient le HTML renvoyé
-                  $(place_holder).append(code_html);
-               },
-               complete : function()       
-               {
-                  {# prepare_accordion is called each time, but the accordion is really prepared only when all the ajax requests have been sent #}
-                  prepare_accordion(place_holder, count_articles);
-               }
-            }); 
-         }
+
          
          $(function() {
+         /*
              $( '#post_accordion_alaune' ).hide();             
              counter_array['#post_accordion_alaune'] = 0;
              $.each({{articles_alaune_array}}, function(index, value) {
@@ -76,7 +41,7 @@ function ArticlePopupDisplay(visible)
              $.each({{articles_array}}, function(index, value) {
   
                 ajax_article_load(value, '#post_accordion_articles',{{articles_array}}.length);
-             });
+             });*/
              
             {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
                 {# Event Dialog setup #}
@@ -142,12 +107,8 @@ function ArticlePopupDisplay(visible)
                             <a id='newarticle' class="article_new_btn">{{'main.button.new'|trans}}</a>
                         {% endif %}
                     </div>
-                    <div id="post_accordion_alaune">
-                        {# preview_post.html.twig => loaded and appened by ajax request #}
-                     </div>
-                    <div id="post_accordion_articles">
-                        {# preview_post.html.twig => loaded and appened by ajax request #}
-                     </div>
+                    {# Articles column is rendered here #}    
+                    {% render controller("CptBlogBundle:Post:viewAll") %}
                 </div>
             </div>
         </div>

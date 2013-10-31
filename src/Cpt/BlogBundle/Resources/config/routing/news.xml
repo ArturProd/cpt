@@ -5,22 +5,27 @@
     xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
 
 
-    
-    <route id="cpt_blog_post_list" pattern="/list">
-        <default key="_controller">CptBlogBundle:Post:listPosts</default>
+    <route id="cpt_blog_getjsonlist" pattern="/jsonlist/{page}">
+        <default key="_controller">CptBlogBundle:Post:getArticleList</default>
+        <requirement key="_method">GET|POST</requirement>
+        <requirement key="page">\d+</requirement>
+        <default key="page">1</default>
+    </route>
+
+    <route id="cpt_blog_post_getjsonview" pattern="/postview">
+        <default key="_controller">CptBlogBundle:Post:postGetJsonView</default>
         <requirement key="_method">GET|POST</requirement>
     </route>
-   
+              
     <route id="cpt_blog_post_new" pattern="/new">
         <default key="_controller">CptBlogBundle:Post:editPost</default>
         <default key="id"></default>
         <requirement key="_method">GET|POST</requirement>
     </route>
     
-    <route id="cpt_blog_post_getpreview_plainhtml" pattern="/{id}/preview">
-        <default key="_controller">CptBlogBundle:Post:postGetPreviewPlain</default>
-        <requirement key="_method">GET|POST</requirement>
-    </route>
+   
+    
+
     
     <route id="cpt_blog_post_edit" pattern="/{id}/edit">
         <default key="_controller">CptBlogBundle:Post:editPost</default>

@@ -41,6 +41,45 @@ class PostController extends BaseController
     }
     
     
+    /**
+     * Shows the main article page
+     */
+    public function viewAllAction()
+    {
+        $response = $this->render('CptBlogBundle:Post:articles_viewall.html.twig');
+       
+        return $response;
+    }
+    
+    public function getArticleListAction($page=1, $enableonly=true, $foruserid = null)
+    {        
+        // Only ajax requests
+        $this->RestrictAccessToAjax();
+        
+        // Only admin user can see all posts including not enabled
+        if ($this->isUserAdmin())
+            $criteria['enabled'] = $enableonly ? true : 'all';    
+        else
+            $criteria['enabled'] = true;
+        
+        // Filter by user (author) if required
+        if ($foruserid)
+            $criteria['author'] = $foruserid;
+                
+        $pager = $this->getPostManager()->getPager(
+            $criteria,
+            $page
+        ); 
+        
+        $pageresult = $pager->getResults();
+        $idarray = array();
+        foreach($pageresult as $post)
+            $idarray[] = $post->getId();
+            //$postarray[$post->getId()] = $post->toViewArray();
+        
+        return $this->CreateJsonResponse($idarray);
+    }
+    
     public function listPostsAction()
     {
         if (false === $this->get('security.context')->isGranted('ROLE_USER')) {
@@ -82,13 +121,18 @@ class PostController extends BaseController
          /**
         * Return a ajax response as html content
         */
-        public function postGetPreviewPlainAction($id){
-
+        public function postGetJsonViewAction(){
+            // Only ajax requests
+            $this->RestrictAccessToAjax();
+        
+            $id = $this->getRequest()->get('id');   
+            if (!is_numeric($id))
+                $this->RestrictResourceNotFound($id);
+            
             $post = $this->getPostManager()->findOneBy(array('id' => $id));
 
-            if (!$post || !$post->isPublic()) {
-                throw new NotFoundHttpException('Unable to find the post');
-            }
+            if (!$post || !$post->isPublic())
+                $this->RestrictResourceNotFound($id);
 
             $this->SetPermissions($post);
             
@@ -98,7 +142,7 @@ class PostController extends BaseController
 
            //return new Response($html_string,200,array('Content-Type'=>'application/json'));//make sure it has the correct content type
 
-           return new Response($html_string,200,array('Content-Type'=>'application/json'));//make sure it has the correct content type
+           return $this->CreateJsonResponse($html_string);
         }
     
     /**

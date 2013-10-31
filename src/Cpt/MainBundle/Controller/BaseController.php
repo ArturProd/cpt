@@ -68,6 +68,11 @@ class BaseController extends Controller {
         throw new SymfonyException\ForbiddenHttpException("Access denied.");
     }
     
+    public function isUserAdmin()
+    {
+        return $this->get('security.context')->isGranted('ROLE_ADMIN');
+    }
+    
     public function RestrictBusinessRuleError($error_message = "Business rule error")
     {
         // 422 Unprocessable Entity

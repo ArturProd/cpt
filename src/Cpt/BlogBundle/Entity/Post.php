@@ -23,6 +23,19 @@ use Cpt\BlogBundle\Entity\BasePost as BasePost;
  */
 class Post extends BasePost
 {
+    
+    public function toViewArray()
+    {
+    return Array(
+        "id" => $this->getId(),
+        "PublishedHomePage" => $this->getPublishedHomePage(),
+        "CommentsCount" => $this->getCommentsCount(),
+        "AuthorName" => $this->getAuthor()->getDisplayName(),
+        "title" => $this->getTitle(),
+        "rawContent" => $this->getRawContent()
+        );
+    }
+    
     /**
      * @var integer $id
      */

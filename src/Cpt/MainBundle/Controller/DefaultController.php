@@ -12,7 +12,7 @@ class DefaultController extends Controller
     {
       
         // The url to get a raw html article. The url is made to be included in the javascript.
-        $ajax_article_load_url = \str_replace("____", "'+postid+'", "'".$this->generateUrl('cpt_blog_post_getpreview_plainhtml', array( 'id' => '____' ))."'");
+      //  $ajax_article_load_url = \str_replace("____", "'+postid+'", "'".$this->generateUrl('cpt_blog_post_getpreview_plainhtml', array( 'id' => '____' ))."'");
 
         $articles_alaune_array = Array();
         $articles_array = Array();
@@ -39,7 +39,7 @@ class DefaultController extends Controller
             'pager' => $pager,
             'articles_alaune_array' => json_encode($articles_alaune_array),
             'articles_array' =>  json_encode($articles_array),
-            'ajax_article_load_url' => $ajax_article_load_url,
+           // 'ajax_article_load_url' => $ajax_article_load_url,
             );
         
         return $this->render('CptMainBundle:Default:index.html.twig', $params );
