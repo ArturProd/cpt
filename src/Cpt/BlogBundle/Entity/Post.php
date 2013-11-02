@@ -52,6 +52,7 @@ class Post extends BasePost
         parent::__construct();
 
         $this->publishedhomepage = false;
+        $this->canBeCommented = true;
     }
     
     /**

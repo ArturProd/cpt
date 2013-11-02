@@ -1,0 +1,70 @@
+<script type="text/javascript">
+    var pouet = Array();
+{#****************************************************************************#}
+{# Retreives list of new comment for a post
+{#****************************************************************************#}
+function refresh_comment_list(postid)
+{
+    {# Get Comment array as a json object #}
+    $.getJSON('{{ url('cpt_comment_list_json')}}', {postid:postid}, function(comments) {
+        for (i=0; i<comments.length; ++i)
+            append_comment(comments[i]); {# Append each comment to the DOM #}
+        
+        if (comments.length>0) {# Show the comments section #}        
+            $('#comment_section'+postid).show();
+    });    
+}
+{#****************************************************************************#}
+{# Add a comment to the DOM
+{#****************************************************************************#}
+function append_comment(comment)
+{
+    
+    var new_comment_dom = $("#comment_template").clone();
+    new_comment_dom.attr('id', 'comment_'+comment.id);
+    new_comment_dom.html(comment.message);
+    new_comment_dom.prependTo($('#comment_list_'+comment.postid));
+    
+   /* $("ul#comment_list_"+postid).prepend(data);
+    $('#submit_comment_' + postid).removeAttr("disabled");
+    $('#comment_list_'+postid).show('blind');
+    $("ul#comment_list_"+postid+" li:first").fadeIn();*/
+}
+{#****************************************************************************#}
+{# handles the submition of a new comment 
+{#****************************************************************************#}
+function comment_submit_callback(comment)
+{
+    append_comment(comment);
+ /*   postId= data.post_id;
+    commentId = data.comment_id;
+    html = comment.html;
+*/
+ }
+{#****************************************************************************#}
+{# handles the deletion of a comment
+{#****************************************************************************#}
+function delete_comment(commentid)
+{
+    dataString = 'id='+commentid;
+
+    $('#comment_delete_button_'+commentid).attr("disabled", "disabled");
+
+     $.post('{{ url('sonata_news_delete_comment') }}',  {id:id} , function(html){
+                $('#comment_'+commentid).html('');
+                $('#comment_'+commentid).slideUp();
+        });
+}
+{#****************************************************************************#}
+{# Enables / Disables the commment button
+{#****************************************************************************#}
+function toggle_submit_comment_button(textvalue, postid)
+{
+    if (textvalue)
+       $("#submit_comment_"+postid).removeAttr("disabled"); 
+    else
+       $("#submit_comment_"+postid).attr("disabled", "disabled"); 
+}
+</script>
+{# Below is a template that will be copied when adding a new comment #}
+<ul style="display: none;"><li id="comment_template" class="comment"></li></ul>

@@ -2,7 +2,7 @@
 
 {% block main_content %}
 
-       <script type="text/javascript">
+ <script type="text/javascript">
 {# ************************************************************************************************************************ #} 
 {# Show or hide article popup
 {#************************************************************************************************************************ #}     
@@ -22,27 +22,7 @@ function ArticlePopupDisplay(visible)
        var counter_array = [ ];
 
         
-        {# Setup an accordion in a container when all the articles ajax request have completed #}
-        
-
-
-
-         
          $(function() {
-         /*
-             $( '#post_accordion_alaune' ).hide();             
-             counter_array['#post_accordion_alaune'] = 0;
-             $.each({{articles_alaune_array}}, function(index, value) {
-                ajax_article_load(value, '#post_accordion_alaune',{{articles_alaune_array}}.length);
-             });
-
-            $( '#post_accordion_articles' ).hide();             
-            counter_array['#post_accordion_articles'] = 0;
-             $.each({{articles_array}}, function(index, value) {
-  
-                ajax_article_load(value, '#post_accordion_articles',{{articles_array}}.length);
-             });*/
-             
             {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
                 {# Event Dialog setup #}
                 $("a#newevent").on("click", function(){
@@ -107,7 +87,7 @@ function ArticlePopupDisplay(visible)
                             <a id='newarticle' class="article_new_btn">{{'main.button.new'|trans}}</a>
                         {% endif %}
                     </div>
-                    {# Articles column is rendered here #}    
+                    {# Articles column is rendered here #}
                     {% render controller("CptBlogBundle:Post:viewAll") %}
                 </div>
             </div>

@@ -65,7 +65,7 @@
                 $.ajaxSetup({
                     error: function(jqXHR, textStatus, errorThrown ) {
                         if (jqXHR.status === 0) {
-                            ModalDialog(null, "Non connecté", "Il semble que vous ne soyez plus connecté(e) au réseau.<BR/>Reconnectez-vous et essayez encore.", "Ok");
+                            ModalDialog(null, "Non connecté", "Une erreur est subvenue.<BR/>Reconnectez-vous et essayez encore.", "Ok");
                         } else if (jqXHR.status === 401) {
                         ModalDialog(RedirectHome, "Session expirée", "Votre session a expiré.<br/>Vous allez être redirigé(e) vers la page d'accueil.<br/>Toutes modifications non enregistrées seront perdues.", "Ok");
                         } else if (jqXHR.status === 404) {
@@ -78,7 +78,10 @@
                         
                         {% if app.environment == 'dev' %}
                             myWindow=window.open('', '_blank');
+                            myWindow.document.write("Text Status:" + textStatus);
+                            myWindow.document.write("Error Thrown:" + errorThrown );
                             myWindow.document.write(jqXHR.responseText);
+                            console.log(new Error().stack);
                         {% endif %}
                     }
                 });
@@ -158,14 +161,6 @@
                 <header>
                 <div class="row-fluid top_banner">
                     <div class="span8">
-
-                    {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-                        <ul class="nav">
-                            <li><a href="{{ url('cpt_blog_post_new')}}">{{"main.menu.item.newarticle"|trans}}</a></li>
-                            <li><a href="{{ url('cpt_blog_post_list')}}">{{"main.menu.item.myarticles"|trans}}</a></li>
-                            <li><a href="#">{{"main.menu.item.myevents"|trans}}</a></li>
-                        </ul>
-                    {% endif %}
                      </div>
                      <div class="span4">
                          <ul class="banner_icons">

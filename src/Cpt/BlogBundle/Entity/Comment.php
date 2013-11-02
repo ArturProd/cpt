@@ -23,6 +23,19 @@ use Cpt\BlogBundle\Entity\BaseComment as BaseComment;
  */
 class Comment extends BaseComment
 {
+    public function toViewArray()
+    {
+    return Array(
+        "id" => $this->getId(),
+        "authorname" => $this->getAuthor()->getDisplayName(),
+        "canmodify" => $this->getCanModify(),
+        "message" => $this->getMessage(),
+        "createdat" => $this->getCreatedAt(),
+        "updatedat" => $this->getUpdatedAt(),
+        "postid" =>  $this->getPost()->getId()
+        );
+    }
+    
     /**
      * @var integer $id
      */

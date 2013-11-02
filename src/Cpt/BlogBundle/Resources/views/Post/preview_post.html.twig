@@ -1,3 +1,33 @@
+{##############################################################################}
+{# JAVASCRIPT
+{##############################################################################}
+<script type="text/javascript">
+{#****************************************************************************#}
+{# OnLoad
+{#****************************************************************************#}
+ $(function() {
+    {# Retreives comments for this post and add them to the form#}
+     $.get( "{{ url('get_comment_plainhtml', { 'postId': post.id }) }}", function( data ) {    
+       
+           $("#comment_placeholder_{{ post.id }}").append(data);
+           $('#button_showhide_comment_{{ post.id }}').show();
+
+     });
+     
+    {# Hides the comments by default #}
+    $('#comment_placeholder_{{ post.id }}').hide();
+    $('#button_showhide_comment_{{ post.id }}').hide();
+});
+</script>
+
+{#
+{#
+{##############################################################################}
+{# HTML
+{##############################################################################}
+{#****************************************************************************#}
+{# Post Header (title etc.)
+{#****************************************************************************#}
 <div class="post_header" id="post_header{{post.id}}">
     <div class="post_header_arrow"></div>
     <div class="post_header_date">{{post.createdAt|date('d/m') }}</div>
@@ -5,11 +35,16 @@
     <div class="post_header_commentcount">{{ post.commentsCount }}</div>
     <div class="post_header_author">{{ post.author }}</div>
 </div>
+{#****************************************************************************#}
+{# Post Body (Content etc.)
+{#****************************************************************************#}
 <div class="post_body" id="post_body{{post.id}}">
         {{ post.rawcontent|raw }}
     {% if post.CanBeModified %}
             <button onclick="parent.location='{{ url('cpt_blog_post_edit', { 'id': post.id }) }}'" class="btn btn-success btn-small pull-right">Editer</button>
     {% endif %}
 </div>
-
-
+{#****************************************************************************#}
+{# Comments
+{#****************************************************************************#}
+{% render controller("CptBlogBundle:Comment:comments", { 'postId': post.id }) %}

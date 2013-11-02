@@ -52,7 +52,12 @@ class BaseController extends Controller {
     
     public function RestrictAccessToLoggedIn()
     {
-        if (!$this->get('security.context')->isGranted('ROLE_USER'))
+        $this->RestrictAccessDenied($this->get('security.context')->isGranted('ROLE_USER'));
+    }
+    
+    public function RestrictAccessDenied($allow_access=false)
+    {
+        if (!$allow_access)
             throw new SymfonyException\AccessDeniedHttpException("Access denied.");
     }
     
@@ -71,6 +76,11 @@ class BaseController extends Controller {
     public function isUserAdmin()
     {
         return $this->get('security.context')->isGranted('ROLE_ADMIN');
+    }
+    
+    public function getUser()
+    {
+        return $this->get('security.context')->getToken()->getUser();
     }
     
     public function RestrictBusinessRuleError($error_message = "Business rule error")

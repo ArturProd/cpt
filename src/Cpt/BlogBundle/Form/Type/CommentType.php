@@ -22,7 +22,7 @@ class CommentType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('message', 'textarea', array('max_length' => '1024',  'attr' => array('class' => 'comment_textarea', 'cols' => '50', 'rows' => '6', 'placeholder' => 'Entrez un commentaire')))
+            ->add('message', 'textarea', array('max_length' => '512',  'attr' => array('class' => 'comment_textarea', 'cols' => '50', 'rows' => '3', 'placeholder' => 'Entrez un commentaire')))
             ->add('post_id', 'hidden', array('mapped' => false))
         ;
     }

@@ -1,8 +1,15 @@
+{#****************************************************************************#}
+{# Includes common comment handling javascript
+{#****************************************************************************#}
+{% include 'CptBlogBundle:Post:comments.js.twig' %}
+
 <script type="text/javascript">
 
 var post_list = [ ];
 count_article_loaded = 0;
-
+{#****************************************************************************#}
+{# Show or hide an article
+{#****************************************************************************#}
 function toogle_article(id,show,speed)
 {
     {# closing an article => all article get closed #}

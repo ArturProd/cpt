@@ -74,7 +74,7 @@ class CommentManager extends ModelCommentManager
      *
      * @return \Sonata\AdminBundle\Datagrid\ODM\Pager
      */
-    public function getPager(array $criteria, $page)
+    public function getPager(array $criteria, $page, $maxperpage)
     {
         $parameters = array();
 
@@ -89,7 +89,7 @@ class CommentManager extends ModelCommentManager
             $qb->field('post')->equals($criteria['postId']);
         }
 
-        $pager = new Pager(500); // no limit
+        $pager = new Pager($maxperpage);
         $pager->setQuery(new ProxyQuery($qb));
         $pager->setPage($page);
         $pager->init();
