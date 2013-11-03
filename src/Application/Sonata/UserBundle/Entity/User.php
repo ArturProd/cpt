@@ -38,7 +38,7 @@ class User extends BaseUser
     
     public function getDisplayName()
     {
-        return $this->getFirstname() . ($this->getLastname() ? $this->getLastname() : "");
+        return $this->getUsername() . ($this->getLastname() ? " ".$this->getLastname() : "");
     }
     
     public function getEvents() {

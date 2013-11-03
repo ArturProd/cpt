@@ -34,8 +34,9 @@
     {# ******************************************************** #}
     {# BODY #}
     <body>
-           {# ------------------------------- #}
-           {# Modal dialog and flash messages #}
+{#****************************************************************************#}
+{# Modal Dialog and Flash Messages
+{#****************************************************************************#}
           <script>
             var modal_dialog_result = null;
             function ModalDialog(callback_function, title, text, buttonOK_text, buttonCANCEL_text, button3_text)
@@ -59,9 +60,25 @@
             {
                   document.location='{{ url('cpt_main_home')}}';              
             }
-            
+
+{#****************************************************************************#}
+{# can_disable_links: make the attribute "disable" work on links
+{#****************************************************************************#}
+        function can_disable_links()
+        {
+            $('a').click(function(e) {
+                mylink = $(this).attr('disabled');
+                if (mylink === 'disabled') {
+ 
+                    e.preventDefault();
+                }
+            });
+        }
         
             $(function() {
+{#****************************************************************************#}
+{# Default Ajax error behavior
+{#****************************************************************************#}
                 $.ajaxSetup({
                     error: function(jqXHR, textStatus, errorThrown ) {
                         if (jqXHR.status === 0) {
@@ -86,7 +103,9 @@
                     }
                 });
             });
-            
+{#****************************************************************************#}
+{# Post an Ajax form
+{#****************************************************************************#}            
             function AjaxPostForm( $form, precall, callback ){
                 if (precall)
                     precall();
@@ -111,18 +130,47 @@
                   },
                 });
             }
-            
+
+{#****************************************************************************#}
+{# Disable/Enable all controls within an object id (typically a form)
+{#****************************************************************************#}            
+            function DisableControls(containerid, enable)
+            {
+                if (enable)
+                    $('#'+containerid).find('input, textarea, button, select').removeAttr('disabled');
+                else
+                    $('#'+containerid).find('input, textarea, button, select').attr('disabled','disabled');
+            } 
+{#****************************************************************************#}
+{# Disable / Enable a given control
+{#****************************************************************************#}
+    function EnableControl(control, enable)
+    {
+        if (enable)
+            control.removeAttr('disabled');
+        else
+            control.attr('disabled','disabled');
+    }
+{#****************************************************************************#}
+{# Says if a given control is disabled
+{#****************************************************************************#}
+    function isDisabled(control)
+    {
+        return (control.attr('disabled') === 'disabled');
+    }
+{#****************************************************************************#}
+{# Make a form Ajax
+{#****************************************************************************#}
             function AjaxForm(formid, precall, callback)
             {
                 $('#'+formid).on("submit", function( e ){
                 e.preventDefault(); {# Prevents event propagation (prevents default behavior of form submission) #}
                 //PrepareEventFormSubmission();
                 AjaxPostForm( $(this), precall, callback);
-                $('#'+formid).find('input, textarea, button, select').attr('disabled','disabled');
+                DisableControls(formid, false);
                 return true;
                 });
             }
-          
        
             $(function() {
               $( "#modal_dialog" ).dialog({

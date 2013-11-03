@@ -32,7 +32,7 @@ class Comment extends BaseComment
         "message" => $this->getMessage(),
         "createdat" => $this->getCreatedAt(),
         "updatedat" => $this->getUpdatedAt(),
-        "postid" =>  $this->getPost()->getId()
+        "postid" =>  $this->getPost()->getId(),
         );
     }
     

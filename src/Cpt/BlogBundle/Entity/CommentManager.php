@@ -107,6 +107,34 @@ class CommentManager extends ModelCommentManager
         $this->updateCommentsCount($post);
     }
 
+    public function get_older_comments($postid, $number, $olderthanid = null)
+    {
+        $parameters['status'] = CommentInterface::STATUS_VALID;
+        $parameters['postid'] = $postid;
+        
+        if (!is_numeric($postid))
+            throw new \InvalidArgumentException("post id is not numeric");
+        
+
+        $query = $this->em->getRepository($this->class)
+            ->createQueryBuilder('c')
+            ->orderby('c.createdAt', 'DESC')
+            ->andWhere('c.status = :status')            
+            ->andWhere('c.post = :postid')
+            ->setMaxResults($number);
+        
+        if (!empty($olderthanid))
+        {
+            if (!is_numeric($olderthanid))
+                throw new \InvalidArgumentException("olderthanid is not numeric");
+            
+            $query->andWhere('c.id < :olderthanid');
+            $parameters['olderthanid'] = $olderthanid;
+        }
+         
+        return $query->setParameters($parameters)->getQuery()->getResult();
+    }
+    
     /**
      * @param array   $criteria
      * @param integer $page

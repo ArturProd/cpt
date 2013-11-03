@@ -41,22 +41,30 @@ class CommentController extends BaseController
     {
         $this->RestrictAccessToAjax();
      
+        $user = $this->getUser();
         $postid = $this->getRequest()->get('postid');
+        $beforeid = $this->getRequest()->get('beforeid'); // To only get comments after a given comment id
+        $howmany = $this->getRequest()->get('howmany');
         
-        if ((!$postid)||(!is_numeric($postid)))
-             $postid = 1;
+        if ((!$postid)||(!is_numeric($postid))) //postid must be definied
+             $this->RestrictResourceNotFound ();
                 
-        $pager = $this->getCommentManager()
-            ->getPager(array(
-                'postId' => $postid,
-                'status'  => CommentInterface::STATUS_VALID
-            ), 0, 500);
+        if ((!empty($beforeid))&&(!is_numeric($beforeid))) // beforeid can be empty (null or empty string) or numeric
+             $this->RestrictBusinessRuleError("beforeid is not numeric"); 
         
-        $comments = Array();
-        foreach($pager->getResults() as $comment)
-            $comments[] = $comment->toViewArray();
+        if (!$howmany)
+            $this->RestrictBusinessRuleError("how many comments do you want?"); 
+        
+        $comments = $this->getCommentManager()->get_older_comments($postid, $howmany, $beforeid );
+        
+        $view_comments = Array();
+        foreach($comments  as $comment)
+        {
+            $this->SetCanModify($comment, $user);
+            $view_comments[] = $comment->toViewArray();
+        }
             
-        return $this->CreateJsonResponse($comments);
+        return $this->CreateJsonResponse($view_comments);
     }
     
     /**
@@ -226,6 +234,10 @@ class CommentController extends BaseController
     
     // </editor-fold>
     
+    protected function SetCanModify($comment,$user)
+    {
+       $comment->setCanModify($this->CanModifyComment($comment, $user));
+    }
         /**
      * Returns true if a user can modify (delete..) a comment
      * 

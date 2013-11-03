@@ -1,3 +1,5 @@
+{% set NB_COMMENTS_PRELOADED = 3 %}
+{% set NB_COMMENTS_SEEMORECOMMENTS = 5 %}
 {##############################################################################}
 {# JAVASCRIPT
 {##############################################################################}
@@ -5,13 +7,23 @@
 {#****************************************************************************#}
 {# OnLoad
 {#****************************************************************************#}
-    $(function() {  
-        refresh_comment_list({{post.id}});
+    $(function() {
+        get_more_comments({{post.id}}, {{NB_COMMENTS_PRELOADED}}, function(comments){
+            no_more_older_comments({{post.id}},comments.length );
+        }); {# Loads the first comments #}
         
         AjaxForm("{{'form_comment_'~post.id}}", null, comment_submit_callback);
     
-        $("#submit_comment_{{post_id}}").attr("disabled", "disabled");
-
+       $('#btn_more_comments_{{ post.id }}').on("click", function(){
+            if (!isDisabled($(this))) {
+                EnableControl($(this),false);
+                get_more_comments({{post.id}}, {{NB_COMMENTS_SEEMORECOMMENTS}}, function(comments){
+                    EnableControl($('#btn_more_comments_{{ post.id }}'),true);
+                    no_more_older_comments({{post.id}},comments.length );
+                });
+             }
+        });
+               
         {# Toggle the button on key up #}
        $('#form_comment_{{post_id}}').find('#comment_message').keyup(function(){
            var textvalue = $('#form_comment_{{post_id}}').find('#comment_message').val();
@@ -30,6 +42,7 @@
 {#****************************************************************************#}
 {# Comment submission form
 {#****************************************************************************#}
+{% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
 {{ form_start(commentform, {'action': path('sonata_news_add_comment',  { 'postid': post.id }), 'method': 'POST', 'attr': {'id': 'form_comment_'~post.id } }  ) }}
         {{ form_widget(commentform.message) }}
         {{ form_errors(commentform.message) }}
@@ -37,11 +50,12 @@
         {{ form_rest(commentform) }}
         <input type="submit" value="{{'btn_add_comment'|trans({}, 'CptBlogBundle') }}" id="submit_comment_{{post_id}}" class="btn btn-success"/>
  {{form_end(commentform) }} 
+{% endif %}
 {#****************************************************************************#}
 {# List of comments
 {#****************************************************************************#}
 <div id="comment_section{{ post.id }}">
-    <a onclick="$('#comment_placeholder_{{ post.id }}').toggle('blind');" id="button_showhide_comment_{{ post.id }}">Afficher / Masquer les commentaires</a>
     <ul class="comment" id="comment_list_{{post_id}}">
     </ul>
+     <a id="btn_more_comments_{{ post.id }}">Voir plus de commentaires</a>
 </div>
