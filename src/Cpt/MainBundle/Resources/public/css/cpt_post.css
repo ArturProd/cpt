@@ -4,7 +4,7 @@
 
 .postcontainer{
     width: auto;
-    margin-bottom: 15px;
+    margin-bottom: 5px;
 }
 
 .post_header{
@@ -20,6 +20,53 @@
 
 .post_header:hover .post_header_arrow{
      background: url('../images/articles/fleche-articles.png') no-repeat;
+}
+
+hr.alaune{
+    border-top-width: 1px;
+    border-top-color: lightgray;
+    width: 100%;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+.alaune_label{
+    margin-bottom: 0px;
+    padding-bottom: 0px;
+    margin-left: 14px;
+    line-height: 0px;
+}
+
+.alaune_label,
+.alaune{
+    color: #D20F1F;
+    font-size: 12px;
+}
+
+.alaune_label,
+.post_header_date.alaune{
+    font-weight: bold;    
+}
+
+.post_date_label,
+.post_titre_label,
+.post_commentcount_label{
+    display: inline-block;
+    font-size: 10px;
+    color: #D20F1F;
+}
+
+.post_date_label{
+    margin-left: 15px;
+}
+
+.post_titre_label{
+    width: auto;
+    margin-left: 40%;
+}
+
+.post_commentcount_label{
+    float: right;
 }
 
 .post_header_arrow,
@@ -49,6 +96,10 @@
 .post_header_title{
     width: auto;
     margin-right: 5px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    max-width: 320px;    
 }
 
 .post_header_commentcount{

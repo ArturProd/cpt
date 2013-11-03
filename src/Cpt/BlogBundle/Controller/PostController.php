@@ -73,10 +73,10 @@ class PostController extends BaseController
         $pageresult = $pager->getResults();
         $idarray = array();
         foreach($pageresult as $post)
-            $idarray[] = $post->getId();
+            $viewarray[] = Array('id' => $post->getId(), 'publishhomepage' => $post->getPublishedHomePage());
             //$postarray[$post->getId()] = $post->toViewArray();
         
-        return $this->CreateJsonResponse($idarray);
+        return $this->CreateJsonResponse($viewarray);
     }
     
     public function listPostsAction()

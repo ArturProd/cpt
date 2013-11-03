@@ -29,10 +29,10 @@ function toogle_article(id,speed)
         
     for (i = 0; i<post_list.length; ++i)
     {
-        if (post_list[i]!==id)
+        if (post_list[i].id!==id)
         {
-            $( "#comment_section" + post_list[i]).slideUp(speed);
-            $( "#post_body" + post_list[i] ).slideUp(speed);
+            $( "#comment_section" + post_list[i].id).slideUp(speed);
+            $( "#post_body" + post_list[i].id ).slideUp(speed);
         }
     }
 }
@@ -42,6 +42,7 @@ function toogle_article(id,speed)
 {#**************************************************************************#}
 function getPostList(){
     $('#articles').hide();
+    $('#homepage_aticles').hide();
     $('#loadingarticles').hide().fadeIn(2000);
 
     $.getJSON( "{{ url('cpt_blog_getjsonlist') }}", function( data ) {
@@ -54,64 +55,55 @@ function getPostList(){
 {#**************************************************************************#}
 {# Retreives the html view of a post from a server based on its id, and add it to the DOM
 {#**************************************************************************#}
-function getAndAddPost(id)
+function getAndAddPost(post)
 {
    {# add the div container for this post #}
-    jQuery('<div/>', {
-        id: 'postcontainer'+id,
-        class: 'postcontainer'
-    }).appendTo('#articles');
-
+    if (post.publishhomepage)
+    { {# "A la une" posts #}
+        jQuery('<div/>', {
+            id: 'postcontainer'+post.id,
+            class: 'postcontainer'
+        }).appendTo('#homepage_aticles');
+    }
+    else
+    { {# Other posts #}
+        jQuery('<div/>', {
+            id: 'postcontainer'+post.id,
+            class: 'postcontainer'
+        }).appendTo('#articles');                
+    }
     {# retreive post view from server and add it to container #}
-    $.get( "{{ url('cpt_blog_post_getjsonview') }}", {id:id} , function( data ) {
-        $( "#postcontainer" + id ).html( data );
+    $.get( "{{ url('cpt_blog_post_getjsonview') }}", {id:post.id} , function( data ) {
+        $( "#postcontainer" + post.id ).html( data );
         
         {# if this is the last one to be retreive, prepare the accordion #}
         count_article_loaded ++;
         if (count_article_loaded === post_list.length) {# finished loading all articles #}
         {
-            toogle_article(post_list[0],500);
+            toogle_article(post_list[0].id,500);
             $('#articles').show();
+            $('#homepage_aticles').show();
             $('#loadingarticles').hide();
         }
     });
-   
-   {# attach handler for click on header #}
 }
 
 
-function prepare_accordion(container_id, count_articles)
-{
-        counter_array[container_id]++;
-        {# only prepare the accordion when all articles are loaded #}
-        if (counter_array[container_id] === count_articles)
-        {  
-
-            {# On click any h3 first container child element within the container #}
-            $(container_id +' > h3').click(function(e) {
-                {# Close all <div> but the <div> right after the clicked h3 #}
-                $(e.target).next('div').siblings('div').slideUp();
-                {# Toggle open/close on the <div> after the h3, opening it if not open #}
-                $(e.target).next('div').slideToggle();                    
-            });
-            {# Close all the divs below's the title, and open the whole container when it's done #}
-            $(container_id + " > h3:first-child").siblings('div').slideUp( 'fast', function() {
-                $( container_id ).show( );
-              });
-        }
-}
 
 $(function() {
     getPostList();     
 });
 </script>
 
-<div id="post_accordion_alaune">
+<div class="alaune_label">{{ "article.alaune_label"|trans }}</div>
+<div id="homepage_aticles">
 {# preview_post.html.twig => loaded and appened by ajax request #}
 </div>
-
-
 <div id="articles">
+<hr class="alaune"/>
+<div class="post_date_label">Date</div>
+<div class="post_titre_label">Titre</div>
+<div class="post_commentcount_label">Commentaires</div>
 {# preview_post.html.twig => loaded and appened by ajax request #}
 </div>
 <div id="loadingarticles" class="loading">

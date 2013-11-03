@@ -157,7 +157,8 @@ class PostManager extends ModelPostManager
             ->select('p, t')
             ->leftJoin('p.tags', 't', Expr\Join::WITH, 't.enabled = true')
             ->leftJoin('p.author', 'a', Expr\Join::WITH, 'a.enabled = true')
-            ->orderby('p.publicationDateStart', 'DESC');
+            ->addOrderby('p.publishedhomepage', 'DESC') // "A la une" post come first
+            ->addOrderby('p.publicationDateStart', 'DESC');
 
         // enabled
         $criteria['enabled'] = isset($criteria['enabled']) ? $criteria['enabled'] : true;

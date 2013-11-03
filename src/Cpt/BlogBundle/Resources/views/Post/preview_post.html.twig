@@ -28,10 +28,10 @@
 {#****************************************************************************#}
 {# Post Header (title etc.)
 {#****************************************************************************#}
-<div class="post_header" id="post_header{{post.id}}">
-    <div class="post_header_arrow"></div>
-    <div class="post_header_date">{{post.createdAt|date('d/m') }}</div>
-    <div class="post_header_title">{{ post.title|upper }}</div>
+<div class="post_header {{post.publishedhomepage ? 'alaune' : '' }}" id="post_header{{post.id}}">
+    <div class="post_header_arrow  {{post.publishedhomepage ? 'alaune' : '' }}"></div>
+    <div class="post_header_date  {{post.publishedhomepage ? 'alaune' : '' }}">{{post.createdAt|date('d/m') }}</div>
+    <div class="post_header_title  {{post.publishedhomepage ? 'alaune' : '' }}">{{ post.title|upper }}</div>
     <div class="post_header_commentcount">{{ post.commentsCount }}</div>
     <div class="post_header_author">{{ post.author }}</div>
 </div>
