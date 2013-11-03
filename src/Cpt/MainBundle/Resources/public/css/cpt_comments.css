@@ -1,0 +1,40 @@
+.comment_textarea,
+.comment{
+    list-style: none;
+    width:80%;
+    margin: auto;
+}
+
+.comment > li{
+    word-wrap: break-word;
+    margin-top: 5px;
+    padding: 10px;
+    background-color: #FAFAFA;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #EAEAEA;
+    opacity: 0.75;
+    height: 100%;
+    width: 100%;
+}
+
+hr.comment{
+    width: 60%;
+    border-top-color: lightgrey;
+    border-top-width: 1px;
+    border-top-style: groove;
+    margin: auto;
+    margin-bottom: 20px;
+}
+
+input[type=submit].comment{
+    margin-right: 10%;
+    margin-bottom: 5px;
+    display: block;
+}
+
+.comment_textarea{
+  font-size: 10px;
+      width:80%;
+    margin-left: 10%;
+}

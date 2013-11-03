@@ -153,7 +153,7 @@ class CommentController extends BaseController
                      return new Response('Cannot add an empty comment',500);
                 
                 $comment->setAuthor($this->getUser());
-                $comment->setMessage(nl2br($comment->getMessage()));
+                $comment->setMessage(htmlspecialchars(nl2br($comment->getMessage())));
 
                 //$this->get('cpt.blog.mailer')->sendCommentNotification($comment);
                 $comment->setCanModify($this->CanModifyComment($comment, $user));

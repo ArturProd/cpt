@@ -5,6 +5,9 @@
     Description:
         Purpose of the stylesheet follows.
 */
+html {
+       overflow-y: scroll; /* Forces vertical scroll bar */
+}
 
 root { 
     display: block;

@@ -8,23 +8,35 @@
 {# OnLoad
 {#****************************************************************************#}
     $(function() {
+        {#****************************************************************************#}
+        {# Get preloaded comments
+        {#****************************************************************************#}
         get_more_comments({{post.id}}, {{NB_COMMENTS_PRELOADED}}, function(comments){
-            no_more_older_comments({{post.id}},comments.length );
-        }); {# Loads the first comments #}
-        
+            no_more_older_comments({{post.id}},comments.length ); {# disable link to get more comment if there are no more #}
+        });
+        {#****************************************************************************#}
+        {# Make comment submission form Ajax 
+        {#****************************************************************************#}
         AjaxForm("{{'form_comment_'~post.id}}", null, comment_submit_callback);
-    
-       $('#btn_more_comments_{{ post.id }}').on("click", function(){
-            if (!isDisabled($(this))) {
-                EnableControl($(this),false);
-                get_more_comments({{post.id}}, {{NB_COMMENTS_SEEMORECOMMENTS}}, function(comments){
+        {#****************************************************************************#}
+        {# Handles clicks to get more comments 
+        {#****************************************************************************#}
+        $('#btn_more_comments_{{ post.id }}').on("click", function(){
+            if (!isDisabled($(this))) {# only if the link is not disables #}
+            { 
+                EnableControl($(this),false); {# Disable the link #}
+                {# get more comments #}
+                get_more_comments({{post.id}}, {{NB_COMMENTS_SEEMORECOMMENTS}}, function(comments){ 
+                    {# in case of success re-enable the link and check if there are more comments to come  #}
                     EnableControl($('#btn_more_comments_{{ post.id }}'),true);
                     no_more_older_comments({{post.id}},comments.length );
                 });
              }
         });
-               
-        {# Toggle the button on key up #}
+        {#****************************************************************************#}
+        {# You can only submit a comment if you entered something in the texterea
+        {#****************************************************************************#}
+       {# Toggle the button on key up #}
        $('#form_comment_{{post_id}}').find('#comment_message').keyup(function(){
            var textvalue = $('#form_comment_{{post_id}}').find('#comment_message').val();
            toggle_submit_comment_button(textvalue,{{post_id}});
@@ -39,6 +51,8 @@
 {##############################################################################}
 {# HTML
 {##############################################################################}
+<div id="comment_section{{ post.id }}">
+<hr class="comment">
 {#****************************************************************************#}
 {# Comment submission form
 {#****************************************************************************#}
@@ -48,14 +62,13 @@
         {{ form_errors(commentform.message) }}
 
         {{ form_rest(commentform) }}
-        <input type="submit" value="{{'btn_add_comment'|trans({}, 'CptBlogBundle') }}" id="submit_comment_{{post_id}}" class="btn btn-success"/>
+        <input type="submit" value="{{'btn_add_comment'|trans }}" id="submit_comment_{{post_id}}" class="comment"/>
  {{form_end(commentform) }} 
 {% endif %}
 {#****************************************************************************#}
 {# List of comments
 {#****************************************************************************#}
-<div id="comment_section{{ post.id }}">
     <ul class="comment" id="comment_list_{{post_id}}">
     </ul>
-     <a id="btn_more_comments_{{ post.id }}">Voir plus de commentaires</a>
+     <a id="btn_more_comments_{{ post.id }}" class="pull-right">Voir plus de commentaires</a>
 </div>

@@ -14,9 +14,9 @@
 
      });
      
-    {# Hides the comments by default #}
-    $('#comment_placeholder_{{ post.id }}').hide();
-    $('#button_showhide_comment_{{ post.id }}').hide();
+     $("#post_header{{post.id}}").on("click", function(){
+         toogle_article({{post.id}},500);
+     });
 });
 </script>
 
@@ -39,12 +39,14 @@
 {# Post Body (Content etc.)
 {#****************************************************************************#}
 <div class="post_body" id="post_body{{post.id}}">
-        {{ post.rawcontent|raw }}
+    {{ post.rawcontent|raw }}
     {% if post.CanBeModified %}
-            <button onclick="parent.location='{{ url('cpt_blog_post_edit', { 'id': post.id }) }}'" class="btn btn-success btn-small pull-right">Editer</button>
+            <!--button onclick="parent.location='{{ url('cpt_blog_post_edit', { 'id': post.id }) }}'" class="btn btn-success btn-small pull-right">Editer</button!-->
     {% endif %}
+    {#****************************************************************************#}
+    {# Comments
+    {#****************************************************************************#}
 </div>
-{#****************************************************************************#}
-{# Comments
-{#****************************************************************************#}
-{% render controller("CptBlogBundle:Comment:comments", { 'postId': post.id }) %}
+    {% render controller("CptBlogBundle:Comment:comments", { 'postId': post.id }) %}
+
+

@@ -10,19 +10,30 @@ count_article_loaded = 0;
 {#****************************************************************************#}
 {# Show or hide an article
 {#****************************************************************************#}
-function toogle_article(id,show,speed)
+function toogle_article(id,speed)
 {
     {# closing an article => all article get closed #}
     {# opening an article => only this article gets open #}
+     visible = $("#post_body"+id).is(":visible");
+        
+        if (!visible)
+        {
+            $( "#comment_section" + id).slideDown(speed);
+            $( "#post_body" + id ).slideDown(speed);
+        }
+        else
+        {
+            $( "#comment_section" + id).slideUp(speed);
+            $( "#post_body" + id ).slideUp(speed);            
+        }
+        
     for (i = 0; i<post_list.length; ++i)
     {
         if (post_list[i]!==id)
+        {
+            $( "#comment_section" + post_list[i]).slideUp(speed);
             $( "#post_body" + post_list[i] ).slideUp(speed);
-        
-        if (show)
-            $( "#post_body" + id ).slideDown(speed);
-        else
-            $( "#post_body" + id ).slideUp(speed);
+        }
     }
 }
 
@@ -59,7 +70,7 @@ function getAndAddPost(id)
         count_article_loaded ++;
         if (count_article_loaded === post_list.length) {# finished loading all articles #}
         {
-            toogle_article(post_list[0],true,0);
+            toogle_article(post_list[0],500);
             $('#articles').show();
             $('#loadingarticles').hide();
         }

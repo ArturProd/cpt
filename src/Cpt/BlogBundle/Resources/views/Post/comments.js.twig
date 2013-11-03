@@ -29,23 +29,40 @@ function no_more_older_comments(postid, commentcount)
         $('#btn_more_comments_'+postid).hide();
 }
 {#****************************************************************************#}
-{# Add a comment to the DOM
+{# Add a comment to the DOM at the END of the comment list
 {#****************************************************************************#}
 function append_comment(comment)
+{
+    new_comment_dom = get_comment_dom(comment);
+    new_comment_dom.appendTo($('#comment_list_'+comment.postid));
+    new_comment_dom.show("highlight", 1000);
+}
+{#****************************************************************************#}
+{# Add a comment to the DOM at the BEGINING of the comment list
+{#****************************************************************************#}
+function prepend_comment(comment)
+{
+    new_comment_dom = get_comment_dom(comment);
+    new_comment_dom.prependTo($('#comment_list_'+comment.postid));
+    new_comment_dom.show("highlight", 1000);
+}
+{#****************************************************************************#}
+{# Clone the Comment template, fill it with the comment and returns the ajax DOM object
+{#****************************************************************************#}
+function get_comment_dom(comment)
 {
     var new_comment_dom = $("#comment_template").clone();
     new_comment_dom.attr('id', 'comment_'+comment.id);
     new_comment_dom.html(comment.authorname + ": " + comment.message);
     new_comment_dom.hide();
-    new_comment_dom.appendTo($('#comment_list_'+comment.postid));
-    new_comment_dom.show("highlight", 1000);
+    return new_comment_dom;
 }
 {#****************************************************************************#}
 {# handles the submition of a new comment 
 {#****************************************************************************#}
 function comment_submit_callback(comment)
 {
-    append_comment(comment);                                {# add the new comment to the DOM #}
+    prepend_comment(comment);                                {# add the new comment to the DOM #}
     DisableControls('form_comment_'+comment.postid, true);  {#re-enable comment submission controls #}
  }
 {#****************************************************************************#}
@@ -74,4 +91,4 @@ function toggle_submit_comment_button(textvalue, postid)
 }
 </script>
 {# Below is a template that will be copied when adding a new comment #}
-<ul style="display: none;"><li id="comment_template" class="comment"></li></ul>
+<ul style="display: none;"><li id="comment_template"></li></ul>
