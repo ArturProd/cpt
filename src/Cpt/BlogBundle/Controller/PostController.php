@@ -78,7 +78,8 @@ class PostController extends BaseController
         
         return $this->CreateJsonResponse($viewarray);
     }
-    
+ 
+    /*
     public function listPostsAction()
     {
         if (false === $this->get('security.context')->isGranted('ROLE_USER')) {
@@ -113,7 +114,7 @@ class PostController extends BaseController
 
         return $response;
     }
-    
+ */   
     // <editor-fold defaultstate="collapsed" desc="Single post actions ">
  
     
@@ -151,7 +152,7 @@ class PostController extends BaseController
      *
      * @return Response
      */
-    public function viewAction($permalink)
+ /*   public function viewAction($permalink)
     {
         $post = $this->getPostManager()->findOneByPermalink($permalink, $this->container->get('cpt.blog.blog'));
 
@@ -182,31 +183,32 @@ class PostController extends BaseController
             'blog' => $this->get('cpt.blog.blog'),
         ));
     }
-    
-    public function editPostAction(Request $request, $id = null)
+ */   
+    public function editPostAction(Request $request)
     {
-        // Only publisher can edit a post
-        if (false === $this->get('security.context')->isGranted('ROLE_USER')) {
-            throw new AccessDeniedException("You do not have the authorization to publish an article.");
-        }
+        $this->RestrictAccessToAjax();
+        $this->RestrictAccessToLoggedIn();
         
-        $user= $this->get('security.context')->getToken()->getUser();
+        // Get the id of the post to edit
+        $id = $this->getRequest()->get('postid');   
+            if ((!empty($id))&&(!is_numeric($id))) // $id must be null or numeric
+                $this->RestrictResourceNotFound($id);
+            
+        $user= $this->getUser();
                    
         $post = null;
         
-        if ((null == $id)||(-1 == $id))
+        if (empty($id))
         {
-            // Create a new post case
-            $post = $this->getPostManager()->create();
-
-            $post->setAuthor($user);
+            // $id is null => Create a new post
+           $post = $this->getPostManager()->create();
+           $post->setAuthor($user);
         }
         else
         {
-            // Retreive an existing post case
+            // $id is not null => Retreive an existing post
             $post = $this->getPostById($id);
-            if (!$post)
-                 return $this->RedirectHome();
+            $this->RestrictResourceNotFound($post);
         }
 
         $this->SetPermissions($post);
@@ -224,32 +226,27 @@ class PostController extends BaseController
             ;
         }
         
+        $status = "ok";
+        
         if ($request->isMethod('POST')) {
-            
-            $post_published_homepage = $post->getPublishedHomePage();
-            
+           
             $form->bind($request);
             
             // Only admin can publish a post on the home page
             if (!$this->get('security.context')->isGranted('ROLE_ADMIN'))
-                    $post->setPublishedHomePage($post_published_homepage);
+                    $post->setPublishedHomePage(false);
             
             // Checking permission to modigy the post
-            $this->CanModifyPost($post->getId());
-            
+            $this->CanModifyPost($post->getId());            
 
-             if ($form->isValid()) {
-            
+             if ($form->isValid()) {            
                 $this->getPostManager()->save($post);
-    
-                //return $this->GetRedirectToPostViewResponse($post);
-                return $this->RedirectPostList();
-            } else{
-                return $this->GetPostEditView($post, $form);
-            }
+                return $this->CreateJsonResponse(Array('status' => 'ok', 'data' => null));
+            } else
+                return $this->CreateJsonResponse(Array('status' => 'failed', 'data' => $this->GetPostEditView($post, $form)));
         }
 
-        return $this->GetPostEditView($post, $form);
+        return $this->CreateJsonResponse(Array('status' => 'ok', 'data' => $this->GetPostEditView($post, $form)));
     }
     
     public function deletePostAction($id)
@@ -394,7 +391,7 @@ class PostController extends BaseController
 
     protected function GetPostEditView($post, $form)
     {
-        return $this->render('CptBlogBundle:Post:edit.html.twig', array(
+        return $this->renderView('CptBlogBundle:Post:edit.html.twig', array(
                 'post' => $post,    
                 'posteditform' => $form->createView(),
                 ));

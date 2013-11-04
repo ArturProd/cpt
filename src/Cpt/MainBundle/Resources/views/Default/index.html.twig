@@ -1,109 +1,97 @@
 {% extends '::base.html.twig' %}
 
 {% block main_content %}
-
+{##############################################################################}
+{# JAVASCRIPT
+{##############################################################################}
  <script type="text/javascript">
 {# ************************************************************************************************************************ #} 
-{# Show or hide article popup
+{# Show or hide the opacity mask (ex: for popup display)
 {#************************************************************************************************************************ #}     
-function ArticlePopupDisplay(visible)
+function DisplayOpacityMask(visible)
 {
     if (visible){
-        $("#popup_new_article").show();
         $("#page_opacity_mask").show();
     } else
     {
-        $("#popup_new_article").hide();
         $("#page_opacity_mask").hide();
     }
 }
+{# ************************************************************************************************************************ #} 
+{# OnLoad
+{#************************************************************************************************************************ #}      
+ $(function() {
+    {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+        {# Event Dialog setup #}
+        $("a#newevent").on("click", function(){
+           $("#popup_new_event").show();
+           $("#page_opacity_mask").show();
+       });
 
-       {# counters of completed ajax request completed, per container (key) #}
-       var counter_array = [ ];
-
-        
-         $(function() {
-            {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-                {# Event Dialog setup #}
-                $("a#newevent").on("click", function(){
-                   $("#popup_new_event").show();
-                   $("#page_opacity_mask").show();
-               });
-            
-                {% if (event is defined) and (eventform is defined) %}
-                    {% include 'CptEventBundle:Event:new.html.twig' with {'event' : event, 'eventform' : eventform } %}
-                {% else %}
-                    $("#popup_new_event").hide();
-                    $("#popup_new_event").load("{{ url('event_new')}}");
-                {% endif %}
-                    
-               {# Articles Dialog Setup #}
-                $("a#newarticle").on("click", function(){
-                    ArticlePopupDisplay(true);
-               });
-
-                {% if (article is defined) and (articleform is defined) %}
-                    {% render controller("CptBlogBundle:Post:editPost") %}
-                {% else %}
-                    $("#popup_new_article").hide();
-                    $("#popup_new_article").load("{{ url('cpt_blog_post_new')}}");
-                {% endif %}
-            {% endif %}
-
-           // $("#event_calendar").load("{{ url('event_view_calendar')}}");
-
-          });
-          
-
-        </script>
-        <div class="row-fluid">
-            <div class="span3">
-                <div class="main_section">   
-                    <div class="column_title_about">{{'main.title.about'|trans}}</div>
-                    <img src="{{ asset('bundles/cptmain/images/a-propos/image-apropos.jpg') }}">
-                    <p class="about_subtitle">{{'main.about.subtitle'|trans|raw}}</p>
-                    <p>{{'main.about.text'|trans|raw}}</p>
-                </div>
-            </div>
-            <div class="span4">
-                <div class="main_section">
-                    <div class="column_title_event">
-                        {{'main.title.events'|trans}}
-                        {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-                            <a id="newevent" class="event_new_btn">{{'main.button.new'|trans}}</a>
-                        {% endif %}
-                    </div>
-                     {# Popup to load with pages (ex: create event, create article #}
-                     <div id="event_calendar">
-                     </div>
-                </div>
-            </div>
-
-            <div class="span5">              
-                <div class="main_section">        
-                    <div class="column_title_article">
-                        {{'main.title.articles'|trans}}
-                        {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-                            <a id='newarticle' class="article_new_btn">{{'main.button.new'|trans}}</a>
-                        {% endif %}
-                    </div>
-                    {# Articles column is rendered here #}
-                    {% render controller("CptBlogBundle:Post:viewAll") %}
-                </div>
-            </div>
-        </div>
-        
-        {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-        {# popup for creating new articles, evt etc. #}
-        <div id="popup_new_event">
-            {# external content to be loaded here #}
-        </div>
-        <div id="popup_new_article">
-        </div>
+        {% if (event is defined) and (eventform is defined) %}
+            {% include 'CptEventBundle:Event:new.html.twig' with {'event' : event, 'eventform' : eventform } %}
+        {% else %}
+            $("#popup_new_event").hide();
+            $("#popup_new_event").load("{{ url('event_new')}}");
         {% endif %}
-        
-        {# to change opacity of the page #}
-        <div id="page_opacity_mask"> 
+    {% endif %}
+
+   // $("#event_calendar").load("{{ url('event_view_calendar')}}");
+
+});
+          
+</script>
+{#
+{#
+{##############################################################################}
+{# HTML
+{##############################################################################}
+<div class="row-fluid">
+    {# ************************************************************************************************************************ #} 
+    {# About Section
+    {#************************************************************************************************************************ #}     
+    <div class="span3">
+         <div class="main_section">   
+            <div class="column_title_about">{{'main.title.about'|trans}}</div>
+            <img src="{{ asset('bundles/cptmain/images/a-propos/image-apropos.jpg') }}">
+            <p class="about_subtitle">{{'main.about.subtitle'|trans|raw}}</p>
+            <p>{{'main.about.text'|trans|raw}}</p>
         </div>
+    </div>
+    {# ************************************************************************************************************************ #} 
+    {# Event Section
+    {#************************************************************************************************************************ #}     
+    <div class="span4">
+        <div class="main_section">
+            <div class="column_title_event">
+                {{'main.title.events'|trans}}
+                {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                    <a id="newevent" class="event_new_btn">{{'main.button.new'|trans}}</a>
+                {% endif %}
+            </div>
+             {# Popup to load with pages (ex: create event, create article #}
+             <div id="event_calendar">
+             </div>
+        </div>
+    </div>
+    {# ************************************************************************************************************************ #} 
+    {# Articles Section
+    {#************************************************************************************************************************ #}     
+    <div class="span5">              
+    {% render controller("CptBlogBundle:Post:viewAll") %}
+    </div>
+</div>
+
+{% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+{# popup for creating new articles, evt etc. #}
+<div id="popup_new_event">
+    {# external content to be loaded here #}
+</div>
+{% endif %}
+{# ************************************************************************************************************************ #} 
+{# Opacity Mask
+{#************************************************************************************************************************ #}     
+<div id="page_opacity_mask"> 
+</div>
         
 {% endblock %}

@@ -10,7 +10,7 @@ $(function() {
     AjaxForm("posteditform", prepare_postform_submission, save_post_callback)
         
     $('#delete_post_button').click(function() {
-            ModalDialog(delete_article, "{{ 'article.delete.popuptitle'|trans }}", "{{ 'article.delete.popupcontent'|trans }}", "{{ 'article.delete.okbutton'|trans }}", "{{ 'article.delete.cancelbutton'|trans }}");
+            ModalDialog(delete_article, null, "{{ 'article.delete.popuptitle'|trans }}", "{{ 'article.delete.popupcontent'|trans }}", "{{ 'article.delete.okbutton'|trans }}", "{{ 'article.delete.cancelbutton'|trans }}");
      });
      
      $('#createarticle').click(function(){

@@ -130,3 +130,9 @@ hr.alaune{
 .post_separator{
     height: 50px;
 }
+
+.article_contextmenu{
+    width: 100px;
+    margin-left:0px;
+    margin-top:0px;
+}

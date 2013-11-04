@@ -39,15 +39,15 @@
 {#****************************************************************************#}
           <script>
             var modal_dialog_result = null;
-            function ModalDialog(callback_function, title, text, buttonOK_text, buttonCANCEL_text, button3_text)
+            function ModalDialog(callback_function, callbackdata, title, text, buttonOK_text, buttonCANCEL_text, button3_text)
             {
                 var buttons = Array();
                 if (buttonOK_text)  
-                    buttons.push({ text: buttonOK_text, click: function() { $( this ).dialog( "close" ); if (callback_function) {callback_function(true); }} } );
+                    buttons.push({ text: buttonOK_text, click: function() { $( this ).dialog( "close" ); if (callback_function) {callback_function(true, callbackdata); }} } );
                 if (buttonCANCEL_text)
-                    buttons.push({ text: buttonCANCEL_text, click: function() { $( this ).dialog( "close" ); if (callback_function) {callback_function(false);  } } });
+                    buttons.push({ text: buttonCANCEL_text, click: function() { $( this ).dialog( "close" ); if (callback_function) {callback_function(false, callbackdata);  } } });
                 if (button3_text)
-                    buttons.push({ text: button3_text, click: function() { $( this ).dialog( "close" ); if (callback_function) {callback_function(3);  } } });
+                    buttons.push({ text: button3_text, click: function() { $( this ).dialog( "close" ); if (callback_function) {callback_function(3, callbackdata);  } } });
                 
                 $( "#modal_dialog" ).dialog( "open" );
                 
@@ -82,15 +82,15 @@
                 $.ajaxSetup({
                     error: function(jqXHR, textStatus, errorThrown ) {
                         if (jqXHR.status === 0) {
-                            ModalDialog(null, "Non connecté", "Une erreur est subvenue.<BR/>Reconnectez-vous et essayez encore.", "Ok");
+                            ModalDialog(null, null, "Non connecté", "Une erreur est subvenue.<BR/>Reconnectez-vous et essayez encore.", "Ok");
                         } else if (jqXHR.status === 401) {
-                        ModalDialog(RedirectHome, "Session expirée", "Votre session a expiré.<br/>Vous allez être redirigé(e) vers la page d'accueil.<br/>Toutes modifications non enregistrées seront perdues.", "Ok");
+                        ModalDialog(RedirectHome, null, "Session expirée", "Votre session a expiré.<br/>Vous allez être redirigé(e) vers la page d'accueil.<br/>Toutes modifications non enregistrées seront perdues.", "Ok");
                         } else if (jqXHR.status === 404) {
-                            ModalDialog(RedirectHome, "Ressource inexistante", "Vous tentez d'accéder à une ressource qui n'existe pas.<br/>Vous allez être redirigé(e) vers la page d'accueil.<br/>Toutes modifications non enregistrées seront perdues.", "Ok");
+                            ModalDialog(RedirectHome, null, "Ressource inexistante", "Vous tentez d'accéder à une ressource qui n'existe pas.<br/>Vous allez être redirigé(e) vers la page d'accueil.<br/>Toutes modifications non enregistrées seront perdues.", "Ok");
                         } else if (jqXHR.status === 500) {
-                            ModalDialog(RedirectHome, "Erreur", "Une erreur s'est produite sur le serveur.<br/>Vous allez être redirigé(e) vers la page d'accueil.<br/>Toutes modifications non enregistrées seront perdues.", "Ok");
+                            ModalDialog(RedirectHome, null, "Erreur", "Une erreur s'est produite sur le serveur.<br/>Vous allez être redirigé(e) vers la page d'accueil.<br/>Toutes modifications non enregistrées seront perdues.", "Ok");
                         } else {
-                            ModalDialog(RedirectHome, "Erreur", "Une erreur s'est produite<br/>Vous allez être redirigé(e) vers la page d'accueil.<br/>Toutes modifications non enregistrées seront perdues.", "Ok");
+                            ModalDialog(RedirectHome, null, "Erreur", "Une erreur s'est produite<br/>Vous allez être redirigé(e) vers la page d'accueil.<br/>Toutes modifications non enregistrées seront perdues.", "Ok");
                         }
                         
                         {% if app.environment == 'dev' %}
@@ -194,7 +194,7 @@
                     flash[{{ key }}] = "{{ flash }}";
                 {% endfor %}
                 if (flash.length>0)
-                    ModalDialog(null, flash[0], flash[1], "Ok");
+                    ModalDialog(null, null, flash[0], flash[1], "Ok");
                 }); 
          </script>
           <div id="modal_dialog" title="">

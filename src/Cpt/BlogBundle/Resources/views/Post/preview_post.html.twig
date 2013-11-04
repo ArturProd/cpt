@@ -6,17 +6,38 @@
 {# OnLoad
 {#****************************************************************************#}
  $(function() {
-    {# Retreives comments for this post and add them to the form#}
+    {#****************************************************************************#}
+    {# Retreives comments for this post and add them to the form
+    {#****************************************************************************#}
      $.get( "{{ url('get_comment_plainhtml', { 'postId': post.id }) }}", function( data ) {    
        
            $("#comment_placeholder_{{ post.id }}").append(data);
            $('#button_showhide_comment_{{ post.id }}').show();
 
      });
-     
+    {#****************************************************************************#}     
+    {# Clicking on the post header triggers an accordion (slidup / slidedown of posts
+    {#****************************************************************************#}
      $("#post_header{{post.id}}").on("click", function(){
          toogle_article({{post.id}},500);
      });
+     
+     {#****************************************************************************#}
+     {# Enable context menu to modify a post #}
+     {#****************************************************************************#}
+     {% if post.canbemodified %}
+     $("#post_header{{post.id}}").hover(
+        function(){
+             $( "#contextmenucontainer{{post.id}}" ).show();
+        },
+        function(){
+            $( "#contextmenucontainer{{post.id}}" ).hide();
+        }
+     );
+     
+     $( "#contextmenucontainer{{post.id}}" ).hide();
+     $( "#contextmenu{{post.id}}" ).menu();
+     {% endif %}
 });
 </script>
 
@@ -34,6 +55,13 @@
     <div class="post_header_title  {{post.publishedhomepage ? 'alaune' : '' }}">{{ post.title|upper }}</div>
     <div class="post_header_commentcount">{{ post.commentsCount }}</div>
     <div class="post_header_author">{{ post.author }}</div>
+    {% if post.canbemodified %}
+    <div id="contextmenucontainer{{post.id}}" class="article_contextmenu">
+        <ul id="contextmenu{{post.id}}" class="article_contextmenu">
+            <li><a onclick="ModifyPost({{post.id}})"><span class="ui-icon ui-icon-wrench"></span>Modifier</a></li>
+        </ul>
+    </div>
+    {% endif %}
 </div>
 {#****************************************************************************#}
 {# Post Body (Content etc.)
@@ -43,10 +71,10 @@
     {% if post.CanBeModified %}
             <!--button onclick="parent.location='{{ url('cpt_blog_post_edit', { 'id': post.id }) }}'" class="btn btn-success btn-small pull-right">Editer</button!-->
     {% endif %}
-    {#****************************************************************************#}
-    {# Comments
-    {#****************************************************************************#}
 </div>
-    {% render controller("CptBlogBundle:Comment:comments", { 'postId': post.id }) %}
+{#****************************************************************************#}
+{# Comments
+{#****************************************************************************#}
+{% render controller("CptBlogBundle:Comment:comments", { 'postId': post.id }) %}
 
 

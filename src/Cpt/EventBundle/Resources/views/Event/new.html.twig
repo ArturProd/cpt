@@ -270,7 +270,7 @@ function UpdateMaxNumberParticipant()
      
     if (isNaN(value)) {# check if a number was entered #}
     {
-        ModalDialog(null, "{{'form.not_valid_number.title'|trans}}", "{{'form.not_valid_number.content'|trans|raw}}", "{{'form.ok'|trans}}");
+        ModalDialog(null, null, "{{'form.not_valid_number.title'|trans}}", "{{'form.not_valid_number.content'|trans|raw}}", "{{'form.ok'|trans}}");
         $('#event_maxnumattendees').val(Max_number_participant);
     }
     else
@@ -359,7 +359,7 @@ function AddRowToTable(reservation)
             var value = parseInt(raw_value );
             if (isNaN(value)) {# check if a number was entered #}
             {
-                ModalDialog(null, "{{'form.not_valid_number.title'|trans}}", "{{'form.not_valid_number.content'|trans|raw}}", "{{'form.ok'|trans}}");
+                ModalDialog(null, null, "{{'form.not_valid_number.title'|trans}}", "{{'form.not_valid_number.content'|trans|raw}}", "{{'form.ok'|trans}}");
                 $(this).val(reservation.numparticipants);
             } 
             else 
@@ -472,7 +472,7 @@ function CheckEventWasUpdated() {
         $.getJSON('{{ url('event_was_updated', { 'id': event.id, 'unixtimestamp': event.UpdatedAt | date('U') })  }}', function(data) {
             wasupdated = JSON.parse(data);
             if (wasupdated)
-                ModalDialog(ReLoadEvent, "{{'event.changes_detected.title'|trans}}", "{{'event.changes_detected.content'|trans|raw}}", "{{'form.ok'|trans}}");
+                ModalDialog(ReLoadEvent, null, "{{'event.changes_detected.title'|trans}}", "{{'event.changes_detected.content'|trans|raw}}", "{{'form.ok'|trans}}");
             else
                 setTimeout("CheckEventWasUpdated()",15000);
         });
@@ -515,7 +515,7 @@ function InitializeEventPage()
                 checked = ($(this).is(':checked'));
                 if (!checked)
                     {
-                        ModalDialog(HandleRegistrationAllowed, "{{'event.no_reservation.title'|trans}}", "{{'event.no_reservation.content.begin'|trans|raw}}{%if event.id != -1 %}{{'event.no_reservation.content.attendees_alert'|trans|raw}}{% endif %}{{'event.no_reservation.content.end'|trans|raw}}", "{{'event.no_reservation.yes'|trans}}", "{{'event.no_reservation.no'|trans}}");
+                        ModalDialog(HandleRegistrationAllowed, null, "{{'event.no_reservation.title'|trans}}", "{{'event.no_reservation.content.begin'|trans|raw}}{%if event.id != -1 %}{{'event.no_reservation.content.attendees_alert'|trans|raw}}{% endif %}{{'event.no_reservation.content.end'|trans|raw}}", "{{'event.no_reservation.yes'|trans}}", "{{'event.no_reservation.no'|trans}}");
                         return false;
                     }
                     else
