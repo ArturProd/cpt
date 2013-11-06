@@ -24,6 +24,9 @@ $(function() {
      
 });
 
+{#***********************************************#}
+{# Prepare form for post submission
+{#***********************************************#}
 function prepare_postform_submission()
 {
     CKEDITOR.instances['post_rawcontent'].updateElement();                {# update the entity field with CKEDIOR content #}
@@ -36,28 +39,29 @@ function delete_article(confirmed)
 {
     if (confirmed)
     {
-        AjaxPostForm('delete_post_form', null, delete_article_callback);
+        AjaxPostForm('delete_post_form', null, function(response){
+            ArticlePopupDisplay(false);
+        });
     }
-}
-
-{#***********************************************#}
-{# Deletes current article => Postback #}
-{#***********************************************#}
-function delete_article_callback(data)
-{
-    alert(data);
 }
 
 {#***********************************************#}
 {# Callback after Save the current post
 {#***********************************************#}
-function save_post_callback(data)
+function save_post_callback(response)
 {
-    alert(data);
+    if (response.status==="ok")
+    {
+        post = response.data;           {# in case of success, data contains an array with at least element post.id #}
+        ArticlePopupDisplay(false);
+        getAndAddPost(post);
+    }
+    else
+        load_post_popup(response.data); {# in case of failure (invalid form..), data will contain the form as html #}
 }
 </script>
 
-    <form action="{{ url('cpt_blog_post_delete', { 'id': post.id, '_locale': app.request.locale })}}" method="POST" id="delete_post_form" style="display:none;" ></form>
+<form action="{{ url('cpt_blog_post_delete', { 'id': post.id, '_locale': app.request.locale })}}" method="POST" id="delete_post_form" style="display:none;" ></form>
 
 
 {{ form_start(posteditform, {'action': path('cpt_blog_post_edit', { 'id': post.id }), 'method': 'POST' }) }}

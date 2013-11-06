@@ -73,7 +73,7 @@ class PostController extends BaseController
         $pageresult = $pager->getResults();
         $idarray = array();
         foreach($pageresult as $post)
-            $viewarray[] = Array('id' => $post->getId(), 'publishhomepage' => $post->getPublishedHomePage());
+            $viewarray[] = $this->getPostViewData($post);
             //$postarray[$post->getId()] = $post->toViewArray();
         
         return $this->CreateJsonResponse($viewarray);
@@ -184,14 +184,16 @@ class PostController extends BaseController
         ));
     }
  */   
-    public function editPostAction(Request $request)
+    public function editPostAction(Request $request, $id=null)
     {
         $this->RestrictAccessToAjax();
         $this->RestrictAccessToLoggedIn();
         
         // Get the id of the post to edit
-        $id = $this->getRequest()->get('postid');   
-            if ((!empty($id))&&(!is_numeric($id))) // $id must be null or numeric
+        if (empty($id)) // Try to get the id either from the url, or from request
+            $id = $this->getRequest()->get('postid');   
+        
+        if ((!empty($id))&&(!is_numeric($id))) // $id must be null or numeric
                 $this->RestrictResourceNotFound($id);
             
         $user= $this->getUser();
@@ -226,8 +228,6 @@ class PostController extends BaseController
             ;
         }
         
-        $status = "ok";
-        
         if ($request->isMethod('POST')) {
            
             $form->bind($request);
@@ -241,12 +241,12 @@ class PostController extends BaseController
 
              if ($form->isValid()) {            
                 $this->getPostManager()->save($post);
-                return $this->CreateJsonResponse(Array('status' => 'ok', 'data' => null));
+                return $this->CreateJsonResponse($this->GetPostViewData($post));
             } else
-                return $this->CreateJsonResponse(Array('status' => 'failed', 'data' => $this->GetPostEditView($post, $form)));
+                return $this->CreateJsonResponse($this->GetPostEditView($post, $form), BaseController::JsonResponseFailed);
         }
 
-        return $this->CreateJsonResponse(Array('status' => 'ok', 'data' => $this->GetPostEditView($post, $form)));
+        return $this->CreateJsonResponse($this->GetPostEditView($post, $form));
     }
     
     public function deletePostAction($id)
@@ -388,6 +388,10 @@ class PostController extends BaseController
     
     // </editor-fold>
     
+    protected function GetPostViewData($post)
+    {
+        return Array('id' => $post->getId(), 'publishhomepage' => $post->getPublishedHomePage());
+    }
 
     protected function GetPostEditView($post, $form)
     {

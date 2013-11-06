@@ -48,10 +48,13 @@ function getPostList(){
     $('#homepage_aticles').hide();
     $('#loadingarticles').hide().fadeIn(2000);
 
-    $.getJSON( "{{ url('cpt_blog_getjsonlist') }}", function( data ) {
-        post_list = data;
-        for(i = 0; i<data.length ; ++i)
-            getAndAddPost(data[i]);
+    $.getJSON( "{{ url('cpt_blog_getjsonlist') }}", function( response ) {
+        if (response.status!=="ok")
+            return;
+        
+        post_list = response.data;
+        for(i = 0; i<post_list.length ; ++i)
+            getAndAddPost(post_list[i]);
    });
 }
 
@@ -60,6 +63,10 @@ function getPostList(){
 {#**************************************************************************#}
 function getAndAddPost(post)
 {
+   {# if the post container already exists, delete it #}
+   //if ($('postcontainer'+post.id)!==null)
+    $('#postcontainer'+post.id).remove();
+    
    {# add the div container for this post #}
     if (post.publishhomepage)
     { {# "A la une" posts #}
@@ -76,8 +83,10 @@ function getAndAddPost(post)
         }).appendTo('#articles');                
     }
     {# retreive post view from server and add it to container #}
-    $.get( "{{ url('cpt_blog_post_getjsonview') }}", {id:post.id} , function( data ) {
-        $( "#postcontainer" + post.id ).html( data );
+    $.get( "{{ url('cpt_blog_post_getjsonview') }}", {id:post.id} , function( response ) {
+        
+        if (response.status === "ok")
+            $( "#postcontainer" + post.id ).html( response.data );
         
         {# if this is the last one to be retreive, prepare the accordion #}
         count_article_loaded ++;
@@ -106,41 +115,36 @@ function ArticlePopupDisplay(visible)
         $("#popup_new_article").hide();
 }
 {#****************************************************************************#}
-{# Loads the popup to Modify an article
+{# Loads the post popup with a given html content
 {#****************************************************************************#}
-function ModifyPost(postid)
+function load_post_popup(html)
 {
-    $.getJSON('{{ url('cpt_blog_post_new')}}', {postid:postid}, function(response) {
-        $("#popup_new_article").html(response.data);
+        $("#popup_new_article").html(html);
         ArticlePopupDisplay(true);
-        window.scrollTo(0, 0);
-    }); 
+        window.scrollTo(0, 0);    
 }
 {#****************************************************************************#}
-{# Prepares the popup to create a new article
+{# Loads the popup to Create or Modify an article. Pass null as postid to create a new article
 {#****************************************************************************#}
-function PrepareNewPostPopup()
+function EditPost(postid)
 {
-    $.getJSON('{{ url('cpt_blog_post_new')}}', {}, function(response) {
-        $("#popup_new_article").html(response.data);
+    $.getJSON('{{ url('cpt_blog_post_edit')}}', {postid:postid}, function(response) {
+        load_post_popup(response.data);
     }); 
-    
-    $("#popup_new_article").hide();
 }
 {#**************************************************************************#}
 {# Onload
 {#**************************************************************************#}
 $(function() {
     getPostList();
-    
+
+    {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}        
     {# Articles Dialog Setup #}
     $("a#newarticle").on("click", function(){
-        ArticlePopupDisplay(true);
+        EditPost(null);
    });
 
-    {# Load the postedit page #}
-    {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}        
-        PrepareNewPostPopup();
+    ArticlePopupDisplay(false);
     {% endif %}
 });
 </script>

@@ -9,7 +9,15 @@ function get_more_comments(postid, howmany, callback)
         older_comment_ids[postid] = null;
             
     {# Get Comment array as a json object #}
-    $.getJSON('{{ url('cpt_comment_list_json')}}', {postid:postid, howmany:howmany, beforeid:older_comment_ids[postid]}, function(comments) {
+    $.getJSON('{{ url('cpt_comment_list_json')}}', {postid:postid, howmany:howmany, beforeid:older_comment_ids[postid]}, function(response) {
+        if (response.status!=='ok')
+        {
+            no_more_older_comments(postid,0); {# if for some reason the response is not ok, hide the button to get more commments #}
+            return;
+        }
+        
+        comments = response.data;
+        
         for (i=0; i<comments.length; ++i)
             append_comment(comments[i]); {# Append each comment to the DOM #}
         
@@ -60,9 +68,13 @@ function get_comment_dom(comment)
 {#****************************************************************************#}
 {# handles the submition of a new comment 
 {#****************************************************************************#}
-function comment_submit_callback(comment)
+function comment_submit_callback(response)
 {
-    prepend_comment(comment);                                {# add the new comment to the DOM #}
+    if (response.status === "ok")
+    {
+        comment = response.data;
+        prepend_comment(comment);                                {# add the new comment to the DOM #}
+    }
     DisableControls('form_comment_'+comment.postid, true);  {#re-enable comment submission controls #}
  }
 {#****************************************************************************#}
@@ -74,7 +86,7 @@ function delete_comment(commentid)
 
     $('#comment_delete_button_'+commentid).attr("disabled", "disabled");
 
-     $.post('{{ url('sonata_news_delete_comment') }}',  {id:id} , function(html){
+     $.post('{{ url('sonata_news_delete_comment') }}',  {id:id} , function(response){
                 $('#comment_'+commentid).html('');
                 $('#comment_'+commentid).slideUp();
         });

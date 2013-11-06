@@ -10,11 +10,14 @@ use Symfony\Component\Security\Core\Role\Role;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class BaseController extends Controller {
+
+    const JsonResponseOk = "ok";
+    const JsonResponseFailed = "failed";
     
-    public function CreateJsonResponse($data)
+    public function CreateJsonResponse($data = null, $status = BaseController::JsonResponseOk)
     {
       $response = new JsonResponse();
-      $response->setData($data);
+      $response->setData(Array("data" => $data, "status" => $status));
       return $response;
     }
     

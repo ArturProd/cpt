@@ -9,9 +9,9 @@
     {#****************************************************************************#}
     {# Retreives comments for this post and add them to the form
     {#****************************************************************************#}
-     $.get( "{{ url('get_comment_plainhtml', { 'postId': post.id }) }}", function( data ) {    
+     $.get( "{{ url('get_comment_plainhtml', { 'postId': post.id }) }}", function( response ) {    
        
-           $("#comment_placeholder_{{ post.id }}").append(data);
+           $("#comment_placeholder_{{ post.id }}").append(response.data);
            $('#button_showhide_comment_{{ post.id }}').show();
 
      });
@@ -26,7 +26,7 @@
      {# Enable context menu to modify a post #}
      {#****************************************************************************#}
      {% if post.canbemodified %}
-     $("#post_header{{post.id}}").hover(
+     $("#post_header{{post.id}}").hover({# on hover on/off post header, show or hide the menu #}
         function(){
              $( "#contextmenucontainer{{post.id}}" ).show();
         },
@@ -35,8 +35,8 @@
         }
      );
      
-     $( "#contextmenucontainer{{post.id}}" ).hide();
-     $( "#contextmenu{{post.id}}" ).menu();
+     $( "#contextmenucontainer{{post.id}}" ).hide(); {# hide menu by default #}
+     $( "#contextmenu{{post.id}}" ).menu(); {# call jquery ui to make a menu #}
      {% endif %}
 });
 </script>
@@ -58,7 +58,7 @@
     {% if post.canbemodified %}
     <div id="contextmenucontainer{{post.id}}" class="article_contextmenu">
         <ul id="contextmenu{{post.id}}" class="article_contextmenu">
-            <li><a onclick="ModifyPost({{post.id}})"><span class="ui-icon ui-icon-wrench"></span>Modifier</a></li>
+            <li><a onclick="EditPost({{post.id}})"><span class="ui-icon ui-icon-wrench"></span>Modifier</a></li>
         </ul>
     </div>
     {% endif %}
