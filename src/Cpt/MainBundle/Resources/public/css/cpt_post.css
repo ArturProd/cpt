@@ -7,20 +7,7 @@
     margin-bottom: 5px;
 }
 
-.post_header{
-    display: block;
-    font-size: 12px;
-    width:auto;
-    height: 16px;
-    margin-top:6px;
-    padding: 0px;
-    
-    cursor:  pointer;
-}
 
-.post_header:hover .post_header_arrow{
-     background: url('../images/articles/fleche-articles.png') no-repeat;
-}
 
 hr.alaune{
     border-top-width: 1px;
@@ -30,6 +17,7 @@ hr.alaune{
     margin-bottom: 10px;
 }
 
+/** Header labels (Date  Titre CommentCount ..) **/
 .alaune_label{
     margin-bottom: 0px;
     padding-bottom: 0px;
@@ -67,6 +55,22 @@ hr.alaune{
 
 .post_commentcount_label{
     float: right;
+}
+
+/** Post Header **/
+.post_header{
+    display: block;
+    font-size: 12px;
+    width:auto;
+    height: 16px;
+    margin-top:6px;
+    padding: 0px;
+    
+    cursor:  pointer;
+}
+
+.post_header:hover .post_header_arrow{
+     background: url('../images/articles/fleche-articles.png') no-repeat;
 }
 
 .post_header_arrow,
@@ -114,6 +118,7 @@ hr.alaune{
     float: right;
 }
 
+/** Post Body **/
 .post_body{
   
     margin-top:0px;
@@ -123,6 +128,7 @@ hr.alaune{
     width: 90%;
     margin-right: 5%;
     margin-left: 5%;
+    overflow: hidden;
 
 }
 
@@ -131,8 +137,52 @@ hr.alaune{
     height: 50px;
 }
 
+/* Context Menu **/
 .article_contextmenu{
     width: 100px;
     margin-left:0px;
     margin-top:0px;
+}
+
+/** Pagination **/
+.post_pagination{
+    list-style: none;
+}
+
+.post_pagination li{
+    display: inline-block;
+    alignment-adjust: central;
+    min-width: 23px;
+    min-height: 30px;
+    margin: 15px;
+}
+
+.post_pagination a{
+        display: inline-block;
+        color: grey;
+        text-decoration: none;
+        font-size: 14px;
+        min-width: 23px;
+        min-height: 30px;
+}
+
+.post_pagination_leftarrow{
+    background: url('../images/articles/fleche-defilement-gauche-articles.png') no-repeat  !important;
+    background-position: center;
+    height: 11px;
+    width: 6px;
+    border-style: none;
+}
+
+.post_pagination_rightarrow{
+    background: url('../images/articles/fleche-defilement-droite-articles.png') no-repeat !important;
+    background-position: center;
+    height: 11px;
+    width: 6px;
+    border-style: none;
+}
+
+.post_pagination_currentpage{
+        background: url('../images/articles/marquage-page-article.png') no-repeat;
+        color: white !important;
 }

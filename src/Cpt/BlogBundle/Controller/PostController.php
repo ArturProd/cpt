@@ -50,10 +50,19 @@ class PostController extends BaseController
         return $response;
     }
     
-    public function getArticleListAction($page=1, $enableonly=true, $foruserid = null)
+    public function getArticleListAction()
     {        
         // Only ajax requests
         $this->RestrictAccessToAjax();
+        
+        // page can be sent from request
+        $page = $this->GetNumericParameter('page', 1);
+        $enableonly = $this->GetBoolParameter('enableonly', true);
+        $forcurrentuser = $this->GetBoolParameter('forcurrentuser', false);
+        $alaune = $this->GetBoolParameter('alaune', false);
+
+        if ($forcurrentuser) // If we want to get posts for current user, he has to be logged in
+            $this->RestrictAccessToLoggedIn ();
         
         // Only admin user can see all posts including not enabled
         if ($this->isUserAdmin())
@@ -62,21 +71,26 @@ class PostController extends BaseController
             $criteria['enabled'] = true;
         
         // Filter by user (author) if required
-        if ($foruserid)
-            $criteria['author'] = $foruserid;
+        if ($forcurrentuser)
+            $criteria['author'] = $this->getUser()->getId();
+                
+        $criteria['publishedhomepage'] = $alaune;
                 
         $pager = $this->getPostManager()->getPager(
             $criteria,
-            $page
+            $page,
+            2
         ); 
-        
+        $pager->setMaxPageLinks(5);
         $pageresult = $pager->getResults();
-        $idarray = array();
-        foreach($pageresult as $post)
-            $viewarray[] = $this->getPostViewData($post);
-            //$postarray[$post->getId()] = $post->toViewArray();
+        $post_viewarray = array();
         
-        return $this->CreateJsonResponse($viewarray);
+        foreach($pageresult as $post)
+            $post_viewarray[] = $this->getPostViewData($post);
+            //$postarray[$post->getId()] = $post->toViewArray();
+        $pagerview = $this->GetPagerViewData($pager);
+        
+        return $this->CreateJsonResponse(Array('posts' => $post_viewarray, 'pager' => $pagerview));
     }
  
     /*
@@ -391,6 +405,22 @@ class PostController extends BaseController
     protected function GetPostViewData($post)
     {
         return Array('id' => $post->getId(), 'publishhomepage' => $post->getPublishedHomePage());
+    }
+    
+    protected function GetPagerViewData($pager)
+    {
+        return Array(
+            'page' => $pager->getPage(),
+            'havetopaginate' => $pager->haveToPaginate(),
+            'firstpage' => $pager->getFirstPage(),
+            'lastpage' => $pager->getLastPage(),
+            'maxpagelinks' => $pager->getMaxPageLinks(),
+            'nextpage' => $pager->getNextPage(),
+            'previouspage' => $pager->getPreviousPage(),
+            'links' => $pager->getLinks(),
+            'isfirstpage' => $pager->isFirstPage(),
+            'islastpage' => $pager->isLastPage()
+        );
     }
 
     protected function GetPostEditView($post, $form)

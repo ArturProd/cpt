@@ -14,6 +14,36 @@ class BaseController extends Controller {
     const JsonResponseOk = "ok";
     const JsonResponseFailed = "failed";
     
+    public function GetNumericParameter($parametername,  $defaultvalue = null, $parameteractualvalue = null)
+    {
+        $result = $parameteractualvalue;
+        if (is_null($parameteractualvalue))
+            $result = $this->getRequest()->get($parametername, $defaultvalue);   
+
+        if (is_null($result))
+            $result = $defaultvalue;
+        
+        if (!is_numeric($result))
+            $this->RestrictPageNotFound();
+        
+        return $result;
+    }
+    
+    public function GetBoolParameter($parametername,  $defaultvalue = null, $parameteractualvalue = null)
+    {
+        $result = $parameteractualvalue;
+        if (is_null($parameteractualvalue))
+            $result = $this->getRequest()->get($parametername, $defaultvalue);
+        
+        if (is_null($result))
+            $result = $defaultvalue;
+        
+        if (!is_bool($result))
+            $this->RestrictPageNotFound();
+    
+        return $result;
+    }
+    
     public function CreateJsonResponse($data = null, $status = BaseController::JsonResponseOk)
     {
       $response = new JsonResponse();
@@ -40,10 +70,17 @@ class BaseController extends Controller {
         $response->send();
     }
     
+    
+    
     public function RestrictResourceNotFound($ressource=null)
     {
         if (!$ressource)
             throw new SymfonyException\NotFoundHttpException("Resource not found.");
+    }
+    
+    public function RestrictPageNotFound($message = "Page not found")
+    {
+        throw new Symfony\Component\HttpKernel\Exception\NotFoundHttpException($message);
     }
     
     public function RestrictAccessToAjax()

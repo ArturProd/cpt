@@ -8,11 +8,9 @@
         <default key="_controller">CptBlogBundle:Post:home</default>
     </route>
     
-    <route id="cpt_blog_getjsonlist" pattern="/jsonlist/{page}">
+    <route id="cpt_blog_getarticlelist" pattern="/jsonlist">
         <default key="_controller">CptBlogBundle:Post:getArticleList</default>
         <requirement key="_method">GET|POST</requirement>
-        <requirement key="page">\d+</requirement>
-        <default key="page">1</default>
     </route>
 
     <route id="cpt_blog_post_getjsonview" pattern="/postview">

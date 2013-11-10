@@ -8,7 +8,13 @@
 
 <script type="text/javascript">
 
-var post_list = [ ];
+var post_list = [ ];    {# the actual post list (retreived from ajax request #}
+var post_pager = [ ];   {# data used to paginate the post list (retreived from ajax request) #}
+var pagination_currentpage = 1;
+var pagination_currentfirstshown = 1;
+var pagination_lastpage = 1;
+var pagination_maxlinks = 1;
+
 count_article_loaded = 0;
 {#****************************************************************************#}
 {# Show or hide an article
@@ -43,18 +49,25 @@ function toogle_article(id,speed)
 {#**************************************************************************#}
 {# Retreives an array of post id from server, and call getAndAddPost
 {#**************************************************************************#}
-function getPostList(){
+function getPostList(page){
+
+    count_article_loaded = 0;
+
+    $('#articles').empty();
     $('#articles').hide();
     $('#homepage_aticles').hide();
     $('#loadingarticles').hide().fadeIn(2000);
 
-    $.getJSON( "{{ url('cpt_blog_getjsonlist') }}", function( response ) {
+    $.getJSON( "{{ url('cpt_blog_getarticlelist') }}", {page:page}, function( response ) {
         if (response.status!=="ok")
             return;
         
-        post_list = response.data;
+        post_list = response.data.posts;
+        post_pager = response.data.pager;
         for(i = 0; i<post_list.length ; ++i)
             getAndAddPost(post_list[i]);
+        
+        CreatePagination();
    });
 }
 
@@ -84,7 +97,6 @@ function getAndAddPost(post)
     }
     {# retreive post view from server and add it to container #}
     $.get( "{{ url('cpt_blog_post_getjsonview') }}", {id:post.id} , function( response ) {
-        
         if (response.status === "ok")
             $( "#postcontainer" + post.id ).html( response.data );
         
@@ -92,7 +104,7 @@ function getAndAddPost(post)
         count_article_loaded ++;
         if (count_article_loaded === post_list.length) {# finished loading all articles #}
         {
-            toogle_article(post_list[0].id,500);
+            toogle_article(post_list[0].id,0);
             $('#articles').show();
             $('#homepage_aticles').show();
             $('#loadingarticles').hide();
@@ -132,11 +144,80 @@ function EditPost(postid)
         load_post_popup(response.data);
     }); 
 }
+{#****************************************************************************#}
+{# Creates pagination links
+{#****************************************************************************#}
+function CreatePagination()
+{
+    $('#postpagination').hide();
+    $('#postpagination').empty();
+    
+    {# if we have to display the pagination bar #}
+    if (post_pager.havetopaginate)
+    {
+        if (pagination_currentfirstshown !== post_pager.firstpage) {# if we are not already showing the first page, show the left arrow #}
+            $('<li/>').html( "<a onclick='pagination_showpreviouslinks();'><img class='post_pagination_leftarrow'></img></a>").appendTo('#postpagination')
+        else
+            $('<li/>').appendTo('#postpagination');
+        
+        last_displayed_page = pagination_getlastdisplayedlink();
+        
+        for (i=pagination_currentfirstshown;i<last_displayed_page;++i) {# display the navigation links #}
+        {
+            listitem = $('<li/>', {
+
+            }).html( "<a href='#' onclick='getPostList(" + i + ");'>" + i + "</a>");
+            
+            if (i===post_pager.page)
+                listitem.addClass("post_pagination_currentpage");
+        
+            listitem.appendTo('#postpagination');
+        
+        }
+        
+        if (last_displayed_page < post_pager.lastpage) {# if the link to last page is not already displayed, display the right arrow #}
+            $('<li/>').html( "<a onclick='pagination_shownextlinks();'><img class='post_pagination_rightarrow'></img></a>").appendTo('#postpagination');
+        else
+            $('<li/>').appendTo('#postpagination');
+        
+
+        $('#postpagination').show();
+    }
+}
+{#****************************************************************************#}
+{# Shifts pagination links to show the next pages in the pagination bar
+{#****************************************************************************#}
+function pagination_shownextlinks()
+{
+    if (pagination_getlastdisplayedlink()<post_pager.lastpage)
+    {
+        pagination_currentfirstshown++;
+        CreatePagination();    
+    }
+}
+{#****************************************************************************#}
+{# Shifts pagination links to show the previous pages in the pagination bar
+{#****************************************************************************#}
+function pagination_showpreviouslinks()
+{
+    if (pagination_currentfirstshown>1)
+    {
+        pagination_currentfirstshown--;
+        CreatePagination();
+    }
+}
+{#****************************************************************************#}
+{# Shifts pagination links to show the previous pages in the pagination bar
+{#****************************************************************************#}
+function pagination_getlastdisplayedlink()
+{
+        return Math.min(pagination_currentfirstshown+post_pager.maxpagelinks, post_pager.lastpage);    
+}
 {#**************************************************************************#}
 {# Onload
 {#**************************************************************************#}
 $(function() {
-    getPostList();
+    getPostList(1);
 
     {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}        
     {# Articles Dialog Setup #}
@@ -168,15 +249,22 @@ $(function() {
     {# preview_post.html.twig => loaded and appened by ajax request #}
     </div>
     {#**************************************************************************#}
-    {# All other articles
+    {# Separator
     {#**************************************************************************#}
-    <div id="articles">
+    <div>
         <hr class="alaune"/>
         <div class="post_date_label">Date</div>
         <div class="post_titre_label">Titre</div>
         <div class="post_commentcount_label">Commentaires</div>
+    </div>
+    {#**************************************************************************#}
+    {# All other articles
+    {#**************************************************************************#}
+    <div id="articles">
         {# preview_post.html.twig => loaded and appened by ajax request #}
     </div>
+    <ul id="postpagination" class="post_pagination">
+    </ul>
     {#**************************************************************************#}
     {# Ajax Loading icon
     {#**************************************************************************#}

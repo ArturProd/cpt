@@ -76,6 +76,7 @@ function comment_submit_callback(response)
         prepend_comment(comment);                                {# add the new comment to the DOM #}
     }
     DisableControls('form_comment_'+comment.postid, true);  {#re-enable comment submission controls #}
+   //$('#form_comment_'+comment.postid).
  }
 {#****************************************************************************#}
 {# handles the deletion of a comment
