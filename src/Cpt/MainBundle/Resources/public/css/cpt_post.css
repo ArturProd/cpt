@@ -147,42 +147,63 @@ hr.alaune{
 /** Pagination **/
 .post_pagination{
     list-style: none;
+    /* Prevent text from being selectable */
+    -webkit-user-select: none; /* Chrome/Safari */        
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* IE10+ */
+
+    /* Rules below not implemented in browsers yet */
+    -o-user-select: none;
+    user-select: none;
 }
 
 .post_pagination li{
     display: inline-block;
     alignment-adjust: central;
-    min-width: 23px;
-    min-height: 30px;
-    margin: 15px;
+    vertical-align: middle;
+    width: 23px;
+    height: 30px;
+    margin: 10px;
 }
 
 .post_pagination a{
         display: inline-block;
+        vertical-align: middle;
+        text-align: center;
         color: grey;
         text-decoration: none;
         font-size: 14px;
         min-width: 23px;
         min-height: 30px;
+        border-style: none;
+        outline : none;
 }
 
 .post_pagination_leftarrow{
-    background: url('../images/articles/fleche-defilement-gauche-articles.png') no-repeat  !important;
-    background-position: center;
+    background: url('../images/articles/fleche-defilement-gauche-articles.png') no-repeat;
+    background-position: 100% 20%;
     height: 11px;
     width: 6px;
     border-style: none;
+    outline : none;
+    border: 0px;
 }
 
 .post_pagination_rightarrow{
-    background: url('../images/articles/fleche-defilement-droite-articles.png') no-repeat !important;
-    background-position: center;
+    background: url('../images/articles/fleche-defilement-droite-articles.png') no-repeat;
+    background-position: 0% 20%;
     height: 11px;
     width: 6px;
     border-style: none;
+    outline : none;
+    border: 0px;
 }
 
 .post_pagination_currentpage{
         background: url('../images/articles/marquage-page-article.png') no-repeat;
         color: white !important;
+}
+
+.post_pagination_currentpage a{
+    color: white;
 }

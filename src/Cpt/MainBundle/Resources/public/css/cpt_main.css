@@ -32,9 +32,18 @@ h1, h2
     filter: dropshadow(color=#ab0000, offx=1, offy=1);
 }
 
+a{
+    outline : none;
+}
+
 a:hover{
    cursor: pointer; cursor: hand; 
 }
+
+a img  
+{  
+border: 0px;  
+}  
 
 .horizontal_list li{
     display: inline;
