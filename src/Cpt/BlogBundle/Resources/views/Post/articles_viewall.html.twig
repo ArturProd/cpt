@@ -14,6 +14,7 @@ var pagination_currentpage = 1;
 var pagination_currentfirstshown = 1;
 var pagination_lastpage = 1;
 var pagination_maxlinks = 1;
+var alaune_opened_article_id = -1; {# id of the alaune article to be opened by default #}
 
 count_article_loaded = 0;
 {#****************************************************************************#}
@@ -29,11 +30,13 @@ function toogle_article(id,speed)
         {
             $( "#comment_section" + id).slideDown(speed);
             $( "#post_body" + id ).slideDown(speed);
+            $( "#post_subheader" + id ).slideDown(speed);
         }
         else
         {
             $( "#comment_section" + id).slideUp(speed);
             $( "#post_body" + id ).slideUp(speed);            
+            $( "#post_subheader" + id ).slideUp(speed);
         }
         
     for (i = 0; i<post_list.length; ++i)
@@ -42,6 +45,7 @@ function toogle_article(id,speed)
         {
             $( "#comment_section" + post_list[i].id).slideUp(speed);
             $( "#post_body" + post_list[i].id ).slideUp(speed);
+            $( "#post_subheader" + post_list[i].id ).slideUp(speed);
         }
     }
 }
@@ -52,6 +56,7 @@ function toogle_article(id,speed)
 function getPostList(page){
 
     count_article_loaded = 0;
+    alaune_opened_article_id = -1;
 
     $('#articles').empty();
     $('#articles').hide();
@@ -89,6 +94,9 @@ function getAndAddPost(post)
             id: 'postcontainer'+post.id,
             class: 'postcontainer'
         }).appendTo('#homepage_aticles');
+        
+        if (alaune_opened_article_id<0)
+            alaune_opened_article_id = post.id;
     }
     else
     { {# Other posts #}
@@ -106,7 +114,8 @@ function getAndAddPost(post)
         count_article_loaded ++;
         if (count_article_loaded === post_list.length) {# finished loading all articles #}
         {
-            toogle_article(post_list[0].id,0);
+            opened_article_id = (alaune_opened_article_id < 0) ? post_list[0].id : alaune_opened_article_id;
+            toogle_article(opened_article_id,0);
             $('#articles').show();
             $('#homepage_aticles').show();
             $('#loadingarticles').hide();
@@ -228,7 +237,7 @@ $(function() {
     {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}        
     {# Articles Dialog Setup #}
     $("a#newarticle").on("click", function(){
-        EditPost(null);
+        EditPost(-1);
    });
 
     ArticlePopupDisplay(false);

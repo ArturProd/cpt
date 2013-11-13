@@ -106,7 +106,7 @@
 {#****************************************************************************#}
 {# Post an Ajax form
 {#****************************************************************************#}            
-            function AjaxPostForm( $form, precall, callback ){
+            function AjaxPostForm( $form, precall, callback, parameters ){
                 if (precall)
                     precall();
                 
@@ -117,7 +117,7 @@
                 $.each( $form.serializeArray(), function(i, field) {
                   values[field.name] = field.value;
                 });
-
+                 
                 /*
                  * Throw the form values to the server!
                  */

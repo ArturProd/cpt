@@ -59,7 +59,7 @@ class PostController extends BaseController
         $page = $this->GetNumericParameter('page', 1);
         $enableonly = $this->GetBoolParameter('enableonly', true);
         $forcurrentuser = $this->GetBoolParameter('forcurrentuser', false);
-        $alaune = $this->GetBoolParameter('alaune', false);
+        //$alaune = $this->GetBoolParameter('alaune', false);
 
         if ($forcurrentuser) // If we want to get posts for current user, he has to be logged in
             $this->RestrictAccessToLoggedIn ();
@@ -73,18 +73,33 @@ class PostController extends BaseController
         // Filter by user (author) if required
         if ($forcurrentuser)
             $criteria['author'] = $this->getUser()->getId();
-                
-        $criteria['publishedhomepage'] = $alaune;
+        
+        $criteria['publishedhomepage'] = false;
+        //$criteria['publishedhomepage'] = $alaune;
                 
         $pager = $this->getPostManager()->getPager(
             $criteria,
             $page,
-            2
-        ); 
+            8
+        );
+        
+         $criteria['publishedhomepage'] = true;
+        $pageralaune = $this->getPostManager()->getPager(
+            $criteria,
+            1,
+            100
+        );
+        
         $pager->setMaxPageLinks(5);
         $pageresult = $pager->getResults();
+        $pageralauneresult = $pageralaune->getResults();
         $post_viewarray = array();
         
+        // First add the alaune articles
+        foreach($pageralauneresult as $post)
+            $post_viewarray[] = $this->getPostViewData($post);
+        
+        // Then add the other ones
         foreach($pageresult as $post)
             $post_viewarray[] = $this->getPostViewData($post);
             //$postarray[$post->getId()] = $post->toViewArray();
@@ -207,14 +222,14 @@ class PostController extends BaseController
         if (empty($id)) // Try to get the id either from the url, or from request
             $id = $this->getRequest()->get('postid');   
         
-        if ((!empty($id))&&(!is_numeric($id))) // $id must be null or numeric
+        if (!is_numeric($id)) // $id must be numeric
                 $this->RestrictResourceNotFound($id);
             
         $user= $this->getUser();
                    
         $post = null;
         
-        if (empty($id))
+        if ($id<0)
         {
             // $id is null => Create a new post
            $post = $this->getPostManager()->create();

@@ -76,11 +76,19 @@ hr.alaune{
 .post_header_arrow,
 .post_header_date,
 .post_header_title,
-.post_header_commentcount,
-.post_header_author{
+.post_header_commentcount
+{
         display: inline-block;
         font-size: 12px;
         vertical-align: middle;
+}
+
+.post_subheader{
+    display: block;
+    width: 100%;
+    float: left;
+    margin-bottom: 5px;
+    margin-left: 15px;
 }
 
 .post_header_arrow{
@@ -112,11 +120,6 @@ hr.alaune{
     float: right;
 }
 
-.post_header_author{
-    width: 30px;
-    margin-right: 5px;
-    float: right;
-}
 
 /** Post Body **/
 .post_body{

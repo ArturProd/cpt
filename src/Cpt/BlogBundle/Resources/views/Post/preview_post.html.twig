@@ -54,7 +54,6 @@
     <div class="post_header_date  {{post.publishedhomepage ? 'alaune' : '' }}">{{post.createdAt|date('d/m') }}</div>
     <div class="post_header_title  {{post.publishedhomepage ? 'alaune' : '' }}">{{ post.title|upper }}</div>
     <div class="post_header_commentcount">{{ post.commentsCount }}</div>
-    <div class="post_header_author">{{ post.author }}</div>
     {% if post.canbemodified %}
     <div id="contextmenucontainer{{post.id}}" class="article_contextmenu">
         <ul id="contextmenu{{post.id}}" class="article_contextmenu">
@@ -63,6 +62,7 @@
     </div>
     {% endif %}
 </div>
+<div class="post_subheader" id="post_subheader{{post.id}}">Par {{ post.author }} le {{post.createdAt|date('d/m/YY')}}</div>
 {#****************************************************************************#}
 {# Post Body (Content etc.)
 {#****************************************************************************#}
