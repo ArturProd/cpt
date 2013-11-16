@@ -5,9 +5,13 @@
 {#----------------------------------------------------------------------------#}
 {# Renders a single comment #}
 <li id='comment_{{comment.id}}'>
-    <ul class="horizontal_list">
-        <li>{{ comment.author }}</li>
-        <li>{{ comment.createdAt | format_date }}</li>
+    <div class="comment_header">
+        <ul class="horizontal_list">
+            <li>{{ comment.author }}</li>
+            <li>{{ comment.createdAt | format_date }}</li>
+        </ul>
+    </div>
+    <ul class="horizontal_list">    
         <li>
             {% if comment.canModify %}
                 <button type="button" onclick="delete_comment({{comment.id}});" id="comment_delete_button_{{comment.id}}">x</button>

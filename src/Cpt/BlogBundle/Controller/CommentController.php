@@ -66,6 +66,7 @@ class CommentController extends BaseController
             
         return $this->CreateJsonResponse($view_comments);
     }
+ 
     
     /**
     * Return a ajax response as html content
@@ -153,7 +154,7 @@ class CommentController extends BaseController
                      return new Response('Cannot add an empty comment',500);
                 
                 $comment->setAuthor($this->getUser());
-                $comment->setMessage(htmlspecialchars(nl2br($comment->getMessage())));
+                $comment->setMessage(nl2br(htmlspecialchars($comment->getMessage()),false));
 
                 //$this->get('cpt.blog.mailer')->sendCommentNotification($comment);
                 $comment->setCanModify($this->CanModifyComment($comment, $user));

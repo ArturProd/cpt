@@ -69,11 +69,18 @@ hr.alaune{
     cursor:  pointer;
 }
 
-.post_header:hover .post_header_arrow{
+.post_header:hover .post_header_arrow {
      background: url('../images/articles/fleche-articles.png') no-repeat;
+     background-position: 5px;
+}
+
+.post_header_arrow_show
+{
+     background: url('../images/articles/fleche-articles-bas.png') no-repeat;
 }
 
 .post_header_arrow,
+.post_header_arrow_show,
 .post_header_date,
 .post_header_title,
 .post_header_commentcount
@@ -88,15 +95,15 @@ hr.alaune{
     width: 100%;
     float: left;
     margin-bottom: 5px;
-    margin-left: 15px;
+    margin-left: 22px;
 }
 
-.post_header_arrow{
-        background: none;
+.post_header_arrow,
+.post_header_arrow_show{
         background-position:left center;
         margin-right: 5px;
         min-height: 13px;
-        min-width: 6px;
+        min-width: 13px;
         
 }
 

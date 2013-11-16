@@ -34,7 +34,10 @@ function get_more_comments(postid, howmany, callback)
 function no_more_older_comments(postid, commentcount)
 {
     if (commentcount === 0)
+    {
         $('#btn_more_comments_'+postid).hide();
+        $('#btn_more_comments_wrapper_'+postid).hide();
+    }
 }
 {#****************************************************************************#}
 {# Add a comment to the DOM at the END of the comment list
@@ -61,7 +64,8 @@ function get_comment_dom(comment)
 {
     var new_comment_dom = $("#comment_template").clone();
     new_comment_dom.attr('id', 'comment_'+comment.id);
-    new_comment_dom.html(comment.authorname + ": " + comment.message);
+    new_comment_dom.children(".comment_header").html("<ul><li>" + comment.authorname + "</li><li>" + comment.createdat + "</li></ul>");
+    new_comment_dom.children(".comment_body").append(comment.message);
     new_comment_dom.hide();
     return new_comment_dom;
 }
@@ -74,9 +78,9 @@ function comment_submit_callback(response)
     {
         comment = response.data;
         prepend_comment(comment);                                {# add the new comment to the DOM #}
+        $('#form_comment_textarea'+comment.postid).val('');
     }
     DisableControls('form_comment_'+comment.postid, true);  {#re-enable comment submission controls #}
-   //$('#form_comment_'+comment.postid).
  }
 {#****************************************************************************#}
 {# handles the deletion of a comment
@@ -104,4 +108,12 @@ function toggle_submit_comment_button(textvalue, postid)
 }
 </script>
 {# Below is a template that will be copied when adding a new comment #}
-<ul style="display: none;"><li id="comment_template"></li></ul>
+
+<ul style="display: none;">
+    <li id="comment_template">
+        <div class="comment_header">
+        </div>
+        <div class="comment_body">
+        </div>
+    </li>
+</ul>

@@ -80,7 +80,7 @@ class PostController extends BaseController
         $pager = $this->getPostManager()->getPager(
             $criteria,
             $page,
-            8
+            10
         );
         
          $criteria['publishedhomepage'] = true;

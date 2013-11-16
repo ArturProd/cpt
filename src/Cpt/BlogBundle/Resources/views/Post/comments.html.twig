@@ -62,7 +62,7 @@
 {#****************************************************************************#}
 {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
 {{ form_start(commentform, {'action': path('sonata_news_add_comment',  { 'postid': post.id }), 'method': 'POST', 'attr': {'id': 'form_comment_'~post.id } }  ) }}
-        {{ form_widget(commentform.message) }}
+        {{ form_widget(commentform.message, { 'id': 'form_comment_textarea'~post.id }) }}
         {{ form_errors(commentform.message) }}
 
         {{ form_rest(commentform) }}
@@ -74,5 +74,5 @@
 {#****************************************************************************#}
     <ul class="comment" id="comment_list_{{post_id}}">
     </ul>
-     <a id="btn_more_comments_{{ post.id }}" class="pull-right">Voir plus de commentaires</a>
+     <div id="btn_more_comments_wrapper_{{ post.id }}" class="more_comments_wrapper"><a id="btn_more_comments_{{ post.id }}">Voir plus de commentaires</a></div>
 </div>

@@ -42,3 +42,9 @@
 .event_new_btn:hover{
     cursor: pointer; cursor: hand;
 }
+
+.btn_trash{
+    background: url('../images/boutons/bouton-corbeille.png') no-repeat;
+    height: 25px;
+    width: 25px;
+}

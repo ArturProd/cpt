@@ -19,7 +19,6 @@
 .comment > li{
     word-wrap: break-word;
     margin-top: 5px;
-    padding: 10px;
     background-color: #FAFAFA;
     border-style: solid;
     border-width: 1px;
@@ -27,6 +26,35 @@
     opacity: 0.75;
     height: 100%;
     width: 100%;
+}
+
+.comment_header{
+  text-align: justify;
+  border-bottom-style: solid;
+  border-bottom-color: #EAEAEA;
+  border-bottom-width: 1px;
+  display: block;
+  padding-left: 5px;
+}
+
+.comment_header > ul{
+    list-style: none;
+    margin-left: 0px;
+}
+
+.comment_header > ul > li:first-child{
+    font-weight: bold; 
+    display: inline;
+}
+
+.comment_header > ul > li:nth-child(2){
+    float: right;
+    display: inline;
+    padding-right: 5px;
+}
+
+.comment_body{
+    padding: 5px;
 }
 
 hr.comment{
@@ -49,3 +77,9 @@ input[type=submit].comment{
       width:80%;
     margin-left: 10%;
 }
+
+.more_comments_wrapper{
+    display: block;
+    text-align: center;
+}
+

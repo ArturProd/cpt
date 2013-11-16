@@ -31,12 +31,14 @@ function toogle_article(id,speed)
             $( "#comment_section" + id).slideDown(speed);
             $( "#post_body" + id ).slideDown(speed);
             $( "#post_subheader" + id ).slideDown(speed);
+            $( "#post_header" + id ).children(".post_header_arrow").addClass("post_header_arrow_show");
         }
         else
         {
             $( "#comment_section" + id).slideUp(speed);
             $( "#post_body" + id ).slideUp(speed);            
             $( "#post_subheader" + id ).slideUp(speed);
+            $( "#post_header" + id ).children(".post_header_arrow").removeClass("post_header_arrow_show");
         }
         
     for (i = 0; i<post_list.length; ++i)
@@ -46,6 +48,7 @@ function toogle_article(id,speed)
             $( "#comment_section" + post_list[i].id).slideUp(speed);
             $( "#post_body" + post_list[i].id ).slideUp(speed);
             $( "#post_subheader" + post_list[i].id ).slideUp(speed);
+            $( "#post_header" + post_list[i].id ).children(".post_header_arrow").removeClass("post_header_arrow_show");
         }
     }
 }
