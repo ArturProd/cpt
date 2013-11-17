@@ -47,4 +47,25 @@
     background: url('../images/boutons/bouton-corbeille.png') no-repeat;
     height: 25px;
     width: 25px;
+    cursor: pointer; cursor: hand;
+}
+
+.btn_red{
+    display: inline-block;
+    background: url('../images/boutons/bouton-generique-rouge-milieu.png') repeat-x;
+    height: 25px;
+    color: white;
+    cursor: pointer; cursor: hand;
+    border-style: none;
+    vertical-align: central;
+}
+
+.btn_green{
+    display: inline-block;
+    background: url('../images/boutons/bouton-generique-vert-milieu.png') repeat-x;
+    height: 25px;
+    color: white;
+    cursor: pointer; cursor: hand;
+    border-style: none;
+    vertical-align: central;
 }

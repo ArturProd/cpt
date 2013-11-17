@@ -120,10 +120,10 @@ class PostManager extends ModelPostManager
         return $this->em->getRepository($this->class)->findBy($criteria);
     }
 
-    public function getHomePager($alaune, $page = 0, $maxPerPage = 10)
-    {
-        return $this->getPager( array ('publishedhomepage' => $alaune, 'enabled' => true ), $page, $maxPerPage );
-    }
+//    public function getHomePager($alaune, $page = 0, $maxPerPage = 10)
+//    {
+//        return $this->getPager( array ('publishedhomepage' => $alaune, 'enabled' => true ), $page, $maxPerPage );
+//    }
     
 
     /**
@@ -135,6 +135,39 @@ class PostManager extends ModelPostManager
         $this->em->flush();
     }
 
+    
+    public function getAlauneArticlesPager($page = 1, $maxPerPage = 100, $maxPageLinks = 5)
+    {
+        $criteria['enabled'] = true;    
+        $criteria['publishedhomepage'] = true; 
+
+        $pager = $this->getPager($criteria, $page,$maxPerPage );
+        $pager->setMaxPageLinks($maxPageLinks);
+
+        return $pager;
+    }
+        
+    public function getMyArticlesPager($userid, $page, $maxPerPage = 10, $maxPageLinks = 5)
+    {
+       $criteria['author'] = $userid;
+
+       $pager = $this->getPager($criteria, $page,$maxPerPage );
+       $pager->setMaxPageLinks($maxPageLinks);
+       
+       return $pager;
+    }
+    
+    public function getAllArticlesPager($page, $is_user_admin = false, $maxPerPage = 10, $maxPageLinks = 5)
+    {
+       $criteria['enabled'] = $is_user_admin ?  true : false;    
+       $criteria['publishedhomepage'] = false;
+
+       $pager = $this->getPager($criteria, $page,$maxPerPage ); 
+       $pager->setMaxPageLinks($maxPageLinks);
+
+       return $pager;
+    }
+    
     /**
      * Retrieve posts, based on the criteria, a page at a time.
      * Valid criteria are:
@@ -149,7 +182,7 @@ class PostManager extends ModelPostManager
      *
      * @return \Sonata\AdminBundle\Datagrid\Pager
      */
-    public function getPager(array $criteria, $page, $maxPerPage = 10)
+    protected function getPager(array $criteria, $page, $maxPerPage = 10)
     {
         $parameters = array();
         $query = $this->em->getRepository($this->class)
@@ -161,8 +194,7 @@ class PostManager extends ModelPostManager
             ->addOrderby('p.publicationDateStart', 'DESC');
 
         // enabled
-        $criteria['enabled'] = isset($criteria['enabled']) ? $criteria['enabled'] : true;
-        if ($criteria['enabled'] != 'all') // Set enabled = 'all' to not select using enabled criteria
+        if (isset($criteria['enabled'])) // Set enabled = 'all' to not select using enabled criteria
         {
             $query->andWhere('p.enabled = :enabled');
             $parameters['enabled'] = $criteria['enabled'];

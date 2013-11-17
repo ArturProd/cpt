@@ -10,9 +10,11 @@ form_post_type_title: Title
 new_article: New article
 title_archive: Archive
 title_comments: Comments
-btn_add_comment: Add a comment
+btn_add_comment: Send
 message_comments_are_closed: Possibility to add article is closed
 no_post_found: No news available
 sidemenu.link_view_post: See
 sidemenu.link_view_comments: Comments
 breadcrumb.link_comment_create: Add
+article.filter.all: All
+article.filter.myarticles: My Articles

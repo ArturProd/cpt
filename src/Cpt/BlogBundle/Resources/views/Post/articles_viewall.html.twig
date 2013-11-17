@@ -15,6 +15,7 @@ var pagination_currentfirstshown = 1;
 var pagination_lastpage = 1;
 var pagination_maxlinks = 1;
 var alaune_opened_article_id = -1; {# id of the alaune article to be opened by default #}
+var filter_myarticles = false;                    {# 0 => display all articles, 1 => display only my articles #}
 
 count_article_loaded = 0;
 {#****************************************************************************#}
@@ -52,7 +53,19 @@ function toogle_article(id,speed)
         }
     }
 }
-
+{#**************************************************************************#}
+{# Popuplate and display the articles based on ajax response
+{#**************************************************************************#}
+function PopulateArticles(response)
+{
+    if (response.status!=="ok")
+        return;
+    
+    post_list = response.data.posts;
+    post_pager = response.data.pager;
+    for(i = 0; i<post_list.length ; ++i)
+        getAndAddPost(post_list[i]);
+}
 {#**************************************************************************#}
 {# Retreives an array of post id from server, and call getAndAddPost
 {#**************************************************************************#}
@@ -67,16 +80,8 @@ function getPostList(page){
     $('#loadingarticles').hide().fadeIn(2000);
     $('#postpagination').hide();
     
-
-    $.getJSON( "{{ url('cpt_blog_getarticlelist') }}", {page:page}, function( response ) {
-        if (response.status!=="ok")
-            return;
-        
-        post_list = response.data.posts;
-        post_pager = response.data.pager;
-        for(i = 0; i<post_list.length ; ++i)
-            getAndAddPost(post_list[i]);
-        
+    $.getJSON( "{{ url('cpt_blog_getarticlelist') }}", {page:page, myarticles:filter_myarticles}, function( response ) {
+        PopulateArticles(response);
         CreatePagination();
    });
 }
@@ -231,10 +236,36 @@ function pagination_getlastdisplayedlink()
 {
         return Math.min(pagination_currentfirstshown+post_pager.maxpagelinks, post_pager.lastpage);    
 }
+{#****************************************************************************#}
+{# Refresh current page
+{#****************************************************************************#}
+function refresh_article_page()
+{
+    getPostList(post_pager.page);
+}
+{#****************************************************************************#}
+{# Switches filter value
+{#****************************************************************************#}
+function Set_filter_onlymyarticles(value)
+{
+    old_filter_myarticles = filter_myarticles; 
+    filter_myarticles = value;
+    
+     if (filter_myarticles !== old_filter_myarticles)
+        refresh_article_page();
+
+    $("#articles_filter_all").toggleClass("cpt_red", !filter_myarticles);
+    $("#articles_filter_myarticles").toggleClass("cpt_red", filter_myarticles);
+    
+}
+
 {#**************************************************************************#}
 {# Onload
 {#**************************************************************************#}
 $(function() {
+    
+    Set_filter_onlymyarticles(false);
+    $("#articles_filter").hide();
     getPostList(1);
 
     {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}        
@@ -244,6 +275,15 @@ $(function() {
    });
 
     ArticlePopupDisplay(false);
+    
+    {# Article filter setup #}
+    $("#articles_filter").show();
+    $("#articles_filter_all").on("click", function(){
+        Set_filter_onlymyarticles(false);
+    });
+    $("#articles_filter_myarticles").on("click", function(){
+        Set_filter_onlymyarticles(true);
+    });
     {% endif %}
 });
 </script>
@@ -266,11 +306,24 @@ $(function() {
     <div id="homepage_aticles">
     {# preview_post.html.twig => loaded and appened by ajax request #}
     </div>
+    
     {#**************************************************************************#}
     {# Separator
     {#**************************************************************************#}
     <div>
         <hr class="alaune"/>
+        {#**************************************************************************#}
+        {# Filter All / MyArticles
+        {#**************************************************************************#}
+        <div id="articles_filter">
+            <ul>
+                <li id="articles_filter_all">{{ "article.filter.all"|trans }}</li>
+                <li id="articles_filter_myarticles">{{ "article.filter.myarticles"|trans }}</li>
+            </ul>
+        </div>
+        {#**************************************************************************#}
+        {# Labels Date / Title ..
+        {#**************************************************************************#}
         <div class="post_date_label">Date</div>
         <div class="post_titre_label">Titre</div>
         <div class="post_commentcount_label">Commentaires</div>
@@ -278,6 +331,7 @@ $(function() {
     {#**************************************************************************#}
     {# All other articles
     {#**************************************************************************#}
+    {# Display article list #}
     <div id="articles">
         {# preview_post.html.twig => loaded and appened by ajax request #}
     </div>

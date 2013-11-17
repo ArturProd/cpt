@@ -54,7 +54,8 @@ function save_post_callback(response)
     {
         post = response.data;           {# in case of success, data contains an array with at least element post.id #}
         ArticlePopupDisplay(false);
-        getAndAddPost(post);
+        //getAndAddPost(post);
+        refresh_article_page();
     }
     else
         load_post_popup(response.data); {# in case of failure (invalid form..), data will contain the form as html #}
@@ -81,12 +82,26 @@ function save_post_callback(response)
 {# Controls #}
 <div class="row-fluid">
         <div class="span10 offset1">
+            {#****************************************************************************#}
+            {# Button to enable or disable article
+            {#****************************************************************************#}
             {{ form_widget(posteditform.enabled) }}{{ form_label(posteditform.enabled) }}
+            {#****************************************************************************#}
+            {# Button to have the article "a la une"
+            {#****************************************************************************#}
             {% if is_granted('ROLE_ADMIN') %}
             {{ form_widget(posteditform.publishedhomepage) }}{{ form_label(posteditform.publishedhomepage) }}
             {% endif %}
-            <a id='createarticle' class="article_new_btn">{{'btn_create_post'|trans }}</a>
-            <a id='delete_post_button'>{{'Supprimer l article'|trans }}</a>            
+            {#****************************************************************************#}
+            {# Button to save the save article
+            {#****************************************************************************#}
+            <div id='createarticle' class="btn_red">{{'btn_create_post'|trans }}</div>
+            {#****************************************************************************#}
+            {# Button to delete the post (only displayed for already existing post        #}
+            {#****************************************************************************#}
+            {% if post.id!=-1 %}
+            <div id='delete_post_button' class="btn_trash"></div> 
+            {% endif %}
         </div>
 </div>
 

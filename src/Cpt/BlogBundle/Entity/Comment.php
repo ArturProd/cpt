@@ -30,7 +30,7 @@ class Comment extends BaseComment
         "authorname" => $this->getAuthor()->getDisplayName(),
         "canmodify" => $this->getCanModify(),
         "message" => $this->getMessage(),
-        "createdat" => $this->getCreatedAt()->format('d/m/Y'),
+        "createdat" => $this->getCreatedAt()->format('d/m/Y  H:i'),
         "updatedat" => $this->getUpdatedAt(),
         "postid" =>  $this->getPost()->getId(),
         );

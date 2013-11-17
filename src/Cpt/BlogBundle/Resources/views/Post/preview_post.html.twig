@@ -22,6 +22,14 @@
          toogle_article({{post.id}},500);
      });
      
+    {#****************************************************************************#}     
+    {# Changing css class for post header if it is not enabled, and eventually remove "alaune" css class
+    {#****************************************************************************#}
+     {% if not post.enabled %}
+     $("#post_header{{post.id}}").addClass("cpt_grey").removeClass("alaune");
+     $("#post_header{{post.id}} > .post_header_title").removeClass("alaune");     
+     {% endif %}
+         
      {#****************************************************************************#}
      {# Enable context menu to modify a post #}
      {#****************************************************************************#}
@@ -75,6 +83,6 @@
 {#****************************************************************************#}
 {# Comments
 {#****************************************************************************#}
-{% render controller("CptBlogBundle:Comment:comments", { 'postId': post.id }) %}
+{% render controller("CptBlogBundle:Comment:comments", { 'postId': post.id, '_locale': app.request.locale }) %}
 
 

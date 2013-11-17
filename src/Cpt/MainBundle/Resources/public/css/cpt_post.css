@@ -130,14 +130,11 @@ hr.alaune{
 
 /** Post Body **/
 .post_body{
-  
+    display: block;
+    width: 100%;
     margin-top:0px;
-
     padding: 15px;
     font-size: 12px;
-    width: 90%;
-    margin-right: 5%;
-    margin-left: 5%;
     overflow: hidden;
 
 }
@@ -217,3 +214,16 @@ hr.alaune{
 .post_pagination_currentpage a{
     color: white;
 }
+
+#articles_filter > ul {
+    list-style: none;
+    margin: 0px 0px 10px 0px;
+}
+#articles_filter > ul > li {
+    padding-right: 15px;
+    font-size: 14px;
+    vertical-align: middle;    
+    display: inline-block;
+    cursor: pointer; cursor: hand;
+}
+

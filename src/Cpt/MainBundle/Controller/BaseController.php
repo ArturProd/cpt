@@ -38,10 +38,19 @@ class BaseController extends Controller {
         if (is_null($result))
             $result = $defaultvalue;
         
-        if (!is_bool($result))
-            $this->RestrictPageNotFound();
+        if (is_string($result))
+        {
+            if(strtoupper($result)==="TRUE")
+                $result = true;
+
+            if(strtoupper($result)==="FALSE")
+                $result = false;
+        }        
+        
+        //if (!is_bool($result))
+        //    $this->RestrictPageNotFound();
     
-        return $result;
+        return ($result === true);
     }
     
     public function CreateJsonResponse($data = null, $status = BaseController::JsonResponseOk)

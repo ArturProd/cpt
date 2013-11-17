@@ -57,55 +57,36 @@ class PostController extends BaseController
         
         // page can be sent from request
         $page = $this->GetNumericParameter('page', 1);
-        $enableonly = $this->GetBoolParameter('enableonly', true);
-        $forcurrentuser = $this->GetBoolParameter('forcurrentuser', false);
-        //$alaune = $this->GetBoolParameter('alaune', false);
-
-        if ($forcurrentuser) // If we want to get posts for current user, he has to be logged in
-            $this->RestrictAccessToLoggedIn ();
-        
-        // Only admin user can see all posts including not enabled
-        if ($this->isUserAdmin())
-            $criteria['enabled'] = $enableonly ? true : 'all';    
+        $myarticles = $this->GetBoolParameter('myarticles', false);
+              
+        if ($myarticles)
+        {
+            $this->RestrictAccessToLoggedIn ();     
+            $pager = $this->getPostManager()->getMyArticlesPager($this->getUser()->getId(), $page);
+        }
         else
-            $criteria['enabled'] = true;
+        {
+            $pager = $this->getPostManager()->getAllArticlesPager($page, $this->isUserAdmin());
+        }
         
-        // Filter by user (author) if required
-        if ($forcurrentuser)
-            $criteria['author'] = $this->getUser()->getId();
+        $pageralaune = $this->getPostManager()->getAlauneArticlesPager();
         
-        $criteria['publishedhomepage'] = false;
-        //$criteria['publishedhomepage'] = $alaune;
-                
-        $pager = $this->getPostManager()->getPager(
-            $criteria,
-            $page,
-            10
-        );
-        
-         $criteria['publishedhomepage'] = true;
-        $pageralaune = $this->getPostManager()->getPager(
-            $criteria,
-            1,
-            100
-        );
-        
-        $pager->setMaxPageLinks(5);
         $pageresult = $pager->getResults();
         $pageralauneresult = $pageralaune->getResults();
-        $post_viewarray = array();
+        
+        $posts = array();
         
         // First add the alaune articles
         foreach($pageralauneresult as $post)
-            $post_viewarray[] = $this->getPostViewData($post);
+            $posts[] = $this->getPostViewData($post);
         
         // Then add the other ones
         foreach($pageresult as $post)
-            $post_viewarray[] = $this->getPostViewData($post);
+            $posts[] = $this->getPostViewData($post);
             //$postarray[$post->getId()] = $post->toViewArray();
         $pagerview = $this->GetPagerViewData($pager);
         
-        return $this->CreateJsonResponse(Array('posts' => $post_viewarray, 'pager' => $pagerview));
+        return $this->CreateJsonResponse(Array('posts' => $posts, 'pager' => $pagerview));
     }
  
     /*
