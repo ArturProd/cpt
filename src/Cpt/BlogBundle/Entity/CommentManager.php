@@ -107,7 +107,31 @@ class CommentManager extends ModelCommentManager
         $this->updateCommentsCount($post);
     }
 
-    public function get_older_comments($postid, $number, $olderthanid = null)
+    public function get_newer_comments($postid, $newerthanid)
+    {
+        if (!is_numeric($newerthanid))
+            throw new \InvalidArgumentException("newerthanid must be numeric");        
+        
+        if (!is_numeric($postid))
+            throw new \InvalidArgumentException("post id is not numeric");
+        
+        $parameters['status'] = CommentInterface::STATUS_VALID;
+        $parameters['postid'] = $postid;
+        $parameters['newerthanid'] = $newerthanid;
+
+
+        $query = $this->em->getRepository($this->class)
+            ->createQueryBuilder('c')
+            ->orderby('c.id', 'ASC')
+            ->andWhere('c.status = :status')            
+            ->andWhere('c.post = :postid')
+            ->setMaxResults(100)
+            ->andWhere('c.id > :newerthanid');
+        
+        return $query->setParameters($parameters)->getQuery()->getResult();
+    }
+    
+    public function get_older_comments($postid, $number, $olderthanid = -1)
     {
         $parameters['status'] = CommentInterface::STATUS_VALID;
         $parameters['postid'] = $postid;
@@ -123,7 +147,7 @@ class CommentManager extends ModelCommentManager
             ->andWhere('c.post = :postid')
             ->setMaxResults($number);
         
-        if (!empty($olderthanid))
+        if ((!empty($olderthanid))&&($olderthanid>-1))
         {
             if (!is_numeric($olderthanid))
                 throw new \InvalidArgumentException("olderthanid is not numeric");

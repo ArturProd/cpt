@@ -20,11 +20,11 @@ class BaseController extends Controller {
         if (is_null($parameteractualvalue))
             $result = $this->getRequest()->get($parametername, $defaultvalue);   
 
-        if (is_null($result))
+        if (empty($result))
             $result = $defaultvalue;
         
         if (!is_numeric($result))
-            $this->RestrictPageNotFound();
+            $this->RestrictPageNotFound("Unable to find numeric parameter ".$parametername. " current value:".$result);
         
         return $result;
     }
@@ -47,8 +47,8 @@ class BaseController extends Controller {
                 $result = false;
         }        
         
-        //if (!is_bool($result))
-        //    $this->RestrictPageNotFound();
+        if (!is_bool($result))
+            $this->RestrictPageNotFound();
     
         return ($result === true);
     }
@@ -89,7 +89,7 @@ class BaseController extends Controller {
     
     public function RestrictPageNotFound($message = "Page not found")
     {
-        throw new Symfony\Component\HttpKernel\Exception\NotFoundHttpException($message);
+         throw new SymfonyException\NotFoundHttpException($message);
     }
     
     public function RestrictAccessToAjax()

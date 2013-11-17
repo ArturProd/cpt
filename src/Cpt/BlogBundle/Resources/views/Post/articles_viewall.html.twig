@@ -21,18 +21,18 @@ count_article_loaded = 0;
 {#****************************************************************************#}
 {# Show or hide an article
 {#****************************************************************************#}
-function toogle_article(id,speed)
+function toogle_article(id,speed,opendefault)
 {
     {# closing an article => all article get closed #}
     {# opening an article => only this article gets open #}
      visible = $("#post_body"+id).is(":visible");
         
-        if (!visible)
+        if ((!visible)&&(opendefault))
         {
             $( "#comment_section" + id).slideDown(speed);
             $( "#post_body" + id ).slideDown(speed);
             $( "#post_subheader" + id ).slideDown(speed);
-            $( "#post_header" + id ).children(".post_header_arrow").addClass("post_header_arrow_show");
+            $( "#post_header" + id ).children(".post_header_arrow").addClass("post_header_arrow_show"); {# setting the "arrow down" when article is opened #}
         }
         else
         {
@@ -56,7 +56,7 @@ function toogle_article(id,speed)
 {#**************************************************************************#}
 {# Popuplate and display the articles based on ajax response
 {#**************************************************************************#}
-function PopulateArticles(response)
+function PopulateArticles(response, opendefault)
 {
     if (response.status!=="ok")
         return;
@@ -64,12 +64,12 @@ function PopulateArticles(response)
     post_list = response.data.posts;
     post_pager = response.data.pager;
     for(i = 0; i<post_list.length ; ++i)
-        getAndAddPost(post_list[i]);
+        getAndAddPost(post_list[i], opendefault);
 }
 {#**************************************************************************#}
 {# Retreives an array of post id from server, and call getAndAddPost
 {#**************************************************************************#}
-function getPostList(page){
+function getPostList(page, opendefault){
 
     count_article_loaded = 0;
     alaune_opened_article_id = -1;
@@ -81,7 +81,7 @@ function getPostList(page){
     $('#postpagination').hide();
     
     $.getJSON( "{{ url('cpt_blog_getarticlelist') }}", {page:page, myarticles:filter_myarticles}, function( response ) {
-        PopulateArticles(response);
+        PopulateArticles(response, opendefault);
         CreatePagination();
    });
 }
@@ -89,7 +89,7 @@ function getPostList(page){
 {#**************************************************************************#}
 {# Retreives the html view of a post from a server based on its id, and add it to the DOM
 {#**************************************************************************#}
-function getAndAddPost(post)
+function getAndAddPost(post, opendefault)
 {
    {# if the post container already exists, delete it #}
    //if ($('postcontainer'+post.id)!==null)
@@ -120,10 +120,10 @@ function getAndAddPost(post)
         
         {# if this is the last one to be retreive, prepare the accordion #}
         count_article_loaded ++;
-        if (count_article_loaded === post_list.length) {# finished loading all articles #}
+        if ((count_article_loaded === post_list.length) && (post_list.length>0)) {# finished loading all articles #}
         {
             opened_article_id = (alaune_opened_article_id < 0) ? post_list[0].id : alaune_opened_article_id;
-            toogle_article(opened_article_id,0);
+            toogle_article(opened_article_id,0,opendefault);
             $('#articles').show();
             $('#homepage_aticles').show();
             $('#loadingarticles').hide();
@@ -188,7 +188,7 @@ function CreatePagination()
         {
             listitem = $('<li/>', {
 
-            }).html( "<a href='#' onclick='getPostList(" + i + ");'>" + i + "</a>");
+            }).html( "<a href='#' onclick='getPostList(" + i + ", false);'>" + i + "</a>");
             
             if (i===post_pager.page)
                 listitem.addClass("post_pagination_currentpage");
@@ -241,7 +241,7 @@ function pagination_getlastdisplayedlink()
 {#****************************************************************************#}
 function refresh_article_page()
 {
-    getPostList(post_pager.page);
+    getPostList(post_pager.page, false);
 }
 {#****************************************************************************#}
 {# Switches filter value
@@ -255,8 +255,9 @@ function Set_filter_onlymyarticles(value)
         refresh_article_page();
 
     $("#articles_filter_all").toggleClass("cpt_red", !filter_myarticles);
+    $("#articles_filter_all").toggleClass("cpt_grey", filter_myarticles);
     $("#articles_filter_myarticles").toggleClass("cpt_red", filter_myarticles);
-    
+    $("#articles_filter_myarticles").toggleClass("cpt_grey", !filter_myarticles);
 }
 
 {#**************************************************************************#}
@@ -266,7 +267,7 @@ $(function() {
     
     Set_filter_onlymyarticles(false);
     $("#articles_filter").hide();
-    getPostList(1);
+    getPostList(1,true);
 
     {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}        
     {# Articles Dialog Setup #}

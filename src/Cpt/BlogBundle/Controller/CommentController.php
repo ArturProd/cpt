@@ -34,6 +34,27 @@ class CommentController extends BaseController
         ));
     }
    
+    public function getNewCommentsForPostAction()
+    {
+         $this->RestrictAccessToAjax();
+
+        $postid = $this->GetNumericParameter('postid'); 
+        $aftercommentid = $this->GetNumericParameter('aftercommentid', -1);  
+        
+        $comments = $this->getCommentManager()->get_newer_comments($postid, $aftercommentid);
+        $user = $this->getUser();
+
+        $view_comments = Array();
+        foreach($comments  as $comment)
+        {
+            $this->SetCanModify($comment, $user);
+            $view_comments[] = $comment->toViewArray();
+        }
+            
+        return $this->CreateJsonResponse($view_comments);
+        
+    }
+            
     /**
      * Returns JSON array of comments
      */
@@ -42,18 +63,9 @@ class CommentController extends BaseController
         $this->RestrictAccessToAjax();
      
         $user = $this->getUser();
-        $postid = $this->getRequest()->get('postid');
-        $beforeid = $this->getRequest()->get('beforeid'); // To only get comments after a given comment id
-        $howmany = $this->getRequest()->get('howmany');
-                
-        if ((!$postid)||(!is_numeric($postid))) //postid must be definied
-             $this->RestrictResourceNotFound ();
-                
-        if ((!empty($beforeid))&&(!is_numeric($beforeid))) // beforeid can be empty (null or empty string) or numeric
-             $this->RestrictBusinessRuleError("beforeid is not numeric"); 
-        
-        if (!$howmany)
-            $this->RestrictBusinessRuleError("how many comments do you want?"); 
+        $postid = $this->GetNumericParameter('postid'); 
+        $beforeid = $this->GetNumericParameter('beforeid', -1);  // To only get comments after a given comment id
+        $howmany = $this->GetNumericParameter('howmany'); 
         
         $comments = $this->getCommentManager()->get_older_comments($postid, $howmany, $beforeid );
         

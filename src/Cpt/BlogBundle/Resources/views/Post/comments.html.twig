@@ -51,6 +51,11 @@
            var textvalue = $('#form_comment_{{post_id}}').find('#comment_message').val();
            toggle_submit_comment_button(textvalue,{{post_id}});
        });
+       
+       {#****************************************************************************#}
+       {# Check for new comments
+       {#****************************************************************************#}      
+       setTimeout("get_new_comments({{post_id}})",15000);
     });
 </script>
 {##############################################################################}

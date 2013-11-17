@@ -19,7 +19,7 @@
     {# Clicking on the post header triggers an accordion (slidup / slidedown of posts
     {#****************************************************************************#}
      $("#post_header{{post.id}}").on("click", function(){
-         toogle_article({{post.id}},500);
+         toogle_article({{post.id}},500, true);
      });
      
     {#****************************************************************************#}     
@@ -70,7 +70,7 @@
     </div>
     {% endif %}
 </div>
-<div class="post_subheader" id="post_subheader{{post.id}}">Par {{ post.author }} le {{post.createdAt|date('d/m/YY')}}</div>
+<div class="post_subheader" id="post_subheader{{post.id}}">Par {{ post.author }} le {{post.createdAt|date('d/m/Y')}}</div>
 {#****************************************************************************#}
 {# Post Body (Content etc.)
 {#****************************************************************************#}

@@ -1,13 +1,18 @@
 <script type="text/javascript">
- var older_comment_ids = new Array();  {# Contains for each post the older comment id #}  
+ var older_comment_ids = new Array();  {# Contains for each post the older comment id #}
+ var newer_comment_ids = new Array();  {# Contains for each post the newer comment id #}
+ TIMEOUT_COMMENT_CHECK_MS = 30000;
 {#****************************************************************************#}
-{# Retreives list of new comment for a post
+{# Retreives list of older comment for a post
 {#****************************************************************************#}
 function get_more_comments(postid, howmany, callback)
 {
     if (older_comment_ids[postid] === undefined)
         older_comment_ids[postid] = null;
-            
+    
+    if (newer_comment_ids[postid] === undefined)
+        newer_comment_ids[postid] = null;
+        
     {# Get Comment array as a json object #}
     $.getJSON('{{ url('cpt_comment_list_json')}}', {postid:postid, howmany:howmany, beforeid:older_comment_ids[postid]}, function(response) {
         if (response.status!=='ok')
@@ -22,11 +27,46 @@ function get_more_comments(postid, howmany, callback)
             append_comment(comments[i]); {# Append each comment to the DOM #}
         
         if (comments.length>0)
+        {
+            if (older_comment_ids[postid] === null) {# if it is the first time we add more comments (initialization of page), then the most recent comment is initialized #}
+                newer_comment_ids[postid] = comments[0].id;
             older_comment_ids[postid] = comments[comments.length-1].id;
+        }
         
         if (callback)
             callback(comments);
     });    
+}
+
+{#****************************************************************************#}
+{# Retreives list of new comments for a post
+{#****************************************************************************#}
+function get_new_comments(postid)
+{
+    if (older_comment_ids[postid] === undefined)
+        older_comment_ids[postid] = null;
+
+    if (newer_comment_ids[postid] === undefined)
+        newer_comment_ids[postid] = null;
+      
+    newercommentid = (newer_comment_ids[postid] === null) ? -1 : newer_comment_ids[postid];
+    
+
+    {# Get Comment array as a json object #}
+    $.getJSON('{{ url('cpt_comment_new_list_json')}}', {postid:postid, aftercommentid:newercommentid}, function(response) {
+        if (response.status!=='ok')
+          return;
+        
+        comments = response.data;
+        
+        for (i=0; i<comments.length; ++i)
+            prepend_comment(comments[i]); {# Append each comment to the DOM #}
+        
+        if (comments.length>0)
+            newer_comment_ids[postid] = comments[comments.length-1].id;
+        
+         setTimeout("get_new_comments("+postid+")",TIMEOUT_COMMENT_CHECK_MS);
+      });
 }
 {#****************************************************************************#}
 {# Disable the link to get more comments for a given post if commentcount === 0
@@ -46,7 +86,7 @@ function append_comment(comment)
 {
     new_comment_dom = get_comment_dom(comment);
     new_comment_dom.appendTo($('#comment_list_'+comment.postid));
-    new_comment_dom.show("highlight", 1000);
+    new_comment_dom.slideDown( 1000 );
 }
 {#****************************************************************************#}
 {# Add a comment to the DOM at the BEGINING of the comment list
@@ -55,7 +95,8 @@ function prepend_comment(comment)
 {
     new_comment_dom = get_comment_dom(comment);
     new_comment_dom.prependTo($('#comment_list_'+comment.postid));
-    new_comment_dom.show("highlight", 1000);
+    new_comment_dom.slideDown( 1000 );
+    new_comment_dom.show("highlight", 5000);
 }
 {#****************************************************************************#}
 {# Clone the Comment template, fill it with the comment and returns the ajax DOM object
@@ -77,8 +118,8 @@ function comment_submit_callback(response)
     if (response.status === "ok")
     {
         comment = response.data;
-        prepend_comment(comment);                                {# add the new comment to the DOM #}
-        $('#form_comment_textarea'+comment.postid).val('');
+        get_new_comments(comment.postid);                               {# add the new comment to the DOM #}
+        $('#form_comment_textarea'+comment.postid).val('');      {# clear comment form textarea #}
     }
     DisableControls('form_comment_'+comment.postid, true);  {#re-enable comment submission controls #}
  }
