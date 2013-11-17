@@ -131,6 +131,8 @@ class CommentManager extends ModelCommentManager
             $query->andWhere('c.id < :olderthanid');
             $parameters['olderthanid'] = $olderthanid;
         }
+        
+
          
         return $query->setParameters($parameters)->getQuery()->getResult();
     }

@@ -184,7 +184,7 @@ function CreatePagination()
         
         last_displayed_page = pagination_getlastdisplayedlink();
         
-        for (i=pagination_currentfirstshown;i<last_displayed_page;++i) {# display the navigation links #}
+        for (i=pagination_currentfirstshown;i<=last_displayed_page;++i) {# display the navigation links #}
         {
             listitem = $('<li/>', {
 

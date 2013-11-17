@@ -159,7 +159,9 @@ class PostManager extends ModelPostManager
     
     public function getAllArticlesPager($page, $is_user_admin = false, $maxPerPage = 10, $maxPageLinks = 5)
     {
-       $criteria['enabled'] = $is_user_admin ?  true : false;    
+       if (!$is_user_admin)
+        $criteria['enabled'] = true;
+       
        $criteria['publishedhomepage'] = false;
 
        $pager = $this->getPager($criteria, $page,$maxPerPage ); 

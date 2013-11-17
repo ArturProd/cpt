@@ -45,7 +45,7 @@ class CommentController extends BaseController
         $postid = $this->getRequest()->get('postid');
         $beforeid = $this->getRequest()->get('beforeid'); // To only get comments after a given comment id
         $howmany = $this->getRequest()->get('howmany');
-        
+                
         if ((!$postid)||(!is_numeric($postid))) //postid must be definied
              $this->RestrictResourceNotFound ();
                 
