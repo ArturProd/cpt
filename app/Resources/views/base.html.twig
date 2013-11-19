@@ -171,8 +171,7 @@
                 return true;
                 });
             }
-       
-            $(function() {
+
               $( "#modal_dialog" ).dialog({
                 autoOpen: false,
                 resizable: false,
@@ -195,8 +194,13 @@
                 {% endfor %}
                 if (flash.length>0)
                     ModalDialog(null, null, flash[0], flash[1], "Ok");
-                }); 
-         </script>
+
+{#****************************************************************************#}
+{# Handles timers
+{#****************************************************************************#}
+    var alltimers = Array();
+
+          </script>
           <div id="modal_dialog" title="">
               <div id="modal_dialog_text"></div>
           </div> 

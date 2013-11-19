@@ -66,13 +66,7 @@
         <requirement key="month">\d+</requirement>
     </route>
 
-    <route id="sonata_news_tag" pattern="/tag/{tag}.{_format}">
-        <default key="_controller">CptBlogBundle:Post:tag</default>
-        <default key="_format">html</default>
-        <requirement key="_format">html|rss</requirement>
-    </route>
-
-    <route id="sonata_news_category" pattern="/category/{category}.{_format}">
+   <route id="sonata_news_category" pattern="/category/{category}.{_format}">
         <default key="_controller">CptBlogBundle:Post:category</default>
         <default key="_format">html</default>
         <requirement key="_format">html|rss</requirement>

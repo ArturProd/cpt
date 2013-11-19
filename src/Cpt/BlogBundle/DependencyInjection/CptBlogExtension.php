@@ -93,13 +93,11 @@ class CptBlogExtension extends Extension
     {
         // admin configuration
         $container->setParameter('cpt.blog.admin.post.entity',       $config['class']['post']);
-        $container->setParameter('cpt.blog.admin.tag.entity',        $config['class']['tag']);
         $container->setParameter('cpt.blog.admin.comment.entity',    $config['class']['comment']);
         $container->setParameter('cpt.blog.admin.category.entity',   $config['class']['category']);
 
         // manager configuration
         $container->setParameter('cpt.blog.manager.post.entity',     $config['class']['post']);
-        $container->setParameter('cpt.blog.manager.tag.entity',      $config['class']['tag']);
         $container->setParameter('cpt.blog.manager.comment.entity',  $config['class']['comment']);
         $container->setParameter('cpt.blog.manager.category.entity', $config['class']['category']);
     }
@@ -121,10 +119,7 @@ class CptBlogExtension extends Extension
         $container->setParameter('cpt.blog.admin.comment.class',              $config['admin']['comment']['class']);
         $container->setParameter('cpt.blog.admin.comment.controller',         $config['admin']['comment']['controller']);
         $container->setParameter('cpt.blog.admin.comment.translation_domain', $config['admin']['comment']['translation']);
-
-        $container->setParameter('cpt.blog.admin.tag.class',              $config['admin']['tag']['class']);
-        $container->setParameter('cpt.blog.admin.tag.controller',         $config['admin']['tag']['controller']);
-        $container->setParameter('cpt.blog.admin.tag.translation_domain', $config['admin']['tag']['translation']);
+     
     }
 
     /**
@@ -140,12 +135,6 @@ class CptBlogExtension extends Extension
             }
         }
 
-        $collector->addAssociation($config['class']['tag'], 'mapManyToMany', array(
-            'fieldName'     => 'posts',
-            'targetEntity'  => $config['class']['post'],
-            'cascade'       => array( ),
-            'mappedBy'      => 'tags',
-        ));
 
         $collector->addAssociation($config['class']['post'], 'mapOneToMany', array(
              'fieldName' => 'comments',
@@ -224,32 +213,7 @@ class CptBlogExtension extends Extension
              'orphanRemoval' => false,
         ));
 
-        $collector->addAssociation($config['class']['post'], 'mapManyToMany', array(
-            'fieldName' => 'tags',
-            'targetEntity' => $config['class']['tag'],
-            'cascade' =>
-            array(
-                1 => 'persist',
-            ),
-            'joinTable' =>
-            array(
-                'name' => 'news__post_tag',
-                'joinColumns' =>
-                array(
-                    array(
-                        'name' => 'post_id',
-                        'referencedColumnName' => 'id',
-                    ),
-                ),
-                'inverseJoinColumns' =>
-                array(
-                    array(
-                        'name' => 'tag_id',
-                        'referencedColumnName' => 'id',
-                    ),
-                ),
-            ),
-        ));
+       
 
         $collector->addAssociation($config['class']['comment'], 'mapManyToOne', array(
              'fieldName' => 'post',
@@ -262,7 +226,7 @@ class CptBlogExtension extends Extension
              array(
                  array(
                      'name' => 'post_id',
-                     'referencedColumnName' => 'id',
+                    'referencedColumnName' => 'id',
                  ),
              ),
              'orphanRemoval' => false,

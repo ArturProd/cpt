@@ -281,7 +281,7 @@ class PostController extends BaseController
      *
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      */
-    public function tagAction($tag)
+ /*   public function tagAction($tag)
     {
         $tag = $this->get('cpt.blog.manager.tag')->findOneBy(array(
             'slug' => $tag,
@@ -297,7 +297,7 @@ class PostController extends BaseController
         }
 
         return $this->renderArchive(array('tag' => $tag), array('tag' => $tag));
-    }
+    }*/
 
     /**
      * @param $category
@@ -367,7 +367,7 @@ class PostController extends BaseController
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function renderArchive(array $criteria = array(), array $parameters = array())
+ /* public function renderArchive(array $criteria = array(), array $parameters = array())
     {
         $pager = $this->getPostManager()->getPager(
             $criteria,
@@ -393,7 +393,7 @@ class PostController extends BaseController
         }
 
         return $response;
-    }
+    } */
 
     
     // </editor-fold>

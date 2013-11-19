@@ -65,16 +65,7 @@
             </call>
         </service>
 
-        <service id="cpt.blog.admin.tag" class="%cpt.blog.admin.tag.class%">
-            <tag name="sonata.admin" manager_type="orm" group="sonata_blog" label="tags"  label_catalogue="%cpt.blog.admin.news.translation_domain%" label_translator_strategy="sonata.admin.label.strategy.underscore" />
-            <argument />
-            <argument>%cpt.blog.admin.tag.entity%</argument>
-            <argument>%cpt.blog.admin.tag.controller%</argument>
-
-            <call method="setTranslationDomain">
-                <argument>%cpt.blog.admin.tag.translation_domain%</argument>
-            </call>
-        </service>
+ 
     </services>
 
 </container>

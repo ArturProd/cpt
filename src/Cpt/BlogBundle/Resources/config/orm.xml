@@ -7,7 +7,6 @@
         <parameter key="cpt.blog.manager.comment.class">Cpt\BlogBundle\Entity\CommentManager</parameter>
         <parameter key="cpt.blog.manager.post.class">Cpt\BlogBundle\Entity\PostManager</parameter>
         <parameter key="cpt.blog.manager.category.class">Cpt\BlogBundle\Entity\CategoryManager</parameter>
-        <parameter key="cpt.blog.manager.tag.class">Cpt\BlogBundle\Entity\TagManager</parameter>
     </parameters>
 
     <services>
@@ -24,10 +23,6 @@
             <argument>%cpt.blog.manager.category.entity%</argument>
         </service>
 
-        <service id="cpt.blog.manager.tag" class="%cpt.blog.manager.tag.class%">
-            <argument type="service" id="cpt.blog.entity_manager" />
-            <argument>%cpt.blog.manager.tag.entity%</argument>
-        </service>
 
         <service id="cpt.blog.manager.post" class="%cpt.blog.manager.post.class%">
            <argument type="service" id="cpt.blog.entity_manager" />

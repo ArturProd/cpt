@@ -189,8 +189,7 @@ class PostManager extends ModelPostManager
         $parameters = array();
         $query = $this->em->getRepository($this->class)
             ->createQueryBuilder('p')
-            ->select('p, t')
-            ->leftJoin('p.tags', 't', Expr\Join::WITH, 't.enabled = true')
+            ->select('p')
             ->leftJoin('p.author', 'a', Expr\Join::WITH, 'a.enabled = true')
             ->addOrderby('p.publishedhomepage', 'DESC') // "A la une" post come first
             ->addOrderby('p.publicationDateStart', 'DESC');
@@ -213,10 +212,6 @@ class PostManager extends ModelPostManager
             $parameters = array_merge($parameters, $criteria['date']['params']);
         }
 
-        if (isset($criteria['tag'])) {
-            $query->andWhere('t.slug LIKE :tag');
-            $parameters['tag'] = (string) $criteria['tag'];
-        }
 
         if (isset($criteria['author'])) {
             if (!is_array($criteria['author']) && stristr($criteria['author'], 'NULL')) {

@@ -46,14 +46,14 @@ interface CategoryInterface
      *
      * @param integer $slug
      */
-    public function setSlug($slug);
+   // public function setSlug($slug);
 
     /**
      * Get slug
      *
      * @return integer $slug
      */
-    public function getSlug();
+   // public function getSlug();
 
     /**
      * Set description

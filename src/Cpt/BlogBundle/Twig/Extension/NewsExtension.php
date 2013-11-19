@@ -37,10 +37,9 @@ class NewsExtension extends \Twig_Extension
      * @param \Cpt\BlogBundle\Model\TagManagerInterface $tagManager
      * @param \Cpt\BlogBundle\Model\BlogInterface       $blog
      */
-    public function __construct(RouterInterface $router, TagManagerInterface $tagManager, BlogInterface $blog)
+    public function __construct(RouterInterface $router, BlogInterface $blog)
     {
         $this->router     = $router;
-        $this->tagManager = $tagManager;
         $this->blog       = $blog;
     }
 

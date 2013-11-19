@@ -47,7 +47,7 @@ class PostAdmin extends Admin
             ->add('title')
             ->add('abstract')
             ->add('content', null, array('safe' => true))
-            ->add('tags')
+            //->add('tags')
         ;
     }
 
@@ -71,12 +71,12 @@ class PostAdmin extends Admin
                 ))
                 ->add('rawContent', null, array('attr' => array('class' => 'span10', 'rows' => 20)))
             ->end()
-            ->with('Tags')
-                ->add('tags', 'sonata_type_model', array(
-                    'required' => false,
-                    'expanded' => true,
-                    'multiple' => true,
-                ))
+//            ->with('Tags')
+//                ->add('tags', 'sonata_type_model', array(
+//                    'required' => false,
+//                    'expanded' => true,
+//                    'multiple' => true,
+//                ))
             ->end()
             ->with('Options')
                 ->add('publicationDateStart')
@@ -97,7 +97,7 @@ class PostAdmin extends Admin
             ->add('author')
             ->add('category')
             ->add('enabled', null, array('editable' => true))
-            ->add('tags')
+            //->add('tags')
             ->add('commentsEnabled', null, array('editable' => true))
             ->add('commentsCount')
             ->add('publicationDateStart')
@@ -112,7 +112,7 @@ class PostAdmin extends Admin
         $datagridMapper
             ->add('title')
             ->add('enabled')
-            ->add('tags', null, array('field_options' => array('expanded' => true, 'multiple' => true)))
+            //->add('tags', null, array('field_options' => array('expanded' => true, 'multiple' => true)))
             ->add('author')
             ->add('with_open_comments', 'doctrine_orm_callback', array(
 //                'callback'   => array($this, 'getWithOpenCommentFilter'),

@@ -13,7 +13,7 @@ namespace Cpt\BlogBundle\Model;
 
 use Cpt\BlogBundle\Model\CategoryInterface;
 use Cpt\BlogBundle\Model\PostInterface;
-use Cpt\BlogBundle\Model\Tag;
+//use Cpt\BlogBundle\Model\Tag;
 
 abstract class Category implements CategoryInterface
 {
@@ -80,20 +80,20 @@ abstract class Category implements CategoryInterface
      *
      * @param integer $slug
      */
-    public function setSlug($slug)
+   /* public function setSlug($slug)
     {
         $this->slug = Tag::slugify($slug);
-    }
+    }*/
 
     /**
      * Get slug
      *
      * @return integer $slug
      */
-    public function getSlug()
+  /*  public function getSlug()
     {
         return $this->slug;
-    }
+    }*/
 
     /**
      * Set description

@@ -145,21 +145,21 @@ interface PostInterface
      *
      * @param \Cpt\BlogBundle\Model\TagInterface $tags
      */
-    public function addTags(TagInterface $tags);
+    //public function addTags(TagInterface $tags);
 
     /**
      * Get tags
      *
      * @return array $tags
      */
-    public function getTags();
+    //public function getTags();
 
     /**
      * @param $tags
      *
      * @return mixed
      */
-    public function setTags($tags);
+    //public function setTags($tags);
 
     /**
      * @return string

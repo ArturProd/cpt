@@ -13,7 +13,6 @@ namespace Cpt\BlogBundle\Model;
 
 use Cpt\BlogBundle\Model\PostInterface;
 use Cpt\BlogBundle\Model\CommentInterface;
-use Cpt\BlogBundle\Model\TagInterface;
 use Cpt\BlogBundle\Model\CategoryInterface;
 
 abstract class Post implements PostInterface
@@ -30,7 +29,7 @@ abstract class Post implements PostInterface
 
     protected $contentFormatter;
 
-    protected $tags;
+    //protected $tags;
 
     protected $comments;
 
@@ -226,26 +225,26 @@ abstract class Post implements PostInterface
     /**
      * {@inheritdoc}
      */
-    public function addTags(TagInterface $tags)
+/*    public function addTags(TagInterface $tags)
     {
         $this->tags[] = $tags;
-    }
+    }*/
 
     /**
      * {@inheritdoc}
      */
-    public function getTags()
+   /* public function getTags()
     {
         return $this->tags;
-    }
+    }*/
 
     /**
      * {@inheritdoc}
      */
-    public function setTags($tags)
+    /*public function setTags($tags)
     {
         $this->tags = $tags;
-    }
+    }*/
 
     public function prePersist()
     {

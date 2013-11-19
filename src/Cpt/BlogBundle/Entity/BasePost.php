@@ -22,7 +22,7 @@ abstract class BasePost extends ModelPost
     {
         parent::__construct();
 
-        $this->tags     = new \Doctrine\Common\Collections\ArrayCollection;
+        //$this->tags     = new \Doctrine\Common\Collections\ArrayCollection;
         $this->comments = new \Doctrine\Common\Collections\ArrayCollection;
         $this->setAuthor(null);
         $this->setPublicationDateStart(new \DateTime);
