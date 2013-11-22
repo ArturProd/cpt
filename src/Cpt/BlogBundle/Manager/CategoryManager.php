@@ -9,14 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace Cpt\BlogBundle\Entity;
+namespace Cpt\BlogBundle\Manager;
 
-use Cpt\BlogBundle\Model\CategoryManager as ModelCategoryManager;
-use Cpt\BlogBundle\Model\CategoryInterface;
+use Cpt\BlogBundle\Interfaces\Entity\CategoryInterface;
+use Cpt\BlogBundle\Interfaces\Manager\CategoryManagerInterface;
 
 use Doctrine\ORM\EntityManager;
 
-class CategoryManager extends ModelCategoryManager
+class CategoryManager extends BaseManager implements CategoryManagerInterface
 {
     /**
      * @var \Doctrine\ORM\EntityManager

@@ -12,6 +12,7 @@
 namespace Cpt\BlogBundle\Model;
 
 use Cpt\BlogBundle\Permalink\PermalinkInterface;
+use Cpt\BlogBundle\Interfaces\Entity\BlogInterface as BlogInterface;
 
 class Blog implements BlogInterface
 {

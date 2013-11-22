@@ -12,10 +12,8 @@
 namespace Cpt\BlogBundle\Twig\Extension;
 
 use Symfony\Component\Routing\RouterInterface;
-use Cpt\BlogBundle\Model\TagManagerInterface;
-use Cpt\BlogBundle\Model\BlogInterface;
-use Cpt\BlogBundle\Model\PostInterface;
-use Cpt\BlogBundle\Model\PostManagerInterface;
+use Cpt\BlogBundle\Interfaces\Entity\BlogInterface;
+use Cpt\BlogBundle\Interfaces\Entity\PostInterface;
 
 class NewsExtension extends \Twig_Extension
 {

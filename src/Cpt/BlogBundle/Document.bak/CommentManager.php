@@ -11,7 +11,7 @@
 namespace Cpt\BlogBundle\Document;
 
 use Cpt\BlogBundle\Model\CommentManager as ModelCommentManager;
-use Cpt\BlogBundle\Model\CommentInterface;
+use Cpt\BlogBundle\Interfaces\Entity\CommentInterface;
 use Doctrine\ODM\MongoDB\DocumentManager;
 
 use Sonata\DoctrineMongoDBAdminBundle\Datagrid\Pager;

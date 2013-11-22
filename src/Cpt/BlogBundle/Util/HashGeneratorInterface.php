@@ -11,12 +11,11 @@
 
 namespace Cpt\BlogBundle\Util;
 
-use Cpt\BlogBundle\Model\CommentInterface;
+use Cpt\BlogBundle\Interfaces\Entity\CommentInterface;
 
 interface HashGeneratorInterface
 {
     /**
-     * @param \Cpt\BlogBundle\Model\CommentInterface $comment
      *
      * @return string
      */

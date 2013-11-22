@@ -11,12 +11,11 @@
 
 namespace Cpt\BlogBundle\Mailer;
 
-use Cpt\BlogBundle\Model\CommentInterface;
+use Cpt\BlogBundle\Interfaces\Entity\CommentInterface;
 
 interface MailerInterface
 {
     /**
-     * @param \Cpt\BlogBundle\Model\CommentInterface $comment
      *
      * @return mixed
      */

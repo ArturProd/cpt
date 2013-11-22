@@ -171,7 +171,7 @@
                 return true;
                 });
             }
-
+            $(function() {
               $( "#modal_dialog" ).dialog({
                 autoOpen: false,
                 resizable: false,
@@ -194,7 +194,7 @@
                 {% endfor %}
                 if (flash.length>0)
                     ModalDialog(null, null, flash[0], flash[1], "Ok");
-
+                }); 
 {#****************************************************************************#}
 {# Handles timers
 {#****************************************************************************#}

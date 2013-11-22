@@ -10,7 +10,7 @@
  */
 namespace Cpt\BlogBundle\Model;
 
-use Cpt\BlogBundle\Model\CommentManagerInterface;
+use Cpt\BlogBundle\Interfaces\Manager\CommentManagerInterface;
 
 abstract class CommentManager implements CommentManagerInterface
 {

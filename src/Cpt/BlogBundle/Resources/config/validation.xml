@@ -17,11 +17,6 @@
         <getter property="rawContent">
             <constraint name="NotBlank"/>
         </getter>
-
-        <getter property="tags">
-            <constraint name="Valid" />
-        </getter>
-
         <getter property="commentsDefaultStatus">
             <constraint name="NotBlank" />
         </getter>

@@ -3,19 +3,20 @@
 /*
  * This file is part of the Sonata project.
  *
- * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * (c) Sonata Project <https://github.com/sonata-project/CptBlogBundle/>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Cpt\BlogBundle\Model;
 
-use Cpt\BlogBundle\Model\PostManagerInterface;
+use Cpt\BlogBundle\Interfaces\Manager\CategoryManagerInterface;
 
-abstract class PostManager implements PostManagerInterface
+abstract class CategoryManager implements CategoryManagerInterface
 {
     /**
-     * @var string
+     * @var string;
      */
     protected $class;
 

@@ -8,13 +8,17 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Cpt\BlogBundle\Entity;
+namespace Cpt\BlogBundle\Manager;
 
-use Cpt\BlogBundle\Model\PostManager as ModelPostManager;
-use Cpt\BlogBundle\Model\PostInterface;
-use Cpt\BlogBundle\Model\BlogInterface;
+use Cpt\BlogBundle\Interfaces\Entity\PostInterface as PostInterface;
+use Cpt\BlogBundle\Interfaces\Entity\BlogInterface as BlogInterface;
+use Cpt\BlogBundle\Interfaces\Entity\CategoryInterface as CategoryInterface;
+use Cpt\BlogBundle\Entity\Post as Post;
 
-use Cpt\BlogBundle\Model\CategoryInterface;
+use Cpt\BlogBundle\Interfaces\Manager\PostManagerInterface as PostManagerInterface;
+
+use Cpt\BlogBundle\Permalink\DatePermalink as DatePermalink;
+
 use Sonata\DoctrineORMAdminBundle\Datagrid\Pager;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 
@@ -24,7 +28,7 @@ use Doctrine\ORM\Query\Expr;
 
 use Doctrine\ORM\Query;
 
-class PostManager extends ModelPostManager
+class PostManager extends BaseManager implements PostManagerInterface
 {
     /**
      * @var \Doctrine\ORM\EntityManager
@@ -39,8 +43,12 @@ class PostManager extends ModelPostManager
     {
         $this->em    = $em;
         $this->class = $class;
-    }
-
+    }   
+    
+    public function createPostInstance($author, $publishedhomepage=false, $enabled=true, $title="", $rawcontent="")
+    {
+        return new Post($author, $publishedhomepage, $enabled, $title, $rawcontent);
+    }   
     /**
      * {@inheritDoc}
      */

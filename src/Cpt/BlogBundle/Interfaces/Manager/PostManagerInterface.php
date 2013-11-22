@@ -9,7 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Cpt\BlogBundle\Model;
+namespace Cpt\BlogBundle\Interfaces\Manager;
+
+use Cpt\BlogBundle\Interfaces\Entity\PostInterface;
 
 interface PostManagerInterface
 {

@@ -16,7 +16,7 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 
-use Cpt\BlogBundle\Model\CommentManagerInterface;
+use Cpt\BlogBundle\Interfaces\Manager\CommentManagerInterface;
 
 class CommentAdmin extends Admin
 {

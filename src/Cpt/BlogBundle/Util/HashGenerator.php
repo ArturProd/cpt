@@ -11,7 +11,7 @@
 
 namespace Cpt\BlogBundle\Util;
 
-use Cpt\BlogBundle\Model\CommentInterface;
+use Cpt\BlogBundle\Interfaces\Entity\CommentInterface as CommentInterface;
 
 class HashGenerator implements HashGeneratorInterface
 {

@@ -11,7 +11,7 @@
 
 namespace Cpt\BlogBundle\Model;
 
-use Cpt\BlogBundle\Model\CommentInterface;
+use Cpt\BlogBundle\Interfaces\Entity\CommentInterface as CommentInterface;
 
 abstract class Comment implements CommentInterface
 {

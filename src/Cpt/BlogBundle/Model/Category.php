@@ -11,8 +11,8 @@
 
 namespace Cpt\BlogBundle\Model;
 
-use Cpt\BlogBundle\Model\CategoryInterface;
-use Cpt\BlogBundle\Model\PostInterface;
+use Cpt\BlogBundle\Interfaces\Entity\CategoryInterface as CategoryInterface;
+use Cpt\BlogBundle\Interfaces\Entity\PostInterface;
 //use Cpt\BlogBundle\Model\Tag;
 
 abstract class Category implements CategoryInterface

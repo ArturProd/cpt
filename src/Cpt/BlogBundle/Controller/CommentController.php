@@ -2,8 +2,8 @@
 namespace Cpt\BlogBundle\Controller;
 
 use Cpt\BlogBundle\Controller\BasePostController as BaseController;
-use Cpt\BlogBundle\Model\CommentInterface;
-use Symfony\Component\Form\Form;
+use Cpt\BlogBundle\Interfaces\Entity\CommentInterface as CommentInterface;
+use Symfony\Component\Form\Form; 
 use Symfony\Component\HttpFoundation\Request;
 
 

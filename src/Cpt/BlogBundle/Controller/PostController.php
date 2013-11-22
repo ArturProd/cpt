@@ -21,9 +21,9 @@ use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Doctrine\ORM\Mapping as ORM;
 
-use Cpt\BlogBundle\Model\PostInterface;
-use Cpt\BlogBundle\Entity;
-use Cpt\BlogBundle\Form\Type;
+use Cpt\BlogBundle\Interfaces\Entity\PostInterface as PostInterface;
+//use Cpt\BlogBundle\Entity;
+//use Cpt\BlogBundle\Form\Type;
 
 use Cpt\BlogBundle\Controller\BasePostController as BaseController;
 
@@ -213,8 +213,7 @@ class PostController extends BaseController
         if ($id<0)
         {
             // $id is null => Create a new post
-           $post = $this->getPostManager()->create();
-           $post->setAuthor($user);
+           $post = $this->getPostManager()->createPostInstance($user);
         }
         else
         {

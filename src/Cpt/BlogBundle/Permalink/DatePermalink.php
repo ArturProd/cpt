@@ -11,7 +11,7 @@
 
 namespace Cpt\BlogBundle\Permalink;
 
-use Cpt\BlogBundle\Model\PostInterface;
+use Cpt\BlogBundle\Intefaces\Entity\PostInterface as PostInterface;
 
 class DatePermalink implements PermalinkInterface
 {

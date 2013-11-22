@@ -8,19 +8,19 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Cpt\BlogBundle\Entity;
+namespace Cpt\BlogBundle\Manager;
 
-use Cpt\BlogBundle\Model\CommentManager as ModelCommentManager;
-use Cpt\BlogBundle\Model\CommentInterface;
+use Cpt\BlogBundle\Interfaces\Entity\CommentInterface as CommentInterface;
+use Cpt\BlogBundle\Interfaces\Entity\PostInterface as PostInterface;
+use Cpt\BlogBundle\Interfaces\Manager\PostManagerInterface;
+use \Cpt\BlogBundle\Interfaces\Manager\CommentManagerInterface as CommentManagerInterface;
+
 use Doctrine\ORM\EntityManager;
-
-use Cpt\BlogBundle\Model\PostManagerInterface;
-use Cpt\BlogBundle\Model\PostInterface;
 
 use Sonata\DoctrineORMAdminBundle\Datagrid\Pager;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 
-class CommentManager extends ModelCommentManager
+class CommentManager extends BaseManager implements CommentManagerInterface
 {
     /**
      * @var \Doctrine\ORM\EntityManager

@@ -9,9 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Cpt\BlogBundle\Model;
+namespace Cpt\BlogBundle\Interfaces\Entity;
 
-use Cpt\BlogBundle\Model\CategoryInterface;
+use Cpt\BlogBundle\Interfaces\Entity\CategoryInterface as CategoryInterface;
+use Cpt\BlogBundle\Interfaces\Entity\CommentInterface as CommentInterface;
 
 interface PostInterface
 {
@@ -123,7 +124,6 @@ interface PostInterface
     /**
      * Add comments
      *
-     * @param \Cpt\BlogBundle\Model\CommentInterface $comments
      */
     public function addComments(CommentInterface $comments);
 

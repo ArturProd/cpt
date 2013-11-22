@@ -11,26 +11,17 @@
 
 namespace Cpt\BlogBundle\Entity;
 
-use Cpt\BlogBundle\Model\Post as ModelPost;
+//use Cpt\BlogBundle\Model\Post as ModelPost;
 
-abstract class BasePost extends ModelPost
+abstract class BasePost
 {
     /**
      * {@inheritdoc}
      */
     public function __construct()
     {
-        parent::__construct();
+        //parent::__construct();
 
-        //$this->tags     = new \Doctrine\Common\Collections\ArrayCollection;
-        $this->comments = new \Doctrine\Common\Collections\ArrayCollection;
-        $this->setAuthor(null);
-        $this->setPublicationDateStart(new \DateTime);
-        $this->setCategory();
-        $this->setCommentsDefaultStatus(\Cpt\BlogBundle\Entity\Comment::STATUS_VALID);
-        $this->setEnabled(true);
-        $this->setContent("x");
-        $this->setContentFormatter("x");
-        $this->id = -1;
+
     }
 }

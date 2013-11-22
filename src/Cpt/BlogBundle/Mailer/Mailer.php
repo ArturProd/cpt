@@ -11,11 +11,11 @@
 
 namespace Cpt\BlogBundle\Mailer;
 
-use Cpt\BlogBundle\Model\CommentInterface;
+use Cpt\BlogBundle\Interfaces\Entity\CommentInterface;
+use Cpt\BlogBundle\Interfaces\Entity\BlogInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Templating\EngineInterface;
 use Cpt\BlogBundle\Util\HashGeneratorInterface;
-use Cpt\BlogBundle\Model\BlogInterface;
 
 class Mailer implements MailerInterface
 {
@@ -48,7 +48,6 @@ class Mailer implements MailerInterface
     }
 
     /**
-     * @param \Cpt\BlogBundle\Model\CommentInterface $comment
      */
     public function sendCommentNotification(CommentInterface $comment)
     {
