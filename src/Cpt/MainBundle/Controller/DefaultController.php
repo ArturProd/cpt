@@ -10,46 +10,27 @@ class DefaultController extends Controller
 {
     public function indexAction()
     {
-      
-        // The url to get a raw html article. The url is made to be included in the javascript.
-      //  $ajax_article_load_url = \str_replace("____", "'+postid+'", "'".$this->generateUrl('cpt_blog_post_getpreview_plainhtml', array( 'id' => '____' ))."'");
-
-//        $articles_alaune_array = Array();
-//        $articles_array = Array();
-//        
-//        // Get the homepage "a la une" articles   
-//        $pager = $this->getPostManager()->getHomePager(true, 1, 10);
-//        $posts = $pager->getResults();
-//   
-//        foreach($posts as $post)
-//            $articles_alaune_array[] = $post->getId();
-//
-//        
-//        // Get the homepage other articles
-//         $pager = $this->getPostManager()->getHomePager(false, 1, 10);
-//         $posts = $pager->getResults();
-//           
-//         foreach($posts as $post)
-//             $articles_array[] = $post->getId();
-         
          
         $params = array(
-   //         'pager' => $pager,
-   //         'articles_alaune_array' => json_encode($articles_alaune_array),
-   //         'articles_array' =>  json_encode($articles_array),
-           // 'ajax_article_load_url' => $ajax_article_load_url,
+            'article_permalink' => null,
+            'event_permalink' => null,
             );
         
         return $this->render('CptMainBundle:Default:index.html.twig', $params );
     }
     
- 
-    
-    public function maquetteAction()
+    public function showArticleAction($article_permalink)
     {
+        $params = array(
+            'article_permalink' => $article_permalink,
+            'event_permalink' => null,
+            );
         
-        return $this->render('CptMainBundle:Default:maquette.html.twig' );
+        return $this->render('CptMainBundle:Default:index.html.twig', $params );
+        
     }
+    
+ 
     
     protected function getPostManager()
     {

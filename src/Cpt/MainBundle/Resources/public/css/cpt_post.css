@@ -92,7 +92,7 @@ hr.alaune{
 
 .post_subheader{
     display: block;
-    width: 100%;
+    width: 90%;
     float: left;
     margin-bottom: 5px;
     margin-left: 22px;
@@ -118,7 +118,7 @@ hr.alaune{
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
-    max-width: 320px;    
+    max-width: 435px;    
 }
 
 .post_header_commentcount{

@@ -7,11 +7,11 @@
     <services>
 
         <!-- permalink generator -->
-        <service id="cpt.blog.permalink.date" class="Cpt\BlogBundle\Permalink\DatePermalink">
+        <service id="cpt.blog.permalink.date" class="Cpt\BlogBundle\Manager\PermalinkDateManager">
             <argument />
         </service>
 
-        <service id="cpt.blog.permalink.category" class="Cpt\BlogBundle\Permalink\CategoryPermalink" />
+        <service id="cpt.blog.permalink.category" class="Cpt\BlogBundle\Manager\PermalinkCategoryManager" />
 
         <!-- email security token -->
         <service id="cpt.blog.hash.generator" class="Cpt\BlogBundle\Util\HashGenerator">

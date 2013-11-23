@@ -16,7 +16,7 @@ var pagination_lastpage = 1;
 var pagination_maxlinks = 1;
 var alaune_opened_article_id = -1; {# id of the alaune article to be opened by default #}
 var filter_myarticles = false;                    {# 0 => display all articles, 1 => display only my articles #}
-
+var article_permalink = "{{ article_permalink|default(null) is null ? null : article_permalink }}";
 count_article_loaded = 0;
 {#****************************************************************************#}
 {# Show or hide an article
@@ -79,13 +79,43 @@ function getPostList(page, opendefault){
     $('#homepage_aticles').hide();
     $('#loadingarticles').hide().fadeIn(2000);
     $('#postpagination').hide();
-    
-    $.getJSON( "{{ url('cpt_blog_getarticlelist') }}", {page:page, myarticles:filter_myarticles}, function( response ) {
-        PopulateArticles(response, opendefault);
-        CreatePagination();
-   });
-}
 
+    if (article_permalink)
+    {
+        show_articlefilter(false);
+        $.getJSON( "{{ url('cpt_blog_getsinglearticlelist') }}", {article_permalink:'{{article_permalink}}'}, function(response){
+            PopulateArticles(response, opendefault);
+        });
+    }
+    else
+        $.getJSON( "{{ url('cpt_blog_getarticlelist') }}", {page:page, myarticles:filter_myarticles}, function(response){
+            PopulateArticles(response, opendefault);
+            CreatePagination();            
+        });
+}
+{#**************************************************************************#}
+{# Show/Hides the whole "A la une" section
+{#**************************************************************************#}
+function show_alaune(show)
+{
+    if (show)
+    {
+        $('#homepage_articles_label').show();
+        $('#homepage_articles_label').show();
+    }
+    else
+    {
+        $('#homepage_articles_label').hide();
+        $('#homepage_articles_label').hide();            
+    }
+}
+function show_articlefilter(show)
+{
+    if (show)
+        $('#articles_filter').show();
+    else
+        $('#articles_filter').hide();
+}
 {#**************************************************************************#}
 {# Retreives the html view of a post from a server based on its id, and add it to the DOM
 {#**************************************************************************#}
@@ -105,13 +135,17 @@ function getAndAddPost(post, opendefault)
         
         if (alaune_opened_article_id<0)
             alaune_opened_article_id = post.id;
+        
+        show_alaune(true); {# shows the "a la une" section which is hidden by default #}
     }
     else
     { {# Other posts #}
         jQuery('<div/>', {
             id: 'postcontainer'+post.id,
             class: 'postcontainer'
-        }).appendTo('#articles');                
+        }).appendTo('#articles');
+        
+        show_articlefilter(true); {# as there is at least one article not "a laune", we show the filter #}
     }
     {# retreive post view from server and add it to container #}
     $.get( "{{ url('cpt_blog_post_getjsonview') }}", {id:post.id} , function( response ) {
@@ -266,8 +300,9 @@ function Set_filter_onlymyarticles(value)
 $(function() {
     
     Set_filter_onlymyarticles(false);
-    $("#articles_filter").hide();
+    show_articlefilter(false);
     getPostList(1,true);
+    show_alaune(false);
 
     {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}        
     {# Articles Dialog Setup #}
@@ -278,7 +313,6 @@ $(function() {
     ArticlePopupDisplay(false);
     
     {# Article filter setup #}
-    $("#articles_filter").show();
     $("#articles_filter_all").on("click", function(){
         Set_filter_onlymyarticles(false);
     });
@@ -303,7 +337,7 @@ $(function() {
     {#**************************************************************************#}
     {# A la une
     {#**************************************************************************#}
-    <div class="alaune_label">{{ "article.alaune_label"|trans }}</div>
+    <div id="homepage_articles_label" class="alaune_label">{{ "article.alaune_label"|trans }}</div>
     <div id="homepage_aticles">
     {# preview_post.html.twig => loaded and appened by ajax request #}
     </div>
@@ -327,7 +361,6 @@ $(function() {
         {#**************************************************************************#}
         <div class="post_date_label">Date</div>
         <div class="post_titre_label">Titre</div>
-        <div class="post_commentcount_label">Commentaires</div>
     </div>
     {#**************************************************************************#}
     {# All other articles

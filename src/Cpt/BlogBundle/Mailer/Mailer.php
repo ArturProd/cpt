@@ -37,9 +37,9 @@ class Mailer implements MailerInterface
      * @param \Symfony\Component\Templating\EngineInterface  $templating
      * @param array                                          $emails
      */
-    public function __construct($mailer, BlogInterface $blog, HashGeneratorInterface $generator, RouterInterface $router, EngineInterface $templating, array $emails)
+    public function __construct($mailer, HashGeneratorInterface $generator, RouterInterface $router, EngineInterface $templating, array $emails)
     {
-        $this->blog          = $blog;
+        $this->blog          = null;
         $this->mailer        = $mailer;
         $this->hashGenerator = $generator;
         $this->router        = $router;

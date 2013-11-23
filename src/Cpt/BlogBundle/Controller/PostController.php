@@ -25,27 +25,28 @@ use Cpt\BlogBundle\Interfaces\Entity\PostInterface as PostInterface;
 //use Cpt\BlogBundle\Entity;
 //use Cpt\BlogBundle\Form\Type;
 
-use Cpt\BlogBundle\Controller\BasePostController as BaseController;
+use Cpt\BlogBundle\Controller\BasePostController as BasePostController;
+
+
+use Cpt\BlogBundle\Manager\PermalinkDateManager as PermalinkDateManager;
 
 
 
-class PostController extends BaseController
+class PostController extends BasePostController
 {
-    /**
-     * @return RedirectResponse
-     */
-    public function homeAction()
-    {
-        return $this->RedirectHome();
-    }
+   
     
     
     /**
      * Shows the main article page
      */
-    public function viewAllAction()
+    public function viewAction($article_permalink)
     {
-        $response = $this->render('CptBlogBundle:Post:articles_viewall.html.twig');
+            $params = array(
+            'article_permalink' => $article_permalink
+            );
+                
+        $response = $this->render('CptBlogBundle:Post:articles_viewall.html.twig', $params);
        
         return $response;
     }
@@ -78,73 +79,68 @@ class PostController extends BaseController
         
         // First add the alaune articles
         foreach($pageralauneresult as $post)
-            $posts[] = $this->getPostViewData($post);
+        {
+            if ($this->CanSeePost($post))
+                $posts[] = $this->getPostViewData($post);
+        }
         
         // Then add the other ones
         foreach($pageresult as $post)
-            $posts[] = $this->getPostViewData($post);
+        {
+            if ($this->CanSeePost($post))
+                $posts[] = $this->getPostViewData($post);
+        }
             //$postarray[$post->getId()] = $post->toViewArray();
         $pagerview = $this->GetPagerViewData($pager);
         
         return $this->CreateJsonResponse(Array('posts' => $posts, 'pager' => $pagerview));
     }
  
-    /*
-    public function listPostsAction()
+    public function getSingleArticleListAction()
     {
-        if (false === $this->get('security.context')->isGranted('ROLE_USER')) {
-            throw new AccessDeniedException("You do not have the authorization to access this page");
-        }
+        $article_permalink = $this->getRequest()->get('article_permalink');
         
-       $user= $this->get('security.context')->getToken()->getUser();
+        if (!preg_match('/.+?/', $article_permalink))
+           $this->RestrictResourceNotFound();
+                
+         $post = $this->getPostManager()->findOneByPermalink($article_permalink);
+
+        if (!$post)
+            $this->RestrictResourceNotFound();
+       
+        $this->SetPermissions($post); 
         
-       $criteria = array();
-       
-       // Admin can see all posts
-       if (!$this->get('security.context')->isGranted('ROLE_ADMIN', $user))
-           $criteria['author'] = $user->getId();
-
-       $criteria['enabled'] = 'all';
-       
-       $pager = $this->getPostManager()->getPager(
-            $criteria,
-            $this->getRequest()->get('page', 1, 100)
-        );
-       
-        $parameters['pager'] = $pager;
-        $parameters['route'] = $this->getRequest()->get('_route');
-        $parameters['route_parameters'] = $this->getRequest()->get('_route_params') ;
-       
-
-        $response = $this->render(sprintf('CptBlogBundle:Post:list.html.twig', $this->getRequest()->getRequestFormat()), $parameters);
-
-        if ('rss' === $this->getRequest()->getRequestFormat()) {
-            $response->headers->set('Content-Type', 'application/rss+xml');
-        }
-
-        return $response;
+        if (!$this->CanSeePost($post))
+            $this->RestrictAccessDenied();
+                    
+        $posts[] = $this->getPostViewData($post);
+        
+        return $this->CreateJsonResponse(Array('posts' => $posts));
     }
- */   
+
     // <editor-fold defaultstate="collapsed" desc="Single post actions ">
  
     
          /**
         * Return a ajax response as html content
         */
-        public function postGetJsonViewAction(){
+    public function postGetJsonViewAction()
+    {
             // Only ajax requests
             $this->RestrictAccessToAjax();
-        
+            
             $id = $this->getRequest()->get('id');   
             if (!is_numeric($id))
-                $this->RestrictResourceNotFound($id);
+                $this->RestrictResourceNotFound();
             
             $post = $this->getPostManager()->findOneBy(array('id' => $id));
 
-            if (!$post || !$post->isPublic())
-                $this->RestrictResourceNotFound($id);
+            $this->RestrictResourceNotFound($post);
 
             $this->SetPermissions($post);
+            
+            if (!$this->CanSeePost($post))
+                $this->RestrictAccessDenied();
             
             $html_string = $this->renderView('CptBlogBundle:Post:preview_post.html.twig', array(
                 'post'  => $post,
@@ -155,45 +151,7 @@ class PostController extends BaseController
            return $this->CreateJsonResponse($html_string);
         }
     
-    /**
-     * @throws NotFoundHttpException
-     *
-     * @param $permalink
-     *
-     * @return Response
-     */
- /*   public function viewAction($permalink)
-    {
-        $post = $this->getPostManager()->findOneByPermalink($permalink, $this->container->get('cpt.blog.blog'));
-
-        if (!$post || !$post->isPublic()) {
-            throw new NotFoundHttpException('Unable to find the post');
-        }
-
-       
-        $this->SetPermissions($post);
-
-        
-        if ($seoPage = $this->getSeoPage()) {
-            $seoPage
-                ->setTitle($post->getTitle())
-                ->addMeta('property', 'og:title', $post->getTitle())
-                ->addMeta('property', 'og:type', 'blog')
-                ->addMeta('property', 'og:url',  $this->generateUrl('sonata_news_view', array(
-                    'permalink'  => $this->getBlog()->getPermalinkGenerator()->generate($post, true)
-                ), true))
-            ;
-        }
-
-        $this->SetPermissions($post);
-                    
-        return $this->render('CptBlogBundle:Post:view.html.twig', array(
-            'post' => $post,
-            'form' => false,
-            'blog' => $this->get('cpt.blog.blog'),
-        ));
-    }
- */   
+ 
     public function editPostAction(Request $request, $id=null)
     {
         $this->RestrictAccessToAjax();
@@ -258,6 +216,7 @@ class PostController extends BaseController
         return $this->CreateJsonResponse($this->GetPostEditView($post, $form));
     }
     
+    
     public function deletePostAction($id)
     {
         $post = $this->getPostById($id);
@@ -272,31 +231,8 @@ class PostController extends BaseController
   // </editor-fold>
   
     // <editor-fold defaultstate="collapsed" desc="Unsupported actions">
-    
-     /**
-     * @param string $tag
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     *
-     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
-     */
- /*   public function tagAction($tag)
-    {
-        $tag = $this->get('cpt.blog.manager.tag')->findOneBy(array(
-            'slug' => $tag,
-            'enabled' => true
-        ));
-
-        if (!$tag) {
-            throw new NotFoundHttpException('Unable to find the tag');
-        }
-
-        if (!$tag->getEnabled()) {
-            throw new NotFoundHttpException('Unable to find the tag');
-        }
-
-        return $this->renderArchive(array('tag' => $tag), array('tag' => $tag));
-    }*/
+ 
+  
 
     /**
      * @param $category
@@ -326,73 +262,7 @@ class PostController extends BaseController
     // </editor-fold>
     
     // <editor-fold defaultstate="collapsed" desc="Post archive actions">
-    
-     /**
-     * @return Response
-     */
-    public function archiveAction()
-    {
-        return $this->renderArchive();
-    }
-    
-    /**
-     * @param string $year
-     * @param string $month
-     *
-     * @return Response
-     */
-    public function archiveMonthlyAction($year, $month)
-    {
-        return $this->renderArchive(array(
-            'date' => $this->getPostManager()->getPublicationDateQueryParts(sprintf('%d-%d-%d', $year, $month, 1), 'month')
-        ));
-    }
 
-    /**
-     * @param string $year
-     *
-     * @return Response
-     */
-    public function archiveYearlyAction($year)
-    {
-        return $this->renderArchive(array(
-            'date' => $this->getPostManager()->getPublicationDateQueryParts(sprintf('%d-%d-%d', $year, 1, 1), 'year')
-        ));
-    }
-    
-        /**
-     * @param array $criteria
-     * @param array $parameters
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
- /* public function renderArchive(array $criteria = array(), array $parameters = array())
-    {
-        $pager = $this->getPostManager()->getPager(
-            $criteria,
-            $this->getRequest()->get('page', 1)
-        );
-        
-        foreach($pager as $post)
-            $this->SetPermissions($post);
-        
-        $parameters = array_merge(array(
-            'pager' => $pager,
-            'blog'  => $this->get('cpt.blog.blog'),
-            'form' => false,
-            'tag'   => false,
-            'route' => $this->getRequest()->get('_route'),
-            'route_parameters' => $this->getRequest()->get('_route_params')
-        ), $parameters);
-
-        $response = $this->render(sprintf('CptBlogBundle:Post:archive.%s.twig', $this->getRequest()->getRequestFormat()), $parameters);
-
-        if ('rss' === $this->getRequest()->getRequestFormat()) {
-            $response->headers->set('Content-Type', 'application/rss+xml');
-        }
-
-        return $response;
-    } */
 
     
     // </editor-fold>
@@ -460,12 +330,6 @@ class PostController extends BaseController
         return null;
     }
 
-    protected function GetRedirectToPostViewResponse($post)
-    {
-        return new RedirectResponse($this->generateUrl('sonata_news_view', array(
-                'permalink'  => $this->getBlog()->getPermalinkGenerator()->generate($post)
-            )));
-    }
     
     protected function getPostEditForm(PostInterface $post)
     {
@@ -473,13 +337,184 @@ class PostController extends BaseController
     }
     
     
-    /**
-     * @return \Cpt\BlogBundle\Model\BlogInterface
-     */
-    protected function getBlog()
-    {
-        return $this->container->get('cpt.blog.blog');
-    }
 
 // </editor-fold>
+    
+    
+    
+     
+                  /**
+     * @return RedirectResponse
+     */
+ /*   public function homeAction()
+    {
+        return $this->RedirectHome();
+    }*/
+    
+    /*
+    public function listPostsAction()
+    {
+        if (false === $this->get('security.context')->isGranted('ROLE_USER')) {
+            throw new AccessDeniedException("You do not have the authorization to access this page");
+        }
+        
+       $user= $this->get('security.context')->getToken()->getUser();
+        
+       $criteria = array();
+       
+       // Admin can see all posts
+       if (!$this->get('security.context')->isGranted('ROLE_ADMIN', $user))
+           $criteria['author'] = $user->getId();
+
+       $criteria['enabled'] = 'all';
+       
+       $pager = $this->getPostManager()->getPager(
+            $criteria,
+            $this->getRequest()->get('page', 1, 100)
+        );
+       
+        $parameters['pager'] = $pager;
+        $parameters['route'] = $this->getRequest()->get('_route');
+        $parameters['route_parameters'] = $this->getRequest()->get('_route_params') ;
+       
+
+        $response = $this->render(sprintf('CptBlogBundle:Post:list.html.twig', $this->getRequest()->getRequestFormat()), $parameters);
+
+        if ('rss' === $this->getRequest()->getRequestFormat()) {
+            $response->headers->set('Content-Type', 'application/rss+xml');
+        }
+
+        return $response;
+    }
+ */   
+    /**
+     * @throws NotFoundHttpException
+     *
+     * @param $permalink
+     *
+     * @return Response
+     */
+ /*   public function viewAction($permalink)
+    {
+        $post = $this->getPostManager()->findOneByPermalink($permalink, $this->container->get('cpt.blog.blog'));
+
+        if (!$post || !$post->isPublic()) {
+            throw new NotFoundHttpException('Unable to find the post');
+        }
+
+       
+        $this->SetPermissions($post);
+
+        
+        if ($seoPage = $this->getSeoPage()) {
+            $seoPage
+                ->setTitle($post->getTitle())
+                ->addMeta('property', 'og:title', $post->getTitle())
+                ->addMeta('property', 'og:type', 'blog')
+                ->addMeta('property', 'og:url',  $this->generateUrl('sonata_news_view', array(
+                    'permalink'  => $this->getBlog()->getPermalinkGenerator()->generate($post, true)
+                ), true))
+            ;
+        }
+
+        $this->SetPermissions($post);
+                    
+        return $this->render('CptBlogBundle:Post:view.html.twig', array(
+            'post' => $post,
+            'form' => false,
+            'blog' => $this->get('cpt.blog.blog'),
+        ));
+    }
+ */   
+    
+     /**
+     * @param string $tag
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     *
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     */
+ /*   public function tagAction($tag)
+    {
+        $tag = $this->get('cpt.blog.manager.tag')->findOneBy(array(
+            'slug' => $tag,
+            'enabled' => true
+        ));
+
+        if (!$tag) {
+            throw new NotFoundHttpException('Unable to find the tag');
+        }
+
+        if (!$tag->getEnabled()) {
+            throw new NotFoundHttpException('Unable to find the tag');
+        }
+
+        return $this->renderArchive(array('tag' => $tag), array('tag' => $tag));
+    }*/
+     /**
+     * @return Response
+     */
+   /* public function archiveAction()
+    {
+        return $this->renderArchive();
+    }*/
+    
+    /**
+     * @param string $year
+     * @param string $month
+     *
+     * @return Response
+     */
+  /*  public function archiveMonthlyAction($year, $month)
+    {
+        return $this->renderArchive(array(
+            'date' => $this->getPostManager()->getPublicationDateQueryParts(sprintf('%d-%d-%d', $year, $month, 1), 'month')
+        ));
+    }*/
+
+    /**
+     * @param string $year
+     *
+     * @return Response
+     */
+  /*  public function archiveYearlyAction($year)
+    {
+        return $this->renderArchive(array(
+            'date' => $this->getPostManager()->getPublicationDateQueryParts(sprintf('%d-%d-%d', $year, 1, 1), 'year')
+        ));
+    }*/
+    
+        /**
+     * @param array $criteria
+     * @param array $parameters
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+ /* public function renderArchive(array $criteria = array(), array $parameters = array())
+    {
+        $pager = $this->getPostManager()->getPager(
+            $criteria,
+            $this->getRequest()->get('page', 1)
+        );
+        
+        foreach($pager as $post)
+            $this->SetPermissions($post);
+        
+        $parameters = array_merge(array(
+            'pager' => $pager,
+            'blog'  => $this->get('cpt.blog.blog'),
+            'form' => false,
+            'tag'   => false,
+            'route' => $this->getRequest()->get('_route'),
+            'route_parameters' => $this->getRequest()->get('_route_params')
+        ), $parameters);
+
+        $response = $this->render(sprintf('CptBlogBundle:Post:archive.%s.twig', $this->getRequest()->getRequestFormat()), $parameters);
+
+        if ('rss' === $this->getRequest()->getRequestFormat()) {
+            $response->headers->set('Content-Type', 'application/rss+xml');
+        }
+
+        return $response;
+    } */
 }

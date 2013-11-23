@@ -45,6 +45,14 @@ a img
 border: 0px;  
 }  
 
+.inline-block{
+    display: inline-block;
+}
+
+.float-right{
+    float: right;
+}
+
 .horizontal_list li{
     display: inline;
     list-style: none;

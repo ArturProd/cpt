@@ -41,7 +41,7 @@ class PostType extends AbstractType
             ->add('title', null, array(
                 'label' => 'form_post_type_title',
                 'attr' => array(
-                    'maxlength'  => '80',
+                    'maxlength'  => '78',
                     'placeholder' => 'Titre',
                     'class' => 'article_edit_title'
                     ),

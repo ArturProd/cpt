@@ -2,6 +2,7 @@
 
 namespace Cpt\BlogBundle\Controller;
 use Cpt\MainBundle\Controller\BaseController as BaseController;
+use Cpt\BlogBundle\Interfaces\Entity\PostInterface as PostInterface;
 
 
 /**
@@ -32,6 +33,19 @@ class BasePostController  extends BaseController {
     protected function getPostManager()
     {
         return $this->get('cpt.blog.manager.post');
+    }
+    
+    
+    protected function CanSeePost(PostInterface $post)
+    {
+        $user= $this->get('security.context')->getToken()->getUser();
+
+        $result =  $post->isPublic()
+                || $post->getAuthor()->getId()
+                || $this->get('security.context')->isGranted('ROLE_ADMIN', $user);
+        
+        return $result;
+
     }
     
        /*

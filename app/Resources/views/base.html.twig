@@ -94,10 +94,11 @@
                         }
                         
                         {% if app.environment == 'dev' %}
-                            myWindow=window.open('', '_blank');
-                            myWindow.document.write("Text Status:" + textStatus);
-                            myWindow.document.write("Error Thrown:" + errorThrown );
-                            myWindow.document.write(jqXHR.responseText);
+                          //  myWindow=window.open('', '_blank');
+                          //  myWindow.document.write("Text Status:" + textStatus);
+                          //  myWindow.document.write("Error Thrown:" + errorThrown );
+                           // myWindow.document.write(jqXHR.responseText);
+                           $('#debugerrors').html(errorThrown+"<BR>"+jqXHR.responseText);
                             console.log(new Error().stack);
                         {% endif %}
                     }
@@ -205,7 +206,7 @@
               <div id="modal_dialog_text"></div>
           </div> 
          {# ---FIN Modal Dialogs and Flash Messages -- #}
-         
+         <div id="debugerrors"></div>
         <!--header -->          
         <div class="container-fluid">
 

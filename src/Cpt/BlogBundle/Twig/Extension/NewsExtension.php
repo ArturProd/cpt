@@ -12,8 +12,8 @@
 namespace Cpt\BlogBundle\Twig\Extension;
 
 use Symfony\Component\Routing\RouterInterface;
-use Cpt\BlogBundle\Interfaces\Entity\BlogInterface;
-use Cpt\BlogBundle\Interfaces\Entity\PostInterface;
+use Cpt\BlogBundle\Interfaces\Entity\PostInterface as PostInterface;
+use Cpt\BlogBundle\Manager\PermalinkDateManager as PermalinkDateManager;
 
 class NewsExtension extends \Twig_Extension
 {
@@ -23,22 +23,13 @@ class NewsExtension extends \Twig_Extension
     private $router;
 
     /**
-     * @var CmsManagerSelectorInterface
-     */
-    private $tagManager;
-    
-    
-    private $postmanager;
-
-    /**
      * @param \Symfony\Component\Routing\RouterInterface   $router
      * @param \Cpt\BlogBundle\Model\TagManagerInterface $tagManager
      * @param \Cpt\BlogBundle\Model\BlogInterface       $blog
      */
-    public function __construct(RouterInterface $router, BlogInterface $blog)
+    public function __construct(RouterInterface $router)
     {
         $this->router     = $router;
-        $this->blog       = $blog;
     }
 
     /**
@@ -49,7 +40,6 @@ class NewsExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            'sonata_news_link_tag_rss' => new \Twig_Function_Method($this, 'renderTagRss', array('is_safe' => array('html'))),
             'sonata_news_permalink'    => new \Twig_Function_Method($this, 'generatePermalink'),
         ); 
     }
@@ -73,22 +63,6 @@ class NewsExtension extends \Twig_Extension
         return 'sonata_news';
     }
 
-    /**
-     * @return string
-     */
-    public function renderTagRss()
-    {
-        $rss = array();
-        foreach ($this->tagManager->findBy(array('enabled' => true)) as $tag) {
-            $rss[] = sprintf('<link href="%s" title="%s : %s" type="application/rss+xml" rel="alternate" />',
-                $this->router->generate('sonata_news_tag', array('tag' => $tag->getSlug(), '_format' => 'rss'), true),
-                $this->blog->getTitle(),
-                $tag->getName()
-            );
-        }
-
-        return implode("\n", $rss);
-    }
 
     /**
      * @param \Cpt\BlogBundle\Model\PostInterface $post
@@ -97,6 +71,8 @@ class NewsExtension extends \Twig_Extension
      */
     public function generatePermalink(PostInterface $post)
     {
-        return $this->blog->getPermalinkGenerator()->generate($post);
+        $permalinkgenerator = new PermalinkDateManager();
+        return $permalinkgenerator->generate($post);
+        //return "hello";
     }
 }

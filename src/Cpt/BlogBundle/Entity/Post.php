@@ -11,7 +11,6 @@
 
 namespace Cpt\BlogBundle\Entity;
 
-use Cpt\BlogBundle\Entity\BasePost as BasePost;
 use Cpt\BlogBundle\Interfaces\Entity\CommentInterface as CommentInterface;
 use Cpt\BlogBundle\Interfaces\Entity\CategoryInterface as CategoryInterface;
 use Cpt\BlogBundle\Interfaces\Entity\PostInterface as PostInterface;
@@ -25,7 +24,7 @@ use Cpt\BlogBundle\Interfaces\Entity\PostInterface as PostInterface;
  *
  * @author <yourname> <youremail>
  */
-class Post extends BasePost implements PostInterface
+class Post implements PostInterface
 {
     
     public function toViewArray()

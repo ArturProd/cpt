@@ -11,13 +11,12 @@
 namespace Cpt\BlogBundle\Manager;
 
 use Cpt\BlogBundle\Interfaces\Entity\PostInterface as PostInterface;
-use Cpt\BlogBundle\Interfaces\Entity\BlogInterface as BlogInterface;
 use Cpt\BlogBundle\Interfaces\Entity\CategoryInterface as CategoryInterface;
 use Cpt\BlogBundle\Entity\Post as Post;
 
 use Cpt\BlogBundle\Interfaces\Manager\PostManagerInterface as PostManagerInterface;
 
-use Cpt\BlogBundle\Permalink\DatePermalink as DatePermalink;
+use Cpt\BlogBundle\Manager\PermalinkDateManager as DatePermalink;
 
 use Sonata\DoctrineORMAdminBundle\Datagrid\Pager;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
@@ -44,6 +43,9 @@ class PostManager extends BaseManager implements PostManagerInterface
         $this->em    = $em;
         $this->class = $class;
     }   
+    
+
+    
     
     public function createPostInstance($author, $publishedhomepage=false, $enabled=true, $title="", $rawcontent="")
     {
@@ -72,14 +74,15 @@ class PostManager extends BaseManager implements PostManagerInterface
      *
      * @return PostInterface
      */
-    public function findOneByPermalink($permalink, BlogInterface $blog)
+    public function findOneByPermalink($permalink)
     {
         try {
             $repository = $this->em->getRepository($this->class);
 
             $query = $repository->createQueryBuilder('p');
 
-            $urlParameters = $blog->getPermalinkGenerator()->getParameters($permalink);
+            $PermalinkGenerator = new DatePermalink();
+            $urlParameters = $PermalinkGenerator->getParameters($permalink);
 
             $parameters = array();
 

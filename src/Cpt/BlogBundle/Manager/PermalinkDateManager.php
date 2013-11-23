@@ -9,11 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace Cpt\BlogBundle\Permalink;
+namespace Cpt\BlogBundle\Manager;
 
-use Cpt\BlogBundle\Intefaces\Entity\PostInterface as PostInterface;
+use Cpt\BlogBundle\Interfaces\Manager\PermalinkManagerInterface  as PermalinkInterface;
+use Cpt\BlogBundle\Interfaces\Entity\PostInterface as PostInterface;
 
-class DatePermalink implements PermalinkInterface
+class PermalinkDateManager implements PermalinkInterface
 {
     protected $pattern;
 

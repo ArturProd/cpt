@@ -1,11 +1,14 @@
+cpt_main_article_permalink:
+    pattern:  /article/{article_permalink}
+    defaults: { _controller: CptMainBundle:Default:showArticle }
+    requirements:
+        article_permalink:  .+?
+        
 cpt_main_home:
     pattern:  /home
     defaults: { _controller: CptMainBundle:Default:index }
-
+        
 cpt_main_useradmin:
   pattern:  /useradmin
   defaults: { _controller: CptMainBundle:UserAdmin:index }
   
-cpt_main_maquette:
-    pattern:  /maquette
-    defaults: { _controller: CptMainBundle:Default:maquette }

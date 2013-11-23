@@ -9,11 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace Cpt\BlogBundle\Permalink;
+namespace Cpt\BlogBundle\Interfaces\Manager;
 
-use Cpt\BlogBundle\Intefaces\Entity\PostInterface as PostInterface;
+use Cpt\BlogBundle\Interfaces\Entity\PostInterface as PostInterface;
 
-interface PermalinkInterface
+interface PermalinkManagerInterface
 {
     /**
      * @param \Cpt\BlogBundle\Model\PostInterface $post

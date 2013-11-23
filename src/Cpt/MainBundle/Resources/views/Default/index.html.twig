@@ -78,7 +78,7 @@ function DisplayOpacityMask(visible)
     {# Articles Section
     {#************************************************************************************************************************ #}     
     <div class="span5">              
-    {% render controller("CptBlogBundle:Post:viewAll") %}
+    {% render controller("CptBlogBundle:Post:view", {"article_permalink": article_permalink}) %}
     </div>
 </div>
 
