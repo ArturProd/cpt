@@ -47,9 +47,9 @@ class PostManager extends BaseManager implements PostManagerInterface
 
     
     
-    public function createPostInstance($author, $publishedhomepage=false, $enabled=true, $title="", $rawcontent="")
+    public function createPostInstance($author, $publishedhomepage=false, $enabled=true, $title="", $content="")
     {
-        return new Post($author, $publishedhomepage, $enabled, $title, $rawcontent);
+        return new Post($author, $publishedhomepage, $enabled, $title, $content);
     }   
     /**
      * {@inheritDoc}

@@ -79,8 +79,8 @@ class EventType extends AbstractType
                     ),
              ))                
              
-             // Description
-             ->add('description', 'ckeditor', array(
+             // Content
+             ->add('content', 'ckeditor', array(
                     'config_name' => 'evt_config',          
             )) 
             

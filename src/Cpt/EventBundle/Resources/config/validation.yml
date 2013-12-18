@@ -8,7 +8,7 @@ Cpt\EventBundle\Entity\Event:
         - NotBlank: ~
         - Type:
                 type: datetime
-      description:
+      content:
         - NotBlank: ~
         - Type:
                 type: string 

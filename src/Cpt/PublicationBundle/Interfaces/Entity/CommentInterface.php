@@ -9,7 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Cpt\CommentBundle\Interfaces;
+namespace Cpt\PublicationBundle\Interfaces\Entity;
+
+use Cpt\PublicationBundle\Interfaces\Entity\PublicationInterface as PublicationInterface;
 
 interface CommentInterface
 {
@@ -83,12 +85,12 @@ interface CommentInterface
      *
      * @param \Cpt\BlogBundle\Model\PostInterface $post
      */
-    public function setSource($source);
+    public function setPublication(PublicationInterface $publication);
 
     /**
      * Get post
      *
      * @return \Cpt\BlogBundle\Model\PostInterface $post
      */
-    public function getSource();
+    public function getPublication();
 }

@@ -3,26 +3,25 @@
 namespace Cpt\EventBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Cpt\PublicationBundle\Entity\Publication as Publication;
 
 
 
-class Event
+class Event extends Publication
 {
     public function __construct()
     {
-        $this->id = -1;
+        parent::__construct(null);
+        
         $this->allowedattendees = new ArrayCollection();
-        $this->author = null;
-        $this->comments = new ArrayCollection();
+        //$this->comments = new ArrayCollection();
         $this->begindatetime = new \DateTime;
         $this->enddatetime = new \DateTime;
-        $this->description = "";
         $this->maxnumattendees = 3;
         $this->count_queued_attendees = 0;
         $this->count_total_attendees = 0;
         $this->published = true;
         $this->restricted = false;
-        $this->title = "";
         $this->approved = false;
         $this->country_code = "FR";
         $this->city_name = "";
@@ -44,63 +43,48 @@ class Event
        
     //  <editor-fold defaultstate="collapsed" desc="Attributes">
 
-   public function prePersist()
-    {
-        $this->setCreatedAt(new \DateTime);
-        $this->setUpdatedAt(new \DateTime);
-    }
-    
-    public function preUpdate()
-    {
-        $this->setUpdatedAt(new \DateTime);
-    }
+  
     
     protected $registrations;
         
-    /**
-     * @var integer
-     */
-    private $id;
+
 
     /**
      * @var \DateTime
      */
-    private $begindatetime;
+    protected $begindatetime;
 
     /**
      * @var \DateTime
      */
-    private $enddatetime;
+    protected $enddatetime;
 
-    /**
-     * @var string
-     */
-    private $description;
+
 
     /**
      * @var integer
      */
-    private $maxnumattendees;
+    protected $maxnumattendees;
 
     /**
      * @var integer
      */
-    private $count_queued_attendees;
+    protected $count_queued_attendees;
 
     /**
      * @var integer
      */
-    private $count_total_attendees;
+    protected $count_total_attendees;
 
     /**
      * @var boolean
      */
-    private $published;
+    protected $published;
 
     /**
      * @var boolean
      */
-    private $restricted;
+    protected $restricted;
 
 
         /**
@@ -136,21 +120,7 @@ class Event
     public function setRegistrations($registrations) {
         $this->registrations = $registrations;
     }
-    /**
-     * Get id
-     *
-     * @return integer 
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
 
-    public function setId($id)
-    {
-        $this->id = $id;
-    }
-    
     /**
      * Set begindatetime
      *
@@ -197,28 +167,7 @@ class Event
         return $this->enddatetime;
     }
 
-    /**
-     * Set description
-     *
-     * @param string $description
-     * @return BaseEvent
-     */
-    public function setDescription($description)
-    {
-        $this->description = $description;
-
-        return $this;
-    }
-
-    /**
-     * Get description
-     *
-     * @return string 
-     */
-    public function getDescription()
-    {
-        return $this->description;
-    }
+   
 
     /**
      * Set maxnumattendees
@@ -336,90 +285,7 @@ class Event
     {
         return $this->restricted;
     }
-    /**
-     * @var \DateTime
-     */
-    private $createdAt;
-
-    /**
-     * @var \DateTime
-     */
-    private $updatedAt;
-
-
-    /**
-     * Set createdAt
-     *
-     * @param \DateTime $createdAt
-     * @return BaseEvent
-     */
-    public function setCreatedAt($createdAt)
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
-    /**
-     * Get createdAt
-     *
-     * @return \DateTime 
-     */
-    public function getCreatedAt()
-    {
-        return $this->createdAt;
-    }
-
-    /**
-     * Set updatedAt
-     *
-     * @param \DateTime $updatedAt
-     * @return BaseEvent
-     */
-    public function setUpdatedAt($updatedAt)
-    {
-        $this->updatedAt = $updatedAt;
-
-        return $this;
-    }
-
-    /**
-     * Get updatedAt
-     *
-     * @return \DateTime 
-     */
-    public function getUpdatedAt()
-    {
-        return $this->updatedAt;
-    }
-    /**
-     * @var string
-     */
-    private $title;
-
-
-    /**
-     * Set title
-     *
-     * @param string $title
-     * @return BaseEvent
-     */
-    public function setTitle($title)
-    {
-        $this->title = $title;
-
-        return $this;
-    }
-
-    /**
-     * Get title
-     *
-     * @return string 
-     */
-    public function getTitle()
-    {
-        return $this->title;
-    }
+ 
     /**
      * @var boolean
      */
@@ -675,14 +541,10 @@ class Event
     }
     
     
-    protected $author;
-        
-
-   
     
     protected $allowedattendees;
     
-    private $comments;
+    //private $comments;
  
 
     // </editor-fold>
@@ -703,47 +565,47 @@ class Event
 
 
 
-    /**
-     * Add comments
-     *
-     * @param \Cpt\BlogBundle\Entity\Comment $comments
-     * @return Event
-     */
-    public function addComment(\Cpt\BlogBundle\Entity\Comment $comments)
-    {
-        $this->comments[] = $comments;
-
-        return $this;
-    }
-
-    /**
-     * Remove comments
-     *
-     * @param \Cpt\BlogBundle\Entity\Comment $comments
-     */
-    public function removeComment(\Cpt\BlogBundle\Entity\Comment $comments)
-    {
-        $this->comments->removeElement($comments);
-    }
-
-    /**
-     * Get comments
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getComments()
-    {
-        return $this->comments;
-    }
-    
-        /**
-     * Set comments
-     *
-     */
-    public function setComments($comments)
-    {
-        $this->comments = $comments;
-    }
+//    /**
+//     * Add comments
+//     *
+//     * @param \Cpt\BlogBundle\Entity\Comment $comments
+//     * @return Event
+//     */
+//    public function addComment(\Cpt\BlogBundle\Entity\Comment $comments)
+//    {
+//        $this->comments[] = $comments;
+//
+//        return $this;
+//    }
+//
+//    /**
+//     * Remove comments
+//     *
+//     * @param \Cpt\BlogBundle\Entity\Comment $comments
+//     */
+//    public function removeComment(\Cpt\BlogBundle\Entity\Comment $comments)
+//    {
+//        $this->comments->removeElement($comments);
+//    }
+//
+//    /**
+//     * Get comments
+//     *
+//     * @return \Doctrine\Common\Collections\Collection 
+//     */
+//    public function getComments()
+//    {
+//        return $this->comments;
+//    }
+//    
+//        /**
+//     * Set comments
+//     *
+//     */
+//    public function setComments($comments)
+//    {
+//        $this->comments = $comments;
+//    }
     
     /**
      * @var array

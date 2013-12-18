@@ -136,21 +136,21 @@ class CptBlogExtension extends Extension
         }
 
 
-        $collector->addAssociation($config['class']['post'], 'mapOneToMany', array(
-             'fieldName' => 'comments',
-             'targetEntity' => $config['class']['comment'],
-             'cascade' =>
-             array(
-                 0 => 'remove',
-                 1 => 'persist',
-             ),
-             'mappedBy' => 'post',
-             'orphanRemoval' => true,
-             'orderBy' =>
-             array(
-                 'createdAt' => 'DESC',
-             ),
-        ));
+//        $collector->addAssociation($config['class']['post'], 'mapOneToMany', array(
+//             'fieldName' => 'comments',
+//             'targetEntity' => $config['class']['comment'],
+//             'cascade' =>
+//             array(
+//                 0 => 'remove',
+//                 1 => 'persist',
+//             ),
+//             'mappedBy' => 'post',
+//             'orphanRemoval' => true,
+//             'orderBy' =>
+//             array(
+//                 'createdAt' => 'DESC',
+//             ),
+//        ));
 
         $collector->addAssociation($config['class']['post'], 'mapManyToOne', array(
             'fieldName' => 'image',
@@ -175,24 +175,24 @@ class CptBlogExtension extends Extension
             'orphanRemoval' => false,
         ));
 
-        $collector->addAssociation($config['class']['post'], 'mapManyToOne', array(
-             'fieldName' => 'author',
-             'targetEntity' => $config['class']['user'],
-             'cascade' =>
-             array(
-                 1 => 'persist',
-             ),
-             'mappedBy' => NULL,
-             'inversedBy' => NULL,
-             'joinColumns' =>
-             array(
-                 array(
-                     'name' => 'author_id',
-                     'referencedColumnName' => 'id',
-                 ),
-             ),
-             'orphanRemoval' => false,
-        ));
+//        $collector->addAssociation($config['class']['post'], 'mapManyToOne', array(
+//             'fieldName' => 'author',
+//             'targetEntity' => $config['class']['user'],
+//             'cascade' =>
+//             array(
+//                 1 => 'persist',
+//             ),
+//             'mappedBy' => NULL,
+//             'inversedBy' => NULL,
+//             'joinColumns' =>
+//             array(
+//                 array(
+//                     'name' => 'author_id',
+//                     'referencedColumnName' => 'id',
+//                 ),
+//             ),
+//             'orphanRemoval' => false,
+//        ));
 
         $collector->addAssociation($config['class']['post'], 'mapManyToOne', array(
              'fieldName' => 'category',
@@ -215,59 +215,59 @@ class CptBlogExtension extends Extension
 
        
 
-        $collector->addAssociation($config['class']['comment'], 'mapManyToOne', array(
-             'fieldName' => 'post',
-             'targetEntity' => $config['class']['post'],
-             'cascade' => array(
-             ),
-             'mappedBy' => NULL,
-             'inversedBy' => 'comments',
-             'joinColumns' =>
-             array(
-                 array(
-                     'name' => 'post_id',
-                    'referencedColumnName' => 'id',
-                 ),
-             ),
-             'orphanRemoval' => false,
-        ));
+//        $collector->addAssociation($config['class']['comment'], 'mapManyToOne', array(
+//             'fieldName' => 'post',
+//             'targetEntity' => $config['class']['post'],
+//             'cascade' => array(
+//             ),
+//             'mappedBy' => NULL,
+//             'inversedBy' => 'comments',
+//             'joinColumns' =>
+//             array(
+//                 array(
+//                     'name' => 'post_id',
+//                    'referencedColumnName' => 'id',
+//                 ),
+//             ),
+//             'orphanRemoval' => false,
+//        ));
         
         // Adding comment => Author association    
         // Many to one is always the owning side of an association and should use InversedBy
-         $collector->addAssociation($config['class']['comment'], 'mapManyToOne', array(
-             'fieldName' => 'author',
-             'targetEntity' => $config['class']['user'],
-             'cascade' =>
-             array(
-                 1 => 'persist',
-             ),
-             'mappedBy' => NULL,
-             'inversedBy' => 'comments',
-             'joinColumns' =>
-             array(
-                 array(
-                     'name' => 'author_id',
-                     'referencedColumnName' => 'id',
-                 ),
-             ),
-             'orphanRemoval' => false,
-        ));
+//         $collector->addAssociation($config['class']['comment'], 'mapManyToOne', array(
+//             'fieldName' => 'author',
+//             'targetEntity' => $config['class']['user'],
+//             'cascade' =>
+//             array(
+//                 1 => 'persist',
+//             ),
+//             'mappedBy' => NULL,
+//             'inversedBy' => 'comments',
+//             'joinColumns' =>
+//             array(
+//                 array(
+//                     'name' => 'author_id',
+//                     'referencedColumnName' => 'id',
+//                 ),
+//             ),
+//             'orphanRemoval' => false,
+//        ));
         
 
-        $collector->addAssociation($config['class']['user'], 'mapOneToMany', array(
-             'fieldName' => 'comments',
-             'targetEntity' => $config['class']['comment'],
-             'cascade' =>
-             array(
-                 0 => 'remove',
-                 1 => 'persist',
-             ),
-             'mappedBy' => 'author',
-             'orphanRemoval' => true,
-             'orderBy' =>
-             array(
-                 'createdAt' => 'DESC',
-             ),
-        ));
+//        $collector->addAssociation($config['class']['user'], 'mapOneToMany', array(
+//             'fieldName' => 'comments',
+//             'targetEntity' => $config['class']['comment'],
+//             'cascade' =>
+//             array(
+//                 0 => 'remove',
+//                 1 => 'persist',
+//             ),
+//             'mappedBy' => 'author',
+//             'orphanRemoval' => true,
+//             'orderBy' =>
+//             array(
+//                 'createdAt' => 'DESC',
+//             ),
+//        ));
     }
 }

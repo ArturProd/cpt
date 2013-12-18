@@ -74,6 +74,7 @@ doctrine:
                 auto_mapping: true
                 mappings:
                     SonataMediaBundle: ~
+                    CptPublicationBundle: ~
                     CptEventBundle:
                       mapping:  true
                       type:     yml

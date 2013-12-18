@@ -21,6 +21,7 @@ class AppKernel extends Kernel
             new JMS\SecurityExtraBundle\JMSSecurityExtraBundle(),
             new Cpt\EventBundle\CptEventBundle(),
             new Cpt\MainBundle\CptMainBundle(),
+            new Cpt\PublicationBundle\CptPublicationBundle(),
             new Cpt\TestBundle\CptTestBundle(),
             new FOS\UserBundle\FOSUserBundle(),
             

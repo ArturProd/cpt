@@ -29,7 +29,7 @@ $(function() {
 {#***********************************************#}
 function prepare_postform_submission()
 {
-    CKEDITOR.instances['post_rawcontent'].updateElement();                {# update the entity field with CKEDIOR content #}
+    CKEDITOR.instances['post_content'].updateElement();                {# update the entity field with CKEDIOR content #}
 }
 
 {#***********************************************#}
@@ -115,9 +115,9 @@ function save_post_callback(response)
 {# Content #}
    <div class="row-fluid">     
        <div class="span10 offset1">
-          {#{ form_widget(form.rawcontent) }#}
-          {{ form_errors(posteditform.rawcontent) }}
-          {{ form_widget(posteditform.rawcontent) }}     
+          {#{ form_widget(form.content) }#}
+          {{ form_errors(posteditform.content) }}
+          {{ form_widget(posteditform.content) }}     
       </div>
    </div>
     {{ form_end(posteditform) }}

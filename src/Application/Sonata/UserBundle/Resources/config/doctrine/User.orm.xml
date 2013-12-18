@@ -16,6 +16,19 @@
                 <cascade-persist/>
             </cascade>
         </one-to-many>
+        
+        <one-to-many field="publications" target-entity="Cpt\PublicationBundle\Entity\Publication" mapped-by="author">
+            <cascade>
+                <cascade-persist/>
+            </cascade>
+        </one-to-many>
+
+        <one-to-many field="comments" target-entity="Cpt\PublicationBundle\Entity\Comment" mapped-by="author">
+            <cascade>
+                <cascade-persist/>
+                <cascade-remove/>
+            </cascade>
+        </one-to-many>
     
     </entity>
 

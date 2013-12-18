@@ -77,7 +77,7 @@
 {# Post Body (Content etc.)
 {#****************************************************************************#}
 <div class="post_body" id="post_body{{post.id}}">
-    {{ post.rawcontent|raw }}
+    {{ post.content|raw }}
     {% if post.CanBeModified %}
             <!--button onclick="parent.location='{{ url('cpt_blog_post_edit', { 'id': post.id }) }}'" class="btn btn-success btn-small pull-right">Editer</button!-->
     {% endif %}
@@ -85,6 +85,6 @@
 {#****************************************************************************#}
 {# Comments
 {#****************************************************************************#}
-{% render controller("CptBlogBundle:Comment:comments", { 'postId': post.id, '_locale': app.request.locale }) %}
+{#% render controller("CptBlogBundle:Comment:comments", { 'postId': post.id, '_locale': app.request.locale }) %#}
 
 

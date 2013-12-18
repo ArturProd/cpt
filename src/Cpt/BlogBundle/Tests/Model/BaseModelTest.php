@@ -11,7 +11,7 @@
 
 namespace Cpt\BlogBundle\Tests\Model;
 
-class BasePostTest_Post extends \Cpt\BlogBundle\Model\Post
+class BasePostTest_Post extends Cpt\BlogBundle\Entity
 {
     public function getId()
     {

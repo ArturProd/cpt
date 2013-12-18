@@ -14,7 +14,7 @@
             <constraint name="Valid" />
         </getter>
 
-        <getter property="rawContent">
+        <getter property="Content">
             <constraint name="NotBlank"/>
         </getter>
         <getter property="commentsDefaultStatus">

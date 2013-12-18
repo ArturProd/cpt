@@ -28,7 +28,7 @@ use Cpt\BlogBundle\Interfaces\Entity\PostInterface as PostInterface;
 use Cpt\BlogBundle\Controller\BasePostController as BasePostController;
 
 
-use Cpt\BlogBundle\Manager\PermalinkDateManager as PermalinkDateManager;
+//use Cpt\BlogBundle\Manager\PermalinkDateManager as PermalinkDateManager;
 
 
 

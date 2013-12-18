@@ -9,13 +9,21 @@
             association mapping  : http://www.doctrine-project.org/projects/orm/2.0/docs/reference/association-mapping/en
     -->
     <entity
-        name="Cpt\BlogBundle\Entity\Comment"
-        table="news__comment"
+        name="Cpt\PublicationBundle\Entity\Comment"
+        table="cpt_publication_comment"
         repository-class="Doctrine\ORM\EntityRepository">
-
+    
         <id name="id" type="integer" column="id">
             <generator strategy="AUTO"/>
         </id>
+        <many-to-one field="publication" target-entity="Publication" inversed-by="comments">
+            <join-column name="publication_id" referenced-column-name="id" />
+        </many-to-one>
+    
+        <!-- Publication <=> Author -->
+        <many-to-one field="author" target-entity="Application\Sonata\UserBundle\Entity\User" inversed-by="comments">
+            <join-column name="author_id" referenced-column-name="id" />
+        </many-to-one>
         
         <field name="message"           type="text"         column="message"  />
         <field name="status"            type="integer"      column="status"   default="false" />

@@ -12,7 +12,7 @@
 namespace Cpt\BlogBundle\Manager;
 
 use Cpt\BlogBundle\Interfaces\Manager\PermalinkManagerInterface as PermalinkInterface;
-use Cpt\BlogBundle\Intefaces\Entity\PostInterface as PostInterface;
+use Cpt\BlogBundle\Interfaces\Entity\PostInterface as PostInterface;
 
 class PermalinkCategoryManager implements PermalinkInterface
 {

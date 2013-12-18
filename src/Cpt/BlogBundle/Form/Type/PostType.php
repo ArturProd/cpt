@@ -46,7 +46,7 @@ class PostType extends AbstractType
                     'class' => 'article_edit_title'
                     ),
              ))
-            ->add('rawcontent', 'ckeditor', array( 
+            ->add('content', 'ckeditor', array( 
                     'config_name' => 'article_config',
             ));
     }

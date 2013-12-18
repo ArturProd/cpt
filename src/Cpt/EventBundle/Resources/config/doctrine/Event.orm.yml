@@ -1,11 +1,6 @@
 Cpt\EventBundle\Entity\Event:
     type: entity
     repositoryClass: Cpt\EventBundle\Entity\EventRepository
-    id:
-      id:
-        type: integer
-        generator:
-          strategy: AUTO
     lifecycleCallbacks:
         prePersist: [prePersist]
         preUpdate: [preUpdate]
@@ -15,18 +10,10 @@ Cpt\EventBundle\Entity\Event:
         mappedBy: event
         cascade: ["persist"]
     fields:
-      createdAt:
-        type: datetime
-      updatedAt:
-        type: datetime
       begindatetime:
         type: datetime
       enddatetime:  
         type: datetime
-      description:
-        type: text
-      title:
-        type: text
       maxnumattendees:
         type: integer
       count_queued_attendees:

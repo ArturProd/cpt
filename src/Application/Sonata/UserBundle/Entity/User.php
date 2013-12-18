@@ -34,22 +34,24 @@ class User extends BaseUser
     
     protected $registrations;
     
-    protected $events;
+    protected $publications;
+    
+   
     
     public function getDisplayName()
     {
         return $this->getUsername() . ($this->getLastname() ? " ".$this->getLastname() : "");
     }
     
-    public function getEvents() {
-        return $this->events;
+    public function getPublications() {
+        return $this->publications;
     }
 
-    public function setEvents($events) {
-        $this->events = $events;
+    public function setPublications($publications) {
+        $this->publications = $publications;
     }
 
-        public function getRegistrations() {
+    public function getRegistrations() {
         return $this->registrations;
     }
 
@@ -93,6 +95,7 @@ class User extends BaseUser
         parent::User();
         
         $this->comments = new Doctrine\Common\Collection\ArrayCollection();
-    
+        $this->publications = new Doctrine\Common\Collection\ArrayCollection();
+        $this->registrations = new Doctrine\Common\Collection\ArrayCollection();
     }
 }
