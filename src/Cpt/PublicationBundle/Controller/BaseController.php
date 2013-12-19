@@ -1,8 +1,8 @@
 <?php
 
-namespace Cpt\BlogBundle\Controller;
-use Cpt\MainBundle\Controller\BaseController as BaseController;
-use Cpt\BlogBundle\Interfaces\Entity\PostInterface as PostInterface;
+namespace Cpt\PublicationBundle\Controller;
+
+use Cpt\MainBundle\Controller\BaseController as CptBaseController;
 
 
 /**
@@ -10,18 +10,8 @@ use Cpt\BlogBundle\Interfaces\Entity\PostInterface as PostInterface;
  *
  * @author cyril
  */
-class BasePostController  extends BaseController {
+class BaseController  extends CptBaseController {
     
-   
-    
-    protected function getPostById($id)
-    {
-        $post = $this->getPostManager()->findOneBy( array('id' => $id) );
-
-        return $post;
-    }
-
-  
     protected function CanSeePost(PostInterface $post)
     {
         $user= $this->get('security.context')->getToken()->getUser();
@@ -34,7 +24,25 @@ class BasePostController  extends BaseController {
 
     }
     
-
+       /*
+     * Only logged in users can comment post
+     */
+    protected function CanCommentPost($post, $user)
+    {        
+        if (!$post)
+            return false;
+        
+        if (!$user)
+            return false;
+        
+        if (!$post->isCommentable())
+            return false;
+        
+        if (!$this->get('security.context')->isGranted('IS_AUTHENTICATED_REMEMBERED', $user))
+            return false;
+        
+        return true;
+    }
     
      
     protected function CanModifyPost($post_id)

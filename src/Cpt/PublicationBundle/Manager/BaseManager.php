@@ -1,30 +1,11 @@
 <?php
 namespace Cpt\PublicationBundle\Manager;
 
+use Cpt\MainBundle\Manager\BaseManager as CptBaseManager;
 
-abstract class BaseManager
+abstract class BaseManager extends CptBaseManager
 {
-    /**
-     * @var string
-     */
-    protected $class;
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getClass()
-    {
-        return $this->class;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function create()
-    {
-        return new $this->class;
-    }
-    
+   
   
 }
 ?>

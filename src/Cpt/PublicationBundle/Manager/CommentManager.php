@@ -11,33 +11,30 @@
 namespace Cpt\PublicationBundle\Manager;
 
 
-use \Cpt\PublicationBundle\Interfaces\Manager\CommentManagerInterface as CommentManagerInterface;
+use Cpt\PublicationBundle\Interfaces\Manager\CommentManagerInterface as CommentManagerInterface;
 use Cpt\PublicationBundle\Interfaces\Entity\CommentInterface as CommentInterface;
 use Cpt\PublicationBundle\Interfaces\Entity\PublicationInterface as PublicationInterface;
+use Cpt\PublicationBundle\Entity\Comment as Comment;
 
-use Doctrine\ORM\EntityManager;
+use Sonata\UserBundle\Model\UserInterface as UserInterface;
+
 
 use Sonata\DoctrineORMAdminBundle\Datagrid\Pager;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 
 class CommentManager extends BaseManager implements CommentManagerInterface
 {
-    /**
-     * @var \Doctrine\ORM\EntityManager
-     */
-    protected $em;
-
-
-    /**
-     * @param \Doctrine\ORM\EntityManager                   $em
-     * @param string                                        $class
-     * @param \Cpt\BlogBundle\Model\PostManagerInterface $postManager
-     */
-    public function __construct(EntityManager $em, $class)
+   
+    public function create(PublicationInterface $publication, UserInterface $author)
     {
-        $this->em          = $em;
-        $this->class       = $class;
+        $comment = new Comment();
+        $comment->setPublication($publication);
+        $comment->setStatus($publication->getCommentsDefaultStatus());
+        $comment->setAuthor($author);
+        return $comment;
     }
+    
+
 
     /**
      * {@inheritDoc}
@@ -74,21 +71,7 @@ class CommentManager extends BaseManager implements CommentManagerInterface
         $this->em->getConnection()->commit();
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function findOneBy(array $criteria)
-    {
-        return $this->em->getRepository($this->class)->findOneBy($criteria);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function findBy(array $criteria)
-    {
-        return $this->em->getRepository($this->class)->findBy($criteria);
-    }
+    
 
     /**
      * {@inheritDoc}

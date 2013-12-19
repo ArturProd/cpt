@@ -1,0 +1,165 @@
+<script type="text/javascript">
+ var older_comment_ids = new Array();  {# Contains for each post the older comment id #}
+ var newer_comment_ids = new Array();  {# Contains for each post the newer comment id #}
+ TIMEOUT_COMMENT_CHECK_MS = 60000;
+ URL_get_new_comments = "{{ url('cpt_comment_new_list_json')}}";
+{#****************************************************************************#}
+{# Retreives list of older comment for a post
+{#****************************************************************************#}
+function get_more_comments(publicationid, howmany, callback)
+{
+    if (older_comment_ids[publicationid] === undefined)
+        older_comment_ids[publicationid] = null;
+    
+    if (newer_comment_ids[publicationid] === undefined)
+        newer_comment_ids[publicationid] = null;
+        
+    {# Get Comment array as a json object #}
+    $.getJSON('{{ url('cpt_comment_list_json')}}', {publicationid:publicationid, howmany:howmany, beforeid:older_comment_ids[publicationid]}, function(response) {
+        if (response.status!=='ok')
+        {
+            no_more_older_comments(publicationid,0); {# if for some reason the response is not ok, hide the button to get more commments #}
+            return;
+        }
+        
+        comments = response.data;
+        
+        for (i=0; i<comments.length; ++i)
+            append_comment(comments[i]); {# Append each comment to the DOM #}
+        
+        if (comments.length>0)
+        {
+            if (older_comment_ids[publicationid] === null) {# if it is the first time we add more comments (initialization of page), then the most recent comment is initialized #}
+                newer_comment_ids[publicationid] = comments[0].id;
+            older_comment_ids[publicationid] = comments[comments.length-1].id;
+        }
+        
+        if (callback)
+            callback(comments);
+    });    
+}
+
+{#****************************************************************************#}
+{# Retreives list of new comments for a publication
+{#****************************************************************************#}
+function get_new_comments(publicationid)
+{
+    if (older_comment_ids[publicationid] === undefined)
+        older_comment_ids[publicationid] = null;
+
+    if (newer_comment_ids[publicationid] === undefined)
+        newer_comment_ids[publicationid] = null;
+      
+    newercommentid = (newer_comment_ids[publicationid] === null) ? -1 : newer_comment_ids[publicationid];
+    
+
+    {# Get Comment array as a json object #}
+    $.getJSON( URL_get_new_comments, {publicationid:publicationid, aftercommentid:newercommentid}, function(response) {
+        if (response.status!=='ok')
+          return;
+        
+        comments = response.data;
+        
+        for (i=0; i<comments.length; ++i)
+            prepend_comment(comments[i]); {# Append each comment to the DOM #}
+        
+        if (comments.length>0)
+            newer_comment_ids[publicationid] = comments[comments.length-1].id;
+        
+         setTimeout("get_new_comments("+publicationid+")",TIMEOUT_COMMENT_CHECK_MS);
+      });
+}
+{#****************************************************************************#}
+{# Disable the link to get more comments for a given publication if commentcount === 0
+{#****************************************************************************#}
+function no_more_older_comments(publicationid, commentcount)
+{
+    if (commentcount === 0)
+    {
+        $('#btn_more_comments_'+publicationid).hide();
+        $('#btn_more_comments_wrapper_'+publicationid).hide();
+    }
+}
+{#****************************************************************************#}
+{# Add a comment to the DOM at the END of the comment list
+{#****************************************************************************#}
+function append_comment(comment)
+{
+    new_comment_dom = get_comment_dom(comment);
+    new_comment_dom.appendTo($('#comment_list_'+comment.publicationid));
+    new_comment_dom.slideDown( 1000 );
+}
+{#****************************************************************************#}
+{# Add a comment to the DOM at the BEGINING of the comment list
+{#****************************************************************************#}
+function prepend_comment(comment)
+{
+    new_comment_dom = get_comment_dom(comment);
+    new_comment_dom.prependTo($('#comment_list_'+comment.publicationid));
+    new_comment_dom.slideDown( 1000 );
+    new_comment_dom.show("highlight", 5000);
+}
+{#****************************************************************************#}
+{# Clone the Comment template, fill it with the comment and returns the ajax DOM object
+{#****************************************************************************#}
+function get_comment_dom(comment)
+{
+    var new_comment_dom = $("#comment_template").clone();
+    new_comment_dom.attr('id', 'comment_'+comment.id);
+    new_comment_dom.children(".comment_header").html("<ul><li>" + comment.authorname + "</li><li>" + comment.createdat + "</li></ul>");
+    new_comment_dom.children(".comment_body").append(comment.message);
+    new_comment_dom.hide();
+    return new_comment_dom;
+}
+{#****************************************************************************#}
+{# handles the submition of a new comment 
+{#****************************************************************************#}
+function comment_submit_callback(response)
+{
+    if (response.status === "ok")
+    {
+        comment = response.data;
+        get_new_comments(comment.publicationid);                               {# add the new comment to the DOM #}
+        $('#form_comment_textarea'+comment.publicationid).val('');      {# clear comment form textarea #}
+    }
+    DisableControls('form_comment_'+comment.publicationid, true);  {#re-enable comment submission controls #}
+ }
+{#****************************************************************************#}
+{# handles the deletion of a comment
+{#****************************************************************************#}
+function delete_comment(commentid)
+{
+    dataString = 'id='+commentid;
+
+    $('#comment_delete_button_'+commentid).attr("disabled", "disabled");
+    $.ajax({
+        url: Routing.generate('cpt_publication_comment_delete', {commentid:commentid}),
+        data: {id:id},
+        type: 'DELETE',
+        success: function(result) {
+                $('#comment_'+commentid).html('');
+                $('#comment_'+commentid).slideUp();
+                }
+       });
+}
+{#****************************************************************************#}
+{# Enables / Disables the commment button
+{#****************************************************************************#}
+function toggle_submit_comment_button(textvalue, publicationid)
+{
+    if (textvalue)
+       $("#submit_comment_"+publicationid).removeAttr("disabled"); 
+    else
+       $("#submit_comment_"+publicationid).attr("disabled", "disabled"); 
+}
+</script>
+{# Below is a template that will be copied when adding a new comment #}
+
+<ul style="display: none;">
+    <li id="comment_template">
+        <div class="comment_header">
+        </div>
+        <div class="comment_body">
+        </div>
+    </li>
+</ul>

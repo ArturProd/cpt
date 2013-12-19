@@ -13,7 +13,7 @@ namespace Cpt\PublicationBundle\Interfaces\Manager;
 
 use Cpt\PublicationBundle\Interfaces\Entity\CommentInterface as CommentInterface;
 use Cpt\PublicationBundle\Interfaces\Entity\PublicationInterface as PublicationInterface;
-
+use Sonata\UserBundle\Model\UserInterface as UserInterface;
 
 interface CommentManagerInterface
 {
@@ -22,7 +22,7 @@ interface CommentManagerInterface
      *
      * @return Comment
      */
-    public function create();
+    public function create(PublicationInterface $publication, UserInterface $author);
 
     /**
      * Deletes a comment

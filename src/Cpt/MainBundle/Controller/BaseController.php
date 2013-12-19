@@ -14,6 +14,21 @@ class BaseController extends Controller {
     const JsonResponseOk = "ok";
     const JsonResponseFailed = "failed";
     
+    public function getCommentManager()
+    {
+        return $this->get('cpt.manager.comment');   
+    }
+    
+    public function getPostManager()
+    {
+        return $this->get('cpt.blog.manager.post');
+    }
+    
+    public function getPublicationManager()
+    {
+        return $this->get('cpt.manager.publication');
+    }
+            
     public function GetNumericParameter($parametername,  $defaultvalue = null, $parameteractualvalue = null)
     {
         $result = $parameteractualvalue;

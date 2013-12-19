@@ -1,0 +1,85 @@
+{#----------------------------------------------------------------------------#}
+{#----------------------------------------------------------------------------#}
+{# Displays and manages a list of publication comments
+{#----------------------------------------------------------------------------#}
+{#----------------------------------------------------------------------------#}
+{% set NB_COMMENTS_PRELOADED = 3 %}
+{% set NB_COMMENTS_SEEMORECOMMENTS = 5 %}
+{##############################################################################}
+{# JAVASCRIPT
+{##############################################################################}
+<script type="text/javascript">
+{#****************************************************************************#}
+{# OnLoad
+{#****************************************************************************#}
+    $(function() {
+        {#****************************************************************************#}
+        {# Get preloaded comments
+        {#****************************************************************************#}
+        get_more_comments({{publication.id}}, {{NB_COMMENTS_PRELOADED}}, function(comments){
+            no_more_older_comments({{publication.id}},comments.length ); {# disable link to get more comment if there are no more #}
+        });
+        {#****************************************************************************#}
+        {# Make comment submission form Ajax 
+        {#****************************************************************************#}
+        AjaxForm("{{'form_comment_'~publication.id}}", null, comment_submit_callback);
+        {#****************************************************************************#}
+        {# Handles clicks to get more comments 
+        {#****************************************************************************#}
+        $('#btn_more_comments_{{ publication.id }}').on("click", function(){
+            if (!isDisabled($(this))) {# only if the link is not disables #}
+            { 
+                EnableControl($(this),false); {# Disable the link #}
+                {# get more comments #}
+                get_more_comments({{publication.id}}, {{NB_COMMENTS_SEEMORECOMMENTS}}, function(comments){ 
+                    {# in case of success re-enable the link and check if there are more comments to come  #}
+                    EnableControl($('#btn_more_comments_{{ publication.id }}'),true);
+                    no_more_older_comments({{publication.id}},comments.length );
+                });
+             }
+        });
+        {#****************************************************************************#}
+        {# You can only submit a comment if you entered something in the texterea
+        {#****************************************************************************#}
+       {# Toggle the button on key up #}
+       $('#form_comment_{{publication.id}}').find('#comment_message').keyup(function(){
+           var textvalue = $('#form_comment_{{publication.id}}').find('#comment_message').val();
+           toggle_submit_comment_button(textvalue,{{publication.id}});
+       });
+       {# Toggle the button on change #}
+       $('#form_comment_{{publication.id}}').find('#comment_message').change(function(){
+           var textvalue = $('#form_comment_{{publication.id}}').find('#comment_message').val();
+           toggle_submit_comment_button(textvalue,{{publication.id}});
+       });
+       
+       {#****************************************************************************#}
+       {# Check for new comments
+       {#****************************************************************************#}      
+       setTimeout("get_new_comments({{publication.id}})", TIMEOUT_COMMENT_CHECK_MS);
+    });
+</script>
+{##############################################################################}
+{# HTML
+{##############################################################################}
+<div id="comment_section{{ publication.id }}" class="comments">
+{#****************************************************************************#}
+{# Comment submission form
+{#****************************************************************************#}
+{% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+{{ form_start(commentform, {'action': path('sonata_news_add_comment',  { 'publicationid': publication.id }), 'method': 'POST', 'attr': {'id': 'form_comment_'~publication.id } }  ) }}
+<div class="comment_form">
+        {{ form_widget(commentform.message, { 'id': 'form_comment_textarea'~publication.id }) }}
+        {{ form_errors(commentform.message) }}
+
+        {{ form_rest(commentform) }}
+        <input type="submit" value="{{'btn_add_comment'|trans }}" id="submit_comment_{{publication.id}}" class="btn_green"/>
+</div>
+ {{form_end(commentform) }} 
+{% endif %}
+{#****************************************************************************#}
+{# List of comments
+{#****************************************************************************#}
+    <ul class="comment" id="comment_list_{{publication.id}}">
+    </ul>
+     <div id="btn_more_comments_wrapper_{{publication.id }}" class="more_comments_wrapper"><a id="btn_more_comments_{{publication.id}}">Voir plus de commentaires</a></div>
+</div>

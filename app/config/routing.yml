@@ -3,7 +3,13 @@ cpt_home:
     resource: "@CptMainBundle/Resources/config/routing.yml"
     requirements:
         _locale: en|fr
-    
+
+cpt_publication:
+    resource: "@CptPublicationBundle/Resources/config/routing.yml"
+    prefix:   /{_locale}/publication
+    requirements:
+        _locale: en|fr
+
 cpt_event:
     resource: "@CptEventBundle/Resources/config/routing.yml"
     prefix:   /{_locale}/event
@@ -52,3 +58,6 @@ _sonata_admin:
     resource: .
     type: sonata_admin
     prefix: /admin
+
+fos_js_routing:
+    resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"

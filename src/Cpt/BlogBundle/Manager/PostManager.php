@@ -21,7 +21,6 @@ use Cpt\BlogBundle\Manager\PermalinkDateManager as DatePermalink;
 use Sonata\DoctrineORMAdminBundle\Datagrid\Pager;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\Query\Expr;
 
@@ -29,20 +28,7 @@ use Doctrine\ORM\Query;
 
 class PostManager extends BaseManager implements PostManagerInterface
 {
-    /**
-     * @var \Doctrine\ORM\EntityManager
-     */
-    protected $em;
 
-    /**
-     * @param \Doctrine\ORM\EntityManager $em
-     * @param string                      $class
-     */
-    public function __construct(EntityManager $em, $class)
-    {
-        $this->em    = $em;
-        $this->class = $class;
-    }   
     
 
     
@@ -60,13 +46,7 @@ class PostManager extends BaseManager implements PostManagerInterface
         $this->em->flush();
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function findOneBy(array $criteria)
-    {
-        return $this->em->getRepository($this->class)->findOneBy($criteria);
-    }
+
 
     /**
      * @param string                                 $permalink
@@ -123,13 +103,7 @@ class PostManager extends BaseManager implements PostManagerInterface
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function findBy(array $criteria)
-    {
-        return $this->em->getRepository($this->class)->findBy($criteria);
-    }
+  
 
 //    public function getHomePager($alaune, $page = 0, $maxPerPage = 10)
 //    {

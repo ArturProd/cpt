@@ -33,7 +33,7 @@ class Comment implements CommentInterface
         "message" => $this->getMessage(),
         "createdat" => $this->getCreatedAt()->format('d/m/Y  H:i'),
         "updatedat" => $this->getUpdatedAt(),
-        "commentableid" =>  $this->getCommentable()->getId(),
+        "publicationid" =>  $this->getPublication()->getId(),
         );
     }
     
@@ -47,7 +47,7 @@ class Comment implements CommentInterface
     protected $canModify = false; // non-mapped field
     
     
-    protected $message;
+    protected $message = "";
 
     protected $createdAt;
 
@@ -198,7 +198,7 @@ class Comment implements CommentInterface
      */
     public function setPublication(PublicationInterface $publication)
     {
-        $this->commentable = $publication;
+        $this->publication = $publication;
     }
 
     /**
@@ -206,7 +206,7 @@ class Comment implements CommentInterface
      */
     public function getPublication()
     {
-        return $this->commentable;
+        return $this->publication;
     }
 
     /**
@@ -220,7 +220,7 @@ class Comment implements CommentInterface
       public function areCommentAndCommentableAuthorSame()
     {
         $commentAuthor = $this->getAuthor();
-        $commentableAuthor = $this->getCommentable()->getAuthor();
+        $commentableAuthor = $this->getPublication()->getAuthor();
         
         if ((!$commentAuthor)||(!$commentableAuthor))
             return false;

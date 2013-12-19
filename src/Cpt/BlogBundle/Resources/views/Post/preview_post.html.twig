@@ -9,7 +9,7 @@
     {#****************************************************************************#}
     {# Retreives comments for this post and add them to the form
     {#****************************************************************************#}
-     $.get( "{{ url('get_comment_plainhtml', { 'postId': post.id }) }}", function( response ) {    
+     $.get( "{{ url('cpt_publication_comment_getviewall', { 'publicationid': post.id }) }}", function( response ) {    
        
            $("#comment_placeholder_{{ post.id }}").append(response.data);
            $('#button_showhide_comment_{{ post.id }}').show();
@@ -85,6 +85,6 @@
 {#****************************************************************************#}
 {# Comments
 {#****************************************************************************#}
-{#% render controller("CptBlogBundle:Comment:comments", { 'postId': post.id, '_locale': app.request.locale }) %#}
+{% render controller("CptPublicationBundle:Comment:comments", { 'publication': post, '_locale': app.request.locale }) %}
 
 

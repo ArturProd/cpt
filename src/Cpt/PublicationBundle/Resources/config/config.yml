@@ -1,13 +1,25 @@
 parameters:
     cpt.publication.comment.entity:     Cpt\PublicationBundle\Entity\Comment
     cpt.publication.comment.manager:    Cpt\PublicationBundle\Manager\CommentManager
-
+    cpt.publication.comment.form:       Cpt\PublicationBundle\Form\Type\CommentType
+    cpt.publication.publication.entity: Cpt\PublicationBundle\Entity\Publication
+    cpt.publication.publication.manager: Cpt\PublicationBundle\Manager\PublicationManager
+    
+    
 services:
     cpt.entity_manager:
       alias: doctrine.orm.default_entity_manager
     
     cpt.manager.comment:
         class:        "%cpt.publication.comment.manager%"
-        arguments:    [cpt.entity_manager, %cpt.publication.comment.entity%]
-        
+        arguments:    ["@cpt.entity_manager", %cpt.publication.comment.entity%]
+    
+    cpt.manager.publication:
+        class:        "%cpt.publication.publication.manager%"
+        arguments:    ["@cpt.entity_manager", %cpt.publication.publication.entity%]
+    
+    cpt.form.comment:
+        class:        "%cpt.publication.comment.form%"
+        tags:
+            - { name: form.type, alias: comment }
         

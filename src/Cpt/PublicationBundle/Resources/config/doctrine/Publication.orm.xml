@@ -11,7 +11,7 @@
     <entity
         name="Cpt\PublicationBundle\Entity\Publication"
         table="cpt_publication_publication"
-        repository-class="Cpt\PublicationBundle\Repository\PublicationRepository"
+        repository-class="Doctrine\ORM\EntityRepository"
         inheritance-type="JOINED"
     >
 

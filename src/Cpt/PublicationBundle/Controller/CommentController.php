@@ -1,9 +1,10 @@
 <?php
-namespace Cpt\BlogBundle\Controller;
+namespace Cpt\PublicationBundle\Controller;
 
-use Cpt\BlogBundle\Controller\BasePostController as BaseController;
-use Cpt\BlogBundle\Interfaces\Entity\CommentInterface as CommentInterface;
-use Symfony\Component\Form\Form; 
+use Cpt\PublicationBundle\Controller\BaseController as BaseController;
+use Cpt\PublicationBundle\Interfaces\Entity\CommentInterface as CommentInterface;
+use Cpt\PublicationBundle\Interfaces\Entity\PublicationInterface as PublicationInterface;
+
 use Symfony\Component\HttpFoundation\Request;
 
 
@@ -19,29 +20,27 @@ class CommentController extends BaseController
      *
      * @return Response
      */
-    public function commentsAction($postId)
+    public function commentsAction(PublicationInterface $publication)
     {
-       $post = $this->getPostById($postId);
+       $publication = $this->getPostManager()->getOneById($publication->getId());
        
-       $this->RestrictResourceNotFound($post);
+       $this->RestrictResourceNotFound($publication);
        
-       $comment_form = $this->getCommentForm($post)->createView();
+       $author = $this->getUser();
+
+       $comment_form = $this->getCommentForm($publication, $author)->createView();
        
-        return $this->render('CptBlogBundle:Post:comments.html.twig', array(
-            'post_id'=> $postId,
-            'post' => $post,
-            'commentform' => $comment_form
-        ));
+        return $this->RenderCommentsView($publication, $comment_form);
     }
    
     public function getNewCommentsForPostAction()
     {
          $this->RestrictAccessToAjax();
 
-        $postid = $this->GetNumericParameter('postid'); 
+        $publicationid = $this->GetNumericParameter('publicationid'); 
         $aftercommentid = $this->GetNumericParameter('aftercommentid', -1);  
         
-        $comments = $this->getCommentManager()->get_newer_comments($postid, $aftercommentid);
+        $comments = $this->getCommentManager()->get_newer_comments($publicationid, $aftercommentid);
         $user = $this->getUser();
 
         $view_comments = Array();
@@ -63,11 +62,11 @@ class CommentController extends BaseController
         $this->RestrictAccessToAjax();
      
         $user = $this->getUser();
-        $postid = $this->GetNumericParameter('postid'); 
+        $publicationid = $this->GetNumericParameter('publicationid'); 
         $beforeid = $this->GetNumericParameter('beforeid', -1);  // To only get comments after a given comment id
         $howmany = $this->GetNumericParameter('howmany'); 
         
-        $comments = $this->getCommentManager()->get_older_comments($postid, $howmany, $beforeid );
+        $comments = $this->getCommentManager()->get_older_comments($publicationid, $howmany, $beforeid );
         
         $view_comments = Array();
         foreach($comments  as $comment)
@@ -83,11 +82,11 @@ class CommentController extends BaseController
     /**
     * Return a ajax response as html content
     */
-    public function commentsGetPlainAction($postId){       
-        
-        $pager = $this->getCommentManager()
+    public function getViewAllAction($publicationid){       
+        $commentmanager = $this->getCommentManager();
+        $pager = $commentmanager
             ->getPager(array(
-                'postId' => $postId,
+                'postId' => $publicationid,
                 'status'  => CommentInterface::STATUS_VALID
             ), 1, 500); //no limit
 
@@ -103,39 +102,15 @@ class CommentController extends BaseController
        //if (!$this->CanCommentPost($post, $user)) 
        //         throw new \Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException("You do not have the permission to add a comment");
 
+       $publication = $this->getPublicationManager()->getOneById($publicationid);
+       $this->RestrictResourceNotFound($publication);
 
-       $comment_form = $this->getCommentForm($post);
+       $comment_form = $this->getCommentForm($publication);
        
-       $html_string = $this->renderView('CptBlogBundle:Post:comments.html.twig', array(
-            'pager'  => $pager,
-            'post_id'=> $postId,
-            'comment_form' => $comment_form
-        ));
+       $html_string = RenderCommentsView($publication, $comment_form);
   
        return $this->CreateJsonResponse($html_string);
     }
-
-    /**
-     * @param $postId
-     * @param bool $form
-     *
-     * @return Response
-     */
- /*   public function addCommentFormAction($postId, $form = false)
-    {
-        if (!$form) {
-            $post = $this->getPostManager()->findOneBy(array(
-                'id' => $postId
-            ));
-
-            $form = $this->getCommentForm($post);
-        }
-
-        return $this->render('CptBlogBundle:Post:comment_form.html.twig', array(
-            'form'      => $form->createView(),
-            'post_id'   => $postId
-        ));
-    }*/
 
     /**
      * @throws NotFoundHttpException
@@ -144,19 +119,21 @@ class CommentController extends BaseController
      *
      * @return Response
      */
-    public function addCommentAction(Request $request, $postid)
+    public function addCommentAction(Request $request, $publicationid)
     {                
             // Get the post from request
             //$post_id = $this->get('request')->request->get('post_id');
-            $post = $this->getPostById($postid);
+            $publication = $this->getPublicationManager()->getOneById($publicationid);
 
-            $this->RestrictResourceNotFound($post);
+            $this->RestrictResourceNotFound($publication);
 
             // Make sure current user is allowed to comment the post
-            $user = $this->getUser();            
-            $this->RestrictAccessDenied($this->CanCommentPost($post, $user));
+            $user = $this->getUser();
+            $securitycontrext = $this->get('security.context');
+            $authcomment = $this->getPublicationManager()->CanCommentPublication($publication, $user, $securitycontrext);
+            $this->RestrictAccessDenied($authcomment);
 
-           $form = $this->getCommentForm($post);
+           $form = $this->getCommentForm($publication);
            $form->bind($request); 
 
             if ($form->isValid()) {
@@ -237,12 +214,11 @@ class CommentController extends BaseController
      *
      * @return \Symfony\Component\Form\FormInterface
      */
-    protected function getCommentForm($post)
+    protected function getCommentForm($publication,$author)
     {
-        $comment = $this->getCommentManager()->create();
-        $comment->setPost($post);
-        $comment->setStatus($post->getCommentsDefaultStatus());
-        return $this->get('form.factory')->createNamed('comment', 'sonata_post_comment', $comment);
+        $comment = $this->getCommentManager()->create($publication,$author);
+        //return $this->get('form.factory')->createNamed('comment', 'cpt.form.comment', $comment);
+        return $this->createForm('comment', $comment);
     }
     
     // </editor-fold>
@@ -288,6 +264,14 @@ class CommentController extends BaseController
         
         
         return false;
+    }
+    
+    protected function RenderCommentsView(PublicationInterface $publication, $commentform)
+    {
+        return $this->render('CptPublicationBundle:Comment:comments.html.twig', array(
+            'publication'=> $publication,
+            'commentform' => $commentform
+        ));
     }
 }
 ?>

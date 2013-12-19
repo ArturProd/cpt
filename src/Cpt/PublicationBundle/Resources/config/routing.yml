@@ -1,0 +1,32 @@
+cpt_publication_comment_getviewall:
+  path: /{publicationid}/comments/viewall
+  defaults: {_controller: CptPublicationBundle:Comment:getViewAll}
+  requirements:
+     _method: GET
+     publicationid: \d+
+
+cpt_publication_comment_delete:
+  path: /comment/{commentid}
+  defaults: {_controller: CptPublicationBundle:Comment:deleteComment}
+  requirements:
+     _method: DELETE
+  
+cpt_comment_list_json:
+  path: /comments
+  defaults: {_controller: CptPublicationBundle:Comment:getCommentsForPost}
+  requirements:
+     _method: GET
+
+cpt_comment_new_list_json:
+  path: /newcomments
+  defaults: {_controller: CptPublicationBundle:Comment:getNewCommentsForPost}
+  requirements:
+     _method: GET|POST
+
+sonata_news_add_comment:
+  path: "{publicationid}/comment/"
+  defaults: {_controller: CptPublicationBundle:Comment:addComment}
+  requirements:
+     _method: POST
+     postid: \d+
+      

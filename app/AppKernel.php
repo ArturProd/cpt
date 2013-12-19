@@ -27,6 +27,7 @@ class AppKernel extends Kernel
             
             new Sonata\IntlBundle\SonataIntlBundle(),
             new Sonata\jQueryBundle\SonatajQueryBundle(),
+            new Sonata\CoreBundle\SonataCoreBundle(),
             new Sonata\AdminBundle\SonataAdminBundle(),
             new Sonata\BlockBundle\SonataBlockBundle(),
             new Sonata\DoctrineORMAdminBundle\SonataDoctrineORMAdminBundle(),
@@ -47,6 +48,7 @@ class AppKernel extends Kernel
             new Ivory\GoogleMapBundle\IvoryGoogleMapBundle(),
             new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
             new FrequenceWeb\Bundle\CalendRBundle\FrequenceWebCalendRBundle(),
+            new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
        );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
