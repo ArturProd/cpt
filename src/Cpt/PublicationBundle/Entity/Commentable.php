@@ -9,7 +9,7 @@ class Commentable implements CommentableInterface
 {
 
 
-    public function __construct($commentsEnabled = true, $commentsCloseAt=null, $commentsDefaultStatus=\Cpt\BlogBundle\Entity\Comment::STATUS_VALID)
+    public function __construct($commentsEnabled = true, $commentsCloseAt=null, $commentsDefaultStatus=CommentInterface::STATUS_VALID)
     {
         $this->canBeCommented = true;
         

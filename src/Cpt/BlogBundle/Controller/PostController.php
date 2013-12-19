@@ -241,7 +241,7 @@ class PostController extends BasePostController
      *
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      */
-    public function categoryAction($category)
+  /*  public function categoryAction($category)
     {
         $category = $this->get('cpt.blog.manager.category')->findOneBy(array(
             'slug' => $category,
@@ -257,7 +257,7 @@ class PostController extends BasePostController
         }
 
         return $this->renderArchive(array('category' => $category), array('category' => $category));
-    }
+    }*/
 
     // </editor-fold>
     

@@ -11,7 +11,6 @@
 
 namespace Cpt\BlogBundle\Interfaces\Entity;
 
-use Cpt\BlogBundle\Interfaces\Entity\CategoryInterface as CategoryInterface;
 use Cpt\BlogBundle\Interfaces\Entity\CommentInterface as CommentInterface;
 
 interface PostInterface
@@ -132,15 +131,5 @@ interface PostInterface
      */
     public function getAuthor();
 
-    /**
-     * @return \Cpt\BlogBundle\Model\CategoryInterface
-     */
-    public function getCategory();
-
-    /**
-     * @param CategoryInterface $category
-     *
-     * @return void
-     */
-    public function setCategory(CategoryInterface $category = null);
+  
 }

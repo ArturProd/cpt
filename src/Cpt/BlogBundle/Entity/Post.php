@@ -12,7 +12,6 @@
 namespace Cpt\BlogBundle\Entity;
 use Cpt\PublicationBundle\Entity\Publication as Publication;
 
-use Cpt\BlogBundle\Interfaces\Entity\CategoryInterface as CategoryInterface;
 use Cpt\BlogBundle\Interfaces\Entity\PostInterface as PostInterface;
 use Cpt\PublicationBundle\Interfaces\Entity\CommentInterface as CommentInterface;
 
@@ -55,11 +54,7 @@ class Post extends Publication implements PostInterface
  
     protected $image;
 
-    protected $category;
-    
-    
- 
-    
+
     /**
      * @param string             $title
      * @param string             $link
@@ -79,7 +74,6 @@ class Post extends Publication implements PostInterface
         
         $this->comments = new \Doctrine\Common\Collections\ArrayCollection;
         $this->setPublicationDateStart(new \DateTime);
-        $this->setCategory();
         $this->setCommentsDefaultStatus(CommentInterface::STATUS_VALID);
  
         $this->setContent("");
@@ -172,21 +166,7 @@ class Post extends Publication implements PostInterface
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setCategory(CategoryInterface $category = null)
-    {
-        $this->category = $category;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getCategory()
-    {
-        return $this->category;
-    }
+  
 
 
 }

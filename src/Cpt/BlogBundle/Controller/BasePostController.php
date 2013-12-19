@@ -17,7 +17,7 @@ class BasePostController  extends BaseController {
      */
     protected function getCommentManager()
     {
-        return $this->get('cpt.blog.manager.comment');
+        return $this->get('cpt.manager.comment');
     }
     
     protected function getPostById($id)

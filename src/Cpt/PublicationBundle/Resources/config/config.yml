@@ -1,0 +1,13 @@
+parameters:
+    cpt.publication.comment.entity:     Cpt\PublicationBundle\Entity\Comment
+    cpt.publication.comment.manager:    Cpt\PublicationBundle\Manager\CommentManager
+
+services:
+    cpt.entity_manager:
+      alias: doctrine.orm.default_entity_manager
+    
+    cpt.manager.comment:
+        class:        "%cpt.publication.comment.manager%"
+        arguments:    [cpt.entity_manager, %cpt.publication.comment.entity%]
+        
+        

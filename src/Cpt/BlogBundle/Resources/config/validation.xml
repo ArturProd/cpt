@@ -34,18 +34,5 @@
 
     </class>
 
-    <class name="Cpt\BlogBundle\Entity\Category">
-        <getter property="name">
-           <constraint name="NotBlank" />
-           <constraint name="NotNull" />
-        </getter>
-    </class>
-
-    <class name="Cpt\BlogBundle\Entity\Tag">
-        <getter property="name">
-           <constraint name="NotBlank" />
-           <constraint name="NotNull" />
-        </getter>
-    </class>
 
 </constraint-mapping>

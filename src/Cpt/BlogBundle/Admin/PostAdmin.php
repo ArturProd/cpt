@@ -18,7 +18,7 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\FormatterBundle\Formatter\Pool as FormatterPool;
-use Cpt\BlogBundle\Interfaces\Manager\CommentManagerInterface;
+use Cpt\PublicationBundle\Interfaces\Manager\CommentManagerInterface;
 
 use Knp\Menu\ItemInterface as MenuItemInterface;
 

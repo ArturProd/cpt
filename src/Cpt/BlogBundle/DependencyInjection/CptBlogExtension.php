@@ -152,28 +152,28 @@ class CptBlogExtension extends Extension
 //             ),
 //        ));
 
-        $collector->addAssociation($config['class']['post'], 'mapManyToOne', array(
-            'fieldName' => 'image',
-            'targetEntity' => $config['class']['media'],
-            'cascade' =>
-            array(
-                0 => 'remove',
-                1 => 'persist',
-                2 => 'refresh',
-                3 => 'merge',
-                4 => 'detach',
-            ),
-            'mappedBy' => NULL,
-            'inversedBy' => NULL,
-            'joinColumns' =>
-            array(
-                array(
-                    'name' => 'image_id',
-                    'referencedColumnName' => 'id',
-                ),
-            ),
-            'orphanRemoval' => false,
-        ));
+//        $collector->addAssociation($config['class']['post'], 'mapManyToOne', array(
+//            'fieldName' => 'image',
+//            'targetEntity' => $config['class']['media'],
+//            'cascade' =>
+//            array(
+//                0 => 'remove',
+//                1 => 'persist',
+//                2 => 'refresh',
+//                3 => 'merge',
+//                4 => 'detach',
+//            ),
+//            'mappedBy' => NULL,
+//            'inversedBy' => NULL,
+//            'joinColumns' =>
+//            array(
+//                array(
+//                    'name' => 'image_id',
+//                    'referencedColumnName' => 'id',
+//                ),
+//            ),
+//            'orphanRemoval' => false,
+//        ));
 
 //        $collector->addAssociation($config['class']['post'], 'mapManyToOne', array(
 //             'fieldName' => 'author',
@@ -194,24 +194,24 @@ class CptBlogExtension extends Extension
 //             'orphanRemoval' => false,
 //        ));
 
-        $collector->addAssociation($config['class']['post'], 'mapManyToOne', array(
-             'fieldName' => 'category',
-             'targetEntity' => $config['class']['category'],
-             'cascade' =>
-             array(
-                 1 => 'persist',
-             ),
-             'mappedBy' => NULL,
-             'inversedBy' => NULL,
-             'joinColumns' =>
-             array(
-                 array(
-                     'name' => 'category_id',
-                     'referencedColumnName' => 'id',
-                 ),
-             ),
-             'orphanRemoval' => false,
-        ));
+//        $collector->addAssociation($config['class']['post'], 'mapManyToOne', array(
+//             'fieldName' => 'category',
+//             'targetEntity' => $config['class']['category'],
+//             'cascade' =>
+//             array(
+//                 1 => 'persist',
+//             ),
+//             'mappedBy' => NULL,
+//             'inversedBy' => NULL,
+//             'joinColumns' =>
+//             array(
+//                 array(
+//                     'name' => 'category_id',
+//                     'referencedColumnName' => 'id',
+//                 ),
+//             ),
+//             'orphanRemoval' => false,
+//        ));
 
        
 

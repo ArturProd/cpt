@@ -47,7 +47,7 @@ class Configuration implements ConfigurationInterface
                         //->scalarNode('tag')->defaultValue('Cpt\\BlogBundle\\Entity\\Tag')->end()
                         ->scalarNode('category')->defaultValue('Cpt\\BlogBundle\\Entity\\Category')->end()
                         ->scalarNode('post')->defaultValue('Cpt\\BlogBundle\\Entity\\Post')->end()
-                        ->scalarNode('comment')->defaultValue('Cpt\\BlogBundle\\Entity\\Comment')->end()
+                        ->scalarNode('comment')->defaultValue('Cpt\\PublicationBundle\\Entity\\Comment')->end()
                         ->scalarNode('media')->defaultValue('Application\\Sonata\\MediaBundle\\Entity\\Media')->end()
                         ->scalarNode('user')->defaultValue('Application\\Sonata\\UserBundle\\Entity\\User')->end()
                     ->end()

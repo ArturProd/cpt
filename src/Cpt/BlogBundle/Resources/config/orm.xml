@@ -4,9 +4,10 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
-        <parameter key="cpt.blog.manager.comment.class">Cpt\BlogBundle\Manager\CommentManager</parameter>
+        <parameter key="cpt.blog.manager.comment.class">Cpt\PublicationBundle\Manager\CommentManager</parameter>
         <parameter key="cpt.blog.manager.post.class">Cpt\BlogBundle\Manager\PostManager</parameter>
         <parameter key="cpt.blog.manager.category.class">Cpt\BlogBundle\Manager\CategoryManager</parameter>
+        <parameter key="cpt.blog.manager.publication.class">Cpt\PublicationBundle\Manager\PublicationManager</parameter>
     </parameters>
 
     <services>
