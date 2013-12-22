@@ -1,12 +1,12 @@
 <script type="text/javascript">
  var older_comment_ids = new Array();  {# Contains for each post the older comment id #}
  var newer_comment_ids = new Array();  {# Contains for each post the newer comment id #}
- TIMEOUT_COMMENT_CHECK_MS = 60000;
+ TIMEOUT_COMMENT_CHECK_MS = {{ cpt_comment_checkfornew_interval }};
  URL_get_new_comments = "{{ url('cpt_comment_new_list_json')}}";
 {#****************************************************************************#}
 {# Retreives list of older comment for a post
 {#****************************************************************************#}
-function get_more_comments(publicationid, howmany, callback)
+function get_more_comments(publicationid, callback)
 {
     if (older_comment_ids[publicationid] === undefined)
         older_comment_ids[publicationid] = null;
@@ -15,7 +15,7 @@ function get_more_comments(publicationid, howmany, callback)
         newer_comment_ids[publicationid] = null;
         
     {# Get Comment array as a json object #}
-    $.getJSON('{{ url('cpt_comment_list_json')}}', {publicationid:publicationid, howmany:howmany, beforeid:older_comment_ids[publicationid]}, function(response) {
+    $.getJSON('{{ url('cpt_comment_list_json')}}', {publicationid:publicationid, beforeid:older_comment_ids[publicationid]}, function(response) {
         if (response.status!=='ok')
         {
             no_more_older_comments(publicationid,0); {# if for some reason the response is not ok, hide the button to get more commments #}

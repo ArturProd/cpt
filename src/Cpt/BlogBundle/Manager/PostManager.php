@@ -29,10 +29,7 @@ use Doctrine\ORM\Query;
 class PostManager extends BaseManager implements PostManagerInterface
 {
 
-    
-
-    
-    
+     
     public function createPostInstance($author, $publishedhomepage=false, $enabled=true, $title="", $content="")
     {
         return new Post($author, $publishedhomepage, $enabled, $title, $content);
@@ -45,8 +42,6 @@ class PostManager extends BaseManager implements PostManagerInterface
         $this->em->persist($post);
         $this->em->flush();
     }
-
-
 
     /**
      * @param string                                 $permalink
@@ -104,12 +99,6 @@ class PostManager extends BaseManager implements PostManagerInterface
     }
 
   
-
-//    public function getHomePager($alaune, $page = 0, $maxPerPage = 10)
-//    {
-//        return $this->getPager( array ('publishedhomepage' => $alaune, 'enabled' => true ), $page, $maxPerPage );
-//    }
-    
 
     /**
      * {@inheritDoc}

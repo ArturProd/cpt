@@ -3,8 +3,6 @@
 {# Displays and manages a list of publication comments
 {#----------------------------------------------------------------------------#}
 {#----------------------------------------------------------------------------#}
-{% set NB_COMMENTS_PRELOADED = 3 %}
-{% set NB_COMMENTS_SEEMORECOMMENTS = 5 %}
 {##############################################################################}
 {# JAVASCRIPT
 {##############################################################################}
@@ -16,7 +14,7 @@
         {#****************************************************************************#}
         {# Get preloaded comments
         {#****************************************************************************#}
-        get_more_comments({{publication.id}}, {{NB_COMMENTS_PRELOADED}}, function(comments){
+        get_more_comments({{publication.id}}, function(comments){
             no_more_older_comments({{publication.id}},comments.length ); {# disable link to get more comment if there are no more #}
         });
         {#****************************************************************************#}
@@ -31,7 +29,7 @@
             { 
                 EnableControl($(this),false); {# Disable the link #}
                 {# get more comments #}
-                get_more_comments({{publication.id}}, {{NB_COMMENTS_SEEMORECOMMENTS}}, function(comments){ 
+                get_more_comments({{publication.id}}, function(comments){ 
                     {# in case of success re-enable the link and check if there are more comments to come  #}
                     EnableControl($('#btn_more_comments_{{ publication.id }}'),true);
                     no_more_older_comments({{publication.id}},comments.length );

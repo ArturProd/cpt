@@ -20,17 +20,11 @@ class CommentController extends BaseController
      *
      * @return Response
      */
-    public function commentsAction(PublicationInterface $publication)
+    public function getCommentsContainerAction(PublicationInterface $publication)
     {
-       $publication = $this->getPostManager()->getOneById($publication->getId());
-       
        $this->RestrictResourceNotFound($publication);
-       
-       $author = $this->getUser();
-
-       $comment_form = $this->getCommentForm($publication, $author)->createView();
-       
-        return $this->RenderCommentsView($publication, $comment_form);
+              
+       return $this->RenderCommentsView($publication);
     }
    
     public function getNewCommentsForPostAction()
@@ -64,7 +58,10 @@ class CommentController extends BaseController
         $user = $this->getUser();
         $publicationid = $this->GetNumericParameter('publicationid'); 
         $beforeid = $this->GetNumericParameter('beforeid', -1);  // To only get comments after a given comment id
-        $howmany = $this->GetNumericParameter('howmany'); 
+        if ($beforeid == -1) // If we are retreiving the most recent comments, we use the initial number of comments to be retreived
+            $howmany = $this->container->getParameter('cpt.publication.comment.initialnbretreive');
+        else
+            $howmany = $this->container->getParameter('cpt.publication.comment.nbretreive');
         
         $comments = $this->getCommentManager()->get_older_comments($publicationid, $howmany, $beforeid );
         
@@ -78,40 +75,6 @@ class CommentController extends BaseController
         return $this->CreateJsonResponse($view_comments);
     }
  
-    
-    /**
-    * Return a ajax response as html content
-    */
-    public function getViewAllAction($publicationid){       
-        $commentmanager = $this->getCommentManager();
-        $pager = $commentmanager
-            ->getPager(array(
-                'postId' => $publicationid,
-                'status'  => CommentInterface::STATUS_VALID
-            ), 1, 500); //no limit
-
-       
-       $user = $this->getUser();
-               
-       // Toggle the tag saying if the comment can be modified (for GUI)
-       foreach($pager->getResults() as $comment)
-       {
-           $comment->setCanModify($this->CanModifyComment($comment, $user));            
-       }
-       
-       //if (!$this->CanCommentPost($post, $user)) 
-       //         throw new \Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException("You do not have the permission to add a comment");
-
-       $publication = $this->getPublicationManager()->getOneById($publicationid);
-       $this->RestrictResourceNotFound($publication);
-
-       $comment_form = $this->getCommentForm($publication);
-       
-       $html_string = RenderCommentsView($publication, $comment_form);
-  
-       return $this->CreateJsonResponse($html_string);
-    }
-
     /**
      * @throws NotFoundHttpException
      *
@@ -130,10 +93,10 @@ class CommentController extends BaseController
             // Make sure current user is allowed to comment the post
             $user = $this->getUser();
             $securitycontrext = $this->get('security.context');
-            $authcomment = $this->getPublicationManager()->CanCommentPublication($publication, $user, $securitycontrext);
+            $authcomment = $this->getPublicationManager()->CanCommentPublication($publication, $securitycontrext, $user);
             $this->RestrictAccessDenied($authcomment);
 
-           $form = $this->getCommentForm($publication);
+           $form = $this->getCommentForm($publication, $user);
            $form->bind($request); 
 
             if ($form->isValid()) {
@@ -266,11 +229,18 @@ class CommentController extends BaseController
         return false;
     }
     
-    protected function RenderCommentsView(PublicationInterface $publication, $commentform)
+    protected function RenderCommentsView(PublicationInterface $publication)
     {
+        $commentformview = null;
+        if ($this->get('security.context')->isGranted('IS_AUTHENTICATED_REMEMBERED'))
+        {
+            $comment = $this->getCommentManager()->create($publication,$this->getUser());
+            $commentformview = $this->createForm('comment', $comment)->createView();
+        }
+        
         return $this->render('CptPublicationBundle:Comment:comments.html.twig', array(
             'publication'=> $publication,
-            'commentform' => $commentform
+            'commentform' => $commentformview
         ));
     }
 }

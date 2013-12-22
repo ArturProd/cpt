@@ -1,0 +1,8 @@
+parameters:
+    cpt.publication.comment.nbretreive: 3 # Number of comments to be retreived each time
+    cpt.publication.comment.initialnbretreive: 5 # Initial Number of comments to be retreived each time
+    cpt.publication.comment.checkfornew_interval: 40000 # interval in ms to check for new comments
+    
+twig:
+  globals:
+    cpt_comment_checkfornew_interval: %cpt.publication.comment.checkfornew_interval% # interval in ms to check for new comments

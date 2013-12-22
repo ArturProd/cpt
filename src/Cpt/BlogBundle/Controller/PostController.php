@@ -80,14 +80,14 @@ class PostController extends BasePostController
         // First add the alaune articles
         foreach($pageralauneresult as $post)
         {
-            if ($this->CanSeePost($post))
+            if ($this->getPublicationManager()->CanSeePublication($post, $this->getSecurityContext()))
                 $posts[] = $this->getPostViewData($post);
         }
         
         // Then add the other ones
         foreach($pageresult as $post)
         {
-            if ($this->CanSeePost($post))
+            if ($this->getPublicationManager()->CanSeePublication($post, $this->getSecurityContext()))
                 $posts[] = $this->getPostViewData($post);
         }
             //$postarray[$post->getId()] = $post->toViewArray();
@@ -110,7 +110,7 @@ class PostController extends BasePostController
        
         $this->SetPermissions($post); 
         
-        if (!$this->CanSeePost($post))
+        if (!$this->getPublicationManager()->CanSeePublication($post, $this->getSecurityContext()))
             $this->RestrictAccessDenied();
                     
         $posts[] = $this->getPostViewData($post);
@@ -139,7 +139,7 @@ class PostController extends BasePostController
 
             $this->SetPermissions($post);
             
-            if (!$this->CanSeePost($post))
+            if (!$this->getPublicationManager()->CanSeePublication($post, $this->getSecurityContext()))
                 $this->RestrictAccessDenied();
             
             $html_string = $this->renderView('CptBlogBundle:Post:preview_post.html.twig', array(
@@ -198,13 +198,13 @@ class PostController extends BasePostController
         if ($request->isMethod('POST')) {
            
             $form->bind($request);
-            
+            $security = $this->getSecurityContext();
             // Only admin can publish a post on the home page
-            if (!$this->get('security.context')->isGranted('ROLE_ADMIN'))
+            if (!$security->isGranted('ROLE_ADMIN'))
                     $post->setPublishedHomePage(false);
             
             // Checking permission to modigy the post
-            $this->CanModifyPost($post->getId());            
+            $this->getPublicationManager()->EnsureCanModifyPublication($post, $security);
 
              if ($form->isValid()) {            
                 $this->getPostManager()->save($post);
@@ -223,7 +223,9 @@ class PostController extends BasePostController
         if (!$post)
             return $this->CreateJsonResponse(false);
 
-        $this->EnsureCanModifyPost($id);
+        $security = $this->get('security.context');
+
+        $this->getPublicationManager()->EnsureCanModifyPublication($post, $security);
         $this->getPostManager()->delete($post);
         return $this->CreateJsonResponse(true);
     }
@@ -299,9 +301,9 @@ class PostController extends BasePostController
   
     protected function SetPermissions($post)
     {
-        $user= $this->get('security.context')->getToken()->getUser();
-        $post->setCanBeCommented($this->CanCommentPost($post, $user));
-        $post->setCanBeModified($this->CanModifyPost($post->getId()));
+        $security = $this->get('security.context');
+        $post->setCanBeCommented($this->getPublicationManager()->CanCommentPublication($post, $security));
+        $post->setCanBeModified($this->getPublicationManager()->CanModifyPublication($post,$security));
     }
 
     

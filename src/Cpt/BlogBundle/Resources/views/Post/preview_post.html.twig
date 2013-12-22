@@ -6,15 +6,6 @@
 {# OnLoad
 {#****************************************************************************#}
  $(function() {
-    {#****************************************************************************#}
-    {# Retreives comments for this post and add them to the form
-    {#****************************************************************************#}
-     $.get( "{{ url('cpt_publication_comment_getviewall', { 'publicationid': post.id }) }}", function( response ) {    
-       
-           $("#comment_placeholder_{{ post.id }}").append(response.data);
-           $('#button_showhide_comment_{{ post.id }}').show();
-
-     });
     {#****************************************************************************#}     
     {# Clicking on the post header triggers an accordion (slidup / slidedown of posts
     {#****************************************************************************#}
@@ -85,6 +76,6 @@
 {#****************************************************************************#}
 {# Comments
 {#****************************************************************************#}
-{% render controller("CptPublicationBundle:Comment:comments", { 'publication': post, '_locale': app.request.locale }) %}
+{% render controller("CptPublicationBundle:Comment:getCommentsContainer", { 'publication': post, '_locale': app.request.locale }) %}
 
 

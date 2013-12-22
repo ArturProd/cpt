@@ -28,6 +28,11 @@ class BaseController extends Controller {
     {
         return $this->get('cpt.manager.publication');
     }
+
+    public function getSecurityContext()
+    {
+        return $this->get('security.context');
+    }
             
     public function GetNumericParameter($parametername,  $defaultvalue = null, $parameteractualvalue = null)
     {
@@ -142,10 +147,10 @@ class BaseController extends Controller {
         return $this->get('security.context')->isGranted('ROLE_ADMIN');
     }
     
-    public function getUser()
-    {
-        return $this->get('security.context')->getToken()->getUser();
-    }
+//    public function getUser()
+//    {
+//        return $this->get('security.context')->getToken()->getUser();
+//    }
     
     public function RestrictBusinessRuleError($error_message = "Business rule error")
     {
