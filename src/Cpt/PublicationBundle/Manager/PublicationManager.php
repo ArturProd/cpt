@@ -39,7 +39,7 @@ class PublicationManager extends BaseManager {
             $user = $security->getToken()->getUser();
         
         $result =  $publication->isPublic()
-                || ($publication->getAuthor()->getId() == $user-getID())
+                || ($publication->getAuthor()->getId() == $user->getID())
                 || $security->isGranted('ROLE_ADMIN', $user);
         
         return $result;

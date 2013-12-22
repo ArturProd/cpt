@@ -1,6 +1,8 @@
 <?php
 namespace Cpt\MainBundle\Manager;
 use Doctrine\ORM\EntityManager as EntityManager;
+use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Acl\Model\AclProviderInterface as AclProviderInterface;
 
 abstract class BaseManager
 {
@@ -14,16 +16,41 @@ abstract class BaseManager
      */
     protected $em;
 
+    protected $securitycontext;
+    
+    protected $aclprovider;
+    
     /**
      * @param \Doctrine\ORM\EntityManager $em
      * @param string                      $class
      */
-    public function __construct(EntityManager $em, $class)
+    public function __construct(EntityManager $em, SecurityContextInterface $securityContext, AclProviderInterface $aclprovider, $class)
     {
         $this->em    = $em;
         $this->class = $class;
+        $this->securitycontext = $securityContext;
+        $this->aclprovider = $aclprovider;
     }
     
+    public function getUser()
+    {
+        return $this->securitycontext->getToken()->getUser();
+    }
+    
+    public function isUserAdmin()
+    {
+        return $this->securitycontext->isGranted('ROLE_ADMIN');
+    }
+    
+    public function getSecurityContext()
+    {
+        return $this->securitycontext;
+    }
+    
+    public function getAclProvider()
+    {
+        return $this->aclprovider;
+    }
     
     /**
      * {@inheritDoc}

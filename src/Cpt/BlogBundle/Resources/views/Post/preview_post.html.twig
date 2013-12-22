@@ -16,7 +16,7 @@
     {#****************************************************************************#}     
     {# Changing css class for post header if it is not enabled, and eventually remove "alaune" css class
     {#****************************************************************************#}
-     {% if not post.enabled %}
+     {% if (not post.enabled) or (post.publicationdatestart|date("U") > "now"|date("U")) %}
      $("#post_header{{post.id}}").addClass("cpt_grey").removeClass("alaune");
      $("#post_header{{post.id}} > .post_header_title").removeClass("alaune");     
      {% endif %}

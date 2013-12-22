@@ -5,7 +5,7 @@ parameters:
 services:
     EventManager:
         class:        "%EventManager.class%"
-        arguments: ['@doctrine.orm.default_entity_manager']
+        arguments: ['@doctrine.orm.default_entity_manager', '@security.context']
         # This declares the class as an event provider for the calendr library:
         tags: 
             - { name: calendr.event_provider }

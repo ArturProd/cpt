@@ -24,14 +24,21 @@ use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\Query\Expr;
 
-use Doctrine\ORM\Query;
+use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
+use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
+use Symfony\Component\Security\Acl\Permission\MaskBuilder;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class PostManager extends BaseManager implements PostManagerInterface
 {
 
-     
-    public function createPostInstance($author, $publishedhomepage=false, $enabled=true, $title="", $content="")
+    protected function GetPostClassIdentity()
     {
+        return new ObjectIdentity('class', 'Cpt\\BlogBundle\\Entity\\Post');
+    }
+    
+    public function createPostInstance($author, $publishedhomepage=false, $enabled=true, $title="", $content="")
+    {           
         return new Post($author, $publishedhomepage, $enabled, $title, $content);
     }   
     /**
@@ -39,8 +46,34 @@ class PostManager extends BaseManager implements PostManagerInterface
      */
     public function save(PostInterface $post)
     {
-        $this->em->persist($post);
-        $this->em->flush();
+        if ($post->getId() != -1)
+        {
+            $objectIdentity = ObjectIdentity::fromDomainObject($post);
+
+            if (!$this->getSecurityContext()->isGranted('EDIT', $objectIdentity))
+                throw new AccessDeniedException();
+            
+            $this->em->persist($post);
+            $this->em->flush();
+        } else
+        {
+            if (!$this->getSecurityContext()->isGranted('CREATE', $this->GetPostClassIdentity()))
+                throw new AccessDeniedException();
+            
+                $this->em->persist($post);
+                $this->em->flush();
+
+                // creating the ACL
+                $aclProvider = $this->getAclProvider();
+                $objectIdentity = ObjectIdentity::fromDomainObject($post);
+                $acl = $aclProvider->createAcl($objectIdentity);
+                $userIdentity = UserSecurityIdentity::fromAccount($this->getUser());
+                $acl->insertObjectAce($userIdentity, MaskBuilder::MASK_OPERATOR);
+                $aclProvider->updateAcl($acl);
+        }
+        
+
+
     }
 
     /**
@@ -51,6 +84,9 @@ class PostManager extends BaseManager implements PostManagerInterface
      */
     public function findOneByPermalink($permalink)
     {
+        if (!$this->getSecurityContext()->isGranted('VIEW', $this->GetPostClassIdentity()))
+            throw new AccessDeniedException();
+                
         try {
             $repository = $this->em->getRepository($this->class);
 
@@ -98,20 +134,39 @@ class PostManager extends BaseManager implements PostManagerInterface
         }
     }
 
-  
-
     /**
      * {@inheritDoc}
      */
     public function delete(PostInterface $post)
     {
+        $objectIdentity = ObjectIdentity::fromDomainObject($post);
+
+        if (!$this->getSecurityContext()->isGranted('DELETE', $objectIdentity))
+            throw new AccessDeniedException();
+                
         $this->em->remove($post);
         $this->em->flush();
     }
 
+     public function getMyArticlesPager($page, $maxPerPage = 10, $maxPageLinks = 5)
+    {
+        if ((!$this->getSecurityContext()->isGranted('VIEW', $this->GetPostClassIdentity()))
+           || (!$this->getSecurityContext()->isGranted('ROLE_USER')))
+            throw new AccessDeniedException();
+                
+       $criteria['author'] = $this->getUser()->getId();
+
+       $pager = $this->getPager($criteria, $page,$maxPerPage );
+       $pager->setMaxPageLinks($maxPageLinks);
+       
+       return $pager;
+    }
     
     public function getAlauneArticlesPager($page = 1, $maxPerPage = 100, $maxPageLinks = 5)
     {
+        if (!$this->getSecurityContext()->isGranted('VIEW', $this->GetPostClassIdentity()))
+            throw new AccessDeniedException();
+                        
         $criteria['enabled'] = true;    
         $criteria['publishedhomepage'] = true; 
 
@@ -121,20 +176,15 @@ class PostManager extends BaseManager implements PostManagerInterface
         return $pager;
     }
         
-    public function getMyArticlesPager($userid, $page, $maxPerPage = 10, $maxPageLinks = 5)
-    {
-       $criteria['author'] = $userid;
-
-       $pager = $this->getPager($criteria, $page,$maxPerPage );
-       $pager->setMaxPageLinks($maxPageLinks);
-       
-       return $pager;
-    }
+   
     
-    public function getAllArticlesPager($page, $is_user_admin = false, $maxPerPage = 10, $maxPageLinks = 5)
+    public function getAllArticlesPager($page, $maxPerPage = 10, $maxPageLinks = 5)
     {
-       if (!$is_user_admin)
-        $criteria['enabled'] = true;
+        if (!$this->getSecurityContext()->isGranted('VIEW', $this->GetPostClassIdentity()))
+            throw new AccessDeniedException();
+                
+       if (!$this->isUserAdmin())
+         $criteria['public'] = true;
        
        $criteria['publishedhomepage'] = false;
 
@@ -173,6 +223,15 @@ class PostManager extends BaseManager implements PostManagerInterface
         {
             $query->andWhere('p.enabled = :enabled');
             $parameters['enabled'] = $criteria['enabled'];
+        }
+        
+        // public
+        if (isset($criteria['public'])) // Set enabled = 'all' to not select using enabled criteria
+        {
+            $query->andWhere('p.enabled = :enabled');
+            $query->andWhere('p.publicationDateStart <= :publicationdatestart');
+            $parameters['enabled'] = true;
+            $parameters['publicationdatestart'] = new \DateTime;            
         }
 
         // publishedhomepage
@@ -219,7 +278,7 @@ class PostManager extends BaseManager implements PostManagerInterface
      *
      * @return array
      */
-    public function getPublicationDateQueryParts($date, $step, $alias = 'p')
+    protected function getPublicationDateQueryParts($date, $step, $alias = 'p')
     {
         return array(
             'query'  => sprintf('%s.publicationDateStart >= :startDate AND %s.publicationDateStart < :endDate', $alias, $alias),
@@ -235,7 +294,7 @@ class PostManager extends BaseManager implements PostManagerInterface
      *
      * @return array
      */
-    public function getPublicationCategoryQueryParts($category)
+    protected function getPublicationCategoryQueryParts($category)
     {
         $pcqp = array('query' => '', 'params' => array());
 

@@ -21,7 +21,7 @@ class BaseController extends Controller {
     
     public function getPostManager()
     {
-        return $this->get('cpt.blog.manager.post');
+        return $this->get('cpt.manager.post');
     }
     
     public function getPublicationManager()
@@ -116,7 +116,8 @@ class BaseController extends Controller {
     {
         $request = $this->getRequest();
         if (!$request->isXmlHttpRequest())
-            throw new SymfonyException\ForbiddenHttpException("Ressource cannot be accessed this way.");    
+            throw new SymfonyException\AccessDeniedHttpException("Access denied. Please request through Ajax");
+            //throw new SymfonyException\ForbiddenHttpException("Ressource cannot be accessed this way.");    
     }
     
     public function RestrictAccessToLoggedIn()

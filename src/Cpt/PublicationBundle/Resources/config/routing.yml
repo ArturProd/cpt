@@ -3,7 +3,9 @@ cpt_publication_comment_delete:
   defaults: {_controller: CptPublicationBundle:Comment:deleteComment}
   requirements:
      _method: DELETE
-  
+  options:
+        expose: true
+        
 cpt_comment_list_json:
   path: /comments
   defaults: {_controller: CptPublicationBundle:Comment:getCommentsForPost}

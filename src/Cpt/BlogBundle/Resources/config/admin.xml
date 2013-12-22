@@ -27,7 +27,7 @@
             </call>
 
             <call method="setCommentManager">
-                <argument id="cpt.blog.manager.comment" type="service"/>
+                <argument id="cpt.manager.comment" type="service"/>
             </call>
 
         </service>
@@ -43,7 +43,7 @@
             </call>
 
             <call method="setCommentManager">
-                <argument id="cpt.blog.manager.comment" type="service"/>
+                <argument id="cpt.manager.comment" type="service"/>
             </call>
 
             <call method="setTemplates">

@@ -18,7 +18,10 @@
         {% endjavascripts %}
         <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
         <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
-           
+        {% include 'CptPublicationBundle:Comment:comments.js.twig' %}
+        <script type="text/javascript">
+          var _locale = '{{app.request.locale}}';
+        </script>
         {% block javascripts %}
         {% endblock %}
    

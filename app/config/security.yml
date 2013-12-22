@@ -1,8 +1,13 @@
+parameters:
+  security.acl.permission.map.class: Cpt\MainBundle\Security\PermissionMap
+
 jms_security_extra:
     secure_all_services: false
     expressions: true
 
 security:
+    acl:
+        connection: default
     encoders:
         Symfony\Component\Security\Core\User\User: plaintext
         FOS\UserBundle\Model\UserInterface: sha512

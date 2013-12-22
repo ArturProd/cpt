@@ -10,16 +10,13 @@
 
 namespace Cpt\BlogBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 
-use Symfony\Component\Form\Form;
+
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Doctrine\ORM\Mapping as ORM;
 
 use Cpt\BlogBundle\Interfaces\Entity\PostInterface as PostInterface;
 //use Cpt\BlogBundle\Entity;
@@ -46,7 +43,7 @@ class PostController extends BasePostController
             'article_permalink' => $article_permalink
             );
                 
-        $response = $this->render('CptBlogBundle:Post:articles_viewall.html.twig', $params);
+        $response = $this->render('CptBlogBundle:Post:articles.html.twig', $params);
        
         return $response;
     }
@@ -62,12 +59,12 @@ class PostController extends BasePostController
               
         if ($myarticles)
         {
-            $this->RestrictAccessToLoggedIn ();     
-            $pager = $this->getPostManager()->getMyArticlesPager($this->getUser()->getId(), $page);
+         //   $this->RestrictAccessToLoggedIn ();     
+            $pager = $this->getPostManager()->getMyArticlesPager($page);
         }
         else
         {
-            $pager = $this->getPostManager()->getAllArticlesPager($page, $this->isUserAdmin());
+            $pager = $this->getPostManager()->getAllArticlesPager($page);
         }
         
         $pageralaune = $this->getPostManager()->getAlauneArticlesPager();
@@ -87,7 +84,6 @@ class PostController extends BasePostController
         // Then add the other ones
         foreach($pageresult as $post)
         {
-            if ($this->getPublicationManager()->CanSeePublication($post, $this->getSecurityContext()))
                 $posts[] = $this->getPostViewData($post);
         }
             //$postarray[$post->getId()] = $post->toViewArray();
@@ -172,6 +168,7 @@ class PostController extends BasePostController
         {
             // $id is null => Create a new post
            $post = $this->getPostManager()->createPostInstance($user);
+           
         }
         else
         {

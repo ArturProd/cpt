@@ -13,11 +13,7 @@
     <services>
         <service id="cpt.blog.entity_manager" alias="doctrine.orm.default_entity_manager" />
 
-        <service id="cpt.blog.manager.comment" class="%cpt.blog.manager.comment.class%">
-            <argument type="service" id="cpt.blog.entity_manager" />
-            <argument>%cpt.blog.manager.comment.entity%</argument>
-            <argument type="service" id="cpt.blog.manager.post" />
-        </service>
+
 
         <service id="cpt.blog.manager.category" class="%cpt.blog.manager.category.class%">
             <argument type="service" id="cpt.blog.entity_manager" />
@@ -25,8 +21,10 @@
         </service>
 
 
-        <service id="cpt.blog.manager.post" class="%cpt.blog.manager.post.class%">
+        <service id="cpt.manager.post" class="%cpt.blog.manager.post.class%">
            <argument type="service" id="cpt.blog.entity_manager" />
+            <argument type="service" id="security.context"/>
+            <argument type="service" id="security.acl.provider"/>
            <argument>%cpt.blog.manager.post.entity%</argument>
         </service>
 

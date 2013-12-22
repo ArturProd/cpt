@@ -1,0 +1,1 @@
+fos.Router.setData({"base_url":"","routes":{"cpt_publication_comment_delete":{"tokens":[["variable","\/","[^\/]++","commentid"],["text","\/publication\/comment"],["variable","\/","en|fr","_locale"]],"defaults":[],"requirements":{"_method":"DELETE","_locale":"en|fr"},"hosttokens":[]}},"prefix":"","host":"localhost","scheme":"http"});

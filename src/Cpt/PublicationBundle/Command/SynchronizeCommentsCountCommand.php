@@ -32,7 +32,7 @@ class SynchronizeCommentsCountCommand extends ContainerAwareCommand
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $commentManager = $this->getContainer()->get('cpt.blog.manager.comment');
+        $commentManager = $this->getContainer()->get('cpt.manager.comment');
 
         $commentManager->updateCommentsCount();
 

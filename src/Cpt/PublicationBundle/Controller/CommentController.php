@@ -118,12 +118,10 @@ class CommentController extends BaseController
             return new Response($html_string,500);
     }
 
-    public function deleteCommentAction(Request $request)
+    public function deleteCommentAction($commentid)
     {
-        $comment_id = $this->get('request')->request->get('id');
-
         $comment = $this->getCommentManager()->findOneBy(array(
-            'id' => $comment_id
+            'id' => $commentid
         ));
 
         

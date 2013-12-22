@@ -3,8 +3,7 @@
 namespace Cpt\MainBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Request;
+
 
 class DefaultController extends Controller
 {
@@ -29,13 +28,5 @@ class DefaultController extends Controller
         return $this->render('CptMainBundle:Default:index.html.twig', $params );
         
     }
-    
- 
-    
-    protected function getPostManager()
-    {
-        return $this->get('cpt.blog.manager.post');
-    }
-    
     
 }

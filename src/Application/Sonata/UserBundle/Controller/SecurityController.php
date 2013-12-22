@@ -3,6 +3,7 @@
 namespace Application\Sonata\UserBundle\Controller;
 
 use FOS\UserBundle\Controller\SecurityController as BaseController;
+use Symfony\Component\HttpFoundation\Response as Response;
 
 use Symfony\Component\Security\Core\SecurityContext;
 
@@ -15,11 +16,12 @@ class SecurityController extends BaseController
 
         /**** The following is to handle ajax request that are made when the user is disconnected (for ex. after time out) ******/
         // if the request is an ajax request...
-        if ($request->isXmlHttpRequest()) {
- 
-        // response to the ajax request : code http 401 (access unauthorized)
-        $this->getResponse()->setStatusCode(401);
-        }
+//        if ($request->isXmlHttpRequest()) {
+// 
+//        // response to the ajax request : code http 401 (access unauthorized)
+//        $content = json_encode(array('message' => 'Cannot loging through ajax'));
+//        return new Response($content, 301);
+//        }
         /*************************************************************************************************************************/
 
         /* @var $request \Symfony\Component\HttpFoundation\Request */
