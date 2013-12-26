@@ -20,6 +20,7 @@ use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
 use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
 use Symfony\Component\Security\Acl\Domain\RoleSecurityIdentity;
 use Cpt\MainBundle\Security\MaskBuilder as MaskBuilder;
+use Cpt\MainBundle\Security\PermissionMap as PermissionMap;
 
 class InitializeCommand extends ContainerAwareCommand
 {
@@ -50,7 +51,15 @@ class InitializeCommand extends ContainerAwareCommand
         $aclProvider->deleteAcl($postclassIdentity);
         $aclpost = $aclProvider->createAcl($postclassIdentity);
         $aclpost->insertClassAce($anonymousRoleIdentity, MaskBuilder::MASK_VIEW);
-        $aclpost->insertClassAce($loggedinRoleIdentity, MaskBuilder::MASK_COMMENT);
+        
+        
+        $builder = new MaskBuilder();
+        $builder
+            ->add('VIEW')
+            ->add('CREATE')
+            ->add('COMMENT');
+        $mask = $builder->get();
+        $aclpost->insertClassAce($loggedinRoleIdentity, $mask);
         $aclpost->insertClassAce($adminRoleIdentity, MaskBuilder::MASK_OWNER);
         $aclProvider->updateAcl($aclpost);
 
@@ -59,6 +68,11 @@ class InitializeCommand extends ContainerAwareCommand
         $aclProvider->deleteAcl($commentclassIdentity);
         $aclcomment = $aclProvider->createAcl($commentclassIdentity);
         $aclcomment->insertClassAce($anonymousRoleIdentity, MaskBuilder::MASK_VIEW);
+        $builder
+            ->add('VIEW') 
+            ->add('CREATE'); // Logged in user can CREATE comment class. However not EDIT unless it is its own comment!
+        $mask = $builder->get();
+        $aclpost->insertClassAce($loggedinRoleIdentity, $mask);
         $aclcomment->insertClassAce($adminRoleIdentity, MaskBuilder::MASK_OWNER);
         $aclProvider->updateAcl($aclcomment);
 

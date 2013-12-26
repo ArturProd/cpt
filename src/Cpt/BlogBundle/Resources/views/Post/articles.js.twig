@@ -52,10 +52,11 @@ function PopulateArticles(response, opendefault)
 {
     if (response.status!=="ok")
         return;
-    
-    post_list = response.data.posts;
-    post_pager = response.data.pager;
-    for(i = 0; i<post_list.length ; ++i)
+
+    post_list = $.parseJSON(response.data.posts);
+    post_pager = $.parseJSON(response.data.pager);
+
+        for(i = 0; i<post_list.length ; ++i)
         getAndAddPost(post_list[i], opendefault);
 }
 {#**************************************************************************#}
@@ -116,9 +117,9 @@ function getAndAddPost(post, opendefault)
    {# if the post container already exists, delete it #}
    //if ($('postcontainer'+post.id)!==null)
     $('#postcontainer'+post.id).remove();
-    
+
    {# add the div container for this post #}
-    if (post.publishhomepage)
+    if (post.publishedhomepage)
     { {# "A la une" posts #}
         jQuery('<div/>', {
             id: 'postcontainer'+post.id,
@@ -200,7 +201,7 @@ function CreatePagination()
     {# if we have to display the pagination bar #}
     if (post_pager.havetopaginate)
     {
-        if (pagination_currentfirstshown !== post_pager.firstpage) {# if we are not already showing the first page, show the left arrow #}
+        if (pagination_currentfirstshown !== post_pager.first_page) {# if we are not already showing the first page, show the left arrow #}
         {
             listitem = $('<li/>').html( "<a onclick='pagination_showpreviouslinks();'></a>");
             listitem.addClass('post_pagination_leftarrow').appendTo('#postpagination');
@@ -223,7 +224,7 @@ function CreatePagination()
         
         }
         
-        if (last_displayed_page < post_pager.lastpage) {# if the link to last page is not already displayed, display the right arrow #}
+        if (last_displayed_page < post_pager.last_page) {# if the link to last page is not already displayed, display the right arrow #}
             {
                 listitem = $('<li/>').html( "<a onclick='pagination_shownextlinks();'></a>");
                 listitem.addClass("post_pagination_rightarrow").appendTo('#postpagination');
@@ -238,7 +239,7 @@ function CreatePagination()
 {#****************************************************************************#}
 function pagination_shownextlinks()
 {
-    if (pagination_getlastdisplayedlink()<post_pager.lastpage)
+    if (pagination_getlastdisplayedlink()<post_pager.last_page)
     {
         pagination_currentfirstshown++;
         CreatePagination();    
@@ -260,7 +261,7 @@ function pagination_showpreviouslinks()
 {#****************************************************************************#}
 function pagination_getlastdisplayedlink()
 {
-        return Math.min(pagination_currentfirstshown+post_pager.maxpagelinks, post_pager.lastpage);    
+        return Math.min(pagination_currentfirstshown+post_pager.max_page_links, post_pager.last_page);    
 }
 {#****************************************************************************#}
 {# Refresh current page

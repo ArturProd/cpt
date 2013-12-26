@@ -5,10 +5,17 @@ namespace Cpt\PublicationBundle\Entity;
 use Cpt\PublicationBundle\Entity\Commentable as Commentable;
 use Cpt\PublicationBundle\Interfaces\Entity\PublicationInterface as PublicationInterface;
 
+use JMS\Serializer\Annotation\ExclusionPolicy as ExclusionPolicy;
+use JMS\Serializer\Annotation\Expose as Expose;
+use JMS\Serializer\Annotation\VirtualProperty as VirtualProperty;
+use JMS\Serializer\Annotation\SerializedName as SerializedName;
 /**
  * Description of Publication
  *
  * @author cyril
+ */
+/**
+ * @ExclusionPolicy("all")
  */
 class Publication extends Commentable implements PublicationInterface {
 
@@ -24,17 +31,39 @@ class Publication extends Commentable implements PublicationInterface {
     }
 
     // <editor-fold defaultstate="collapsed" desc="attributes">
+    /**
+    * @Expose
+    */
     protected $id;
-    protected $author;
 
+    protected $author;
+    /**
+    * @Expose
+    */
     protected $title;
+    /**
+    * @Expose
+    */
     protected $content;
+    /**
+    * @Expose
+    */
     protected $enabled;
+    /**
+    * @Expose
+    */
     protected $publicationDateStart;
-    
+    /**
+    * @Expose
+    */
     protected $slug;
-    
+    /**
+    * @Expose
+    */
     protected $createdAt;
+    /**
+    * @Expose
+    */
     protected $updatedAt;
     // </editor-fold>
     

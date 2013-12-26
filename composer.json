@@ -6,7 +6,7 @@
     },
     "require": {
         "php": ">=5.3.3",
-        "symfony/symfony": "2.3.2",
+        "symfony/symfony": "~2.4",
         "doctrine/orm": "~2.2,>=2.2.3",
         "doctrine/doctrine-bundle": ">=1.2",
         "twig/extensions": ">=1.0",
@@ -29,7 +29,8 @@
         "doctrine/doctrine-fixtures-bundle": "dev-master",
         "frequence-web/calendr-bundle" : "dev-master",
         "friendsofsymfony/jsrouting-bundle": "@stable",
-        "sonata-project/core-bundle": "~2.2@dev"
+        "sonata-project/core-bundle": "~2.2@dev",
+        "jms/serializer-bundle": "dev-master"
     },
     "scripts": {
         "post-install-cmd": [
@@ -55,7 +56,7 @@
         "symfony-web-dir": "web",
         "symfony-assets-install": "symlink",
         "branch-alias": {
-            "dev-master": "2.3-dev"
+            "dev-master": "~2.4"
         }
     }
 }

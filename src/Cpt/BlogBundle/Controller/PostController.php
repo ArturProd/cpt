@@ -51,46 +51,35 @@ class PostController extends BasePostController
     public function getArticleListAction()
     {        
         // Only ajax requests
-        $this->RestrictAccessToAjax();
+  //      $this->RestrictAccessToAjax();
         
         // page can be sent from request
         $page = $this->GetNumericParameter('page', 1);
         $myarticles = $this->GetBoolParameter('myarticles', false);
-              
+
+        $max_article_perpage = $this->container->getParameter("cpt.blog.max_article_perpage");
+        $max_page_link = $this->container->getParameter("cpt.blog.max_page_link");
+
         if ($myarticles)
         {
-         //   $this->RestrictAccessToLoggedIn ();     
-            $pager = $this->getPostManager()->getMyArticlesPager($page);
+            $pager = $this->getPostManager()->getMyArticlesPager($page, $max_article_perpage, $max_page_link);
         }
         else
         {
-            $pager = $this->getPostManager()->getAllArticlesPager($page);
+            $pager = $this->getPostManager()->getAllArticlesPager($page, $max_article_perpage, $max_page_link);
         }
         
         $pageralaune = $this->getPostManager()->getAlauneArticlesPager();
         
-        $pageresult = $pager->getResults();
+        $pagerresult = $pager->getResults();
         $pageralauneresult = $pageralaune->getResults();
-        
-        $posts = array();
-        
-        // First add the alaune articles
-        foreach($pageralauneresult as $post)
-        {
-            if ($this->getPublicationManager()->CanSeePublication($post, $this->getSecurityContext()))
-                $posts[] = $this->getPostViewData($post);
-        }
-        
-        // Then add the other ones
-        foreach($pageresult as $post)
-        {
-                $posts[] = $this->getPostViewData($post);
-        }
-            //$postarray[$post->getId()] = $post->toViewArray();
-        $pagerview = $this->GetPagerViewData($pager);
-        
-        return $this->CreateJsonResponse(Array('posts' => $posts, 'pager' => $pagerview));
+        $postlist = array_merge($pagerresult,$pageralauneresult);
+        $serializer = $this->get('jms_serializer');
+        $serializedpager = $serializer->serialize($pager, 'json');
+        $serializedposts = $serializer->serialize($postlist, 'json');
+        return $this->CreateJsonResponse(Array('posts' => $serializedposts, 'pager' => $serializedpager));
     }
+    
  
     public function getSingleArticleListAction()
     {
@@ -98,20 +87,14 @@ class PostController extends BasePostController
         
         if (!preg_match('/.+?/', $article_permalink))
            $this->RestrictResourceNotFound();
-                
-         $post = $this->getPostManager()->findOneByPermalink($article_permalink);
-
-        if (!$post)
-            $this->RestrictResourceNotFound();
-       
-        $this->SetPermissions($post); 
+         
+         $post = Array();
+         $post[] = $this->getPostManager()->findOneByPermalink($article_permalink);
+         $serializer = $this->get('jms_serializer');
+   
+        $serializedpost = $serializer->serialize($post, 'json');
         
-        if (!$this->getPublicationManager()->CanSeePublication($post, $this->getSecurityContext()))
-            $this->RestrictAccessDenied();
-                    
-        $posts[] = $this->getPostViewData($post);
-        
-        return $this->CreateJsonResponse(Array('posts' => $posts));
+        return $this->CreateJsonResponse(Array('posts' => $serializedpost, 'pager' => null));
     }
 
     // <editor-fold defaultstate="collapsed" desc="Single post actions ">
@@ -132,11 +115,6 @@ class PostController extends BasePostController
             $post = $this->getPostManager()->findOneBy(array('id' => $id));
 
             $this->RestrictResourceNotFound($post);
-
-            $this->SetPermissions($post);
-            
-            if (!$this->getPublicationManager()->CanSeePublication($post, $this->getSecurityContext()))
-                $this->RestrictAccessDenied();
             
             $html_string = $this->renderView('CptBlogBundle:Post:preview_post.html.twig', array(
                 'post'  => $post,
@@ -145,7 +123,7 @@ class PostController extends BasePostController
            //return new Response($html_string,200,array('Content-Type'=>'application/json'));//make sure it has the correct content type
 
            return $this->CreateJsonResponse($html_string);
-        }
+      }
     
  
     public function editPostAction(Request $request, $id=null)
@@ -164,12 +142,8 @@ class PostController extends BasePostController
                    
         $post = null;
         
-        if ($id<0)
-        {
-            // $id is null => Create a new post
-           $post = $this->getPostManager()->createPostInstance($user);
-           
-        }
+        if ($id<0) // $id is null => Create a new post
+           $post = $this->getPostManager()->createPostInstance();
         else
         {
             // $id is not null => Retreive an existing post
@@ -177,20 +151,8 @@ class PostController extends BasePostController
             $this->RestrictResourceNotFound($post);
         }
 
-        $this->SetPermissions($post);
 
         $form = $this->getPostEditForm($post);
-
-        if ($seoPage = $this->getSeoPage()) {
-            $seoPage
-                ->setTitle($post->getTitle())
-                ->addMeta('property', 'og:title', $post->getTitle())
-                ->addMeta('property', 'og:type', 'blog')
-                ->addMeta('property', 'og:url',  $this->generateUrl('sonata_news_view', array(
-                    'permalink'  => $this->getBlog()->getPermalinkGenerator()->generate($post, true)
-                ), true))
-            ;
-        }
         
         if ($request->isMethod('POST')) {
            
@@ -199,9 +161,6 @@ class PostController extends BasePostController
             // Only admin can publish a post on the home page
             if (!$security->isGranted('ROLE_ADMIN'))
                     $post->setPublishedHomePage(false);
-            
-            // Checking permission to modigy the post
-            $this->getPublicationManager()->EnsureCanModifyPublication($post, $security);
 
              if ($form->isValid()) {            
                 $this->getPostManager()->save($post);
@@ -220,72 +179,19 @@ class PostController extends BasePostController
         if (!$post)
             return $this->CreateJsonResponse(false);
 
-        $security = $this->get('security.context');
-
-        $this->getPublicationManager()->EnsureCanModifyPublication($post, $security);
         $this->getPostManager()->delete($post);
         return $this->CreateJsonResponse(true);
     }
     
   // </editor-fold>
-  
-    // <editor-fold defaultstate="collapsed" desc="Unsupported actions">
  
-  
-
-    /**
-     * @param $category
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     *
-     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
-     */
-  /*  public function categoryAction($category)
-    {
-        $category = $this->get('cpt.blog.manager.category')->findOneBy(array(
-            'slug' => $category,
-            'enabled' => true
-        ));
-
-        if (!$category) {
-            throw new NotFoundHttpException('Unable to find the category');
-        }
-
-        if (!$category->getEnabled()) {
-            throw new NotFoundHttpException('Unable to find the category');
-        }
-
-        return $this->renderArchive(array('category' => $category), array('category' => $category));
-    }*/
-
-    // </editor-fold>
-    
-    // <editor-fold defaultstate="collapsed" desc="Post archive actions">
-
-
-    
-    // </editor-fold>
     
     protected function GetPostViewData($post)
     {
         return Array('id' => $post->getId(), 'publishhomepage' => $post->getPublishedHomePage());
     }
     
-    protected function GetPagerViewData($pager)
-    {
-        return Array(
-            'page' => $pager->getPage(),
-            'havetopaginate' => $pager->haveToPaginate(),
-            'firstpage' => $pager->getFirstPage(),
-            'lastpage' => $pager->getLastPage(),
-            'maxpagelinks' => $pager->getMaxPageLinks(),
-            'nextpage' => $pager->getNextPage(),
-            'previouspage' => $pager->getPreviousPage(),
-            'links' => $pager->getLinks(),
-            'isfirstpage' => $pager->isFirstPage(),
-            'islastpage' => $pager->isLastPage()
-        );
-    }
+
 
     protected function GetPostEditView($post, $form)
     {
@@ -296,12 +202,6 @@ class PostController extends BasePostController
     }
     
   
-    protected function SetPermissions($post)
-    {
-        $security = $this->get('security.context');
-        $post->setCanBeCommented($this->getPublicationManager()->CanCommentPublication($post, $security));
-        $post->setCanBeModified($this->getPublicationManager()->CanModifyPublication($post,$security));
-    }
 
     
     // <editor-fold defaultstate="collapsed" desc="Private and protected methods">
@@ -317,19 +217,7 @@ class PostController extends BasePostController
     {
         return $this->redirect($this->generateUrl('cpt_blog_post_list'));
     }
-    /**
-     * @return \Sonata\SeoBundle\Seo\SeoPageInterface
-     */
-    protected function getSeoPage()
-    {
-        if ($this->has('sonata.seo.page')) {
-            return $this->get('sonata.seo.page');
-        }
-
-        return null;
-    }
-
-    
+     
     protected function getPostEditForm(PostInterface $post)
     {
         return $this->get('form.factory')->createNamed('post', 'cpt_blog_edit_post', $post, Array('attr'=> Array('id' => 'posteditform')));       

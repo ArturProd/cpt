@@ -216,7 +216,7 @@ class CommentController extends BaseController
             return false;
                
         // The owner of a post can modify any comment of this post
-        if ($comment->getPost()->getAuthor()->getId() == $user->getId())
+        if ($comment->getPublication()->getAuthor()->getId() == $user->getId())
             return true;
         
         // Owner of a comment can delete its own comment

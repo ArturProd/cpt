@@ -39,7 +39,7 @@
      <div>
 
          <div id="comment_placeholder_{{ post.id }}">
-        {% if post.canBeCommented %}
+        {% if is_granted('COMMENT', post) %}
             {% render(controller('CptBlogBundle:Post:addCommentForm', {
                 'postId': post.id,
                 'form': form

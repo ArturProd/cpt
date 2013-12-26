@@ -24,7 +24,7 @@
      {#****************************************************************************#}
      {# Enable context menu to modify a post #}
      {#****************************************************************************#}
-     {% if post.canbemodified %}
+     {% if is_granted('EDIT', post) %}
      $("#post_header{{post.id}}").hover({# on hover on/off post header, show or hide the menu #}
         function(){
              $( "#contextmenucontainer{{post.id}}" ).show();
@@ -52,7 +52,7 @@
     <div class="post_header_arrow  {{post.publishedhomepage ? 'alaune' : '' }}"></div>
     <div class="post_header_date  {{post.publishedhomepage ? 'alaune' : '' }}">{{post.createdAt|date('d/m') }}</div>
     <div class="post_header_title  {{post.publishedhomepage ? 'alaune' : '' }}">{{ post.title|upper }}</div>
-    {% if post.canbemodified %}
+     {% if is_granted('EDIT', post) %}
     <div id="contextmenucontainer{{post.id}}" class="article_contextmenu">
         <ul id="contextmenu{{post.id}}" class="article_contextmenu">
             <li><a onclick="EditPost({{post.id}})"><span class="ui-icon ui-icon-wrench"></span>Modifier</a></li>
@@ -69,7 +69,7 @@
 {#****************************************************************************#}
 <div class="post_body" id="post_body{{post.id}}">
     {{ post.content|raw }}
-    {% if post.CanBeModified %}
+    {% if is_granted('EDIT', post) %}
             <!--button onclick="parent.location='{{ url('cpt_blog_post_edit', { 'id': post.id }) }}'" class="btn btn-success btn-small pull-right">Editer</button!-->
     {% endif %}
 </div>

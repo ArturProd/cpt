@@ -63,13 +63,19 @@ abstract class BaseManager
     public function getOneById($id)
     {
         $entity = $this->findOneBy( array('id' => $id) );
+        if (!$entity)
+            throw new SymfonyException\NotFoundHttpException("Resource not found.");
 
         return $entity;
     }
     
     public function findOneBy(array $criteria)
     {
-        return $this->em->getRepository($this->class)->findOneBy($criteria);
+        $entity = $this->em->getRepository($this->class)->findOneBy($criteria);
+        if (!$entity)
+            throw new SymfonyException\NotFoundHttpException("Resource not found.");
+        
+        return $entity;
     }
     
       /**

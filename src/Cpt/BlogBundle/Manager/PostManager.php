@@ -18,7 +18,8 @@ use Cpt\BlogBundle\Interfaces\Manager\PostManagerInterface as PostManagerInterfa
 
 use Cpt\BlogBundle\Manager\PermalinkDateManager as DatePermalink;
 
-use Sonata\DoctrineORMAdminBundle\Datagrid\Pager;
+//use Sonata\DoctrineORMAdminBundle\Datagrid\Pager;
+use Cpt\MainBundle\Entity\Pager;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 
 use Doctrine\ORM\NoResultException;
@@ -30,16 +31,16 @@ use Symfony\Component\Security\Acl\Permission\MaskBuilder;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class PostManager extends BaseManager implements PostManagerInterface
-{
+{  
+    // <editor-fold defaultstate="collapsed" desc="Public">
 
-    protected function GetPostClassIdentity()
+    public function createPostInstance($publishedhomepage=false, $enabled=true, $title="", $content="")
     {
-        return new ObjectIdentity('class', 'Cpt\\BlogBundle\\Entity\\Post');
-    }
-    
-    public function createPostInstance($author, $publishedhomepage=false, $enabled=true, $title="", $content="")
-    {           
-        return new Post($author, $publishedhomepage, $enabled, $title, $content);
+        $user = $this->getUser();
+        if (!$user)
+           throw new AccessDeniedException();
+        
+        return new Post($user, $publishedhomepage, $enabled, $title, $content);
     }   
     /**
      * {@inheritDoc}
@@ -71,9 +72,6 @@ class PostManager extends BaseManager implements PostManagerInterface
                 $acl->insertObjectAce($userIdentity, MaskBuilder::MASK_OPERATOR);
                 $aclProvider->updateAcl($acl);
         }
-        
-
-
     }
 
     /**
@@ -91,7 +89,7 @@ class PostManager extends BaseManager implements PostManagerInterface
             $repository = $this->em->getRepository($this->class);
 
             $query = $repository->createQueryBuilder('p');
-
+            $query->select('p.id, p.publishedhomepage');
             $PermalinkGenerator = new DatePermalink();
             $urlParameters = $PermalinkGenerator->getParameters($permalink);
 
@@ -122,15 +120,22 @@ class PostManager extends BaseManager implements PostManagerInterface
             }
 
             if (count($parameters) == 0) {
-                return null;
+                throw new SymfonyException\NotFoundHttpException("Resource not found.");
             }
 
             $query->setParameters($parameters);
-
-            return $query->getQuery()->getSingleResult();
-
+            $entity = $query->getQuery()->getSingleResult();
+            
+            if (!$entity)
+                throw new SymfonyException\NotFoundHttpException("Resource not found.");
+            
+            if (!$this->getSecurityContext()->isGranted('VIEW', $entity))
+                throw new AccessDeniedException();
+            
+            return $entity;
+            
         } catch (NoResultException $e) {
-            return null;
+             throw new SymfonyException\NotFoundHttpException("Resource not found.");
         }
     }
 
@@ -148,7 +153,8 @@ class PostManager extends BaseManager implements PostManagerInterface
         $this->em->flush();
     }
 
-     public function getMyArticlesPager($page, $maxPerPage = 10, $maxPageLinks = 5)
+
+    public function getMyArticlesPager($page, $maxPerPage = 10, $maxPageLinks = 5)
     {
         if ((!$this->getSecurityContext()->isGranted('VIEW', $this->GetPostClassIdentity()))
            || (!$this->getSecurityContext()->isGranted('ROLE_USER')))
@@ -164,29 +170,27 @@ class PostManager extends BaseManager implements PostManagerInterface
     
     public function getAlauneArticlesPager($page = 1, $maxPerPage = 100, $maxPageLinks = 5)
     {
-        if (!$this->getSecurityContext()->isGranted('VIEW', $this->GetPostClassIdentity()))
-            throw new AccessDeniedException();
-                        
-        $criteria['enabled'] = true;    
-        $criteria['publishedhomepage'] = true; 
-
-        $pager = $this->getPager($criteria, $page,$maxPerPage );
-        $pager->setMaxPageLinks($maxPageLinks);
-
-        return $pager;
+        return $this->getArticlesPager($page, true, $maxPerPage, $maxPageLinks);
     }
-        
-   
     
     public function getAllArticlesPager($page, $maxPerPage = 10, $maxPageLinks = 5)
     {
-        if (!$this->getSecurityContext()->isGranted('VIEW', $this->GetPostClassIdentity()))
+        return $this->getArticlesPager($page, false, $maxPerPage, $maxPageLinks);
+    }
+    
+          // </editor-fold>
+
+    // <editor-fold defaultstate="collapsed" desc="Protected">
+ 
+    protected function getArticlesPager($page, $alaune = false, $maxPerPage = 10, $maxPageLinks = 5)
+    {
+       if (!$this->getSecurityContext()->isGranted('VIEW', $this->GetPostClassIdentity()))
             throw new AccessDeniedException();
                 
        if (!$this->isUserAdmin())
          $criteria['public'] = true;
        
-       $criteria['publishedhomepage'] = false;
+       $criteria['publishedhomepage'] = $alaune;
 
        $pager = $this->getPager($criteria, $page,$maxPerPage ); 
        $pager->setMaxPageLinks($maxPageLinks);
@@ -213,7 +217,7 @@ class PostManager extends BaseManager implements PostManagerInterface
         $parameters = array();
         $query = $this->em->getRepository($this->class)
             ->createQueryBuilder('p')
-            ->select('p')
+            ->select('p.id, p.publishedhomepage')
             ->leftJoin('p.author', 'a', Expr\Join::WITH, 'a.enabled = true')
             ->addOrderby('p.publishedhomepage', 'DESC') // "A la une" post come first
             ->addOrderby('p.publicationDateStart', 'DESC');
@@ -307,4 +311,12 @@ class PostManager extends BaseManager implements PostManagerInterface
 
         return $pcqp;
     }
+    
+    protected function GetPostClassIdentity()
+    {
+        return new ObjectIdentity('class', 'Cpt\\BlogBundle\\Entity\\Post');
+    }
+    
+      // </editor-fold>
+
 }
