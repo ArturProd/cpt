@@ -1,0 +1,35 @@
+<script type="text/javascript">
+var event_list = null;
+{#**************************************************************************#}
+{# Retreives a list of events from server
+{#**************************************************************************#}
+function retrieveEvents(year,month)
+{
+  $.getJSON( Routing.generate('event_get_events_for_month', {year:year, month:month,_locale:_locale}), function(response){
+      if (response.status === "ok")
+          PopulateEvents(response.data);
+  });
+}
+{#**************************************************************************#}
+{# Populate the events in the interface
+{#**************************************************************************#}
+function PopulateEvents(eventsjson)
+{
+    event_list = $.parseJSON(eventsjson);
+    for(i=0;i<event_list.length;++i)
+        DisplayEvent(event_list[i]);
+}
+{#**************************************************************************#}
+{# Displays a single event
+{#**************************************************************************#}
+function DisplayEvent(event)
+{
+    
+}
+{#**************************************************************************#}
+{# Onload
+{#**************************************************************************#}
+$(function() {
+    retrieveEvents(2013,12);
+});
+</script>

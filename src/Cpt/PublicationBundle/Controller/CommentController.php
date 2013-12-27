@@ -44,7 +44,7 @@ class CommentController extends BaseController
             $view_comments[] = $comment->toViewArray();
         }
             
-        return $this->CreateJsonResponse($view_comments);
+        return $this->CreateJsonOkResponse($view_comments);
         
     }
             
@@ -72,7 +72,7 @@ class CommentController extends BaseController
             $view_comments[] = $comment->toViewArray();
         }
             
-        return $this->CreateJsonResponse($view_comments);
+        return $this->CreateJsonOkResponse($view_comments);
     }
  
     /**
@@ -112,7 +112,7 @@ class CommentController extends BaseController
                 $comment->setCanModify($this->CanModifyComment($comment, $user));
                  $this->getCommentManager()->save($comment);
 
-                return $this->CreateJsonResponse($comment->toViewArray());
+                return $this->CreateJsonOkResponse($comment->toViewArray());
             }
 
             return new Response($html_string,500);

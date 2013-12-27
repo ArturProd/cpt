@@ -2,11 +2,58 @@
 
 namespace Cpt\EventBundle\Entity;
 
+use JMS\Serializer\Annotation\ExclusionPolicy as ExclusionPolicy;
+use JMS\Serializer\Annotation\Expose as Expose;
+use JMS\Serializer\Annotation\VirtualProperty as VirtualProperty;
+use JMS\Serializer\Annotation\SerializedName as SerializedName;
 
+/**
+ * @ExclusionPolicy("all")
+ */
 class Registration
 {
     
+    protected $user;
+    
+    protected $event;
+    
+    /**
+     * @var integer
+     */
+    protected $id;
 
+    /**
+     * @var \DateTime
+     */
+    protected $createdAt;
+
+    /**
+     * Nombre TOTAL de participants
+     * @var integer
+     * @Expose
+     */
+    protected $numparticipant;
+
+    /**
+     * @var integer
+     * @Expose
+     */
+    protected $numqueuedparticipant;
+
+    /**
+     * @var boolean
+     * @Expose
+     */
+    protected $organizer;
+    
+    /**
+     * @return integer
+     * @VirtualProperty
+     */
+    public function getUserId()
+    {
+        return $this->getUser()->getId();
+    }
     
     public function __construct($user = null, $event = null, $numparticipant = 1, $organizer = false)
     {
@@ -30,9 +77,7 @@ class Registration
     }
     
     
-    protected $user;
-    
-    protected $event;
+
         /**
      * Set event
      *
@@ -79,33 +124,6 @@ class Registration
         return $this->user;
     }
     
-    /**
-     * @var integer
-     */
-    private $id;
-
-    /**
-     * @var \DateTime
-     */
-    private $createdAt;
-
-    /**
-     * Nombre TOTAL de participants
-     * @var integer
-     */
-    private $numparticipant;
-
-    /**
-     * @var integer
-     */
-    private $numqueuedparticipant;
-
-    /**
-     * @var boolean
-     */
-    private $organizer;
-    
-
     
     /**
      * Get id

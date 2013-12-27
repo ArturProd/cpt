@@ -4,10 +4,18 @@ namespace Cpt\EventBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Cpt\PublicationBundle\Entity\Publication as Publication;
+use CalendR\Event\EventInterface as EventInterface;
+use CalendR\Period\PeriodInterface as PeriodInterface;
 
+use JMS\Serializer\Annotation\ExclusionPolicy as ExclusionPolicy;
+use JMS\Serializer\Annotation\Expose as Expose;
+use JMS\Serializer\Annotation\VirtualProperty as VirtualProperty;
+use JMS\Serializer\Annotation\SerializedName as SerializedName;
 
-
-class Event extends Publication
+/**
+ * @ExclusionPolicy("all")
+ */
+class Event extends Publication implements EventInterface
 {
     public function __construct()
     {
@@ -15,8 +23,8 @@ class Event extends Publication
         
         $this->allowedattendees = new ArrayCollection();
         //$this->comments = new ArrayCollection();
-        $this->begindatetime = new \DateTime;
-        $this->enddatetime = new \DateTime;
+        $this->begin = new \DateTime;
+        $this->end = new \DateTime;
         $this->maxnumattendees = 3;
         $this->count_queued_attendees = 0;
         $this->count_total_attendees = 0;
@@ -41,50 +49,211 @@ class Event extends Publication
 
     }
        
+    public function getUid()
+    {
+        return $this->getId();
+    }
+
+        /**
+     * Set begindatetime
+     *
+     * @param \DateTime $begindatetime
+     * @return BaseEvent
+     */
+    public function setBegin(\DateTime $begin)
+    {
+        $this->begin = $begin;
+
+        return $this;
+    }
+
+    /**
+     * Get begindatetime
+     *
+     * @return \DateTime 
+     */
+    public function getBegin()
+    {
+        return $this->begin;
+    }
+
+    /**
+     * Set enddatetime
+     *
+     * @param \DateTime $enddatetime
+     * @return BaseEvent
+     */
+    public function setEnd(\DateTime $end)
+    {
+        $this->end = $end;
+
+        return $this;
+    }
+
+    /**
+     * Get enddatetime
+     *
+     * @return \DateTime 
+     */
+    public function getEnd()
+    {
+        return $this->end;
+    }
+    
+    public function contains(\DateTime $datetime)
+    {
+        return $this->getBegin()->diff($datetime)->invert == 0 && $this->getEnd()->diff($datetime)->invert == 1;
+    }
+
+
+    public function containsPeriod(PeriodInterface $period)
+    {
+        return $this->getBegin()->diff($period->getBegin())->invert == 0
+            && $this->getEnd()->diff($period->getEnd())->invert == 1;
+    }
+
+    public function isDuring(PeriodInterface $period)
+    {
+         return $this->getBegin() >= $period->getBegin() && $this->getEnd() < $period->getEnd();       
+    }
     //  <editor-fold defaultstate="collapsed" desc="Attributes">
 
-  
-    
+    /**
+     * @Expose
+     */
     protected $registrations;
-        
-
+     
+    /**
+     * @var \DateTime
+     * @Expose
+     */
+    protected $begin;
 
     /**
      * @var \DateTime
+     * @Expose
      */
-    protected $begindatetime;
-
-    /**
-     * @var \DateTime
-     */
-    protected $enddatetime;
-
-
+    protected $end;
 
     /**
      * @var integer
+     * @Expose
      */
     protected $maxnumattendees;
 
     /**
      * @var integer
+     * @Expose
      */
     protected $count_queued_attendees;
 
     /**
      * @var integer
+     * @Expose
      */
     protected $count_total_attendees;
 
     /**
      * @var boolean
+     * @Expose
      */
     protected $published;
 
     /**
      * @var boolean
+     * @Expose
      */
     protected $restricted;
+
+    /**
+     * @var boolean
+     * @Expose
+     */
+    private $cpt_event;
+    
+    /**
+     * @var string
+     * @Expose
+     */
+    protected $country_code;
+
+    /**
+     * @var string
+     * @Expose
+     */
+    protected $city_name;
+
+    /**
+     * @var string
+     * @Expose
+     */
+    protected $city_postal_code;
+
+    /**
+     * @var string
+     * @Expose
+     */
+    protected $street;
+
+    /**
+     * @var string
+     * @Expose
+     */
+    protected $street_number;
+
+    /**
+     * @var string
+     * @Expose
+     */
+    protected $additional_address;
+
+    /**
+     * @var string
+     * @Expose
+     */
+    protected $corporate_name;
+
+     /**
+     * @var boolean
+     * @Expose
+     */
+    protected $location_show_map;
+
+    /**
+     * @var string
+     * @Expose
+     */
+    protected $location_long;
+
+    /**
+     * @var string
+     * @Expose
+     */
+    protected $location_lat;
+
+    /**
+     * @var boolean
+     * @Expose
+     */
+    protected $approved;
+
+    
+    /**
+     * @var array
+     * @Expose
+     */
+    protected $queue;
+
+    /**
+     * @var boolean
+     * @Expose
+     */
+    protected $registration_allowed;
+
+    /**
+     * @Expose
+     */
+    protected $allowedattendees;
 
 
         /**
@@ -120,54 +289,6 @@ class Event extends Publication
     public function setRegistrations($registrations) {
         $this->registrations = $registrations;
     }
-
-    /**
-     * Set begindatetime
-     *
-     * @param \DateTime $begindatetime
-     * @return BaseEvent
-     */
-    public function setBegindatetime($begindatetime)
-    {
-        $this->begindatetime = $begindatetime;
-
-        return $this;
-    }
-
-    /**
-     * Get begindatetime
-     *
-     * @return \DateTime 
-     */
-    public function getBegindatetime()
-    {
-        return $this->begindatetime;
-    }
-
-    /**
-     * Set enddatetime
-     *
-     * @param \DateTime $enddatetime
-     * @return BaseEvent
-     */
-    public function setEnddatetime($enddatetime)
-    {
-        $this->enddatetime = $enddatetime;
-
-        return $this;
-    }
-
-    /**
-     * Get enddatetime
-     *
-     * @return \DateTime 
-     */
-    public function getEnddatetime()
-    {
-        return $this->enddatetime;
-    }
-
-   
 
     /**
      * Set maxnumattendees
@@ -287,12 +408,6 @@ class Event extends Publication
     }
  
     /**
-     * @var boolean
-     */
-    private $approved;
-
-
-    /**
      * Set approved
      *
      * @param boolean $approved
@@ -314,42 +429,7 @@ class Event extends Publication
     {
         return $this->approved;
     }
-    /**
-     * @var string
-     */
-    private $country_code;
-
-    /**
-     * @var string
-     */
-    private $city_name;
-
-    /**
-     * @var string
-     */
-    private $city_postal_code;
-
-    /**
-     * @var string
-     */
-    private $street;
-
-    /**
-     * @var string
-     */
-    private $street_number;
-
-    /**
-     * @var string
-     */
-    private $additional_address;
-
-    /**
-     * @var string
-     */
-    private $corporate_name;
-
-  
+    
     /**
      * Set country_code
      *
@@ -512,12 +592,6 @@ class Event extends Publication
     }
 
     /**
-     * @var boolean
-     */
-    private $cpt_event;
-
-
-    /**
      * Set cpt_event
      *
      * @param boolean $cptEvent
@@ -542,11 +616,6 @@ class Event extends Publication
     
     
     
-    protected $allowedattendees;
-    
-    //private $comments;
- 
-
     // </editor-fold>
     
     //  <editor-fold defaultstate="collapsed" desc="Getters and Setters">
@@ -561,61 +630,6 @@ class Event extends Publication
 
 
               // </editor-fold>
-
-
-
-
-//    /**
-//     * Add comments
-//     *
-//     * @param \Cpt\BlogBundle\Entity\Comment $comments
-//     * @return Event
-//     */
-//    public function addComment(\Cpt\BlogBundle\Entity\Comment $comments)
-//    {
-//        $this->comments[] = $comments;
-//
-//        return $this;
-//    }
-//
-//    /**
-//     * Remove comments
-//     *
-//     * @param \Cpt\BlogBundle\Entity\Comment $comments
-//     */
-//    public function removeComment(\Cpt\BlogBundle\Entity\Comment $comments)
-//    {
-//        $this->comments->removeElement($comments);
-//    }
-//
-//    /**
-//     * Get comments
-//     *
-//     * @return \Doctrine\Common\Collections\Collection 
-//     */
-//    public function getComments()
-//    {
-//        return $this->comments;
-//    }
-//    
-//        /**
-//     * Set comments
-//     *
-//     */
-//    public function setComments($comments)
-//    {
-//        $this->comments = $comments;
-//    }
-    
-    /**
-     * @var array
-     */
-    private $queue;
-
-    /**
-     * @var boolean
-     */
-    private $registration_allowed;
 
 
     /**
@@ -663,20 +677,7 @@ class Event extends Publication
     {
         return $this->registration_allowed;
     }
-    /**
-     * @var boolean
-     */
-    private $location_show_map;
 
-    /**
-     * @var string
-     */
-    private $location_long;
-
-    /**
-     * @var string
-     */
-    private $location_lat;
 
 
     /**

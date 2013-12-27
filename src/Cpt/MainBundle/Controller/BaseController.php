@@ -28,11 +28,27 @@ class BaseController extends Controller {
     {
         return $this->get('cpt.manager.publication');
     }
+    
+    public function getEventManager()
+    {
+        return $this->get("EventManager");
+    }
+    
+    public function getCalendR()
+    {
+         return $this->get("calendR");
+    }
+    
+    public function getSerializer()
+    {
+         return $this->get('jms_serializer');
+    }
 
     public function getSecurityContext()
     {
         return $this->get('security.context');
-    }
+    }   
+    
             
     public function GetNumericParameter($parametername,  $defaultvalue = null, $parameteractualvalue = null)
     {
@@ -73,9 +89,24 @@ class BaseController extends Controller {
         return ($result === true);
     }
     
-    public function CreateJsonResponse($data = null, $status = BaseController::JsonResponseOk)
+    
+    public function CreateJsonFailedResponse($data, JsonResponse $response = null)
     {
-      $response = new JsonResponse();
+        return $this->CreateJsonResponse($data,BaseController::JsonResponseFailed, $response );
+    }
+    
+    public function CreateJsonOkResponse($data, JsonResponse $response = null)
+    {
+        return $this->CreateJsonResponse($data,BaseController::JsonResponseOk, $response );
+    }
+    
+    public function CreateJsonResponse($data = null, $status = BaseController::JsonResponseOk, JsonResponse $presponse = null)
+    {
+      if (!$presponse)
+        $response = new JsonResponse();
+      else
+        $response = $presponse;
+      
       $response->setData(Array("data" => $data, "status" => $status));
       return $response;
     }
@@ -152,6 +183,11 @@ class BaseController extends Controller {
 //    {
 //        return $this->get('security.context')->getToken()->getUser();
 //    }
+    
+    public function ThrowBadRequestException($error_message = "Bad request")
+    {
+         throw new SymfonyException\HttpException(400, $error_message);
+    }
     
     public function RestrictBusinessRuleError($error_message = "Business rule error")
     {

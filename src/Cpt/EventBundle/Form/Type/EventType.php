@@ -93,13 +93,13 @@ class EventType extends AbstractType
 
             ))
             // Begin date time
-            ->add('begindatetime', 'datetime', array(
+            ->add('begin', 'datetime', array(
                 'label' => 'form.event.begin_date_time',
                 'date_widget' => 'single_text',
             ))
 
             // End date time
-            ->add('enddatetime', 'datetime', array(
+            ->add('end', 'datetime', array(
                 'label' => 'form.event.end_date_time',
                 'date_widget' => 'single_text',
                 'required' => false,

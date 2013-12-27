@@ -109,8 +109,9 @@ class EventController extends BaseController
         
         $lastupdatedate = $event->getUpdatedAt()->getTimestamp();
         
-        return $this->CreateJsonResponse($lastupdatedate > $unixtimestamp);
+        return $this->CreateJsonOkResponse($lastupdatedate > $unixtimestamp);
     }
+    
     
     
     public function downloadAttendeesAction($eventid)
@@ -127,7 +128,6 @@ class EventController extends BaseController
 
     }
     
-    // TODO!!!!!!!!!
     public function viewCalendarAction($year = null, $month = null)
     {
         if ((!$year) || (!$month))
@@ -145,6 +145,21 @@ class EventController extends BaseController
                 'currentdate' => $showdate
                 ));
     }
+    
+    public function getEventsForMonthAction($year, $month)
+    {
+        if (($year<2012)||($month>12))
+           $this->ThrowBadRequestException();
+                
+        $month = $this->getCalendR()->getMonth($year,$month);
+        $eventCollection = $this->getCalendR()->getEvents($month);
+        
+        $serializer = $this->getSerializer();
+        $serializedevents = $serializer->serialize($eventCollection, 'json');
+        
+        return $this->CreateJsonOkResponse($serializedevents);
+    }
+    
     
     protected function GetEventEditView($event, $form)
     { 

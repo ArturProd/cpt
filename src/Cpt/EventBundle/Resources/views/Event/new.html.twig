@@ -97,12 +97,12 @@
               <h2>Dates et Heures</h2>
               <table>
                   <tr>
-                     <td>{{ form_label(eventform.begindatetime) }}{{ form_errors(eventform.begindatetime) }}</td>
-                     <td>{{ form_widget(eventform.begindatetime) }}</td>
+                     <td>{{ form_label(eventform.begin) }}{{ form_errors(eventform.begin) }}</td>
+                     <td>{{ form_widget(eventform.begin) }}</td>
                  </tr>
                  <tr>
-                     <td>{{ form_label(eventform.enddatetime) }}{{ form_errors(eventform.enddatetime) }}</td>
-                     <td>{{ form_widget(eventform.enddatetime) }}</td>
+                     <td>{{ form_label(eventform.end) }}{{ form_errors(eventform.end) }}</td>
+                     <td>{{ form_widget(eventform.end) }}</td>
                  </tr>
               </table>
           </div>
@@ -461,7 +461,7 @@ function PrepareEventFormSubmission()
 {
     $('#event_queue_json').val(JSON.stringify(Queue));                      {# insert the json queue in the field #}
     $('#registration_list_json').val(JSON.stringify(Registration_list));    {# insert the json registration list in the field #}
-    CKEDITOR.instances['event_description'].updateElement();                {# update the entity field with CKEDIOR content #}
+    CKEDITOR.instances['event_content'].updateElement();                {# update the entity field with CKEDIOR content #}
 }
 
 {# ************************************************************************************************************************ #} 

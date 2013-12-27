@@ -9,7 +9,6 @@ event_new:
         id:  \d+
         copy: 1|0
 
-
 event_was_updated:
     path:     /edit/{id}/wasupdated/{unixtimestamp}
     defaults: { _controller: CptEventBundle:Event:wasEventUpdated }
@@ -38,6 +37,15 @@ event_view_calendar:
     requirements:
         year:  \d+
         month: \d+
+
+event_get_events_for_month:
+    path:     /events/{year}/{month}
+    defaults: { _controller: CptEventBundle:Event:getEventsForMonth }
+    requirements:
+        year:  \d+
+        month: \d+
+    options:
+        expose: true
         
 event_view_calendar:
     path:     /calendar

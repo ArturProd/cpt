@@ -10,9 +10,9 @@ Cpt\EventBundle\Entity\Event:
         mappedBy: event
         cascade: ["persist"]
     fields:
-      begindatetime:
+      begin:
         type: datetime
-      enddatetime:  
+      end:  
         type: datetime
       maxnumattendees:
         type: integer

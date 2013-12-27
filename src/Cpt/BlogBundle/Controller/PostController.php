@@ -14,6 +14,7 @@ namespace Cpt\BlogBundle\Controller;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -77,7 +78,7 @@ class PostController extends BasePostController
         $serializer = $this->get('jms_serializer');
         $serializedpager = $serializer->serialize($pager, 'json');
         $serializedposts = $serializer->serialize($postlist, 'json');
-        return $this->CreateJsonResponse(Array('posts' => $serializedposts, 'pager' => $serializedpager));
+        return $this->CreateJsonOkResponse(Array('posts' => $serializedposts, 'pager' => $serializedpager));
     }
     
  
@@ -94,7 +95,7 @@ class PostController extends BasePostController
    
         $serializedpost = $serializer->serialize($post, 'json');
         
-        return $this->CreateJsonResponse(Array('posts' => $serializedpost, 'pager' => null));
+        return $this->CreateJsonOkResponse(Array('posts' => $serializedpost, 'pager' => null));
     }
 
     // <editor-fold defaultstate="collapsed" desc="Single post actions ">
@@ -105,24 +106,32 @@ class PostController extends BasePostController
         */
     public function postGetJsonViewAction()
     {
-            // Only ajax requests
-            $this->RestrictAccessToAjax();
-            
-            $id = $this->getRequest()->get('id');   
-            if (!is_numeric($id))
-                $this->RestrictResourceNotFound();
-            
-            $post = $this->getPostManager()->findOneBy(array('id' => $id));
+        // Only ajax requests
+        $this->RestrictAccessToAjax();
 
-            $this->RestrictResourceNotFound($post);
-            
-            $html_string = $this->renderView('CptBlogBundle:Post:preview_post.html.twig', array(
-                'post'  => $post,
-            ));
+        $id = $this->getRequest()->get('id');   
+        if (!is_numeric($id))
+            $this->RestrictResourceNotFound();
 
-           //return new Response($html_string,200,array('Content-Type'=>'application/json'));//make sure it has the correct content type
+        $post = $this->getPostManager()->findOneBy(array('id' => $id));
 
-           return $this->CreateJsonResponse($html_string);
+        $this->RestrictResourceNotFound($post);
+
+        // Caching
+        $lastmodified = $post->getUpdatedAt() ? $post->getUpdatedAt() : $post>getcreatedAt();
+        $response = new JsonResponse();
+        $response->setLastModified($lastmodified);
+        $response->setPublic();
+        if ($response->isNotModified($this->getRequest()))
+            return $response;
+        
+        $html_string = $this->renderView('CptBlogBundle:Post:preview_post.html.twig', array(
+            'post'  => $post,
+        ));
+
+       //return new Response($html_string,200,array('Content-Type'=>'application/json'));//make sure it has the correct content type
+
+       return $this->CreateJsonOkResponse($html_string, $response);
       }
     
  
@@ -164,12 +173,12 @@ class PostController extends BasePostController
 
              if ($form->isValid()) {            
                 $this->getPostManager()->save($post);
-                return $this->CreateJsonResponse($this->GetPostViewData($post));
+                return $this->CreateJsonOkResponse($this->GetPostViewData($post));
             } else
-                return $this->CreateJsonResponse($this->GetPostEditView($post, $form), BaseController::JsonResponseFailed);
+                return $this->CreateJsonFailedResponse($this->GetPostEditView($post, $form), BaseController::JsonResponseFailed);
         }
 
-        return $this->CreateJsonResponse($this->GetPostEditView($post, $form));
+        return $this->CreateJsonOkResponse($this->GetPostEditView($post, $form));
     }
     
     
@@ -177,10 +186,10 @@ class PostController extends BasePostController
     {
         $post = $this->getPostById($id);
         if (!$post)
-            return $this->CreateJsonResponse(false);
+            return $this->CreateJsonOkResponse(false);
 
         $this->getPostManager()->delete($post);
-        return $this->CreateJsonResponse(true);
+        return $this->CreateJsonOkResponse(true);
     }
     
   // </editor-fold>

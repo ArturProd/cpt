@@ -36,6 +36,7 @@ class Publication extends Commentable implements PublicationInterface {
     */
     protected $id;
 
+ 
     protected $author;
     /**
     * @Expose
@@ -84,6 +85,21 @@ class Publication extends Commentable implements PublicationInterface {
     // </editor-fold>
     
     // <editor-fold defaultstate="collapsed" desc="getters & setters">
+    /**
+     * @VirtualProperty
+     */
+    public function getAuthorDisplayName()
+    {
+        return $this->getAuthor()->getDisplayName();
+    }
+    /**
+     * @VirtualProperty
+     */
+    public function getAuthorId()
+    {
+        return $this->getAuthor()->getId();
+    }
+    
     public function getId() {
         return $this->id;
     }

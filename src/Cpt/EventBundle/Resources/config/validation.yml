@@ -4,7 +4,7 @@ Cpt\EventBundle\Entity\Event:
         - NotBlank: ~
         - Type:
                 type: integer        
-      begindatetime:
+      begin:
         - NotBlank: ~
         - Type:
                 type: datetime
@@ -28,7 +28,7 @@ Cpt\EventBundle\Entity\Event:
         - Range:
                 min: 2
                 minMessage: Le nombre de participant maximum doit etre au minimum de {{ min }}
-      enddatetime:
+      end:
         - Type:
                 type: datetime 
       createdAt:

@@ -20,8 +20,8 @@ class CalendarDay{
         if (!$event)
             throw new \InvalidArgumentException("Cannot set a null event in a CalendarDay");
         
-        $begindate = clone $event->getBegindatetime();
-        $enddate = clone $event->getEnddatetime();
+        $begindate = clone $event->getBegin();
+        $enddate = clone $event->getEnd();
         $begindate->setTime(0,0);
         $enddate->setTime(0,0);
         

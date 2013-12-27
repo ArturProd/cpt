@@ -29,8 +29,8 @@ class EventManager implements ProviderInterface
     {
          $events = $this->getEventRepository()
             ->createQueryBuilder('e')
-                ->Where('e.begindatetime >= :from')
-                ->AndWhere('e.enddatetime < :to') // To should be exclude according to CalendR specifications
+                ->Where('e.begin >= :from')
+                ->AndWhere('e.end < :to') // To should be exclude according to CalendR specifications
                 ->setParameter('from', $begin)
                 ->setParameter('to', $end)
             ->getQuery()
@@ -104,14 +104,14 @@ class EventManager implements ProviderInterface
     {
           $event = $this->getEventRepository()
             ->createQueryBuilder('e')
-                ->Where('e.begindatetime >= :from')
+                ->Where('e.begin >= :from')
                 ->setMaxResults(1)
                 ->setParameter('from', $current)
             ->getQuery()
             ->getOneOrNullResult();
           
           if ($event)
-              return $event->getBegindatetime();
+              return $event->getBegin();
           else
               return $current;
     }
