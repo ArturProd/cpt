@@ -3,13 +3,18 @@
 namespace Cpt\EventBundle\Manager;
 
 use Doctrine\ORM\EntityManager;
-use Cpt\EventBundle\Manager\BaseManager;
+use Cpt\EventBundle\Manager\BaseManager as BaseManager;
+use Cpt\EventBundle\Interfaces\Manager\EventManagerInterface as EventManagerInterface;
+
 use Cpt\EventBundle\Entity\Event as Event;
 use Cpt\EventBundle\Entity\Registration as Registration;
-use Doctrine\Common\Collections\ArrayCollection as ArrayCollection;
-use CalendR\Event\Provider\ProviderInterface as ProviderInterface;
+use Cpt\EventBundle\Interfaces\Entity\EventInterface as EventInterface;
+use Cpt\EventBundle\Interfaces\Entity\RegistrationInterface as RegistrationInterface;
+use FOS\UserBundle\Model\UserInterface as UserInterface;
 
-class EventManager implements ProviderInterface
+use Doctrine\Common\Collections\ArrayCollection as ArrayCollection;
+
+class EventManager extends BaseManager implements EventManagerInterface
 {
     protected $em;
 
@@ -43,7 +48,7 @@ class EventManager implements ProviderInterface
     
     // <editor-fold defaultstate="collapsed" desc="Public: Event related">
 
-    public function createEvent($author, $published=true, $approved=true, $restricted=false)
+    public function createEvent(UserInterface $author, $enabled=true, $approved=true, $restricted=false)
     {
         $event = new Event();
         
@@ -53,14 +58,14 @@ class EventManager implements ProviderInterface
         $this->AddDefaultRegistration($event, $author);
          
         $event->setAuthor($author);
-        $event->setPublished($published);
+        $event->setEnabled($enabled);
         $event->setRestricted($restricted);
         $event->setApproved($approved);
         
          return $event;
     }
     
-    public function SaveEvent(Event $event)
+    public function SaveEvent(EventInterface $event)
     {
          $this->ValidateBusinessRules($event);
                 
@@ -80,7 +85,7 @@ class EventManager implements ProviderInterface
         }        
     }
     
-    public function CopyEvent(Event $event)
+    public function CopyEvent(EventInterface $event)
     {
         if (($event) && ($event->getId() != -1))
         {
@@ -97,7 +102,12 @@ class EventManager implements ProviderInterface
     
     public function getEventById($id)
     {
-        return $this->getEventRepository()->find($id);
+        $event = $this->getEventRepository()->find($id);
+        
+        if (!$event)
+            throw new SymfonyException\NotFoundHttpException("Resource not found.");
+        
+        return $event;
     }
     
     public function GetNextEventDateOrCurrent(\DateTime $current)
@@ -119,7 +129,32 @@ class EventManager implements ProviderInterface
     
     // <editor-fold defaultstate="collapsed" desc="Public: Registration related">
     
-    public function AddRegistration(Event $event, Registration $registration)
+    /**
+     * Indicates if the creator of the envent is also an organizer
+     * @param \Cpt\EventBundle\Entity\Event $event
+     */
+    public function isCreatorAlsoAnimator(EventInterface $event)
+    {
+        $organizers = $this->getAttendees($event, true);
+        
+        foreach ($organizers as $user)
+            if ($user->getId() == $event->getAuthorId())
+                return true;
+        
+        return false;
+    }
+    
+    public function isAuthorSingleOrganizer(EventInterface $event)
+    {
+        $organizers = $this->getAttendees($event, true);
+
+        if ((count($organizers) == 1) && ($organizers[0]->getId() == $event->getAuthor()->getId()))
+            return true;
+        
+        return false;
+    }
+            
+    public function AddRegistration(EventInterface $event, RegistrationInterface $registration)
     {
         $event->addRegistration($registration);
         $this->FillQueue($event, $registration->getNumparticipant(),$registration->getUser()->getId());
@@ -128,7 +163,7 @@ class EventManager implements ProviderInterface
     }
     
     
-    public function getRegistration(Event $event, $user)
+    public function getRegistration(EventInterface $event, $user)
     {
         return $this->getRegistrationRepository()
             ->createQueryBuilder('u')
@@ -139,7 +174,7 @@ class EventManager implements ProviderInterface
             ->getOneOrNullResult();
     }
     
-    public function RemoveRegistration(Event $event, $user)
+    public function RemoveRegistration(EventInterface $event, $user)
     {
         return $this->getRegistrationRepository()
             ->createQueryBuilder('u')
@@ -151,7 +186,7 @@ class EventManager implements ProviderInterface
             ->execute();
     }
 
-    public function CreateRegistration(Event $event, $user, $numparticipants, $organizer)
+    public function CreateRegistration(EventInterface $event, $user, $numparticipants, $organizer)
     {
         $registration = new Registration($user, $event, $numparticipants, $organizer);
   
@@ -160,18 +195,27 @@ class EventManager implements ProviderInterface
     // </editor-fold>
     
     // <editor-fold defaultstate="collapsed" desc="Public: User related">
-    public function getOrganizers(Event $event)
+    public function getAttendees(EventInterface $event, $organizers_only = false)
     {
-        $organizers = Array();
+        /*$organizers = Array();
         foreach ($event->getRegistrations() as $registration)
             if ($registration->getOrganizer())    
                 $organizers[] = $registration->getUser();
        
-        return $organizers;
+        return $organizers;*/
+        
+        return $this->getUserRepository()
+            ->createQueryBuilder('u')
+                ->leftJoin("u.registrations", "r")
+                ->Where('r.event = :event_id AND r.organizer=:organizers_only')
+                ->setParameter('organizers_only', $organizers_only)
+                ->setParameter('event_id', $event->getId())
+            ->getQuery()
+            ->getResult();
     }
     
 
-    public function setOrganizers(Event $event, $user_array)
+    public function setOrganizers(EventInterface $event, $user_array)
     {
        foreach ($user_array as $user)
        {
@@ -192,7 +236,7 @@ class EventManager implements ProviderInterface
         
     // <editor-fold defaultstate="collapsed" desc="Protected">
 
-    protected function AddDefaultRegistration(Event $event, $registred_user = null)
+    protected function AddDefaultRegistration(EventInterface $event, $registred_user = null)
     {
         if (!$registred_user)
             $registred_user = $event->getAuthor ();
@@ -204,7 +248,7 @@ class EventManager implements ProviderInterface
 
     }
     
-    protected function ValidateBusinessRules(Event $event)
+    protected function ValidateBusinessRules(EventInterface $event)
     {
         // Checking parameters
         if (($event === null))
@@ -234,7 +278,7 @@ class EventManager implements ProviderInterface
       
     }
     
-    protected function FillQueue(Event $event, $num_item, $item_value)
+    protected function FillQueue(EventInterface $event, $num_item, $item_value)
     {
         $old_queue = $event->getQueue();
         $added_queue = array_fill ( 0 , $num_item , $item_value );
@@ -243,7 +287,7 @@ class EventManager implements ProviderInterface
     }
     
     
-    protected function UpdateCounters(Event $event)
+    protected function UpdateCounters(EventInterface $event)
     {
         $queue = $event->getQueue();
         $countTotalAttendees = count($queue);
@@ -274,7 +318,7 @@ class EventManager implements ProviderInterface
             throw new \InvalidArgumentException("There should be at least one organizer in an event.");    
     }
 
-    protected function DeleteAllRegistrations(Event $event)
+    protected function DeleteAllRegistrations(EventInterface $event)
     {
             return $this->getRegistrationRepository()
             ->createQueryBuilder('u')
@@ -285,15 +329,7 @@ class EventManager implements ProviderInterface
             ->execute();    
     }
    
-    protected function getEventRepository()
-    {
-        return $this->em->getRepository('CptEventBundle:Event');
-    }
-    
-    protected function getRegistrationRepository()
-    {
-        return $this->em->getRepository('CptEventBundle:Registration');
-    }
+
     
         // </editor-fold>
 }

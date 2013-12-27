@@ -7,6 +7,16 @@ namespace Cpt\PublicationBundle\Interfaces\Entity;
  * @author cyril
  */
 interface PublicationInterface {
+    
+    
+    /**
+     * @return boolean
+     */
+    public function isCommentable();
+    /**
+     * @return boolean
+     */
+    public function isPublic();
   /**
      * @return mixed
      */

@@ -35,9 +35,7 @@
     {% endspaceless %}
 </table>
 
-<ul>
-{% for event in events.find(month) %}
-    <li>{{ event.id }}</li>
-{% endfor %}
-</ul>
+
+<div id="eventcontainer">
+</div>
 {#<a href="#" class="cal_event">{{day.begin|date("d") }}</a>#}

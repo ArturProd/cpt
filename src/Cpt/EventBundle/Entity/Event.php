@@ -4,7 +4,8 @@ namespace Cpt\EventBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Cpt\PublicationBundle\Entity\Publication as Publication;
-use CalendR\Event\EventInterface as EventInterface;
+use Cpt\EventBundle\Interfaces\Entity\EventInterface as EventInterface;
+
 use CalendR\Period\PeriodInterface as PeriodInterface;
 
 use JMS\Serializer\Annotation\ExclusionPolicy as ExclusionPolicy;

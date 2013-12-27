@@ -160,6 +160,17 @@ class EventController extends BaseController
         return $this->CreateJsonOkResponse($serializedevents);
     }
     
+    public function getEventAction($id)
+    {
+        $event = $this->getEventManager()->getEventById($id);
+                
+        $html_string = $this->renderView('CptEventBundle:Event:eventdisplay.html.twig', array(
+            'event'  => $event,
+        ));
+
+        return $this->CreateJsonOkResponse($html_string);
+    }
+    
     
     protected function GetEventEditView($event, $form)
     { 

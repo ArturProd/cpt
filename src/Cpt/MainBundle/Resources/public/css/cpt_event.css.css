@@ -1,0 +1,43 @@
+/* 
+    Document   : event.css
+    Created on : Oct 27, 2013, 12:22:44 AM
+    Author     : cyril
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+
+.event_new_popup{
+    width: 500px;
+}
+
+.event_header{
+    color: #066FB2;
+    font-size: 24px;
+    font-weight: bold;
+    list-style: none;
+    margin: 0px;
+}
+
+.event_header > li{
+    display: inline-block;
+}
+
+.event_header > li:last-child{
+    float:right;
+    margin-right: 100px;
+    text-transform:uppercase;
+    line-height: 30px;
+}
+
+.event_subheader{
+    color: black;
+    text-transform:uppercase;
+    font-weight: bolder;
+}
+
+.event_hr{
+    border-style: dashed;
+    border-color: lightgray;
+    border-bottom-style: none;
+}

@@ -20,6 +20,8 @@ class Commentable implements CommentableInterface
         $this->commentsCount = 0;
     }
     
+
+    
     // <editor-fold defaultstate="collapsed" desc="attributes">
     protected $comments;    
     protected $commentsEnabled = true;

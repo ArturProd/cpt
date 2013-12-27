@@ -32,7 +32,7 @@ class EventType extends AbstractType
             // ************************
                  
             // Published
-            ->add('published', 'checkbox', array(
+            ->add('enabled', 'checkbox', array(
                 'required' => false,
                 'attr' => array(
                     'style'=>'display:none;'

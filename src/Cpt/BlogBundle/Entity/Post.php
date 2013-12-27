@@ -96,25 +96,6 @@ class Post extends Publication implements PostInterface
         return $this->permalinkGenerator;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setLink($link)
-    {
-        $this->link = $link;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getLink()
-    {
-        return $this->link;
-    }
-
-  
- 
-
     
     public function getPublishedHomePage()
     {
@@ -157,21 +138,7 @@ class Post extends Publication implements PostInterface
         return $this->getTitle() ?: 'n/a';
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isCommentable()
-    {
-        if (!$this->getCommentsEnabled() || !$this->getEnabled()) {
-            return false;
-        }
 
-        if ($this->getCommentsCloseAt() instanceof \DateTime) {
-            return $this->getCommentsCloseAt()->diff(new \DateTime)->invert == 1 ? true : false;
-        }
-
-        return true;
-    }
 
 
   

@@ -255,6 +255,22 @@ class Publication extends Commentable implements PublicationInterface {
         return $this->getPublicationDateStart()->diff(new \DateTime)->invert == 0 ? true : false;
     }
 
+            /**
+     * {@inheritdoc}
+     */
+    public function isCommentable()
+    {
+        if (!$this->getCommentsEnabled() || !$this->getEnabled()) {
+            return false;
+        }
+
+        if ($this->getCommentsCloseAt() instanceof \DateTime) {
+            return $this->getCommentsCloseAt()->diff(new \DateTime)->invert == 1 ? true : false;
+        }
+
+        return true;
+    }
+    
     /**
      * {@inheritdoc}
      */

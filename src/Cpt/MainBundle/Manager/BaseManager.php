@@ -52,6 +52,21 @@ abstract class BaseManager
         return $this->aclprovider;
     }
     
+    protected function getEventRepository()
+    {
+        return $this->em->getRepository('CptEventBundle:Event');
+    }
+    
+    protected function getRegistrationRepository()
+    {
+        return $this->em->getRepository('CptEventBundle:Registration');
+    }
+    
+    protected function getUserRepository()
+    {
+        return $this->em->getRepository('ApplicationSonataUserBundle:User');
+    }
+    
     /**
      * {@inheritDoc}
      */

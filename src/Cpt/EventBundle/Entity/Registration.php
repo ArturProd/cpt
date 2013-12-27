@@ -7,10 +7,13 @@ use JMS\Serializer\Annotation\Expose as Expose;
 use JMS\Serializer\Annotation\VirtualProperty as VirtualProperty;
 use JMS\Serializer\Annotation\SerializedName as SerializedName;
 
+use Cpt\EventBundle\Interfaces\Entity\RegistrationInterface as RegistrationInterface;
+use Cpt\EventBundle\Interfaces\Entity\EventInterface as EventInterface;
+use Application\Sonata\UserBundle\Entity\User as User;
 /**
  * @ExclusionPolicy("all")
  */
-class Registration
+class Registration implements RegistrationInterface
 {
     
     protected $user;
@@ -84,7 +87,7 @@ class Registration
      * @param \Cpt\EventBundle\Entity\Event $event
      * @return Registration
      */
-    public function setEvent(\Cpt\EventBundle\Entity\Event $event = null)
+    public function setEvent(EventInterface $event = null)
     {
         $this->event = $event;
 
@@ -107,7 +110,7 @@ class Registration
      * @param \Application\Sonata\UserBundle\Entity\User $user
      * @return Registration
      */
-    public function setUser(\Application\Sonata\UserBundle\Entity\User $user = null)
+    public function setUser(User $user = null)
     {
         $this->user = $user;
 

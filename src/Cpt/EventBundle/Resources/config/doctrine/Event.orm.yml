@@ -24,8 +24,6 @@ Cpt\EventBundle\Entity\Event:
         type: simple_array
       registration_allowed:
         type: boolean
-      published:
-        type: boolean
       restricted:
         type: boolean
       approved:

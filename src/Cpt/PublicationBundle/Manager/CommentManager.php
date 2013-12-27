@@ -16,7 +16,7 @@ use Cpt\PublicationBundle\Interfaces\Entity\CommentInterface as CommentInterface
 use Cpt\PublicationBundle\Interfaces\Entity\PublicationInterface as PublicationInterface;
 use Cpt\PublicationBundle\Entity\Comment as Comment;
 
-use Sonata\UserBundle\Model\UserInterface as UserInterface;
+use FOS\UserBundle\Model\UserInterface as UserInterface;
 
 
 use Sonata\DoctrineORMAdminBundle\Datagrid\Pager;

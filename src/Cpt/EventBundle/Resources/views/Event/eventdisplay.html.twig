@@ -1,0 +1,25 @@
+{#% set begin_day = calendr_day(currentdate|date("d")) %#}
+<ul class="event_header">
+    <li>{{ event.begin | date('l') | trans}}</li>
+    <li>{{ event.begin|date('d/m') }}</li>
+    <li>{{ event.cityname }}</li>
+</ul>
+<div class="event_subheader">"{{ event.title }}"</div>
+{% if cpt_event_isAuthorSingleOrganizer(event) %}
+    {{ 'event.organizedandanimatedby'|trans}}<b>{{" " ~ event.author.displayname}}</b>{{" |"}}
+{% else %}
+    {{ 'event.organizedby'|trans}}<b>{{" " ~ event.author.displayname}}</b>{{" |"}}
+    {{ 'event.animatedby'|trans}}
+    {% for registration in event.registrations %}
+        {{ loop.last and not loop.first ? 'and'|trans ~ " " }}
+        <b>{{ registration.user.displayname ~ " "}}</b>
+        {{ loop.last ? " |" }}
+    {% endfor %}
+{% endif %}
+{{ event.CorporateName is not empty ? event.CorporateName ~ " |" }}
+{{ event.StreetNumber is not empty ? " " ~ event.StreetNumber }}
+{{ event.Street is not empty ?  " " ~ event.Street }}
+{{ event.AdditionalAddress is not empty ?  " " ~ event.AdditionalAddress }}
+{{ (event.Street is not empty) or (event.StreetNumber is not empty) or (event.AdditionalAddress is not empty)?  " |" }} 
+{{ 'at_hour'|trans ~ " " ~ event.begin|date('H:i') }}
+<hr class="event_hr">

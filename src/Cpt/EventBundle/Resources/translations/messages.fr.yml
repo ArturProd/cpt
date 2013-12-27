@@ -36,6 +36,11 @@ event.attendeequeue.rank:             Rang
 event.attendeequeue.name:             Nom
 event.attendeequeue.requested_seats: Places
 event.attendeequeue.queued:           Fil d'attente?
+event.organizedby:                    Organizé par
+event.animatedby:                     Animé par
+event.organizedandanimatedby:         Organisé et animé par
+and:                                     et
+at_hour:                                à
 January:                                Janvier
 February:                               Février
 March:                                   Mars
@@ -48,3 +53,10 @@ September:                              Septembre
 October:                                Octobre
 November:                               Novembre
 December:                               Décembre
+Monday: Lundi
+Tuesday: Mardi
+Wednesday: Mercredi
+Thursday: Jeudi
+Friday: Vendredi
+Saturday: Samedi
+Sunday: Dimanche

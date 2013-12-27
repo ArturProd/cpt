@@ -43,9 +43,6 @@ Cpt\EventBundle\Entity\Event:
       counttotalattendees:
         - Type:
                 type: integer
-      published:
-        - Type:
-                type: bool
       restricted:
         - Type:
                 type: bool

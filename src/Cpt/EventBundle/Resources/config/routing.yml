@@ -9,6 +9,14 @@ event_new:
         id:  \d+
         copy: 1|0
 
+event_view:
+    path:     /view/{id}
+    defaults: { _controller: CptEventBundle:Event:getEvent  }
+    requirements:
+        id:  \d+
+    options:
+        expose: true        
+        
 event_was_updated:
     path:     /edit/{id}/wasupdated/{unixtimestamp}
     defaults: { _controller: CptEventBundle:Event:wasEventUpdated }

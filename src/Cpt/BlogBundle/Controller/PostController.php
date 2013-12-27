@@ -118,12 +118,12 @@ class PostController extends BasePostController
         $this->RestrictResourceNotFound($post);
 
         // Caching
-        $lastmodified = $post->getUpdatedAt() ? $post->getUpdatedAt() : $post>getcreatedAt();
-        $response = new JsonResponse();
-        $response->setLastModified($lastmodified);
-        $response->setPublic();
-        if ($response->isNotModified($this->getRequest()))
-            return $response;
+//        $lastmodified = $post->getUpdatedAt() ? $post->getUpdatedAt() : $post>getcreatedAt();
+//        $response = new JsonResponse();
+//        $response->setLastModified($lastmodified);
+//        $response->setPublic();
+//        if ($response->isNotModified($this->getRequest()))
+//            return $response;
         
         $html_string = $this->renderView('CptBlogBundle:Post:preview_post.html.twig', array(
             'post'  => $post,
@@ -131,7 +131,8 @@ class PostController extends BasePostController
 
        //return new Response($html_string,200,array('Content-Type'=>'application/json'));//make sure it has the correct content type
 
-       return $this->CreateJsonOkResponse($html_string, $response);
+       // return $this->CreateJsonOkResponse($html_string, $response);
+        return $this->CreateJsonOkResponse($html_string);
       }
     
  

@@ -13,7 +13,7 @@ namespace Cpt\PublicationBundle\Interfaces\Manager;
 
 use Cpt\PublicationBundle\Interfaces\Entity\CommentInterface as CommentInterface;
 use Cpt\PublicationBundle\Interfaces\Entity\PublicationInterface as PublicationInterface;
-use Sonata\UserBundle\Model\UserInterface as UserInterface;
+use FOS\UserBundle\Model\UserInterface as UserInterface;
 
 interface CommentManagerInterface
 {
