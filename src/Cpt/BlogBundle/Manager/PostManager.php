@@ -314,7 +314,7 @@ class PostManager extends BaseManager implements PostManagerInterface
     
     protected function GetPostClassIdentity()
     {
-        return new ObjectIdentity('class', 'Cpt\\BlogBundle\\Entity\\Post');
+        return new ObjectIdentity('class', 'Cpt\\BlogBundle\\Entity\\Publication');
     }
     
       // </editor-fold>

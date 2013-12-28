@@ -37,13 +37,7 @@ Cpt\EventBundle\Entity\Event:
       city_postal_code:
         type: text
         nullable: true
-      street:
-        type: text
-        nullable: true
-      street_number:
-        type: text
-        nullable: true
-      additional_address:
+      address:
         type: text
         nullable: true
       corporate_name:

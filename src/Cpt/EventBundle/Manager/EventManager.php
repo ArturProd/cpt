@@ -35,7 +35,8 @@ class EventManager extends BaseManager implements EventManagerInterface
          $events = $this->getEventRepository()
             ->createQueryBuilder('e')
                 ->Where('e.begin >= :from')
-                ->AndWhere('e.end < :to') // To should be exclude according to CalendR specifications
+                 ->AndWhere('e.begin < :to') // We don't care about event end date: if begining is in a period, then the event is returned
+     //           ->AndWhere('e.end < :to') // To should be exclude according to CalendR specifications
                 ->setParameter('from', $begin)
                 ->setParameter('to', $end)
             ->getQuery()
@@ -153,7 +154,43 @@ class EventManager extends BaseManager implements EventManagerInterface
         
         return false;
     }
+     
+    public function isAuthor(EventInterface $event, UserInterface $user)
+    {
+        return ($event->getAuthor()->getId() == $user->getId());
+    }
+    
+    public function getReservation(EventInterface $event, UserInterface $user)
+    {
+        $registrations = $event->getRegistrations();
+        foreach ($registrations as $registration)
+            if ($registration->getUser()->getId() == $user->getId())
+                return $registration;
             
+        return null;
+    }
+    
+    /*
+    public function isAttendee(EventInterface $event, UserInterface $user)
+    {
+        $registrations = $event->getRegistrations();
+        foreach ($registrations as $registration)
+            if ($registration->getUser()->getId() == $user->getId())
+                return true;
+        
+        return false;
+    }
+    
+    public function isOrganizer(EventInterface $event, UserInterface $user)
+    {
+        $registrations = $event->getRegistrations();
+        foreach ($registrations as $registration)
+            if (($registration->getOrganizer()) && ($registration->getUser()->getId() == $user->getId()))
+                return true;
+        
+        return false;
+    }*/
+    
     public function AddRegistration(EventInterface $event, RegistrationInterface $registration)
     {
         $event->addRegistration($registration);

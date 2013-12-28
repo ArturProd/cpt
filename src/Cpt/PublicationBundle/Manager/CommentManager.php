@@ -41,6 +41,9 @@ class CommentManager extends BaseManager implements CommentManagerInterface
      */
     public function save(CommentInterface $comment)
     {
+        if (!$this->getSecurityContext()->isGranted('COMMENT', new ObjectIdentity('class', 'Cpt\\BlogBundle\\Entity\\Publication')));
+                throw new AccessDeniedException();
+                
         $this->em->persist($comment);
         $this->em->flush();
 

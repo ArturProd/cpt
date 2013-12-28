@@ -13,9 +13,7 @@ form.event.begin_date_time:           Dates et heures de début
 form.event.end_date_time:           Dates et heures de fin
 form.event.city:                     Ville
 form.event.postal_code:                    Code Postal
-form.event.street_number:                    N°
-form.event.street:                    Rue
-form.event.additional_address:      Complément
+form.event.address:                 Adresse
 form.event.location_name:            Nom du Lieu
 form.event.google_map_url:          URL Google Map
 form.event.location.show:           Afficher la carte

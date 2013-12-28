@@ -17,12 +17,8 @@ interface LocationInterface {
      function getCityName();
      function setCityPostalCode($cityPostalCode);
      function getCityPostalCode();
-     function setStreet($street);
-     function getStreet();
-     function setStreetNumber($streetNumber);
-     function getStreetNumber();
-     function setAdditionalAddress($additionalAddress);
-     function getAdditionalAddress();
+     function setAddress($address);
+     function getAddress();
      function setCorporateName($corporateName);
      function getCorporateName();
      function setLocationShowMap($locationShowMap);

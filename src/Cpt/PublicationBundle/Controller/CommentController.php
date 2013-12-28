@@ -93,8 +93,6 @@ class CommentController extends BaseController
             // Make sure current user is allowed to comment the post
             $user = $this->getUser();
             $securitycontrext = $this->get('security.context');
-            $authcomment = $this->getPublicationManager()->CanCommentPublication($publication, $securitycontrext, $user);
-            $this->RestrictAccessDenied($authcomment);
 
            $form = $this->getCommentForm($publication, $user);
            $form->bind($request); 

@@ -145,29 +145,10 @@ class EventType extends AbstractType
                     ),
              )) 
              
-             // Street Number
-             ->add('street_number', 'text', array(
-                'label' => 'form.event.street_number',
-                'required' => false,
-                'attr' => array(
-                    'class' => 'input_text',
-                    'maxlength'  => '4',
-                    ),
-             )) 
 
-             // Street
-             ->add('street', 'text', array(
-                'label' => 'form.event.street',
-                'required' => false,
-                'attr' => array(
-                    'class' => 'input_text',
-                    'maxlength'  => '50',
-                    ),
-             )) 
-
-             // Additional Address
-             ->add('additional_address', 'text', array(
-                'label' => 'form.event.additional_address',
+             // Address
+             ->add('address', 'text', array(
+                'label' => 'form.event.address',
                 'required' => false,
                 'attr' => array(
                     'class' => 'input_text',

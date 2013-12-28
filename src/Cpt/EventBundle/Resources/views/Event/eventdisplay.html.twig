@@ -1,25 +1,41 @@
-{#% set begin_day = calendr_day(currentdate|date("d")) %#}
+{#****************************************************************************#}
+{# Event Header
+{#****************************************************************************#}
 <ul class="event_header">
-    <li>{{ event.begin | date('l') | trans}}</li>
-    <li>{{ event.begin|date('d/m') }}</li>
-    <li>{{ event.cityname }}</li>
+    <li>{{ event.begin | date('l') | trans}}</li>                   {# Begin date #}
+    <li>{{ event.begin|date('d/m') }}</li>                          {# Begin hour #}
+    {% if not cpt_event_isBeginEndSameDay(event) %}
+    <li>- {{ event.end | date('l') | trans}}</li>                   {# End date #}
+    <li>{{ event.end |date('d/m') }}</li>                           {# End hour #}
+    {% endif %}
+    <li>{{ event.cityname }}</li>                                   {# City name #}
 </ul>
-<div class="event_subheader">"{{ event.title }}"</div>
+{#****************************************************************************#}
+{# Event Sub Header
+{#****************************************************************************#}
+<div class="event_subheader">"{{ event.title }}"</div>            {# Title #}   
 {% if cpt_event_isAuthorSingleOrganizer(event) %}
-    {{ 'event.organizedandanimatedby'|trans}}<b>{{" " ~ event.author.displayname}}</b>{{" |"}}
+    {{ 'event.organizedandanimatedby'|trans}}
+    <b>{{" " ~ event.author.displayname}}</b>{{" |"}}              {# Organizer + Animator name #}
 {% else %}
-    {{ 'event.organizedby'|trans}}<b>{{" " ~ event.author.displayname}}</b>{{" |"}}
+    {{ 'event.organizedby'|trans}}
+    <b>{{" " ~ event.author.displayname}}</b>{{" |"}}              {# Organizer name #}
     {{ 'event.animatedby'|trans}}
     {% for registration in event.registrations %}
         {{ loop.last and not loop.first ? 'and'|trans ~ " " }}
-        <b>{{ registration.user.displayname ~ " "}}</b>
+        <b>{{ registration.user.displayname ~ " "}}</b>             {# Animator name #}
         {{ loop.last ? " |" }}
     {% endfor %}
 {% endif %}
-{{ event.CorporateName is not empty ? event.CorporateName ~ " |" }}
-{{ event.StreetNumber is not empty ? " " ~ event.StreetNumber }}
-{{ event.Street is not empty ?  " " ~ event.Street }}
-{{ event.AdditionalAddress is not empty ?  " " ~ event.AdditionalAddress }}
-{{ (event.Street is not empty) or (event.StreetNumber is not empty) or (event.AdditionalAddress is not empty)?  " |" }} 
+{% if event.CorporateName is not empty %}
+    <b>{{ event.CorporateName}}</b> |                               {# Location corporate name #}
+{% endif %}
+{{ event.Address is not empty ?  " " ~ event.Address ~ " |"}}       {# Location address #}
 {{ 'at_hour'|trans ~ " " ~ event.begin|date('H:i') }}
+{#****************************************************************************#}
+{# Action panel
+{#****************************************************************************#}
+{% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+    {% set registration = cpt_event_getReservation(event,app.user) %}
+{% endif %}
 <hr class="event_hr">

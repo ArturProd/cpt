@@ -35,9 +35,7 @@ class Event extends Publication implements EventInterface
         $this->country_code = "FR";
         $this->city_name = "";
         $this->city_postal_code = "";
-        $this->street = "";
-        $this->street_number = "";
-        $this->additional_address = "";
+        $this->address = "";
         $this->corporate_name = "";
         $this->cpt_event = true;
         $this->registrations = new ArrayCollection();
@@ -109,13 +107,18 @@ class Event extends Publication implements EventInterface
 
     public function containsPeriod(PeriodInterface $period)
     {
+       /* return $this->getBegin()->diff($period->getBegin())->invert == 0
+            && $this->getEnd()->diff($period->getEnd())->invert == 1; */
         return $this->getBegin()->diff($period->getBegin())->invert == 0
-            && $this->getEnd()->diff($period->getEnd())->invert == 1;
+            && $this->getBegin()->diff($period->getEnd())->invert == 1;
     }
 
     public function isDuring(PeriodInterface $period)
     {
-         return $this->getBegin() >= $period->getBegin() && $this->getEnd() < $period->getEnd();       
+         // return $this->getBegin() >= $period->getBegin() && $this->getEnd() < $period->getEnd();
+        // For Cpt, the event is considered to be during a given month if it starts during this month
+        // End time does not count
+        return $this->getBegin() >= $period->getBegin() && $this->getBegin() < $period->getEnd();
     }
     //  <editor-fold defaultstate="collapsed" desc="Attributes">
 
@@ -194,19 +197,7 @@ class Event extends Publication implements EventInterface
      * @var string
      * @Expose
      */
-    protected $street;
-
-    /**
-     * @var string
-     * @Expose
-     */
-    protected $street_number;
-
-    /**
-     * @var string
-     * @Expose
-     */
-    protected $additional_address;
+    protected $address;
 
     /**
      * @var string
@@ -501,72 +492,26 @@ class Event extends Publication implements EventInterface
     }
 
     /**
-     * Set street
+     * Set Address
      *
-     * @param string $street
+     * @param string $Address
      * @return BaseEvent
      */
-    public function setStreet($street)
+    public function setAddress($address)
     {
-        $this->street = $street;
+        $this->address = $address;
 
         return $this;
     }
 
     /**
-     * Get street
+     * Get Address
      *
      * @return string 
      */
-    public function getStreet()
+    public function getAddress()
     {
-        return $this->street;
-    }
-
-    /**
-     * Set street_number
-     *
-     * @param string $streetNumber
-     * @return BaseEvent
-     */
-    public function setStreetNumber($streetNumber)
-    {
-        $this->street_number = $streetNumber;
-
-        return $this;
-    }
-
-    /**
-     * Get street_number
-     *
-     * @return string 
-     */
-    public function getStreetNumber()
-    {
-        return $this->street_number;
-    }
-
-    /**
-     * Set additional_address
-     *
-     * @param string $additionalAddress
-     * @return BaseEvent
-     */
-    public function setAdditionalAddress($additionalAddress)
-    {
-        $this->additional_address = $additionalAddress;
-
-        return $this;
-    }
-
-    /**
-     * Get additional_address
-     *
-     * @return string 
-     */
-    public function getAdditionalAddress()
-    {
-        return $this->additional_address;
+        return $this->address;
     }
 
     /**

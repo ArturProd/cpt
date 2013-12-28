@@ -13,6 +13,7 @@ namespace Cpt\EventBundle\Twig;
 
 use Cpt\EventBundle\Interfaces\Entity\EventInterface as EventInterface;
 use Cpt\EventBundle\Interfaces\Manager\EventManagerInterface as EventManagerInterface;
+use FOS\UserBundle\Model\UserInterface as UserInterface;
 
 
 class EventManagerExtension extends \Twig_Extension
@@ -35,6 +36,10 @@ class EventManagerExtension extends \Twig_Extension
         return array(
             'cpt_event_isAuthorOrganizer'    => new \Twig_Function_Method($this, 'isAuthorOrganizer'),
             'cpt_event_isAuthorSingleOrganizer'    => new \Twig_Function_Method($this, 'isAuthorSingleOrganizer'),
+            'cpt_event_isAuthor'    => new \Twig_Function_Method($this, 'isAuthor'),
+            'cpt_event_isOrganizer'    => new \Twig_Function_Method($this, 'isOrganizer'),
+            'cpt_event_isBeginEndSameDay'    => new \Twig_Function_Method($this, 'isBeginEndSameDay'),
+            'cpt_event_getReservation'    => new \Twig_Function_Method($this, 'getReservation'),
         ); 
     }
 
@@ -74,4 +79,26 @@ class EventManagerExtension extends \Twig_Extension
         return $this->eventmanager->isAuthorSingleOrganizer($event);
     }
     
+    public function isAuthor(EventInterface $event, UserInterface $user)
+    {
+        return $this->eventmanager->isAuthor($event,$user);
+    }
+    
+   /* public function isOrganizer(EventInterface $event, UserInterface $user)
+    {
+        return $this->eventmanager->isOrganizer($event,$user);
+    }*/
+    
+    public function getReservation(EventInterface $event, UserInterface $user)
+    {
+        return $this->eventmanager->getReservation($event, $user);
+    }
+    
+    public function isBeginEndSameDay(EventInterface $event)
+    {
+        if ($event->getEnd() == null)
+            return true;
+        
+        return ($event->getBegin()->diff($event->getEnd())->days == 0);
+    }
 }

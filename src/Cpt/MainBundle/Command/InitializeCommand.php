@@ -46,8 +46,8 @@ class InitializeCommand extends ContainerAwareCommand
         $loggedinRoleIdentity = new RoleSecurityIdentity('IS_AUTHENTICATED_REMEMBERED');
         $adminRoleIdentity = new RoleSecurityIdentity('ROLE_ADMIN');
         
-        // Settting class level permissions for Post
-        $postclassIdentity = new ObjectIdentity('class', 'Cpt\\BlogBundle\\Entity\\Post');
+        // Settting class level permissions for Publication
+        $postclassIdentity = new ObjectIdentity('class', 'Cpt\\BlogBundle\\Entity\\Publication');
         $aclProvider->deleteAcl($postclassIdentity);
         $aclpost = $aclProvider->createAcl($postclassIdentity);
         $aclpost->insertClassAce($anonymousRoleIdentity, MaskBuilder::MASK_VIEW);

@@ -81,16 +81,8 @@
                      <td>{{ form_widget(eventform.city_postal_code) }}</td>
                  </tr>
                  <tr>
-                     <td>{{ form_label(eventform.street_number) }}{{ form_errors(eventform.street_number) }}</td>
-                     <td>{{ form_widget(eventform.street_number) }}</td>
-                 </tr>
-                 <tr>
-                     <td>{{ form_label(eventform.street) }}{{ form_errors(eventform.street) }}</td>
-                     <td>{{ form_widget(eventform.street) }}</td>
-                 </tr>
-                 <tr>
-                     <td>{{ form_label(eventform.additional_address) }}{{ form_errors(eventform.additional_address) }}</td>
-                     <td>{{ form_widget(eventform.additional_address) }}</td>
+                     <td>{{ form_label(eventform.address) }}{{ form_errors(eventform.address) }}</td>
+                     <td>{{ form_widget(eventform.address) }}</td>
                  </tr>
               </table>
 
@@ -597,7 +589,7 @@ function InitializeEventPage()
 
         {############################################}
         {# Update google map when changing location #}         
-           $('#{{ eventform.city_name.vars.id }}, #{{ eventform.city_postal_code.vars.id }}, #{{ eventform.street_number.vars.id }}, #{{ eventform.street.vars.id }}, #{{ eventform.additional_address.vars.id }}, #{{ eventform.corporate_name.vars.id }}').on("change", function(event){
+           $('#{{ eventform.city_name.vars.id }}, #{{ eventform.city_postal_code.vars.id }}, #{{ eventform.address.vars.id }}, #{{ eventform.corporate_name.vars.id }}').on("change", function(event){
               UpdateGoogleMap();
             });
     
@@ -637,11 +629,9 @@ function RemoveGoogleMarkers()
 
                 {################################################################}
                 {# If street name is provided, add it to the adress to geolocate#} 
-                if ($('#{{ eventform.street.vars.id }}').val() != "")
+                if ($('#{{ eventform.address.vars.id }}').val() != "")
                 {
-                    address += $('#{{ eventform.street_number.vars.id }}').val();
-                    address += " " + $('#{{ eventform.street.vars.id }}').val();
-                    address += " " + $('#{{ eventform.additional_address.vars.id }}').val() + ", ";
+                    address += $('#{{ eventform.address.vars.id }}').val();
                 }
                 {###################################################################}
                 {# Add city and postal code information to the adress to geolocate #} 
