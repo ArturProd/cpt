@@ -16,18 +16,6 @@ use Doctrine\Common\Collections\ArrayCollection as ArrayCollection;
 
 class EventManager extends BaseManager implements EventManagerInterface
 {
-    protected $em;
-
-    
-    /**
-     * @param \Doctrine\ORM\EntityManager $em
-     * @param string                      $class
-     */
-    public function __construct(EntityManager $em)
-    {
-        $this->em    = $em;
-    }
-    
 
     // <editor-fold defaultstate="collapsed" desc="Event ProviderInterface">
     public function getEvents( \DateTime $begin, \DateTime $end, array $options = array())

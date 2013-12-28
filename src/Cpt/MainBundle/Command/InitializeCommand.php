@@ -47,10 +47,11 @@ class InitializeCommand extends ContainerAwareCommand
         $adminRoleIdentity = new RoleSecurityIdentity('ROLE_ADMIN');
         
         // Settting class level permissions for Publication
-        $postclassIdentity = new ObjectIdentity('class', 'Cpt\\BlogBundle\\Entity\\Publication');
-        $aclProvider->deleteAcl($postclassIdentity);
-        $aclpost = $aclProvider->createAcl($postclassIdentity);
-        $aclpost->insertClassAce($anonymousRoleIdentity, MaskBuilder::MASK_VIEW);
+        $publicationclassIdentity = $this->getContainer()->get('cpt.permission.manager')->getPublicationClassIdentity();
+        // $postclassIdentity = new ObjectIdentity('class', 'Cpt\\PublicationBundle\\Entity\\Publication');
+        $aclProvider->deleteAcl($publicationclassIdentity);
+        $aclpublication = $aclProvider->createAcl($publicationclassIdentity);
+        $aclpublication->insertClassAce($anonymousRoleIdentity, MaskBuilder::MASK_VIEW);
         
         
         $builder = new MaskBuilder();
@@ -59,12 +60,12 @@ class InitializeCommand extends ContainerAwareCommand
             ->add('CREATE')
             ->add('COMMENT');
         $mask = $builder->get();
-        $aclpost->insertClassAce($loggedinRoleIdentity, $mask);
-        $aclpost->insertClassAce($adminRoleIdentity, MaskBuilder::MASK_OWNER);
-        $aclProvider->updateAcl($aclpost);
+        $aclpublication->insertClassAce($loggedinRoleIdentity, $mask);
+        $aclpublication->insertClassAce($adminRoleIdentity, MaskBuilder::MASK_OWNER);
+        $aclProvider->updateAcl($aclpublication);
 
         // Settting class level permissions for Comment
-        $commentclassIdentity = new ObjectIdentity('class', 'Cpt\\PublicationBundle\\Entity\\Comment');
+        $commentclassIdentity = $this->getContainer()->get('cpt.permission.manager')->getCommentClassIdentity();
         $aclProvider->deleteAcl($commentclassIdentity);
         $aclcomment = $aclProvider->createAcl($commentclassIdentity);
         $aclcomment->insertClassAce($anonymousRoleIdentity, MaskBuilder::MASK_VIEW);
@@ -72,7 +73,7 @@ class InitializeCommand extends ContainerAwareCommand
             ->add('VIEW') 
             ->add('CREATE'); // Logged in user can CREATE comment class. However not EDIT unless it is its own comment!
         $mask = $builder->get();
-        $aclpost->insertClassAce($loggedinRoleIdentity, $mask);
+        $aclcomment->insertClassAce($loggedinRoleIdentity, $mask);
         $aclcomment->insertClassAce($adminRoleIdentity, MaskBuilder::MASK_OWNER);
         $aclProvider->updateAcl($aclcomment);
 

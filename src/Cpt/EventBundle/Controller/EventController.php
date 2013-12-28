@@ -37,14 +37,14 @@ class EventController extends BaseController
         $event = null;
         if ((null != $id)&&(-1 != $id))
         {
-            $event = $this->get("EventManager")->getEventById($id);
+            $event = $this->getEventManager()->getEventById($id);
             
             $this->RestrictResourceNotFound($event);
             $this->RestrictAccessToUser($event->getAuthor()->getId());      
         } else 
         {
             $author = $this->container->get('security.context')->getToken()->getUser();
-            $event = $this->get("EventManager")->createEvent($author);
+            $event = $this->getEventManager()->createEvent($author);
         }
 
 
@@ -64,7 +64,7 @@ class EventController extends BaseController
             try{
                 // If it is a copy action, copy the event
                 if (($event->getId() != -1) && ( $request->request->get('copy_field') == 1))
-                    $event = $this->get("EventManager")->CopyEvent($event);
+                    $event = $this->getEventManager()->CopyEvent($event);
                 else // If not, process the event queue
                 {
                       $registrationlist_json_array = json_decode($request->get('registration_list_json'));
@@ -83,7 +83,7 @@ class EventController extends BaseController
             
              if ($form->isValid()) {
                  
-                $this->get("EventManager")->SaveEvent($event);
+                $this->getEventManager()->SaveEvent($event);
             } 
             
             return $this->GetEventEditView($event, $form);
@@ -102,7 +102,7 @@ class EventController extends BaseController
         $this->RestrictAccessToLoggedIn();
         $this->RestrictAccessToAjax();
        
-        $event = $this->get("EventManager")->getEventById($id);
+        $event = $this->getEventManager()->getEventById($id);
         $this->RestrictResourceNotFound($event);
         
         $this->RestrictAccessToUser($event->getAuthor()->getId());
@@ -118,7 +118,7 @@ class EventController extends BaseController
     {
          $this->RestrictAccessToLoggedIn();
          
-         $event = $this->get("EventManager")->getEventById($eventid);
+         $event = $this->getEventManager()->getEventById($eventid);
          $this->RestrictResourceNotFound($event);
          
          $filename = "attendees.csv";
@@ -132,7 +132,7 @@ class EventController extends BaseController
     {
         if ((!$year) || (!$month))
         {
-            $showdate = $this->get("EventManager")->GetNextEventDateOrCurrent(new \Datetime);
+            $showdate = $this->getEventManager()->GetNextEventDateOrCurrent(new \Datetime);
             
          } else {
              if ($month > 12)
@@ -224,7 +224,7 @@ class EventController extends BaseController
             $this->RestrictBusinessRuleError("User with id ".$registration_json->user." does not exists.");
 
 
-        return $this->get("EventManager")->CreateRegistration($event, $user, $registration_json->numparticipants , $registration_json->organizer ? true : false );
+        return $this->getEventManager()->CreateRegistration($event, $user, $registration_json->numparticipants , $registration_json->organizer ? true : false );
     }
     
     public function userSearchAction()

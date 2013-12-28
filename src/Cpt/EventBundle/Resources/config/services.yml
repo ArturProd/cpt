@@ -1,24 +1,28 @@
 # app/config/config.yml
 parameters:
-    EventManager.class:      Cpt\EventBundle\Manager\EventManager
+    cpt.event.event.manager.class:        Cpt\EventBundle\Manager\EventManager
+    cpt.event.event.entity:         Cpt\EventBundle\Entity\Comment
 
 services:
-    EventManager:
-        class:        "%EventManager.class%"
-        arguments: ['@doctrine.orm.default_entity_manager', '@security.context']
+    cpt.event.manager:
+        class:        "%cpt.event.event.manager.class%"
+        arguments:    ["@service_container",  %cpt.event.event.entity%]
         # This declares the class as an event provider for the calendr library:
         tags: 
             - { name: calendr.event_provider }
+            
     cpt_edit_event:
       class: Cpt\EventBundle\Form\Type\EventType
       tags:
          -  { name: form.type }
+         
     cpt.twig.make_js_string_extension:
         class: Cpt\EventBundle\Twig\MakeJsStringExtension
         tags:
             - { name: twig.extension }
+            
     cpt.twig.eventmanager_extension:
         class: Cpt\EventBundle\Twig\EventManagerExtension
-        arguments: ['@EventManager']
+        arguments: ['@cpt.event.manager']
         tags:
             - { name: twig.extension }

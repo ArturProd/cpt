@@ -12,11 +12,11 @@ services:
     
     cpt.manager.comment:
         class:        "%cpt.publication.comment.manager%"
-        arguments:    ["@cpt.entity_manager", '@security.context', '@security.acl.provider', %cpt.publication.comment.entity%]
-    
+        arguments:    ["@service_container",  %cpt.publication.comment.entity%]
+        
     cpt.manager.publication:
         class:        "%cpt.publication.publication.manager%"
-        arguments:    ["@cpt.entity_manager", '@security.context', '@security.acl.provider', %cpt.publication.publication.entity%]
+        arguments:    ["@service_container",  %cpt.publication.publication.entity%]
     
     cpt.form.comment:
         class:        "%cpt.publication.comment.form%"
