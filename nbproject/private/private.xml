@@ -6,9 +6,19 @@
             <url>src/Cpt/MainBundle/Controller/BaseController.php</url>
             <bookmark id="1">
                 <name/>
-                <line>11</line>
+                <line>10</line>
                 <key/>
             </bookmark>
         </file>
     </editor-bookmarks>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+        <group>
+            <file>file:/home/cyril/dev/cpt/src/Cpt/MainBundle/Resources/public/css/cpt_event.css</file>
+            <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Resources/translations/messages.en.yml</file>
+            <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Resources/views/Event/event.js.twig</file>
+            <file>file:/home/cyril/dev/cpt/src/Cpt/MainBundle/Resources/public/css/cpt_main.css</file>
+            <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Resources/translations/messages.fr.yml</file>
+            <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Resources/views/Event/eventdisplay.html.twig</file>
+        </group>
+    </open-files>
 </project-private>
