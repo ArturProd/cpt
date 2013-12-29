@@ -45,7 +45,21 @@ class Event extends Publication implements EventInterface
         $this->location_show_map = true;
         $this->location_long = "";
         $this->location_lat = "";
-
+        
+        $this->ismyevent = EventInterface::MYEVENT_UNKNOWN;
+    }
+    
+    /* Unmapped */
+    protected $ismyevent;
+    
+    public function isMyEvent()
+    {
+        return $this->ismyevent;
+    }
+    
+    public function setMyEvent($ismyevent)
+    {
+        $this->ismyevent = $ismyevent;
     }
        
     public function getUid()

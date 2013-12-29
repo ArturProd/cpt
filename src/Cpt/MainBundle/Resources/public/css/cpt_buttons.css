@@ -107,6 +107,24 @@
     margin-bottom: 15px;
 }
 
+.calendar_arrow_up_myevents_btn{
+      background: url('../images/evenements/bouton-mois-avant-myevent.png') no-repeat;
+      min-height: 38px;
+      min-width: 38px;
+      display: inline-block;
+      color: white;
+      margin-top: 15px;
+}
+
+.calendar_arrow_down_myevents_btn{
+      background: url('../images/evenements/bouton-mois-apres-myevent.png') no-repeat;
+      min-height: 38px;
+      min-width: 38px;
+      display: inline-block;
+      color: white;
+      margin-top: 15px;
+}
+
 .btn_trash{
     background: url('../images/boutons/bouton-corbeille.png') no-repeat;
     height: 25px;

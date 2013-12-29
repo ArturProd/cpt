@@ -18,6 +18,10 @@ use Cpt\EventBundle\Interfaces\Entity\LocationInterface as LocationInterface;
  */
 interface EventInterface extends CalendREventInterface, PublicationInterface, LocationInterface{
     
+    const MYEVENT_UNKNOWN  = 0;
+    const MYEVENT_YES     = 1;
+    const MYEVENT_NO = 2;
+    
      function addRegistration(\Cpt\EventBundle\Entity\Registration $registrations);
      function removeRegistration(\Cpt\EventBundle\Entity\Registration $registrations);
      function getRegistrations();

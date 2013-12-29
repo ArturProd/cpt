@@ -34,9 +34,14 @@ class PermissionsManager extends BaseManager {
             //throw new SymfonyException\ForbiddenHttpException("Ressource cannot be accessed this way.");    
         }
     }
+    
+    public function isLoggedIn()
+    {
+        return $this->getSecurityContext()->isGranted('ROLE_USER');
+    }
 
     public function RestrictAccessToLoggedIn() {
-        $this->RestrictAccessDenied($this->getSecurityContext()->isGranted('ROLE_USER'));
+        $this->RestrictAccessDenied($this->isLoggedIn());
     }
 
     public function RestrictAccessDenied($allow_access = false) {

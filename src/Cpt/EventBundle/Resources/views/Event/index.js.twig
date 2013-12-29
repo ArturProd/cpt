@@ -104,6 +104,23 @@ function event_content_toggle(id,open)
     }
 }
 {#**************************************************************************#}
+{# Updates the month selector arrow
+{#**************************************************************************#}
+function update_arrows(year,month)
+{
+    $.getJSON( Routing.generate('event_get_calendar_arrow_type', {year:year,month:month,_locale:_locale}), function(response){
+        switch(response.data.before){
+            case 'no':
+                $("#monthselector_uparrow").attr("class",);
+                break;
+            case 'yes':
+                break;
+            case 'myevent'
+                break;
+        }
+    });
+}
+{#**************************************************************************#}
 {# Go to next month
 {#**************************************************************************#}
 function next_month()
@@ -117,6 +134,7 @@ function next_month()
     UpdateMonthSelector();
     LoadCalendar(current_year, current_month);
     RetrieveEvents(current_year,current_month);
+    UpdateArrows(current_year,current_month);
 }
 {#**************************************************************************#}
 {# Go to previous month

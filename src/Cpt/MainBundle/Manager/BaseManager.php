@@ -3,6 +3,7 @@
 namespace Cpt\MainBundle\Manager;
 
 use Symfony\Component\DependencyInjection\Container as Container;
+use Cpt\MainBundle\Manager\PermissionsManager as PermissionManager;
 
 abstract class BaseManager {
 
@@ -23,6 +24,7 @@ abstract class BaseManager {
         $this->em = $this->GetEntityManager();
     }
 
+    
     public function getSecurityContext() {
         return $this->GetContainer()->get('security.context');
     }
@@ -39,6 +41,10 @@ abstract class BaseManager {
         return $this->GetContainer()->get('fos_user.user_manager');
     }
 
+    /**
+     * 
+     * @return PermissionManager
+     */
     public function getPermissionManager() {
         return $this->GetContainer()->get('cpt.permission.manager');
     }

@@ -4,8 +4,13 @@ namespace Cpt\MainBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpKernel\Exception as SymfonyException;
-use Symfony\Component\Security\Core\Role\RoleHierarchy;
-use Symfony\Component\Security\Core\Role\Role;
+use Cpt\BlogBundle\Interfaces\Manager\PostManagerInterface as PostManagerInterface;
+use Cpt\PubliationBundle\Interfaces\Manager\PublicationManagerInterface as PublicationManagerInterface;
+use Cpt\EventBundle\Interfaces\Manager\EventManagerInterface as EventManagerInterface;
+use Cpt\EventBundle\Interfaces\Manager\CalendarManagerInterface as CalendarManagerInterface;
+use Cpt\MainBundle\Interfaces\Manager\PermissionManagerInterface as PermissionManagerInterface;
+
+
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class BaseController extends Controller {
@@ -17,23 +22,39 @@ class BaseController extends Controller {
         return $this->get('cpt.manager.comment');
     }
 
+    /**
+     * @return PostManagerInterface
+     */
     public function getPostManager() {
         return $this->get('cpt.manager.post');
     }
 
+    /**
+     * @return PublicationManagerInterface
+     */
     public function getPublicationManager() {
         return $this->get('cpt.manager.publication');
     }
 
+    /**
+     * @return EventManagerInterface
+     */
     public function getEventManager() {
         return $this->get("cpt.event.manager");
     }
     
+    /**
+     * 
+     * @return CalendarManagerInterface
+     */
     public function getCalendarManager()
     {
         return $this->get("cpt.calendar.manager");
     }
 
+    /**
+     * @return PermissionManagerInterface
+     */
     public function getPermissionManager() {
         return $this->get("cpt.permission.manager");
     }

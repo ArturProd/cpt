@@ -13,12 +13,18 @@
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/MainBundle/Resources/public/css/cpt_event.css</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Resources/translations/messages.en.yml</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Resources/views/Event/event.js.twig</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/MainBundle/Resources/public/css/cpt_main.css</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Resources/translations/messages.fr.yml</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Resources/views/Event/eventdisplay.html.twig</file>
+            <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Controller/EventController.php</file>
+            <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Controller/DefaultController.php</file>
+            <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Resources/views/Event/index.js.twig</file>
+            <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Resources/views/Event/calendar.html.twig</file>
+            <file>file:/home/cyril/dev/cpt/src/Cpt/BlogBundle/Manager/PostManager.php</file>
+            <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Resources/config/services.yml</file>
+            <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Controller/CalendarController.php</file>
+            <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Resources/config/routing.yml</file>
+            <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Resources/views/Event/index.html.twig</file>
+            <file>file:/home/cyril/dev/cpt/src/Cpt/MainBundle/Resources/public/css/cpt_calendar.css</file>
+            <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Manager/CalendarManager.php</file>
+            <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Manager/EventManager.php</file>
         </group>
     </open-files>
 </project-private>

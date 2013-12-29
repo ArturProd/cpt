@@ -1,7 +1,16 @@
 event_index:
     path:     /
     defaults: { _controller: CptEventBundle:Event:index }
-    
+
+event_get_calendar_arrow_type:
+    path:     /calendar/{year}/{month}/arrowtype
+    defaults: { _controller: CptEventBundle:Calendar:getEventSelectorArrowType }
+    requirements:
+        year:  \d+
+        month: \d+
+    options:
+        expose: true
+        
 event_manage:
     path:     /edit/{id}
     defaults: { _controller: CptEventBundle:Event:new, id: -1, copy: 0  }

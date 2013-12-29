@@ -41,9 +41,10 @@ class EventManager extends BaseManager implements EventManagerInterface
     {
         $event = new Event();
         
-         if (!$author)
+         if (!$author){
              throw new \InvalidArgumentException("Cannot create an event without creator (null)");
-
+         }
+         
         $this->AddDefaultRegistration($event, $author);
          
         $event->setAuthor($author);
@@ -105,6 +106,12 @@ class EventManager extends BaseManager implements EventManagerInterface
     
     // <editor-fold defaultstate="collapsed" desc="Public: Registration related">
     
+    public function isMyEvent(EventInterface $event)
+    {
+        $this->getPermissionManager()->RestrictAccessToLoggedIn();
+        $user = $this->getUser();
+    }
+    
     /**
      * Indicates if the creator of the envent is also an organizer
      * @param \Cpt\EventBundle\Entity\Event $event
@@ -113,10 +120,12 @@ class EventManager extends BaseManager implements EventManagerInterface
     {
         $organizers = $this->getAttendees($event, true);
         
-        foreach ($organizers as $user)
-            if ($user->getId() == $event->getAuthorId())
+        foreach ($organizers as $user) {
+            if ($user->getId() == $event->getAuthorId()) {
                 return true;
-        
+            }
+        }
+            
         return false;
     }
     
@@ -124,8 +133,9 @@ class EventManager extends BaseManager implements EventManagerInterface
     {
         $organizers = $this->getAttendees($event, true);
 
-        if ((count($organizers) == 1) && ($organizers[0]->getId() == $event->getAuthor()->getId()))
+        if ((count($organizers) == 1) && ($organizers[0]->getId() == $event->getAuthor()->getId())) {
             return true;
+        }
         
         return false;
     }
@@ -233,10 +243,12 @@ class EventManager extends BaseManager implements EventManagerInterface
        {
            $registration = $this->getRegistration($event, $user);
 
-           if (!$registration)
+           if (!$registration) {
                $registration = new Registration($user, $event, true);
-           else
+           }
+           else {
                 $registration->getOrganizer(true);
+           }
            
            $this->em->persist($registration);
 
@@ -250,8 +262,9 @@ class EventManager extends BaseManager implements EventManagerInterface
 
     protected function AddDefaultRegistration(EventInterface $event, $registred_user = null)
     {
-        if (!$registred_user)
+        if (!$registred_user){
             $registred_user = $event->getAuthor ();
+        }
         
         // By default, creator is also an organizer
         $registration = new Registration($registred_user, $event, 1, true);
@@ -263,26 +276,29 @@ class EventManager extends BaseManager implements EventManagerInterface
     protected function ValidateBusinessRules(EventInterface $event)
     {
         // Checking parameters
-        if (($event === null))
+        if (($event === null)){
             throw new \InvalidArgumentException("Parameters cannot be null in EventManager.ReplaceRegistrationCollection");
-
+        }
+        
         $registrations = $event->getRegistrations();
         $eventqueue = $event->getQueue();                
 
         // Checking the queue are integers
         foreach($eventqueue as $key => $userid)
-            if (!is_integer($eventqueue[$key]))
+            if (!is_integer($eventqueue[$key])) {
                throw new \InvalidArgumentException("Queue should be an array of integer");    
+            }
             
         // Checking the Queue matches with the Registration num participants
         foreach($registrations as $key => $registration )
         {
-            if ($event->getId() != $registration->getEvent()->getId())
+            if ($event->getId() != $registration->getEvent()->getId()) {
                 throw new \LogicException("Provided event id does not match with registration id EventManager.ValidateQueue");
+            }
             
-            if ($registration->getNumparticipant() !== count( array_keys( $eventqueue, $registration->getUser()->getId() )))
+            if ($registration->getNumparticipant() !== count( array_keys( $eventqueue, $registration->getUser()->getId() ))) {
                 throw new \InvalidArgumentException("Queue does not match with RegistrationList");
-            
+            }
         }
         
         $this->UpdateCounters($event);
@@ -319,8 +335,9 @@ class EventManager extends BaseManager implements EventManagerInterface
             $countQueuedAttendees += $count_queued;
             
             // Checking if a non-queued attendee is the organizer
-            if (($count_queued < $event->getMaxnumattendees()) && $registration->getOrganizer())
+            if (($count_queued < $event->getMaxnumattendees()) && $registration->getOrganizer()){
                 $count_organizers++;
+            }
         }
         
         $event->setCountQueuedAttendees($countQueuedAttendees);
@@ -345,4 +362,3 @@ class EventManager extends BaseManager implements EventManagerInterface
     
         // </editor-fold>
 }
-?>
