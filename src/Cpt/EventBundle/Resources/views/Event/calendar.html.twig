@@ -1,19 +1,9 @@
-{% include 'CptEventBundle:Event:event.js.twig' %}
 
 {#% set month = calendr_month(year, month) %#}
 {% set year = calendr_year(currentdate|date("Y")) %}
 {% set month = calendr_month(currentdate|date("M")) %}
 {% set events = calendr_events(month) %}
 {% set cell_class = 'unknown' %}
-
-<div>
-    <ul>
-    <li>Up</li>
-    <li>{{month|trans}}</li>
-    <li>{{year|trans}}</li>
-    <li>Down</li>
-    </ul>
-</div>
 
 <table class="cal_table">
     {% spaceless %}
@@ -34,8 +24,3 @@
     {% endfor %}
     {% endspaceless %}
 </table>
-
-
-<div id="eventcontainer">
-</div>
-{#<a href="#" class="cal_event">{{day.begin|date("d") }}</a>#}

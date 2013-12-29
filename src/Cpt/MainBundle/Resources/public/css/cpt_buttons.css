@@ -71,6 +71,42 @@
     text-decoration: none;
 }
 
+.calendar_arrow_up_withevents_btn{
+      background: url('../images/evenements/bouton-mois-avant.png') no-repeat;
+      min-height: 38px;
+      min-width: 38px;
+      display: inline-block;
+      color: white;
+      margin-bottom: 15px;
+}
+
+.calendar_arrow_down_withevents_btn{
+      background: url('../images/evenements/bouton-mois-apres.png') no-repeat;
+      min-height: 38px;
+      min-width: 38px;
+      display: inline-block;
+      color: white;
+      margin-top: 15px;
+}
+
+.calendar_arrow_up_withoutevents_btn{
+      background: url('../images/evenements/bouton-mois-avant-grise.png') no-repeat;
+      min-height: 38px;
+      min-width: 38px;
+      display: inline-block;
+      color: white;
+      margin-top: 15px;
+}
+
+.calendar_arrow_down_withoutevents_btn{
+      background: url('../images/evenements/bouton-mois-apres-grise.png') no-repeat;
+      min-height: 38px;
+      min-width: 38px;
+      display: inline-block;
+      color: white;
+    margin-bottom: 15px;
+}
+
 .btn_trash{
     background: url('../images/boutons/bouton-corbeille.png') no-repeat;
     height: 25px;

@@ -215,7 +215,7 @@ class CommentController extends BaseController {
 
     protected function RenderCommentsView(PublicationInterface $publication) {
         $commentformview = null;
-        if ($this->get('security.context')->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
+        if ($this->getSecurityContext()->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
             $comment = $this->getCommentManager()->create($publication, $this->getUser());
             $commentformview = $this->createForm('comment', $comment)->createView();
         }

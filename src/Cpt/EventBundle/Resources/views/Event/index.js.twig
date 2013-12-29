@@ -1,5 +1,24 @@
 <script type="text/javascript">
 var event_list = null;
+
+var current_month = {{month}};
+var current_year = {{year}};
+
+var month_names = new Array();
+month_names[1] = "{{'january'|trans}}";
+month_names[2] = "{{'february'|trans}}";
+month_names[3] = "{{'march'|trans}}";
+month_names[4] = "{{'april'|trans}}";
+month_names[5] = "{{'may'|trans}}";
+month_names[6] = "{{'june'|trans}}";
+month_names[7] = "{{'july'|trans}}";
+month_names[8] = "{{'august'|trans}}";
+month_names[9] = "{{'september'|trans}}";
+month_names[10] = "{{'october'|trans}}";
+month_names[11] = "{{'november'|trans}}";
+month_names[12] = "{{'december'|trans}}";
+
+
 {#**************************************************************************#}
 {# Load and display popup to manage an event
 {#**************************************************************************#}
@@ -20,7 +39,7 @@ function close_manage_event()
 {#**************************************************************************#}
 {# Retreives a list of events from server
 {#**************************************************************************#}
-function retrieveEvents(year,month)
+function RetrieveEvents(year,month)
 {
   $.getJSON( Routing.generate('event_get_events_for_month', {year:year, month:month,_locale:_locale}), function(response){
       if (response.status === "ok")
@@ -85,9 +104,56 @@ function event_content_toggle(id,open)
     }
 }
 {#**************************************************************************#}
+{# Go to next month
+{#**************************************************************************#}
+function next_month()
+{
+    current_month ++;
+    if (current_month>12){
+        current_month = 1;
+        current_year++;
+    }
+    
+    UpdateMonthSelector();
+    LoadCalendar(current_year, current_month);
+    RetrieveEvents(current_year,current_month);
+}
+{#**************************************************************************#}
+{# Go to previous month
+{#**************************************************************************#}
+function previous_month()
+{
+    current_month --;
+    if (current_month<1){
+        current_month = 12;
+        current_year--;
+    }
+    
+    UpdateMonthSelector();
+    LoadCalendar(current_year, current_month);
+    RetrieveEvents(current_year,current_month);
+}
+{#**************************************************************************#}
+{# Updates the month selector with current month and year
+{#**************************************************************************#}
+function UpdateMonthSelector()
+{
+    $('#monthselector_month').html(month_names[current_month]);
+    $('#monthselector_year').html(current_year);
+}
+{#**************************************************************************#}
+{# Load the calendar for current month and year
+{#**************************************************************************#}
+function LoadCalendar(year,month)
+{
+    $('#calendar').load(Routing.generate('event_view_calendar', {year:year,month:month,_locale:_locale}));
+}
+{#**************************************************************************#}
 {# Onload
 {#**************************************************************************#}
 $(function() {
-    retrieveEvents(2013,12);
+    UpdateMonthSelector();
+    LoadCalendar(current_year, current_month);
+    RetrieveEvents(current_year,current_month);
 });
 </script>

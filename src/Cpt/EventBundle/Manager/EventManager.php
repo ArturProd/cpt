@@ -100,21 +100,7 @@ class EventManager extends BaseManager implements EventManagerInterface
         return $event;
     }
     
-    public function GetNextEventDateOrCurrent(\DateTime $current)
-    {
-          $event = $this->getEventRepository()
-            ->createQueryBuilder('e')
-                ->Where('e.begin >= :from')
-                ->setMaxResults(1)
-                ->setParameter('from', $current)
-            ->getQuery()
-            ->getOneOrNullResult();
-          
-          if ($event)
-              return $event->getBegin();
-          else
-              return $current;
-    }
+  
     // </editor-fold>
     
     // <editor-fold defaultstate="collapsed" desc="Public: Registration related">

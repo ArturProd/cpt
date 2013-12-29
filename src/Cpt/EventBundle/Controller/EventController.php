@@ -12,9 +12,12 @@ use Ivory\GoogleMap\Events\Event as GMapEvent;
 class EventController extends BaseController {
 
     public function indexAction() {
-        return $this->render(
-                        'CptEventBundle:Event:index.html.twig', array('name' => 'Toto!')
-        );
+        $currentdate = $this->getEventManager()->GetNextEventDateOrCurrent(new \Datetime);
+
+        
+        return $this->render('CptEventBundle:Event:index.html.twig', array(
+                    'currentdate' => $currentdate,
+        ));
     }
 
     /**
@@ -116,23 +119,33 @@ class EventController extends BaseController {
         $this->SendCsvFileResponse($content);
     }
 
-    public function viewCalendarAction($year = null, $month = null) {
-        if ((!$year) || (!$month)) {
-            $showdate = $this->getEventManager()->GetNextEventDateOrCurrent(new \Datetime);
+    public function viewCalendarAction($year = 0, $month = 0) {
+        $showdate = null;
+        
+        if (($year==0) || ($month==0)) {
+            $showdate = $this->getCalendarManager()->GetNextEventDateOrCurrent(new \Datetime);
         } else {
-            if ($month > 12)
+            if ($month > 12){
                 $this->RestrictResourceNotFound();
-
-            $showdate = mktime(0, 0, 0, $month, $year);
+            }
+            $showdate = new \Datetime();
+            $showdate->setDate ( $year , $month, 1  );
         }
 
+        $previousmonthdate = clone $showdate;
+        $previousmonthdate->sub(new \DateInterval("P1M"));
+        $nextmonthdate = clone $showdate;
+        $nextmonthdate->add(new \DateInterval("P1M"));
+        
         return $this->render('CptEventBundle:Event:calendar.html.twig', array(
-                    'currentdate' => $showdate
+                    'currentdate' => $showdate,
+                    'previousmonthdate' => $previousmonthdate,
+                    'nextmonthdate' => $nextmonthdate
         ));
     }
 
     public function getEventsForMonthAction($year, $month) {
-        if (($year < 2012) || ($month > 12))
+        if ($month > 12)
             $this->ThrowBadRequestException();
 
         $month = $this->getCalendR()->getMonth($year, $month);

@@ -1,0 +1,30 @@
+{% set year = currentdate|date("Y") %}
+{% set month = currentdate|date("m") %}
+
+{% include 'CptEventBundle:Event:index.js.twig' with {'year': year, 'month':month} %}
+
+<div class="main_section">
+    <div class="column_title_event">
+        {{'main.title.events'|trans}}
+        {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+            <a id="newevent" class="event_new_btn">{{'main.button.new'|trans}}</a>
+        {% endif %}
+    </div>
+            
+    <div id="calendar_container">
+        <div class="month_selector">
+            <ul>
+                <li><a class="calendar_arrow_up_withevents_btn" onclick="previous_month();"></a></li>
+                <li id="monthselector_month"></li>
+                <li id="monthselector_year"></li>
+                <li><a class="calendar_arrow_down_withevents_btn" onclick="next_month();"></a></li>
+            </ul>
+        </div>
+        <div id="calendar">
+        </div>
+    </div>
+
+    <div id="eventcontainer">
+    </div>
+
+</div>

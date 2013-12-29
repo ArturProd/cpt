@@ -12,25 +12,27 @@
 }
 
 .event_header{
+    display: block;
     color: #066FB2;
     font-size: 24px;
     font-weight: bold;
-    list-style: none;
-    margin: 0px;
+    height: auto;
+    overflow: hidden;
 }
 
-.event_header > li{
+.event_header > div:last-child{
+    float: right;
     display: inline-block;
 }
 
-.event_header > li:last-child{
-    float:right;
+.event_header > div:first-child{
+    float:left;
     margin-right: 100px;
     text-transform:uppercase;
-    line-height: 30px;
 }
 
 .event_subheader{
+    display: block;
     color: black;
     text-transform:uppercase;
     font-weight: bolder;

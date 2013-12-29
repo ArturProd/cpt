@@ -1,37 +1,54 @@
 {#****************************************************************************#}
 {# Event Header
 {#****************************************************************************#}
-<ul class="event_header">
-    <li>{{ event.begin | date('l') | trans}}</li>                   {# Begin date #}
-    <li>{{ event.begin|date('d/m') }}</li>                          {# Begin hour #}
-    {% if not cpt_event_isBeginEndSameDay(event) %}
-    <li>- {{ event.end | date('l') | trans}}</li>                   {# End date #}
-    <li>{{ event.end |date('d/m') }}</li>                           {# End hour #}
-    {% endif %}
-    <li>{{ event.cityname }}</li>                                   {# City name #}
-</ul>
+<div class="event_header">
+    <div>
+        {{ event.cityname }}                                   {# City name #}
+    </div>
+    <div>
+        {{ event.begin | date('l') | trans}}                   {# Begin date #}
+        {{ event.begin|date('d/m') }}                          {# Begin hour #}
+        {% if not cpt_event_isBeginEndSameDay(event) %}
+        - {{ event.end | date('l') | trans}}                   {# End date #}
+        {{ event.end |date('d/m') }}                           {# End hour #}
+        {% endif %}
+    </div>
+</div>
 {#****************************************************************************#}
 {# Event Sub Header
 {#****************************************************************************#}
 <div class="event_subheader">"{{ event.title }}"</div>            {# Title #}   
 {% if cpt_event_isAuthorSingleOrganizer(event) %}
+    <div style="display:inline-block">
     {{ 'event.organizedandanimatedby'|trans}}
     <b>{{" " ~ event.author.displayname}}</b>{{" |"}}              {# Organizer + Animator name #}
+    </div>
 {% else %}
+    <div style="display:inline-block">
     {{ 'event.organizedby'|trans}}
     <b>{{" " ~ event.author.displayname}}</b>{{" |"}}              {# Organizer name #}
+    </div>
+    <div style="display:inline-block">
     {{ 'event.animatedby'|trans}}
     {% for registration in event.registrations %}
         {{ loop.last and not loop.first ? 'and'|trans ~ " " }}
         <b>{{ registration.user.displayname ~ " "}}</b>             {# Animator name #}
         {{ loop.last ? " |" }}
     {% endfor %}
+    </div>
 {% endif %}
 {% if event.CorporateName is not empty %}
+    <div style="display:inline-block">
     <b>{{ event.CorporateName}}</b> |                               {# Location corporate name #}
+    </div>
 {% endif %}
+    <div style="display:inline-block">
 {{ event.Address is not empty ?  " " ~ event.Address ~ " |"}}       {# Location address #}
 {{ 'at_hour'|trans ~ " " ~ event.begin|date('H:i') }}
+    </div>
+    <div style="display:inline-block">
+        <a id="event_readmore_btn{{event.id}}">{{'event.readmore'|trans}}</a>
+    </div>
 {#****************************************************************************#}
 {# Action panel
 {#****************************************************************************#}
@@ -52,13 +69,13 @@
         <a class="event_manage_btn" onclick="manage_event({{event.id}})">{{'event.button.manage'|trans}}</a>
     {% endif %}
 {% endif %}
-        <a id="event_readmore_btn{{event.id}}" style="float:right">{{'event.readmore'|trans}}</a>
 </div>
 {#****************************************************************************#}
 {# Event content
 {#****************************************************************************#}
  <div id="event_content{{event.id}}" class="event_content">
  {{ event.content|raw }}
+ {% render controller("CptPublicationBundle:Comment:getCommentsContainer", { 'publication': event, '_locale': app.request.locale }) %}
 </div>
 <hr class="event_hr">
 {#****************************************************************************#}

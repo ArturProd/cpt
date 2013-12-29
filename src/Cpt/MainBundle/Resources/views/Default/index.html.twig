@@ -35,9 +35,6 @@ function DisplayOpacityMask(visible)
             $("#popup_new_event").load("{{ url('event_manage')}}");
         {% endif %}
     {% endif %}
-
-    $("#event_calendar").load("{{ url('event_view_calendar')}}");
-
 });
           
 </script>
@@ -50,7 +47,7 @@ function DisplayOpacityMask(visible)
     {# ************************************************************************************************************************ #} 
     {# About Section
     {#************************************************************************************************************************ #}     
-    <div class="span3">
+    <div class="span2">
          <div class="main_section">   
             <div class="column_title_about">{{'main.title.about'|trans}}</div>
             <img src="{{ asset('bundles/cptmain/images/a-propos/image-apropos.jpg') }}">
@@ -61,18 +58,8 @@ function DisplayOpacityMask(visible)
     {# ************************************************************************************************************************ #} 
     {# Event Section
     {#************************************************************************************************************************ #}     
-    <div class="span4">
-        <div class="main_section">
-            <div class="column_title_event">
-                {{'main.title.events'|trans}}
-                {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-                    <a id="newevent" class="event_new_btn">{{'main.button.new'|trans}}</a>
-                {% endif %}
-            </div>
-             {# Popup to load with pages (ex: create event, create article #}
-             <div id="event_calendar">
-             </div>
-        </div>
+    <div class="span5">
+        {% render controller("CptEventBundle:Event:index", {"_locale": app.request.locale }) %}
     </div>
     {# ************************************************************************************************************************ #} 
     {# Articles Section

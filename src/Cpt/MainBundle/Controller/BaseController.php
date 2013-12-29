@@ -28,6 +28,11 @@ class BaseController extends Controller {
     public function getEventManager() {
         return $this->get("cpt.event.manager");
     }
+    
+    public function getCalendarManager()
+    {
+        return $this->get("cpt.calendar.manager");
+    }
 
     public function getPermissionManager() {
         return $this->get("cpt.permission.manager");
