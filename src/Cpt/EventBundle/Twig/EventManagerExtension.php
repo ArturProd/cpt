@@ -39,7 +39,7 @@ class EventManagerExtension extends \Twig_Extension
             'cpt_event_isAuthor'    => new \Twig_Function_Method($this, 'isAuthor'),
             'cpt_event_isOrganizer'    => new \Twig_Function_Method($this, 'isOrganizer'),
             'cpt_event_isBeginEndSameDay'    => new \Twig_Function_Method($this, 'isBeginEndSameDay'),
-            'cpt_event_getReservation'    => new \Twig_Function_Method($this, 'getReservation'),
+            'cpt_event_getRegistration'    => new \Twig_Function_Method($this, 'getRegistration'),
         ); 
     }
 
@@ -89,15 +89,16 @@ class EventManagerExtension extends \Twig_Extension
         return $this->eventmanager->isOrganizer($event,$user);
     }*/
     
-    public function getReservation(EventInterface $event, UserInterface $user)
+    public function getRegistration(EventInterface $event, UserInterface $user)
     {
-        return $this->eventmanager->getReservation($event, $user);
+        return $this->eventmanager->getRegistration($event, $user);
     }
     
     public function isBeginEndSameDay(EventInterface $event)
     {
-        if ($event->getEnd() == null)
+        if ($event->getEnd() == null){
             return true;
+        }
         
         return ($event->getBegin()->diff($event->getEnd())->days == 0);
     }

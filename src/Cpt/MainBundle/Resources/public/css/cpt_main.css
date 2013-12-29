@@ -34,10 +34,13 @@ h1, h2
 
 a{
     outline : none;
+    color: #066FB2;
 }
 
 a:hover{
-   cursor: pointer; cursor: hand; 
+    color: #066FB2;
+    text-decoration: none;
+    cursor: pointer; cursor: hand;
 }
 
 a img  

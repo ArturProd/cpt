@@ -2,13 +2,15 @@ event_homepage:
     path:     /
     defaults: { _controller: CptEventBundle:Event:index }
     
-event_new:
+event_manage:
     path:     /edit/{id}
     defaults: { _controller: CptEventBundle:Event:new, id: -1, copy: 0  }
     requirements:
         id:  \d+
         copy: 1|0
-
+    options:
+        expose: true 
+        
 event_view:
     path:     /view/{id}
     defaults: { _controller: CptEventBundle:Event:getEvent  }

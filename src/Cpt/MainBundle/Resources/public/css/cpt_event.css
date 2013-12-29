@@ -41,3 +41,14 @@
     border-color: lightgray;
     border-bottom-style: none;
 }
+
+.event_numattendee_select{
+    height: 10px;
+    width: 40px;
+    font-size: 8px;
+    line-height: 8px;
+}
+
+.event_content{
+    border: 1px solid transparent; /* Tries to fix the jquery slideup jump bug */
+}

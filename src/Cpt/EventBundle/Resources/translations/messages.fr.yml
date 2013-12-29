@@ -39,6 +39,14 @@ event.animatedby:                     Animé par
 event.organizedandanimatedby:         Organisé et animé par
 and:                                     et
 at_hour:                                à
+event.button.validate:                valider
+event.button.modify:                  modifier
+event.button.manage:                   gérer l'évènement
+event.readmore:                         lire la suite
+event.readless:                         replier
+event.book:                             réserver
+event.youhavebooked:                   vous avez réservé
+event.seats:                            place(s)
 January:                                Janvier
 February:                               Février
 March:                                   Mars

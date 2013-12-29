@@ -30,7 +30,9 @@
         {% stylesheets '@CptMainBundle/Resources/public/css/*' 
 #}            
         {# CSS #}    
-        {% stylesheets 'bundles/cptmain/css/*' filter='cssrewrite' %}
+        {% stylesheets 
+            'bundles/cptmain/css/*' filter='cssrewrite'
+             %}
             <link rel="stylesheet" type="text/css" href="{{ asset_url }}" />
         {% endstylesheets %}
 

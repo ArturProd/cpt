@@ -5,8 +5,16 @@ form.not_valid_number.content: "<p>This is value is not a valid number.</p><p>Pl
 event.organizedby:                    Organized by
 event.animatedby:                     Animated by
 event.organizedandanimatedby:         Organized and animated by
+event.book:                             book
+event.youhavebooked:                   you have booked
+event.seats:                            seat(s)
 and:                                     and
 at_hour:                                 at
+event.button.validate:                  validate
+event.button.modify:                  modify
+event.button.manage:                    Manage event
+event.readmore:                         read more
+event.readless:                         read less
 form.ok: Ok
 Monday: Monday
 Tuesday: Tuesday

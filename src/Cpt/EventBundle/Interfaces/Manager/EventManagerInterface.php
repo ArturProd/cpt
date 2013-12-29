@@ -30,7 +30,7 @@ interface EventManagerInterface extends CalendRProviderInterface{
     
      function AddRegistration(EventInterface $event, RegistrationInterface $registration);
 
-     function getRegistration(EventInterface $event, $user);
+     function getRegistration(EventInterface $event, UserInterface $user);
     
      function RemoveRegistration(EventInterface $event, $user);
     

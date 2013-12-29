@@ -43,6 +43,34 @@
     cursor: pointer; cursor: hand;
 }
 
+.event_book_btn
+{
+      background: url('../images/evenements/bouton-modifier-places.png') no-repeat;
+      height: 15px;
+      width: 47px;
+      color: white;
+}
+
+.event_book_btn:hover{
+    cursor: pointer; cursor: hand;
+    color: white;
+    text-decoration: none;
+}
+
+.event_manage_btn
+{
+      background: url('../images/evenements/bouton-gerer-mon-evenement.png') no-repeat;
+      height: 88px;
+      width: 17px;
+      color: white;
+}
+
+.event_manage_btn:hover{
+    cursor: pointer; cursor: hand;
+    color: white;
+    text-decoration: none;
+}
+
 .btn_trash{
     background: url('../images/boutons/bouton-corbeille.png') no-repeat;
     height: 25px;

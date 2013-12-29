@@ -93,8 +93,9 @@ class EventManager extends BaseManager implements EventManagerInterface
     {
         $event = $this->getEventRepository()->find($id);
         
-        if (!$event)
+        if (!$event) {
             throw new SymfonyException\NotFoundHttpException("Resource not found.");
+        }
         
         return $event;
     }
@@ -148,7 +149,7 @@ class EventManager extends BaseManager implements EventManagerInterface
         return ($event->getAuthor()->getId() == $user->getId());
     }
     
-    public function getReservation(EventInterface $event, UserInterface $user)
+    /*public function getRegistration(EventInterface $event, UserInterface $user)
     {
         $registrations = $event->getRegistrations();
         foreach ($registrations as $registration)
@@ -156,7 +157,7 @@ class EventManager extends BaseManager implements EventManagerInterface
                 return $registration;
             
         return null;
-    }
+    }*/
     
     /*
     public function isAttendee(EventInterface $event, UserInterface $user)
@@ -188,7 +189,7 @@ class EventManager extends BaseManager implements EventManagerInterface
     }
     
     
-    public function getRegistration(EventInterface $event, $user)
+    public function getRegistration(EventInterface $event, UserInterface $user)
     {
         return $this->getRegistrationRepository()
             ->createQueryBuilder('u')

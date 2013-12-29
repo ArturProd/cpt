@@ -4,7 +4,7 @@
 <div class="row-fluid">
       <div class="span12 popup_title cpt_bluebackground">
         {{event.id==-1 ? 'event.popup.create_title'|trans: 'event.popup.edit_title'|trans }}
-        <a id="close_edit_event" class="popup_close_button">X</a>
+        <a id="close_edit_event" class="popup_close_button" onclick='close_manage_event();'>X</a>
       </div>
 </div>   
 {% block javascripts %}
@@ -22,7 +22,7 @@
         
 {% form_theme eventform with ['ThraceFormBundle:Form:fields.html.twig'] %}
 
-        {{ form_start(eventform, {'action': path('event_new',  { 'id': event.id }), 'method': 'POST' }) }}
+        {{ form_start(eventform, {'action': path('event_manage',  { 'id': event.id }), 'method': 'POST' }) }}
         {{ form_widget(eventform.restricted) }}
         {{ form_widget(eventform.approved) }}
         {{ form_widget(eventform.location_long) }}
@@ -476,7 +476,7 @@ function CheckEventWasUpdated() {
 {# ************************************************************************************************************************ #} 
 function ReLoadEvent()
 {
-    $("#popup_new_event").load("{{ url('event_new', { 'id': event.id })}}");
+    $("#popup_new_event").load("{{ url('event_manage', { 'id': event.id })}}");
 }
 
 {# ************************************************************************************************************************ #} 

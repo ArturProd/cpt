@@ -1,0 +1,93 @@
+<script type="text/javascript">
+var event_list = null;
+{#**************************************************************************#}
+{# Load and display popup to manage an event
+{#**************************************************************************#}
+function manage_event(id)
+{
+    $("#popup_new_event").load(Routing.generate('event_manage', {id:id,_locale:_locale}));
+    $("#popup_new_event").show();
+    DisplayOpacityMask(true);
+}
+{#**************************************************************************#}
+{# Close the manage event popup
+{#**************************************************************************#}
+function close_manage_event()
+{
+    $("#popup_new_event").hide();
+    DisplayOpacityMask(false);
+}         
+{#**************************************************************************#}
+{# Retreives a list of events from server
+{#**************************************************************************#}
+function retrieveEvents(year,month)
+{
+  $.getJSON( Routing.generate('event_get_events_for_month', {year:year, month:month,_locale:_locale}), function(response){
+      if (response.status === "ok")
+      {         
+        event_list = $.parseJSON(response.data).events;
+
+        for(i=0;i<event_list.length;++i) {
+            retrieveEventView(event_list[i].id);
+
+        }
+      }
+  });
+}
+{#**************************************************************************#}
+{# Retreives the html view of an event from server
+{#**************************************************************************#}
+function retrieveEventView(id)
+{
+    {# Removes existing container if any #}
+    $('#eventcontainer'+id).remove();
+    
+    {# Creates the DOM container (Div element) #}           
+    jQuery('<div>', {
+        id: 'eventcontainer'+id,
+        class: 'eventcontainer'
+    }).appendTo('#eventcontainer');
+
+    {# Retreive the event view from server and add it to previously created DOM element #}
+    $.get( Routing.generate('event_view', {id:id,_locale:_locale}), function(response){
+          if (response.status === "ok")
+          {
+             $( "#eventcontainer" + id ).html( response.data );
+          }
+     });
+}
+{#**************************************************************************#}
+{# Toggles event with given id, close all others
+{#**************************************************************************#}
+function event_content_accordion_toggle(id)
+{
+    visible = $("#event_content"+id).is(":visible");
+
+    for(i=0;i<event_list.length;++i) {
+        if (event_list[i].id !== id){
+         event_content_toggle(event_list[i].id,false);
+        }
+    }
+    event_content_toggle(id,!visible);
+}
+{#**************************************************************************#}
+{# Toggle a single event cotent
+{#**************************************************************************#}
+function event_content_toggle(id,open)
+{
+    {# toggles readless <=> readmore text #}
+    open ? $("#event_readmore_btn"+id).html("{{'event.readless'|trans}}") : $("#event_readmore_btn"+id).html("{{'event.readmore'|trans}}");
+
+    if (open){
+        $('#event_content'+id).slideDown(500);
+    } else {
+        $('#event_content'+id).slideUp(500);        
+    }
+}
+{#**************************************************************************#}
+{# Onload
+{#**************************************************************************#}
+$(function() {
+    retrieveEvents(2013,12);
+});
+</script>

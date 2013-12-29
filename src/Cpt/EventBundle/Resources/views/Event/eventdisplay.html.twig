@@ -35,7 +35,51 @@
 {#****************************************************************************#}
 {# Action panel
 {#****************************************************************************#}
+<div>
 {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-    {% set registration = cpt_event_getReservation(event,app.user) %}
+    {% set registration = cpt_event_getRegistration(event,app.user) %}
+    {% if registration is null %}                                   {# case: user logged in but no reservation done #}
+        {{'event.book'|trans}}
+        <input type="number" name="numparticipant{{event.id}}" id="numparticipant{{event.id}}" value="0" min="0" max="999" class="event_numattendee_select">
+        {{'event.seats'|trans}}
+        <a id="registrationmodify_btn{{event.id}}" class="event_book_btn">{{'event.button.validate'|trans}}</a>
+    {% elseif not registration.organizer %}                         {# case: user logged in, is not organizer, has booked #}
+        {{'event.youhavebooked'|trans}}
+        <input type="number" name="numparticipant{{event.id}}" id="numparticipant{{event.id}}" value="{{registration.numparticipant}}" min="0" max="999" class="event_numattendee_select">
+        {{'event.seats'|trans}}
+        <a id="registrationmodify_btn{{event.id}}" class="event_book_btn">{{'event.button.modify'|trans}}</a>
+    {% else %}
+        <a class="event_manage_btn" onclick="manage_event({{event.id}})">{{'event.button.manage'|trans}}</a>
+    {% endif %}
 {% endif %}
+        <a id="event_readmore_btn{{event.id}}" style="float:right">{{'event.readmore'|trans}}</a>
+</div>
+{#****************************************************************************#}
+{# Event content
+{#****************************************************************************#}
+ <div id="event_content{{event.id}}" class="event_content">
+ {{ event.content|raw }}
+</div>
 <hr class="event_hr">
+{#****************************************************************************#}
+{# Javascript
+{#****************************************************************************#}
+<script type="text/javascript">
+$(function() {
+    {# hide the modify or validate button #}
+    $('#registrationmodify_btn{{event.id}}').hide();
+    
+    {# handles the "readmore" button #}
+    $("#event_readmore_btn{{event.id}}").on("click", function(){
+        event_content_accordion_toggle({{event.id}});
+    });
+    
+    {# hides the content of the event #}
+    event_content_toggle({{event.id}},false);
+    
+    {# on change number of participant, show the modify or validate button #}
+    $("#numparticipant{{event.id}}").on('change', function(){
+        $('#registrationmodify_btn{{event.id}}').show();
+   });    
+});
+</script>

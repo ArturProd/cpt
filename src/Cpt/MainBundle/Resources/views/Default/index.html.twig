@@ -32,7 +32,7 @@ function DisplayOpacityMask(visible)
             {% include 'CptEventBundle:Event:new.html.twig' with {'event' : event, 'eventform' : eventform } %}
         {% else %}
             $("#popup_new_event").hide();
-            $("#popup_new_event").load("{{ url('event_new')}}");
+            $("#popup_new_event").load("{{ url('event_manage')}}");
         {% endif %}
     {% endif %}
 

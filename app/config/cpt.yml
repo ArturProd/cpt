@@ -2,8 +2,8 @@ parameters:
     cpt.publication.comment.nbretreive: 3 # Number of comments to be retreived each time
     cpt.publication.comment.initialnbretreive: 5 # Initial Number of comments to be retreived each time
     cpt.publication.comment.checkfornew_interval: 40000 # interval in ms to check for new comments
-    cpt.blog.max_article_perpage: 8 # interval in ms to check for new comments
-    cpt.blog.max_page_link: 5 # Number of link in the navigation pager
+    cpt.blog.max_article_perpage: 2 # interval in ms to check for new comments
+    cpt.blog.max_page_link: 4 # Number of link in the navigation pager
 
 twig:
   globals:
