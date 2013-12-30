@@ -7,15 +7,20 @@ use Cpt\PublicationBundle\Manager\BaseManager as CptBaseManager;
 
 abstract class BaseManager extends CptBaseManager
 {
-//    protected function persistAndFlush($entity)
-//    {
-//
-//        $this->em->persist($entity);
-//        $this->em->flush();
-//        
-//                                         var_dump($entity);
-//                 exit(die);
-//    }
+    function getCalendarManager()
+    {
+        return $this->container->get('cpt.calendar.manager');
+    }
+    
+    function getRegistrationManager()
+    {
+        return $this->container->get('cpt.registration.manager');
+    }
+    
+    function getEventManager()
+    {
+        return $this->container->get('cpt.event.manager');
+    }
 }
 
 ?>

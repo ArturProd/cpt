@@ -1,8 +1,10 @@
 # app/config/config.yml
 parameters:
     cpt.event.event.manager.class:         Cpt\EventBundle\Manager\EventManager
-    cpt.event.event.entity:                 Cpt\EventBundle\Entity\Comment
     cpt.event.calendar.manager.class:      Cpt\EventBundle\Manager\CalendarManager
+    cpt.event.registration.manager.class: Cpt\EventBundle\Manager\RegistrationManager
+    cpt.event.event.entity:                 Cpt\EventBundle\Entity\Comment
+    cpt.event.registration.entity:         Cpt\EventBundle\Entity\Registration
 
 services:
     cpt.event.manager:
@@ -15,8 +17,11 @@ services:
     cpt.calendar.manager:
         class:        "%cpt.event.calendar.manager.class%"
         arguments:    ["@service_container",  %cpt.event.event.entity%]
-        # This declares the class as an event provider for the calendr library:
-            
+  
+    cpt.registration.manager:
+        class:        "%cpt.event.registration.manager.class%"
+        arguments:    ["@service_container",  %cpt.event.registration.entity%]
+        
     cpt_edit_event:
       class: Cpt\EventBundle\Form\Type\EventType
       tags:
@@ -29,6 +34,6 @@ services:
             
     cpt.twig.eventmanager_extension:
         class: Cpt\EventBundle\Twig\EventManagerExtension
-        arguments: ['@cpt.event.manager']
+        arguments: ['@cpt.event.manager','@cpt.registration.manager']
         tags:
             - { name: twig.extension }

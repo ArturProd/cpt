@@ -23,20 +23,5 @@ interface EventManagerInterface extends CalendRProviderInterface{
      function CopyEvent(EventInterface $event);
 
      function getEventById($id);
-        
-     function isCreatorAlsoAnimator(EventInterface $event);
-    
-     function AddRegistration(EventInterface $event, RegistrationInterface $registration);
-
-     function getRegistration(EventInterface $event, UserInterface $user);
-    
-     function RemoveRegistration(EventInterface $event, $user);
-    
-     function CreateRegistration(EventInterface $event, $user, $numparticipants, $organizer);
-    
-     function getAttendees(EventInterface $event, $organizers_only = false);
-    
-     function setOrganizers(EventInterface $event, $user_array);
+     
 }
-
-?>

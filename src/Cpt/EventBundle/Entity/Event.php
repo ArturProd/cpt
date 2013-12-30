@@ -49,6 +49,71 @@ class Event extends Publication implements EventInterface
         $this->ismyevent = EventInterface::MYEVENT_UNKNOWN;
     }
     
+    public function UpdateCounters()
+    {
+        $this->ValidateRegistrationQueueIntegrity();
+        
+        $queue = $this->getQueue();
+        $countTotalAttendees = count($queue);
+        $countQueuedAttendees = 0; 
+        
+     
+        $this->setCountTotalAttendees($countTotalAttendees);
+        
+        $count_organizers = 0;
+        // Update queue counters for each registration
+        $waiting_attendees = array_slice ( $queue, $this->getMaxnumattendees());
+        foreach ($this->getRegistrations() as $registration)
+        {
+            $count_queued = count(array_keys($waiting_attendees,$registration->getUser()->getId()));
+            $registration->setNumqueuedparticipant($count_queued);
+            
+            $countQueuedAttendees += $count_queued;
+            
+            // Checking if a non-queued attendee is the organizer
+            if (($count_queued < $this->getMaxnumattendees()) && $registration->getOrganizer()){
+                $count_organizers++;
+            }
+        }
+        
+        $this->setCountQueuedAttendees($countQueuedAttendees);
+           
+        // Throwing exception if ther is no organizer in the event
+        if ($count_organizers == 0) {
+            throw new \InvalidArgumentException("There should be at least one organizer in an event."); 
+        }
+    }
+    
+    protected function ValidateRegistrationQueueIntegrity()
+    {
+        // Checking parameters
+        if (($this === null)){
+            throw new \InvalidArgumentException("Parameters cannot be null in EventManager.ReplaceRegistrationCollection");
+        }
+        
+        $registrations = $this->getRegistrations();
+        $eventqueue = $this->getQueue();                
+
+        // Checking the queue are integers
+        foreach($eventqueue as $key => $userid) {
+            if (!is_integer($eventqueue[$key])) {
+               throw new \InvalidArgumentException("Queue should be an array of integer");    
+            }
+        }
+        
+        // Checking the Queue matches with the Registration num participants
+        foreach($registrations as $key => $registration )
+        {
+            if ($this->getId() != $registration->getEvent()->getId()) {
+                throw new \LogicException("Provided event id does not match with registration id EventManager.ValidateQueue");
+            }
+            
+            if ($registration->getNumparticipant() !== count( array_keys( $eventqueue, $registration->getUser()->getId() ))) {
+                throw new \InvalidArgumentException("Queue does not match with RegistrationList");
+            }
+        }
+     }
+    
     /* Unmapped */
     protected $ismyevent;
     

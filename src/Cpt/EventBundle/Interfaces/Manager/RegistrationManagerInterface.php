@@ -1,0 +1,31 @@
+<?php
+
+namespace Cpt\EventBundle\Interfaces\Manager;
+
+use Cpt\EventBundle\Interfaces\Entity\RegistrationInterface as RegistrationInterface;
+use Cpt\EventBundle\Interfaces\Entity\EventInterface as EventInterface;
+use FOS\UserBundle\Model\UserInterface as UserInterface;
+
+/**
+ *
+ * @author cyril
+ */
+interface RegistrationManagerInterface {
+     function isCreatorAlsoAnimator(EventInterface $event);
+    
+     function AddRegistration(EventInterface $event, RegistrationInterface $registration);
+
+     function getRegistration(EventInterface $event, UserInterface $user);
+    
+     function RemoveRegistration(EventInterface $event, $user);
+    
+     function CreateRegistration(EventInterface $event, $user, $numparticipants, $organizer);
+    
+     function getAttendees(EventInterface $event, $organizers_only = false);
+    
+     function setOrganizers(EventInterface $event, $user_array);
+     
+     function AddDefaultRegistration(EventInterface $event, $registred_user = null);
+
+     function DeleteAllRegistrations(EventInterface $event);
+}

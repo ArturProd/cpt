@@ -191,7 +191,7 @@ class EventController extends BaseController {
             $this->RestrictBusinessRuleError("User with id " . $registration_json->user . " does not exists.");
         }
 
-        return $this->getEventManager()->CreateRegistration($event, $user, $registration_json->numparticipants, $registration_json->organizer ? true : false );
+        return $this->getRegistrationManager()->CreateRegistration($event, $user, $registration_json->numparticipants, $registration_json->organizer ? true : false );
     }
 
     public function userSearchAction() {

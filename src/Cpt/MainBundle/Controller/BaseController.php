@@ -7,6 +7,7 @@ use Symfony\Component\HttpKernel\Exception as SymfonyException;
 use Cpt\BlogBundle\Interfaces\Manager\PostManagerInterface as PostManagerInterface;
 use Cpt\PubliationBundle\Interfaces\Manager\PublicationManagerInterface as PublicationManagerInterface;
 use Cpt\EventBundle\Interfaces\Manager\EventManagerInterface as EventManagerInterface;
+use Cpt\EventBundle\Interfaces\Manager\RegistrationManagerInterface as RegistrationManagerInterface;
 use Cpt\EventBundle\Interfaces\Manager\CalendarManagerInterface as CalendarManagerInterface;
 use Cpt\MainBundle\Interfaces\Manager\PermissionManagerInterface as PermissionManagerInterface;
 
@@ -41,6 +42,13 @@ class BaseController extends Controller {
      */
     public function getEventManager() {
         return $this->get("cpt.event.manager");
+    }
+    
+    /**
+     * @return RegistrationManagerInterface
+     */
+    public function getRegistrationManager() {
+        return $this->get("cpt.registration.manager");
     }
     
     /**

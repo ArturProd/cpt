@@ -21,7 +21,10 @@ interface EventInterface extends CalendREventInterface, PublicationInterface, Lo
     const MYEVENT_UNKNOWN  = 0;
     const MYEVENT_YES     = 1;
     const MYEVENT_NO = 2;
-    
+     
+     function UpdateCounters();
+
+
      function addRegistration(\Cpt\EventBundle\Entity\Registration $registrations);
      function removeRegistration(\Cpt\EventBundle\Entity\Registration $registrations);
      function getRegistrations();
