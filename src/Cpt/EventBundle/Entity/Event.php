@@ -123,16 +123,18 @@ class Event extends Publication implements EventInterface
     {
        /* return $this->getBegin()->diff($period->getBegin())->invert == 0
             && $this->getEnd()->diff($period->getEnd())->invert == 1; */
-        return $this->getBegin()->diff($period->getBegin())->invert == 0
+        $value = $this->getBegin()->diff($period->getBegin())->invert == 0
             && $this->getBegin()->diff($period->getEnd())->invert == 1;
+        
+        return $value;
     }
 
     public function isDuring(PeriodInterface $period)
     {
          // return $this->getBegin() >= $period->getBegin() && $this->getEnd() < $period->getEnd();
-        // For Cpt, the event is considered to be during a given month if it starts during this month
-        // End time does not count
-        return $this->getBegin() >= $period->getBegin() && $this->getBegin() < $period->getEnd();
+        // Event is during a period if event begining is before period end, and event end is after period begin
+        $value = $this->getBegin() < $period->getEnd() && $this->getEnd() >= $period->getBegin();
+        return $value;
     }
     //  <editor-fold defaultstate="collapsed" desc="Attributes">
 

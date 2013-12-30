@@ -10,7 +10,9 @@
     {% for week in month %}
     <tr> 
         {% for day in week %}
+
                 {% set dayevents = events.find(day) %}
+                {#
                 {% if month.contains(day.begin) and (dayevents|length > 0) %}
                     {% set cell_class = 'cal_day_inmonth_withevents' %}
                 {% elseif month.contains(day.begin) and (dayevents|length == 0) %}
@@ -18,6 +20,12 @@
                 {% elseif not month.contains(day.begin) and (dayevents|length > 0) %}
                     {% set cell_class = 'cal_day_outmonth_withevents' %}
                 {% else %}{% set cell_class ='cal_day_outmonth_noevents'%}{% endif %}
+                #}
+                    {% if month.contains(day.begin) and (dayevents|length > 0) %}
+                        {% set cell_class = 'cal_day_inmonth_withevents' %}
+                    {% else  %}
+                        {% set cell_class = "" %}
+                    {% endif %}
                 <td class='cal_day'>
                     <div class="{{cell_class}}">
                         <a href="#">{{day.begin|date("j") }}</a>

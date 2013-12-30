@@ -7,56 +7,108 @@ use Cpt\EventBundle\Interfaces\Entity\EventInterface as EventInterface;
 
 class CalendarManager extends BaseManager
 {
-  public function isFutureEventBeforeMonth($year, $month, &$myevent)
+  public function isFutureEventBeforeMonth($year, $month)
   {
       $monthdate = new \DateTime();
       $monthdate->setDate($year, $month, 1);
       $currentdate = new \DateTime();
       
-     $event = $this->getEventRepository()
+     $eventid = $this->getEventRepository()
         ->createQueryBuilder('e')
-            ->Select('e')
+            ->Select('e.id')
             ->Where('(e.begin < :monthdate) OR (e.end < :monthdate)') // The event begins or end before current month
             ->AndWhere('(e.end > :currentdatetime) OR (e.begin > :currentdatetime)') // The event ends or begin after current datetime (it is a future event)
             ->setParameter('monthdate', $monthdate)
             ->setParameter('currentdatetime', $currentdate)
             ->setMaxResults( 1 )
         ->getQuery()
-        ->getOneOrNullResult();
+        ->getArrayResult();
 
-     if (!$event){                                     // No event found
-          $myevent = EventInterface::MYEVENT_UNKNOWN;
-          return false;
+      return (!empty($eventid));
+
+  }
+  
+  public function isMyFutureEventBeforeMonth($year, $month)
+  {
+      if (!$this->getPermissionManager()->isLoggedIn()) {
+              return false;
       }
+      
+      $user = $this->getUser();
+      
+      $monthdate = new \DateTime();
+      $monthdate->setDate($year, $month, 1);
+      $monthdate->setTime(0, 0, 0);
+      $currentdate = new \DateTime();
+      
+     $eventid = $this->getEventRepository()
+        ->createQueryBuilder('e')
+            ->Select('e.id')
+            ->innerJoin('e.registrations', 'r')
+            ->Where('(e.begin < :monthdate) OR (e.end < :monthdate)') // The event begins or end before current month
+            ->AndWhere('(e.end > :currentdatetime) OR (e.begin > :currentdatetime)') // The event ends or begin after current datetime (it is a future event)
+            ->setParameter('monthdate', $monthdate)
+            ->setParameter('currentdatetime', $currentdate)
+            ->AndWhere('(IDENTITY(e.author) = :userid) OR (IDENTITY(r.user) = :userid)') // it is my event
+            ->setParameter('monthdate', $monthdate)
+            ->setParameter('currentdatetime', $currentdate)
+            ->setParameter('userid', $user->getId())
+            ->setMaxResults( 1 )
+        ->getQuery()
+        ->getArrayResult();
 
-      $myevent = $this->isMyEvent($event) ? EventInterface::MYEVENT_YES : EventInterface::MYEVENT_NO;
-      return true;
+      return (!empty($eventid));
+
   }
 
-  public function isFutureEventAfterMonth($year, $month, &$myevent)
+  public function isFutureEventAfterMonth($year, $month)
   {
       $monthdate = new \DateTime();
       $monthdate->setDate($year, $month+1, 1); // Adding 1 to the provided month
       $currentdate = new \DateTime();
       
-      $event = $this->getEventRepository()
+      $eventid = $this->getEventRepository()
         ->createQueryBuilder('e')
-            ->Select('e')
+            ->Select('e.id')
             ->Where('(e.end >= :monthdate) OR (e.begin >= :monthdate)') // The event ends or begin after current month (remember that event.end can be null!!)
             ->AndWhere('(e.end > :currentdatetime) OR (e.begin > :currentdatetime)') // The event ends or begin after current datetime (it is a future event)
             ->setParameter('monthdate', $monthdate)
             ->setParameter('currentdatetime', $currentdate)
             ->setMaxResults( 1 )
           ->getQuery()
-          ->getOneOrNullResult();
+          ->getArrayResult();
 
-      if (!$event){                                     // No event found
-          $myevent = EventInterface::MYEVENT_UNKNOWN;
-          return false;
+      return (!empty($eventid));
+  }
+  
+  public function isMyFutureEventAfterMonth($year, $month)
+  {
+      if (!$this->getPermissionManager()->isLoggedIn()) {
+              return false;
       }
+      
+      $user = $this->getUser();
+          
+      $monthdate = new \DateTime();
+      $monthdate->setDate($year, $month+1, 1); // Adding 1 to the provided month      
+      $monthdate->setTime(0, 0, 0);
+      $currentdate = new \DateTime();
+      
+      $eventid = $this->getEventRepository()
+        ->createQueryBuilder('e')
+            ->Select('e.id')
+            ->innerJoin('e.registrations', 'r')
+            ->Where('(e.end >= :monthdate) OR (e.begin >= :monthdate)') // The event ends or begin after current month (remember that event.end can be null!!)
+            ->AndWhere('(e.end > :currentdatetime) OR (e.begin > :currentdatetime)') // The event ends or begin after current datetime (it is a future event)
+            ->AndWhere('(IDENTITY(e.author) = :userid) OR (IDENTITY(r.user) = :userid)') // it is my event
+            ->setParameter('monthdate', $monthdate)
+            ->setParameter('currentdatetime', $currentdate)
+            ->setParameter('userid', $user->getId())
+            ->setMaxResults( 1 )
+          ->getQuery()
+          ->getArrayResult();
 
-      $myevent = $this->isMyEvent($event) ? EventInterface::MYEVENT_YES : EventInterface::MYEVENT_NO;
-      return true;
+        return (!empty($eventid));
   }
   
   public function isMyEvent(EventInterface $event)

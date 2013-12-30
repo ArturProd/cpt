@@ -13,10 +13,12 @@ class EventController extends BaseController {
 
     public function indexAction() {
         $currentdate = $this->getCalendarManager()->GetNextEventDateOrCurrent(new \Datetime);
+        $update_ajax_delay = $this->container->getParameter("cpt.event.update_ajax_delay");
 
         
         return $this->render('CptEventBundle:Event:index.html.twig', array(
                     'currentdate' => $currentdate,
+                    'update_ajax_delay' => $update_ajax_delay
         ));
     }
 

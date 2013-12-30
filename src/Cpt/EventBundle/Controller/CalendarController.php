@@ -16,15 +16,27 @@ class CalendarController extends BaseController {
     
    public function getEventSelectorArrowTypeAction($year, $month)
    {
-       $myeventbefore = EventInterface::MYEVENT_UNKNOWN;
-       $isbefore = $this->getCalendarManager()->isFutureEventBeforeMonth($year, $month, $myeventbefore);
+       $is_eventbefore = $this->getCalendarManager()->isFutureEventBeforeMonth($year, $month);
+       $is_eventafter = $this->getCalendarManager()->isFutureEventAfterMonth($year, $month);
+       $is_myeventbefore = false;
+       $is_myeventafter = false;
        
-       $myeventafter = EventInterface::MYEVENT_UNKNOWN;
-       $isafter = $this->getCalendarManager()->isFutureEventAfterMonth($year, $month, $myeventafter);
+       if ($is_eventbefore){
+        $is_myeventbefore = $this->getCalendarManager()->isMyFutureEventBeforeMonth($year, $month);       
+       }
+       
+       if ($is_eventafter){
+        $is_myeventafter = $this->getCalendarManager()->isMyFutureEventAfterMonth($year, $month);
+       }
+       
        
        $data = Array(
-           'before' => $this->getMyEventType($isbefore, $myeventbefore),
-           'after' => $this->getMyEventType($isafter, $myeventafter),
+           'is_eventbefore' => $is_eventbefore,
+           'is_eventafter' => $is_eventafter,
+           'is_myeventbefore' => $is_myeventbefore,
+           'is_myeventafter' => $is_myeventafter,
+           'year' => $year,  
+           'month' => $month,
        );
        
        return $this->CreateJsonOkResponse($data);

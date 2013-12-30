@@ -1,6 +1,7 @@
 <script type="text/javascript">
 var event_list = null;
 
+var ajaxUpdateTimer = null; {# used to delay ajax request to update calendar, selector, and event. If users scolls fast, the request will not be sent #}
 var current_month = {{month}};
 var current_year = {{year}};
 var count_retreived_event = 0;
@@ -118,27 +119,28 @@ function update_arrows(year,month)
 {
     abort_ajax(UpdateArrowjqXHR);
     UpdateArrowjqXHR = $.getJSON( Routing.generate('event_get_calendar_arrow_type', {year:year,month:month,_locale:_locale}), function(response){
-        switch(response.data.before){
-            case 'no':
-                $("#monthselector_uparrow").attr("class","calendar_arrow_up_withoutevents_btn");
-                break;
-            case 'yes':
-                $("#monthselector_uparrow").attr("class","calendar_arrow_up_withevents_btn");
-                break;
-            case 'myevent':
+        {# Ensure that received response matches with current month and year#}
+        if ((response.data.month != current_month)||(response.data.year != current_year)){
+            return; {# Mismatch #}
+         }
+            
+        if (response.data.is_eventbefore){
+            if (response.data.is_myeventbefore) {
                 $("#monthselector_uparrow").attr("class","calendar_arrow_up_myevents_btn");
-                break;
+            } else {
+                $("#monthselector_uparrow").attr("class","calendar_arrow_up_withevents_btn");
+            }
+        } else {
+            $("#monthselector_uparrow").attr("class","calendar_arrow_up_withoutevents_btn");
         }
-        switch(response.data.after){
-            case 'no':
-                $("#monthselector_downarrow").attr("class","calendar_arrow_down_withoutevents_btn");
-                break;
-            case 'yes':
-                $("#monthselector_downarrow").attr("class","calendar_arrow_down_withevents_btn");
-                break;
-            case 'myevent':
+        if (response.data.is_eventafter){
+            if (response.data.is_myeventafter) {
                 $("#monthselector_downarrow").attr("class","calendar_arrow_down_myevents_btn");
-                break;
+            } else {
+                $("#monthselector_downarrow").attr("class","calendar_arrow_down_withevents_btn");
+            }
+        } else {
+            $("#monthselector_downarrow").attr("class","calendar_arrow_down_withoutevents_btn");
         }
     });
 }
@@ -153,9 +155,7 @@ function next_month()
         current_year++;
     }
     
-    UpdateMonthSelector();
-    LoadCalendar(current_year, current_month);
-    RetrieveEvents(current_year,current_month);
+    UpdateEventInterface();
 }
 {#**************************************************************************#}
 {# Go to previous month
@@ -168,18 +168,15 @@ function previous_month()
         current_year--;
     }
     
-    UpdateMonthSelector();
-    LoadCalendar(current_year, current_month);
-    RetrieveEvents(current_year,current_month);
+    UpdateEventInterface();
 }
 {#**************************************************************************#}
 {# Updates the month selector with current month and year
 {#**************************************************************************#}
-function UpdateMonthSelector()
+function UpdateSelectorDate()
 {
     $('#monthselector_month').html(month_names[current_month]);
     $('#monthselector_year').html(current_year);
-    update_arrows(current_year,current_month);
 }
 {#**************************************************************************#}
 {# Load the calendar for current month and year
@@ -228,12 +225,24 @@ function RetrieveEvents(year,month)
       }
   });
 }
+
+function UpdateEventInterface()
+{
+    UpdateSelectorDate();
+    
+    if (ajaxUpdateTimer)
+        clearTimeout(ajaxUpdateTimer);
+    
+    ajaxUpdateTimer = setTimeout(function(){
+        update_arrows(current_year,current_month);            
+        LoadCalendar(current_year, current_month);
+        RetrieveEvents(current_year,current_month);
+    },{{ update_ajax_delay }});
+}
 {#**************************************************************************#}
 {# Onload
 {#**************************************************************************#}
 $(function() {
-    UpdateMonthSelector();
-    LoadCalendar(current_year, current_month);
-    RetrieveEvents(current_year,current_month);
+    UpdateEventInterface();
 });
 </script>
