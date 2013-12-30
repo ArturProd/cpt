@@ -16,8 +16,8 @@ class CalendarManager extends BaseManager
      $event = $this->getEventRepository()
         ->createQueryBuilder('e')
             ->Select('e')
-            ->Where('e.begin < :monthdate') // The event begins before current month
-            ->AndWhere('e.end > :currentdatetime') // The event ends after current datetime (it is a future event)
+            ->Where('(e.begin < :monthdate) OR (e.end < :monthdate)') // The event begins or end before current month
+            ->AndWhere('(e.end > :currentdatetime) OR (e.begin > :currentdatetime)') // The event ends or begin after current datetime (it is a future event)
             ->setParameter('monthdate', $monthdate)
             ->setParameter('currentdatetime', $currentdate)
             ->setMaxResults( 1 )
@@ -36,14 +36,14 @@ class CalendarManager extends BaseManager
   public function isFutureEventAfterMonth($year, $month, &$myevent)
   {
       $monthdate = new \DateTime();
-      $monthdate->setDate($year, $month, 1);
+      $monthdate->setDate($year, $month+1, 1); // Adding 1 to the provided month
       $currentdate = new \DateTime();
       
       $event = $this->getEventRepository()
         ->createQueryBuilder('e')
             ->Select('e')
-            ->Where('e.end > :monthdate') // The event ends after current month
-            ->AndWhere('e.end > :currentdatetime') // The event ends after current datetime (it is a future event)
+            ->Where('(e.end >= :monthdate) OR (e.begin >= :monthdate)') // The event ends or begin after current month (remember that event.end can be null!!)
+            ->AndWhere('(e.end > :currentdatetime) OR (e.begin > :currentdatetime)') // The event ends or begin after current datetime (it is a future event)
             ->setParameter('monthdate', $monthdate)
             ->setParameter('currentdatetime', $currentdate)
             ->setMaxResults( 1 )
@@ -80,6 +80,8 @@ class CalendarManager extends BaseManager
                  ->select('count(r.id)')
                  ->Where('r.user = :user_id AND r.event = :event_id')
                  ->setMaxResults( 1 )
+                 ->setParameter('user_id', $user->getId())
+                 ->setParameter('event_id', $event->getId())
                  ->getQuery()->getOneOrNullResult();
           
         return ( $countregistration > 0 );

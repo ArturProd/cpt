@@ -17,14 +17,14 @@ class CalendarController extends BaseController {
    public function getEventSelectorArrowTypeAction($year, $month)
    {
        $myeventbefore = EventInterface::MYEVENT_UNKNOWN;
-       $isbefore = $this->getCalendarManager()->isFutureEventBeforeMonth($year, $month, &$myeventbefore);
+       $isbefore = $this->getCalendarManager()->isFutureEventBeforeMonth($year, $month, $myeventbefore);
        
        $myeventafter = EventInterface::MYEVENT_UNKNOWN;
-       $isafter = $this->getCalendarManager()->isFutureEventAfterMonth($year, $month, &$myeventafter);
+       $isafter = $this->getCalendarManager()->isFutureEventAfterMonth($year, $month, $myeventafter);
        
        $data = Array(
-           'before' => getMyEventType($isbefore, $myeventbefore),
-           'after' => getMyEventType($isafter, $myeventafter),
+           'before' => $this->getMyEventType($isbefore, $myeventbefore),
+           'after' => $this->getMyEventType($isafter, $myeventafter),
        );
        
        return $this->CreateJsonOkResponse($data);
@@ -61,16 +61,11 @@ class CalendarController extends BaseController {
         $nextmonthdate = clone $showdate;
         $nextmonthdate->add(new \DateInterval("P1M"));
         
-        $isfutureventbeforemonth = $this->getCalendarManager()->isFutureEventBeforeMonth($year,$month);
-        $isfutureventaftermonth = $this->getCalendarManager()->isFutureEventAfterMonth($year,$month);
-
                 
         return $this->render('CptEventBundle:Event:calendar.html.twig', array(
                     'currentdate' => $showdate,
                     'previousmonthdate' => $previousmonthdate,
                     'nextmonthdate' => $nextmonthdate,
-                    'isfutureventbeforemonth' => $isfutureventbeforemonth,
-                    'isfutureventaftermonth' => $isfutureventaftermonth,
         ));
     }
 

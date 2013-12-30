@@ -15,6 +15,7 @@ event.button.modify:                  modify
 event.button.manage:                    Manage event
 event.readmore:                         read more
 event.readless:                         read less
+event.noevent_todisplay:                There is no event to display for this month.
 form.ok: Ok
 Monday: Monday
 Tuesday: Tuesday

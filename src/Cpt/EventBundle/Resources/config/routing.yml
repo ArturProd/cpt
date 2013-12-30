@@ -52,7 +52,7 @@ cpt_user_getsearchresult:
         
 event_view_calendar:
     path:     /calendar/{year}/{month}
-    defaults: { _controller: CptEventBundle:Event:viewCalendar }
+    defaults: { _controller: CptEventBundle:Calendar:viewCalendar }
     requirements:
         year:  \d+
         month: \d+

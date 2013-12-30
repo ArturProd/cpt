@@ -44,6 +44,7 @@ event.button.modify:                  modifier
 event.button.manage:                   gérer l'évènement
 event.readmore:                         lire la suite
 event.readless:                         replier
+event.noevent_todisplay:               Il n'y a pas d'évènement à afficher pour ce mois.
 event.book:                             réserver
 event.youhavebooked:                   vous avez réservé
 event.seats:                            place(s)

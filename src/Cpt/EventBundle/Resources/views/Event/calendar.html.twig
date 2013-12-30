@@ -1,14 +1,14 @@
 
 {#% set month = calendr_month(year, month) %#}
 {% set year = calendr_year(currentdate|date("Y")) %}
-{% set month = calendr_month(currentdate|date("M")) %}
+{% set month = calendr_month(currentdate|date("Y"), currentdate|date("M")) %}
 {% set events = calendr_events(month) %}
 {% set cell_class = 'unknown' %}
 
 <table class="cal_table">
     {% spaceless %}
     {% for week in month %}
-    <tr>
+    <tr> 
         {% for day in week %}
                 {% set dayevents = events.find(day) %}
                 {% if month.contains(day.begin) and (dayevents|length > 0) %}
@@ -18,7 +18,11 @@
                 {% elseif not month.contains(day.begin) and (dayevents|length > 0) %}
                     {% set cell_class = 'cal_day_outmonth_withevents' %}
                 {% else %}{% set cell_class ='cal_day_outmonth_noevents'%}{% endif %}
-                <td class='cal_day'><div class="{{cell_class}}"><a href="#">{{day.begin|date("j") }}</a></div></td>
+                <td class='cal_day'>
+                    <div class="{{cell_class}}">
+                        <a href="#">{{day.begin|date("j") }}</a>
+                    </div>
+                </td>
         {% endfor %}
     </tr>
     {% endfor %}

@@ -131,8 +131,9 @@ hr.alaune{
 /** Post Body **/
 .post_body{
     display: block;
-    width: 100%;
+    width: 90%;
     margin-top:0px;
+    margin-left: 10%;
     padding: 15px;
     font-size: 12px;
     overflow: hidden;

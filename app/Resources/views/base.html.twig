@@ -80,12 +80,20 @@
                 }
             });
         }
+{#****************************************************************************#}
+{# Aborts the ajax request from XHR object
+{#****************************************************************************#}        
+        function abort_ajax(jqXHR) {
+            if (jqXHR && jqXHR.readystate !== 4){
+                jqXHR.abort();
+            }
+        }
         
             $(function() {
 {#****************************************************************************#}
 {# Default Ajax error behavior
 {#****************************************************************************#}
-                $.ajaxSetup({
+                /*$.ajaxSetup({
                     error: function(jqXHR, textStatus, errorThrown ) {
                         if (jqXHR.status === 0) {
                             ModalDialog(null, null, "Non connecté", "Une erreur est subvenue.<BR/>Reconnectez-vous et essayez encore.", "Ok");
@@ -108,7 +116,7 @@
                             console.log(new Error().stack);
                         {% endif %}
                     }
-                });
+                });*/
             });
 {#****************************************************************************#}
 {# Post an Ajax form

@@ -3,6 +3,12 @@ var event_list = null;
 
 var current_month = {{month}};
 var current_year = {{year}};
+var count_retreived_event = 0;
+var calendarjqXHR = null; {# ajax requeset XHR, used to abort the request when switching from one month to the other #}
+var EventlistjqXHR = null;
+var UpdateArrowjqXHR = null;
+var EventviewjqXHR = []; {# will store the XHR in an array #}
+
 
 var month_names = new Array();
 month_names[1] = "{{'january'|trans}}";
@@ -35,30 +41,26 @@ function close_manage_event()
 {
     $("#popup_new_event").hide();
     DisplayOpacityMask(false);
-}         
+}
 {#**************************************************************************#}
-{# Retreives a list of events from server
+{# Toggle visibility of event container
 {#**************************************************************************#}
-function RetrieveEvents(year,month)
+function toggle_event_container(visible)
 {
-  $.getJSON( Routing.generate('event_get_events_for_month', {year:year, month:month,_locale:_locale}), function(response){
-      if (response.status === "ok")
-      {         
-        event_list = $.parseJSON(response.data).events;
-
-        for(i=0;i<event_list.length;++i) {
-            retrieveEventView(event_list[i].id);
-
-        }
-      }
-  });
+    if (visible){
+        $('#loading_event').hide();
+        $('#eventcontainer').show();
+    } else {
+        $('#eventcontainer').hide(); {# clear the event list container #}
+        $('#loading_event').show();
+    }
 }
 {#**************************************************************************#}
 {# Retreives the html view of an event from server
 {#**************************************************************************#}
 function retrieveEventView(id)
 {
-    {# Removes existing container if any #}
+    {# Removes existing container for this event, if any #}
     $('#eventcontainer'+id).remove();
     
     {# Creates the DOM container (Div element) #}           
@@ -67,13 +69,19 @@ function retrieveEventView(id)
         class: 'eventcontainer'
     }).appendTo('#eventcontainer');
 
+
     {# Retreive the event view from server and add it to previously created DOM element #}
-    $.get( Routing.generate('event_view', {id:id,_locale:_locale}), function(response){
+    EventviewjqXHR.push( $.get( Routing.generate('event_view', {id:id,_locale:_locale}), function(response){
           if (response.status === "ok")
           {
              $( "#eventcontainer" + id ).html( response.data );
+             count_retreived_event++;
+             
+             if (count_retreived_event === event_list.length){
+                 toggle_event_container(true);
+             }
           }
-     });
+     }));
 }
 {#**************************************************************************#}
 {# Toggles event with given id, close all others
@@ -108,14 +116,28 @@ function event_content_toggle(id,open)
 {#**************************************************************************#}
 function update_arrows(year,month)
 {
-    $.getJSON( Routing.generate('event_get_calendar_arrow_type', {year:year,month:month,_locale:_locale}), function(response){
+    abort_ajax(UpdateArrowjqXHR);
+    UpdateArrowjqXHR = $.getJSON( Routing.generate('event_get_calendar_arrow_type', {year:year,month:month,_locale:_locale}), function(response){
         switch(response.data.before){
             case 'no':
-                $("#monthselector_uparrow").attr("class",);
+                $("#monthselector_uparrow").attr("class","calendar_arrow_up_withoutevents_btn");
                 break;
             case 'yes':
+                $("#monthselector_uparrow").attr("class","calendar_arrow_up_withevents_btn");
                 break;
-            case 'myevent'
+            case 'myevent':
+                $("#monthselector_uparrow").attr("class","calendar_arrow_up_myevents_btn");
+                break;
+        }
+        switch(response.data.after){
+            case 'no':
+                $("#monthselector_downarrow").attr("class","calendar_arrow_down_withoutevents_btn");
+                break;
+            case 'yes':
+                $("#monthselector_downarrow").attr("class","calendar_arrow_down_withevents_btn");
+                break;
+            case 'myevent':
+                $("#monthselector_downarrow").attr("class","calendar_arrow_down_myevents_btn");
                 break;
         }
     });
@@ -134,7 +156,6 @@ function next_month()
     UpdateMonthSelector();
     LoadCalendar(current_year, current_month);
     RetrieveEvents(current_year,current_month);
-    UpdateArrows(current_year,current_month);
 }
 {#**************************************************************************#}
 {# Go to previous month
@@ -158,13 +179,54 @@ function UpdateMonthSelector()
 {
     $('#monthselector_month').html(month_names[current_month]);
     $('#monthselector_year').html(current_year);
+    update_arrows(current_year,current_month);
 }
 {#**************************************************************************#}
 {# Load the calendar for current month and year
 {#**************************************************************************#}
 function LoadCalendar(year,month)
+{ 
+    if (calendarjqXHR && calendarjqXHR.readystate !== 4){ {# Abort any previously sent ajax request. readystate 4 = DONE  #}
+        calendarjqXHR.abort();
+    }
+   
+    calendarjqXHR = $.get(Routing.generate('event_view_calendar', {year:year,month:month,_locale:_locale}),function(data){
+        $('#calendar').html(data);
+    });
+}
+{#**************************************************************************#}
+{# Retreives a list of events from server
+{#**************************************************************************#}
+function RetrieveEvents(year,month)
 {
-    $('#calendar').load(Routing.generate('event_view_calendar', {year:year,month:month,_locale:_locale}));
+    {# abort any previously sent ajax requests #}
+    abort_ajax(EventlistjqXHR);
+    
+    {# also abort the ajax request to retreive event view #}
+    EventviewjqXHR.forEach(function(jqXHR){abort_ajax(jqXHR);});
+    EventviewjqXHR = [];
+    
+    EventlistjqXHR = $.getJSON( Routing.generate('event_get_events_for_month', {year:year, month:month,_locale:_locale}), function(response){
+      
+      $('#eventcontainer').html('');
+      toggle_event_container(false);
+      count_retreived_event = 0;
+      
+      if (response.status === "ok")
+      {         
+        event_list = $.parseJSON(response.data).events;
+
+        for(i=0;i<event_list.length;++i) {
+            retrieveEventView(event_list[i].id);
+        }
+        
+        if (event_list.length === 0) {
+            $('#eventcontainer').html("{{'event.noevent_todisplay'|trans }}");
+            toggle_event_container(true);
+        }
+            
+      }
+  });
 }
 {#**************************************************************************#}
 {# Onload

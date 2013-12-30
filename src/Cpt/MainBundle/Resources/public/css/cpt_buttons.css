@@ -78,6 +78,11 @@
       display: inline-block;
       color: white;
       margin-bottom: 15px;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      -o-user-select: none;
+      user-select: none;
 }
 
 .calendar_arrow_down_withevents_btn{
@@ -87,6 +92,11 @@
       display: inline-block;
       color: white;
       margin-top: 15px;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      -o-user-select: none;
+      user-select: none;
 }
 
 .calendar_arrow_up_withoutevents_btn{
@@ -95,7 +105,12 @@
       min-width: 38px;
       display: inline-block;
       color: white;
-      margin-top: 15px;
+      margin-bottom: 15px;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      -o-user-select: none;
+      user-select: none;
 }
 
 .calendar_arrow_down_withoutevents_btn{
@@ -104,7 +119,12 @@
       min-width: 38px;
       display: inline-block;
       color: white;
-    margin-bottom: 15px;
+      margin-top: 15px;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      -o-user-select: none;
+      user-select: none;
 }
 
 .calendar_arrow_up_myevents_btn{
@@ -113,7 +133,12 @@
       min-width: 38px;
       display: inline-block;
       color: white;
-      margin-top: 15px;
+      margin-bottom: 15px;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      -o-user-select: none;
+      user-select: none;
 }
 
 .calendar_arrow_down_myevents_btn{
@@ -123,6 +148,11 @@
       display: inline-block;
       color: white;
       margin-top: 15px;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      -o-user-select: none;
+      user-select: none;
 }
 
 .btn_trash{

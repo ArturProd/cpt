@@ -12,7 +12,7 @@ use Ivory\GoogleMap\Events\Event as GMapEvent;
 class EventController extends BaseController {
 
     public function indexAction() {
-        $currentdate = $this->getEventManager()->GetNextEventDateOrCurrent(new \Datetime);
+        $currentdate = $this->getCalendarManager()->GetNextEventDateOrCurrent(new \Datetime);
 
         
         return $this->render('CptEventBundle:Event:index.html.twig', array(
