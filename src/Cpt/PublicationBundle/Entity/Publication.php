@@ -294,5 +294,3 @@ class Publication extends Commentable implements PublicationInterface {
 
     // </editor-fold>
 }
-
-?>

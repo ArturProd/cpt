@@ -36,13 +36,19 @@
 
 
 .cal_table tr {
-        height: 18px;
+        height: 30px;
+}
+
+.cal_table tr:first-child td {
+    color: grey;
+    font-size: 20px;
 }
 
 .cal_table tr td{
     text-align: center;
-    border-right:solid black 1px;
-    width: 18px;
+    border-right:solid grey 1px;
+    width: 30px;
+    height: 30px;
 }
 
 .cal_table tr td:last-child{
@@ -51,36 +57,57 @@
 
 .cal_table a
 {
-        font-size: 14px;
+    display: inline-block;
+    margin-top: 4px;
+    font-size: 18px;
 }
 
 .cal_day_inmonth_withevents,
 .cal_day_inmonth_noevents,
 .cal_day_outmonth_withevents,
-.cal_day_outmonth_noevents
+.cal_day_outmonth_noevents,
+.cal_day_inmonth_withmyevents
 {
-    border-radius: 50%;
-    padding: 2px;
-    margin: 2px;
+
+}
+
+.cal_day_outmonth_withevents > a,
+.cal_day_outmonth_noevents > a
+{
+    color: lightgrey;
+}
+
+.cal_day_inmonth_noevents > a
+{
+    color: black;
+}
+.cal_day_inmonth_withmyevents > a,
+.cal_day_inmonth_withevents > a
+{
+    color: white;
+}
+
+.cal_day_inmonth_withmyevents{
+    background: url('../images/evenements/marquage-date-mon-cpt-calendrier.png') no-repeat;
+    height: 29px;
+    width: 29px;
 }
 
 .cal_day_inmonth_withevents{
-    background-color: lightblue;
-    color: black;
+    background: url('../images/evenements/marquage-date-cpt-calendrier.png') no-repeat;
+    height: 29px;
+    width: 29px;
 }
 
 .cal_day_inmonth_noevents{
     background-color: transparent;
-    color:  black;
 }
 
 .cal_day_outmonth_withevents{
-    background-color: grey;
-    color: lightgrey;
+
 }
 
 .cal_day_outmonth_noevents{
-    background-color: transparent;
-    color: lightgrey;
+
 }
 

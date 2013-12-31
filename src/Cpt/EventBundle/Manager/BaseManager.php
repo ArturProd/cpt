@@ -7,20 +7,39 @@ use Cpt\PublicationBundle\Manager\BaseManager as CptBaseManager;
 
 abstract class BaseManager extends CptBaseManager
 {
-    function getCalendarManager()
+    protected function getCalendarManager()
     {
         return $this->container->get('cpt.calendar.manager');
     }
     
-    function getRegistrationManager()
+    protected function getRegistrationManager()
     {
         return $this->container->get('cpt.registration.manager');
     }
     
-    function getEventManager()
+    protected function getEventManager()
     {
         return $this->container->get('cpt.event.manager');
     }
+    
+    /**
+     *  Add query part to only select future events
+     * 
+     * @param type $querybuilder
+     */
+    protected function getFutureEventQueryPart($querybuilder){            
+        $querybuilder->AndWhere('(e.end > :now_forfutureevent) OR (e.begin > :now_forfutureevent)')
+            ->setParameter('now_forfutureevent', new \DateTime());            
+    }
+    
+    /**
+     * Add query part to only select past events
+     * 
+     * @param type $querybuilder
+     */
+    protected function getPastEventQueryPart($querybuilder){
+        $querybuilder->AndWhere('e.end < :now_forpastevent')
+                    ->setParameter('now_forpastevent', new \DateTime());
+    }
+            
 }
-
-?>

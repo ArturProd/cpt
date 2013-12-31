@@ -6,11 +6,19 @@ use Cpt\MainBundle\Controller\BaseController as BaseController;
 use Cpt\EventBundle\Entity as Entity;
 use Cpt\EventBundle\Form\Type;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request as Request;
 use Symfony\Component\HttpFoundation\Response;
 use Ivory\GoogleMap\Events\Event as GMapEvent;
 
 class EventController extends BaseController {
 
+    // <editor-fold defaultstate="collapsed" desc="Actions">
+
+    /**
+     * Displays the whole Event Section
+     * 
+     * @return type
+     */
     public function indexAction() {
         $currentdate = $this->getCalendarManager()->GetNextEventDateOrCurrent(new \Datetime);
         $update_ajax_delay = $this->container->getParameter("cpt.event.update_ajax_delay");
@@ -23,9 +31,11 @@ class EventController extends BaseController {
     }
 
     /**
+     * Form to create or edit an event
      * 
      * @param type $id
-     * @return type
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @throws \InvalidArgumentException
      */
     public function newAction($id = null) {
         $request = $this->getRequest();
@@ -91,10 +101,15 @@ class EventController extends BaseController {
     }
 
     /*
+
+    /**
      * Compares the last update timestamp of an event with the provided timestamp.
      * Returns a json object with value "true" if the event was updated in db since the provided timestamp, "false" otherwise
+     *
+     * @param type $id
+     * @param type $unixtimestamp
+     * @return type
      */
-
     public function wasEventUpdatedAction($id, $unixtimestamp) {
         $this->getPermissionManager()->RestrictAccessToLoggedIn();
         $this->getPermissionManager()->RestrictAccessToAjax();
@@ -109,6 +124,11 @@ class EventController extends BaseController {
         return $this->CreateJsonOkResponse($lastupdatedate > $unixtimestamp);
     }
 
+    /**
+     * Downloads the list of attendees for a given event
+     * 
+     * @param type $eventid
+     */
     public function downloadAttendeesAction($eventid) {
         $this->getPermissionManager()->RestrictAccessToLoggedIn();
 
@@ -121,13 +141,30 @@ class EventController extends BaseController {
         $this->SendCsvFileResponse($content);
     }
 
- 
-    public function getEventsForMonthAction($year, $month) {
-        if ($month > 12)
+    /**
+     * Get the list of Events for a month
+     * Returns a Json response
+     * 
+     * Request parameters:
+     *      - 'myevents': if present, retreives only "myevents"
+     *      - 'pastevents": if present, retreives only past events
+     * 
+     * @param type $year
+     * @param type $month
+     * @return JsonResponse
+     */
+    public function getEventsForMonthAction(Request $request, $year, $month) {
+        if ($month > 12){
             $this->ThrowBadRequestException();
+        }
+        
+        $options = Array();
+        if ($request->request->has('myevents'))     {  $options['myevents'] = true; }
+        if ($request->request->has('pastevents'))   {  $options['pastevents'] = true; }
+        if ($request->request->has('futureevents')) {  $options['futureevents'] = true; } 
 
         $month = $this->getCalendR()->getMonth($year, $month);
-        $eventCollection = $this->getCalendR()->getEvents($month);
+        $eventCollection = $this->getCalendR()->getEvents($month, $options);
 
         $serializer = $this->getSerializer();
         $serializedevents = $serializer->serialize($eventCollection, 'json');
@@ -135,6 +172,14 @@ class EventController extends BaseController {
         return $this->CreateJsonOkResponse($serializedevents);
     }
 
+    /**
+     * Single Event Display
+     * 
+     * Returns the Json response with html for a single event display
+     * 
+     * @param type $id
+     * @return JsonResponse
+     */
     public function getEventAction($id) {
         $event = $this->getEventManager()->getEventById($id);
 
@@ -145,6 +190,54 @@ class EventController extends BaseController {
         return $this->CreateJsonOkResponse($html_string);
     }
 
+    /**
+     * Displays a user search field
+     * 
+     * @return type
+     */
+    public function userSearchAction() {
+        $params = Array();
+        return $this->render('CptMainBundle:Default:searchuser.html.twig', $params);
+    }
+
+    /**
+     * Returns the user search results
+     * 
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function userGetSearchResultAction() {
+        $request = $this->getRequest();
+
+        if ($request->isXmlHttpRequest()) {
+            $search_string = $request->query->get('search_string');
+            //$exclude_id = $request->query->get('exclude_id');
+
+            $users = $this->getUserManager()->searchUser($search_string);
+
+            $result = Array();
+            foreach ($users as $user) {
+                $result[] = Array("id" => $user->getId(), "username" => $user->getUserName(), "firstname" => $user->getFirstname(), "lastname" => $user->getLastname());
+            }
+
+            $response = new Response(json_encode($result));
+            $response->headers->set('Content-Type', 'application/json');
+
+            return $response;
+        } else {
+            return new Response("Mauvaise méthode d accés", 404);
+        }
+    }
+    // </editor-fold>
+
+    // <editor-fold defaultstate="collapsed" desc="Protected">
+
+    /**
+     * Get the view to edit an event
+     * 
+     * @param type $event
+     * @param type $form
+     * @return type
+     */
     protected function GetEventEditView($event, $form) {
         $map = $this->get('ivory_google_map.map');
         $map->setLanguage($this->get('request')->getLocale());
@@ -156,10 +249,13 @@ class EventController extends BaseController {
         ));
     }
 
-    protected function set_event_registration_from_json($event, $registration_json_array, $eventqueue_json_array) {
-        
-    }
-
+    /**
+     * Set the Event#Registrations from a json encoded array (??)
+     * 
+     * @param type $event
+     * @param type $registration_json_array
+     * @throws \InvalidArgumentException
+     */
     protected function SetJsonRegistrationCollection($event, $registration_json_array) {
         if ($registration_json_array === null) {
             throw new \InvalidArgumentException("Registration list is null or is not an array");
@@ -193,46 +289,5 @@ class EventController extends BaseController {
 
         return $this->getRegistrationManager()->CreateRegistration($event, $user, $registration_json->numparticipants, $registration_json->organizer ? true : false );
     }
-
-    public function userSearchAction() {
-        $params = Array();
-        return $this->render('CptMainBundle:Default:searchuser.html.twig', $params);
-    }
-
-    public function userGetSearchResultAction() {
-        $request = $this->getRequest();
-
-        if ($request->isXmlHttpRequest()) {
-            $search_string = $request->query->get('search_string');
-            //$exclude_id = $request->query->get('exclude_id');
-
-            $users = $this->getUserManager()->searchUser($search_string);
-
-            $result = Array();
-            foreach ($users as $user) {
-                $result[] = Array("id" => $user->getId(), "username" => $user->getUserName(), "firstname" => $user->getFirstname(), "lastname" => $user->getLastname());
-            }
-
-            $response = new Response(json_encode($result));
-            $response->headers->set('Content-Type', 'application/json');
-
-            return $response;
-        } else {
-            return new Response("Mauvaise méthode d accés", 404);
-        }
-    }
-
-    protected function setFlashMessage($title, $content) {
-        $this->get('session')->getFlashBag()->add(
-                'popup_message', $title
-        );
-        $this->get('session')->getFlashBag()->add(
-                'popup_message', $content
-        );
-    }
-
-    protected function getUserManager() {
-        return $this->get('fos_user.user_manager');
-    }
-
+    // </editor-fold>
 }

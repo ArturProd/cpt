@@ -29,7 +29,6 @@ class Event extends Publication implements EventInterface
         $this->maxnumattendees = 3;
         $this->count_queued_attendees = 0;
         $this->count_total_attendees = 0;
-        $this->published = true;
         $this->restricted = false;
         $this->approved = false;
         $this->country_code = "FR";
@@ -46,8 +45,10 @@ class Event extends Publication implements EventInterface
         $this->location_long = "";
         $this->location_lat = "";
         
-        $this->ismyevent = EventInterface::MYEVENT_UNKNOWN;
+        $this->participationlevel = EventInterface::PARTICIPATIONLEVEL_UNKNOWN;
     }
+    
+
     
     public function UpdateCounters()
     {
@@ -115,16 +116,42 @@ class Event extends Publication implements EventInterface
      }
     
     /* Unmapped */
-    protected $ismyevent;
+    protected $participationlevel;
+    
+    /*
+    public function isParticipating($participation_mask)
+    {
+        if ($this->participationlevel < 0) {
+            return EventInterface::PARTICIPATIONLEVEL_UNKNOWN;
+        }
+        
+        return (($this->participationlevel ^ $participation_mask) > 0); // Xor 
+    }*/
     
     public function isMyEvent()
     {
-        return $this->ismyevent;
+        return $this->participationlevel > 0;
     }
     
-    public function setMyEvent($ismyevent)
+    public function computeParticipationLevel($is_author, $is_attendee, $is_organizer)
     {
-        $this->ismyevent = $ismyevent;
+        $result = 0;
+        
+        if ($is_author){
+            $result = $result | EventInterface::PARTICIPATIONLEVEL_AUTHOR;
+        }
+        
+        if ($is_attendee){
+            $result = $result | EventInterface::PARTICIPATIONLEVEL_ATTENDEE;
+        }
+        
+        if ($is_organizer){
+            $result = $result | EventInterface::PARTICIPATIONLEVEL_ORGANIZER;
+        }
+        
+        $this->participationlevel = $result;
+    
+        return $result;
     }
        
     public function getUid()
@@ -237,12 +264,6 @@ class Event extends Publication implements EventInterface
      * @Expose
      */
     protected $count_total_attendees;
-
-    /**
-     * @var boolean
-     * @Expose
-     */
-    protected $published;
 
     /**
      * @var boolean
@@ -433,35 +454,13 @@ class Event extends Publication implements EventInterface
         return $this->count_total_attendees;
     }
 
-    /**
-     * Set published
-     *
-     * @param boolean $published
-     * @return BaseEvent
-     */
-    public function setPublished($published)
-    {
-        $this->published = $published == null ? false : $published;;
-        $this->published = true; // TODO: feature not implemented
-
-        return $this;
-    }
-
-    /**
-     * Get published
-     *
-     * @return boolean 
-     */
-    public function getPublished()
-    {
-        return $this->published;
-    }
 
     /**
      * Set restricted
      *
      * @param boolean $restricted
      * @return BaseEvent
+     * @todo Eventually events could be restricted to limited audience
      */
     public function setRestricted($restricted)
     {

@@ -7,11 +7,32 @@
 
 <table class="cal_table">
     {% spaceless %}
+    <tr>
+        <td>{{ 'Monday'|trans|first }}</td>
+        <td>{{ 'Tuesday'|trans|first }}</td>
+        <td>{{ 'Wednesday'|trans|first }}</td>
+        <td>{{ 'Thursday'|trans|first }}</td>
+        <td>{{ 'Friday'|trans|first }}</td>
+        <td>{{ 'Saturday'|trans|first }}</td>
+        <td>{{ 'Sunday'|trans|first }}</td>
+    </tr>
     {% for week in month %}
     <tr> 
         {% for day in week %}
 
                 {% set dayevents = events.find(day) %}
+        
+                {% if not month.contains(day.begin) %}
+                      {% set cell_class = 'cal_day_outmonth_noevents' %}
+                {% elseif (dayevents|length > 0) %}
+                    {% if cpt_event_hasMyEvent(dayevents)%}
+                      {% set cell_class = 'cal_day_inmonth_withmyevents' %}
+                    {% else %}
+                        {% set cell_class = 'cal_day_inmonth_withevents' %}
+                    {% endif %}
+                {% else %}
+                      {% set cell_class = 'cal_day_inmonth_noevents' %}
+                {% endif %}
                 {#
                 {% if month.contains(day.begin) and (dayevents|length > 0) %}
                     {% set cell_class = 'cal_day_inmonth_withevents' %}
@@ -21,11 +42,7 @@
                     {% set cell_class = 'cal_day_outmonth_withevents' %}
                 {% else %}{% set cell_class ='cal_day_outmonth_noevents'%}{% endif %}
                 #}
-                    {% if month.contains(day.begin) and (dayevents|length > 0) %}
-                        {% set cell_class = 'cal_day_inmonth_withevents' %}
-                    {% else  %}
-                        {% set cell_class = "" %}
-                    {% endif %}
+  
                 <td class='cal_day'>
                     <div class="{{cell_class}}">
                         <a href="#">{{day.begin|date("j") }}</a>

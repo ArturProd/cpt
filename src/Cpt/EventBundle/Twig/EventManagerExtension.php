@@ -43,6 +43,7 @@ class EventManagerExtension extends \Twig_Extension
             'cpt_event_isOrganizer'    => new \Twig_Function_Method($this, 'isOrganizer'),
             'cpt_event_isBeginEndSameDay'    => new \Twig_Function_Method($this, 'isBeginEndSameDay'),
             'cpt_event_getRegistration'    => new \Twig_Function_Method($this, 'getRegistration'),
+            'cpt_event_hasMyEvent'    => new \Twig_Function_Method($this, 'hasMyEvent'),
         ); 
     }
 
@@ -66,6 +67,16 @@ class EventManagerExtension extends \Twig_Extension
     }
 
 
+    public function hasMyEvent($eventcollection){
+        foreach($eventcollection as $event){
+            if ($event->isMyEvent()){
+                return true;
+            }
+        }
+        
+        return false;
+    }
+    
     /**
      * @param \Cpt\BlogBundle\Model\PostInterface $post
      *

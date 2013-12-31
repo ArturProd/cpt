@@ -18,10 +18,12 @@ use Cpt\EventBundle\Interfaces\Entity\LocationInterface as LocationInterface;
  */
 interface EventInterface extends CalendREventInterface, PublicationInterface, LocationInterface{
     
-    const MYEVENT_UNKNOWN  = 0;
-    const MYEVENT_YES     = 1;
-    const MYEVENT_NO = 2;
-     
+    const PARTICIPATIONLEVEL_UNKNOWN = -1;
+    const PARTICIPATIONLEVEL_NOPARTICIPATION = 0;
+    const PARTICIPATIONLEVEL_AUTHOR = 2;
+    const PARTICIPATIONLEVEL_ORGANIZER  = 4;
+    const PARTICIPATIONLEVEL_ATTENDEE  = 8;
+
      function UpdateCounters();
 
 
@@ -49,5 +51,3 @@ interface EventInterface extends CalendREventInterface, PublicationInterface, Lo
      function setRegistrationAllowed($registrationAllowed);
      function getRegistrationAllowed();
 }
-
-?>

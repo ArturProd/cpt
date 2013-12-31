@@ -76,6 +76,29 @@ class RegistrationManager extends BaseManager implements RegistrationManagerInte
             ->getResult();
     }
     
+    public function UpdateParticipationLevel(EventInterface $event, UserInterface $user)
+    {
+        if ((!$event) || (!$user)){
+            return;
+        } 
+    
+        $userregistration = $this->getRegistrationRepository()
+            ->createQueryBuilder('r')
+                ->select('r')
+                ->Where('u.user = :user_id AND u.event = :event_id')
+                ->setParameter('user_id', $user->getId())
+                ->setParameter('event_id', $event->getId())
+            ->getQuery()
+            ->getArrayResult();
+        
+        
+        $is_author = ($event->getAuthor()->getId() == $user->getId());
+        $is_attendee = !empty($userregistration);
+        $is_organizer = false;
+ 
+        $event->computeParticipationLevel($is_author, $is_attendee, $is_organizer);
+        
+    }
 
     public function setOrganizers(EventInterface $event, $user_array)
     {

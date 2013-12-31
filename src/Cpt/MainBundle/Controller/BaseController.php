@@ -181,5 +181,15 @@ class BaseController extends Controller {
     public function ThrowInternalServerError($error_message = "Internal Error") {
         throw new Exception\HttpException(500, $error_message);
     }
+    
+    
+    protected function setFlashMessage($title, $content) {
+        $this->get('session')->getFlashBag()->add(
+                'popup_message', $title
+        );
+        $this->get('session')->getFlashBag()->add(
+                'popup_message', $content
+        );
+    }
 
 }
