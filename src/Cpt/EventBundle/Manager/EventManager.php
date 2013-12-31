@@ -122,7 +122,7 @@ class EventManager extends BaseManager implements EventManagerInterface {
     protected function getEventsBeginingBetween(\DateTime $begin, \DateTime $end, $options) {
         $qb = $this->getEventRepository()
                         ->createQueryBuilder('e')
-                        ->Select('e', 'r')
+                        ->Select('e')
                         ->Where('e.begin >= :from')
                         ->AndWhere('e.begin < :to') // We don't care about event end date: if begining is in a period, then the event is returned
                         ->AndWhere('e.enabled = :enabled')
@@ -130,11 +130,11 @@ class EventManager extends BaseManager implements EventManagerInterface {
                         ->setParameter('to', $end)
                         ->setParameter('enabled', true);
         
-            if ($options['pastevents']){
+            if (array_key_exists('pastevents', $options)){
                 $this->getPastEventQueryPart($qb);
             }
             
-            if ($options['futureevents']){
+            if (array_key_exists('futureevents', $options)){
                 $this->getFutureEventQueryPart($qb);
             }
       
@@ -158,6 +158,7 @@ class EventManager extends BaseManager implements EventManagerInterface {
                 ->createQueryBuilder('e')
                 ->Select('e', 'r')
                 ->leftJoin('e.registrations', 'r', 'WITH', 'IDENTITY(r.user) = :userid')
+                ->AndWhere('(IDENTITY(e.author) = :userid) OR (IDENTITY(r.user) = :userid)')
                 ->Where('e.begin >= :from')
                 ->AndWhere('e.begin < :to') // We don't care about event end date: if begining is in a period, then the event is returned
                 ->setParameter('from', $begin)

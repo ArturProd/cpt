@@ -23,6 +23,14 @@
         <div id="calendar">
         </div>
     </div>
+    <hr class="line_separator"/>
+    <div id="events_filter">
+        <ul >
+            <li id="events_filter_all" onclick="Set_filter_events(FILTER_ALLEVENTS);UpdateEventInterface();">{{'event.filter.all'|trans}}</li>
+            <li id="events_filter_myevents" onclick="Set_filter_events(FILTER_MYEVENTS);UpdateEventInterface();">{{'event.filter.myevents'|trans}}</li>
+            <li id="events_filter_pastevents" onclick="Set_filter_events(FILTER_PASTEVENTS);UpdateEventInterface();">{{'event.filter.pastevents'|trans}}</li>
+        </ul>
+    </div>
     <div id="loading_event" class="loading"></div>
     <div id="eventcontainer">
     </div>

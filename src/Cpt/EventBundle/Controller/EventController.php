@@ -159,10 +159,13 @@ class EventController extends BaseController {
         }
         
         $options = Array();
-        if ($request->request->has('myevents'))     {  $options['myevents'] = true; }
-        if ($request->request->has('pastevents'))   {  $options['pastevents'] = true; }
-        if ($request->request->has('futureevents')) {  $options['futureevents'] = true; } 
-
+        if ($request->query->has('filter')){
+            switch($request->query->get('filter')){
+                case 'myevents':  $options['myevents'] = true; break;
+                case 'pastevents':  $options['pastevents'] = true; break;
+            }
+        }
+        
         $month = $this->getCalendR()->getMonth($year, $month);
         $eventCollection = $this->getCalendR()->getEvents($month, $options);
 

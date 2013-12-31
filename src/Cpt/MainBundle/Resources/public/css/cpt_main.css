@@ -19,7 +19,6 @@ body{
 
 * {
   font-family: 'Noto Sans', sans-serif, Geneva, 'Gill Sans', Tahoma, 'GentiumBasicRegular';
-  font-size: 10px;
 }
 
 p {
@@ -263,3 +262,12 @@ border: 0px;
  .ui-widget-content, .ui-widget-content{
      background-color: white;
  }
+ 
+ 
+hr.line_separator{
+    border-top-width: 1px;
+    border-top-color: lightgray;
+    width: 100%;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}

@@ -1,4 +1,8 @@
 <script type="text/javascript">
+const FILTER_ALLEVENTS = 'allevents';
+const FILTER_MYEVENTS = 'myevents';
+const FILTER_PASTEVENTS = 'pastevents';
+
 var event_list = null;
 
 var ajaxUpdateTimer = null; {# used to delay ajax request to update calendar, selector, and event. If users scolls fast, the request will not be sent #}
@@ -9,7 +13,7 @@ var calendarjqXHR = null; {# ajax requeset XHR, used to abort the request when s
 var EventlistjqXHR = null;
 var UpdateArrowjqXHR = null;
 var EventviewjqXHR = []; {# will store the XHR in an array #}
-
+var event_filter_value = FILTER_ALLEVENTS; {# 1: all, 2: myevents, 3: pastevents #}
 
 var month_names = new Array();
 month_names[1] = "{{'january'|trans}}";
@@ -25,7 +29,23 @@ month_names[10] = "{{'october'|trans}}";
 month_names[11] = "{{'november'|trans}}";
 month_names[12] = "{{'december'|trans}}";
 
+{#****************************************************************************#}
+{# Switches event filter
+{#  1: all, 2: my events, 3: past events
+{#****************************************************************************#}
+function Set_filter_events(value)
+{
+    event_filter_value = value;
+    
+    $("#events_filter_all").toggleClass("cpt_blue", value === FILTER_ALLEVENTS);
+    $("#events_filter_myevents").toggleClass("cpt_blue", value === FILTER_MYEVENTS);
+    $("#events_filter_pastevents").toggleClass("cpt_blue", value === FILTER_PASTEVENTS);
+    
+    $("#events_filter_all").toggleClass("cpt_grey", value !== FILTER_ALLEVENTS);
+    $("#events_filter_myevents").toggleClass("cpt_grey", value !== FILTER_MYEVENTS);
+    $("#events_filter_pastevents").toggleClass("cpt_grey", value !== FILTER_PASTEVENTS);
 
+}
 {#**************************************************************************#}
 {# Load and display popup to manage an event
 {#**************************************************************************#}
@@ -203,7 +223,7 @@ function RetrieveEvents(year,month)
     EventviewjqXHR.forEach(function(jqXHR){abort_ajax(jqXHR);});
     EventviewjqXHR = [];
     
-    EventlistjqXHR = $.getJSON( Routing.generate('event_get_events_for_month', {year:year, month:month,_locale:_locale}), function(response){
+    EventlistjqXHR = $.getJSON( Routing.generate('event_get_events_for_month', {year:year, month:month,_locale:_locale}),{filter:event_filter_value}, function(response){
       
       $('#eventcontainer').html('');
       toggle_event_container(false);
@@ -243,6 +263,7 @@ function UpdateEventInterface()
 {# Onload
 {#**************************************************************************#}
 $(function() {
+    Set_filter_events(FILTER_ALLEVENTS);
     UpdateEventInterface();
 });
 </script>

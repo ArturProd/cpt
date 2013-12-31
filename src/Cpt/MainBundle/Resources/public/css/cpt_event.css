@@ -14,7 +14,7 @@
 .event_header{
     display: block;
     color: #066FB2;
-    font-size: 24px;
+    font-size: 14px;
     font-weight: bold;
     height: auto;
     overflow: hidden;
@@ -53,4 +53,16 @@
 
 .event_content{
     border: 1px solid transparent; /* Tries to fix the jquery slideup jump bug */
+}
+
+#events_filter > ul {
+    list-style: none;
+    margin: 0px 0px 10px 0px;
+}
+#events_filter > ul > li {
+    padding-right: 15px;
+    font-size: 14px;
+    vertical-align: middle;    
+    display: inline-block;
+    cursor: pointer; cursor: hand;
 }
