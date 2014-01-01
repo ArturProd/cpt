@@ -11,6 +11,9 @@ use FOS\UserBundle\Model\UserInterface as UserInterface;
  * @author cyril
  */
 interface RegistrationManagerInterface {
+    
+     function RegisterUserForEvent(EventInterface $event, UserInterface $user, $numparticipants = 1, $organizer = false);
+
      function isCreatorAlsoAnimator(EventInterface $event);
     
      function AddRegistration(EventInterface $event, RegistrationInterface $registration);

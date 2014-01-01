@@ -1,5 +1,5 @@
 <script type="text/javascript">
-const FILTER_ALLEVENTS = 'allevents';
+const FILTER_FUTUREEVENTS = 'futureevents';
 const FILTER_MYEVENTS = 'myevents';
 const FILTER_PASTEVENTS = 'pastevents';
 
@@ -13,7 +13,7 @@ var calendarjqXHR = null; {# ajax requeset XHR, used to abort the request when s
 var EventlistjqXHR = null;
 var UpdateArrowjqXHR = null;
 var EventviewjqXHR = []; {# will store the XHR in an array #}
-var event_filter_value = FILTER_ALLEVENTS; {# 1: all, 2: myevents, 3: pastevents #}
+var event_filter_value = FILTER_FUTUREEVENTS;
 
 var month_names = new Array();
 month_names[1] = "{{'january'|trans}}";
@@ -37,11 +37,11 @@ function Set_filter_events(value)
 {
     event_filter_value = value;
     
-    $("#events_filter_all").toggleClass("cpt_blue", value === FILTER_ALLEVENTS);
+    $("#events_filter_future").toggleClass("cpt_blue", value === FILTER_FUTUREEVENTS);
     $("#events_filter_myevents").toggleClass("cpt_blue", value === FILTER_MYEVENTS);
     $("#events_filter_pastevents").toggleClass("cpt_blue", value === FILTER_PASTEVENTS);
     
-    $("#events_filter_all").toggleClass("cpt_grey", value !== FILTER_ALLEVENTS);
+    $("#events_filter_future").toggleClass("cpt_grey", value !== FILTER_FUTUREEVENTS);
     $("#events_filter_myevents").toggleClass("cpt_grey", value !== FILTER_MYEVENTS);
     $("#events_filter_pastevents").toggleClass("cpt_grey", value !== FILTER_PASTEVENTS);
 
@@ -263,7 +263,7 @@ function UpdateEventInterface()
 {# Onload
 {#**************************************************************************#}
 $(function() {
-    Set_filter_events(FILTER_ALLEVENTS);
+    Set_filter_events(FILTER_FUTUREEVENTS);
     UpdateEventInterface();
 });
 </script>

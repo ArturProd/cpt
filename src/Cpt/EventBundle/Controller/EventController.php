@@ -163,6 +163,7 @@ class EventController extends BaseController {
             switch($request->query->get('filter')){
                 case 'myevents':  $options['myevents'] = true; break;
                 case 'pastevents':  $options['pastevents'] = true; break;
+                case 'futureevents':  $options['futureevents'] = true; break;
             }
         }
         
@@ -229,6 +230,21 @@ class EventController extends BaseController {
         } else {
             return new Response("Mauvaise méthode d accés", 404);
         }
+    }
+    
+    public function registerForEventAction($eventid, $numparticipants)
+    {        
+        $this->getPermissionManager()->RestrictAccessToLoggedIn();
+        
+        $event = $this->getEventManager()->getEventById($eventid);
+        $user = $this->getUser();
+        
+        $registration = $this->getRegistrationManager()
+                ->RegisterUserForEvent($event, $user, $numparticipants, false);
+        
+        $responsedata = $this->getSerializer()->serialize($registration, 'json');
+
+        return $this->CreateJsonOkResponse($responsedata);
     }
     // </editor-fold>
 

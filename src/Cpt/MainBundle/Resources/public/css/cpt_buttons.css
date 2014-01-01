@@ -23,6 +23,7 @@
       float: right;
       padding-left: 10px;
       color: white;
+        font-size: 10px;
 }
 
 .article_new_btn:hover{
@@ -31,12 +32,13 @@
 
 .event_new_btn
 {
-      background: url('../images/evenements/bouton-nouveau-evenements.png') no-repeat;
-      height: 18px;
-      width: 65px;
-      float: right;
-      padding-left: 10px;
-      color: white;
+  background: url('../images/evenements/bouton-nouveau-evenements.png') no-repeat;
+  height: 18px;
+  width: 65px;
+  float: right;
+  padding-left: 10px;
+  color: white;
+  font-size: 10px;
 }
 
 .event_new_btn:hover{

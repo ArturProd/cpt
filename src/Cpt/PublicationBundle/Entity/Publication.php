@@ -28,6 +28,7 @@ class Publication extends Commentable implements PublicationInterface {
         $this->setTitle($title);
         $this->setPublicationDateStart(new \DateTime);
         $this->setContent("");
+        $this->setDesactivated(false);
     }
 
     // <editor-fold defaultstate="collapsed" desc="attributes">
@@ -66,6 +67,10 @@ class Publication extends Commentable implements PublicationInterface {
     * @Expose
     */
     protected $updatedAt;
+    /**
+    * @Expose
+    */
+    protected $desactivated;
     // </editor-fold>
     
     // <editor-fold defaultstate="collapsed" desc="Lifecycle callbacks">
@@ -243,8 +248,16 @@ class Publication extends Commentable implements PublicationInterface {
     public function getPublicationDateStart() {
         return $this->publicationDateStart;
     }
+    
+    public function getDesactivated() {
+        return $this->desactivated;
+    }
 
-    // </editor-fold>
+    public function setDesactivated($desactivated) {
+        $this->desactivated = $desactivated;
+    }
+
+        // </editor-fold>
     
     // <editor-fold defaultstate="collapsed" desc="helpers">
     public function isPublic() {

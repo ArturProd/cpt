@@ -31,7 +31,7 @@ class EventManager extends BaseManager implements EventManagerInterface {
             return $this->getEventsBeginingBetween($begin, $end, $options);
         } else {
             // User is logged in, we want to calculate the participation level as we retreive the events
-            return $this->getEventsBeginingBetweenAndSetParticipationLevel($begin, $end, $this->getUser(), $options);
+            return $this->getEventsBeginingBetweenForLoggedinUser($begin, $end, $this->getUser(), $options);
         }
     }
     // </editor-fold>
@@ -133,9 +133,8 @@ class EventManager extends BaseManager implements EventManagerInterface {
             if (array_key_exists('pastevents', $options)){
                 $this->getPastEventQueryPart($qb);
             }
-            
-            if (array_key_exists('futureevents', $options)){
-                $this->getFutureEventQueryPart($qb);
+            else if (array_key_exists('futureevents', $options)){
+               $this->getFutureEventQueryPart($qb); // Default is to display future events only
             }
       
       return $qb->getQuery()->getResult();
@@ -152,28 +151,30 @@ class EventManager extends BaseManager implements EventManagerInterface {
      *              - 'futureevents' : only returns future events
      *              - 'myevents' : only returns my events
      */
-    protected function getEventsBeginingBetweenAndSetParticipationLevel(\DateTime $begin, \DateTime $end, UserInterface $user, $options) {
+    protected function getEventsBeginingBetweenForLoggedinUser(\DateTime $begin, \DateTime $end, UserInterface $user, $options) {
         // Doctrine fetch join: Event#registrations is hydrated with what was found in 'r'
         $qb = $this->getEventRepository()
                 ->createQueryBuilder('e')
                 ->Select('e', 'r')
                 ->leftJoin('e.registrations', 'r', 'WITH', 'IDENTITY(r.user) = :userid')
-                ->AndWhere('(IDENTITY(e.author) = :userid) OR (IDENTITY(r.user) = :userid)')
                 ->Where('e.begin >= :from')
                 ->AndWhere('e.begin < :to') // We don't care about event end date: if begining is in a period, then the event is returned
+                ->orderby('e.publicationDateStart', 'DESC')
                 ->setParameter('from', $begin)
                 ->setParameter('to', $end)
                 ->setParameter('userid', $user->getId());
+
         
             if (array_key_exists('myevents', $options)){
                 $qb->AndWhere('(IDENTITY(e.author) = :userid) OR (IDENTITY(r.user) = :userid)'); // Filter to get only "my events"
+            } else {
+                $this->getPublicOnlyQueryPart($qb,'e');
             }
         
             if (array_key_exists('pastevents', $options)){
                 $this->getPastEventQueryPart($qb);
-            }
-            
-            if (array_key_exists('futureevents', $options)){
+            } 
+            else if (array_key_exists('futureevents', $options)){
                 $this->getFutureEventQueryPart($qb);
             }
                 

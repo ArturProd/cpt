@@ -3,7 +3,7 @@ namespace Cpt\EventBundle\Manager;
 
 
 use Symfony\Component\DependencyInjection\ContainerAware;
-use Cpt\PublicationBundle\Manager\BaseManager as CptBaseManager;
+use Cpt\PublicationBundle\Manager\PublicationManager as CptBaseManager;
 
 abstract class BaseManager extends CptBaseManager
 {

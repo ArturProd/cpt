@@ -26,8 +26,10 @@
     <hr class="line_separator"/>
     <div id="events_filter">
         <ul >
-            <li id="events_filter_all" onclick="Set_filter_events(FILTER_ALLEVENTS);UpdateEventInterface();">{{'event.filter.all'|trans}}</li>
+            <li id="events_filter_future" onclick="Set_filter_events(FILTER_FUTUREEVENTS);UpdateEventInterface();">{{'event.filter.future'|trans}}</li>
+            {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
             <li id="events_filter_myevents" onclick="Set_filter_events(FILTER_MYEVENTS);UpdateEventInterface();">{{'event.filter.myevents'|trans}}</li>
+            {% endif %}
             <li id="events_filter_pastevents" onclick="Set_filter_events(FILTER_PASTEVENTS);UpdateEventInterface();">{{'event.filter.pastevents'|trans}}</li>
         </ul>
     </div>

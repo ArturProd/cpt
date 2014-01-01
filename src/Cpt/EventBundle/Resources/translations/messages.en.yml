@@ -16,7 +16,7 @@ event.button.manage:                    Manage event
 event.readmore:                         read more
 event.readless:                         read less
 event.noevent_todisplay:                There is no event to display for this month.
-event.filter.all:                       Tous
+event.filter.future:                   Evènements futurs
 event.filter.myevents:                 Mes évènements
 event.filter.pastevents:               Evènements passés
 form.ok: Ok

@@ -8,7 +8,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface as Container;
 use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
 use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
 use Symfony\Component\Security\Acl\Permission\MaskBuilder;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException as AccessDeniedException;
 
 class PermissionsManager extends BaseManager {
 

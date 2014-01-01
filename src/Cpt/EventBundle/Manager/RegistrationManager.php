@@ -19,11 +19,21 @@ use Cpt\EventBundle\Entity\Registration as Registration;
  */
 class RegistrationManager extends BaseManager implements RegistrationManagerInterface {
     
+    public function RegisterUserForEvent(EventInterface $event, UserInterface $user, $numparticipants = 1, $organizer = false)
+    {
+        $registration = $this->CreateRegistration($event, $user, $numparticipants, $organizer);
+        $this->AddRegistration($event, $registration);
+        
+        return $registration;
+    }
+    
     public function AddRegistration(EventInterface $event, RegistrationInterface $registration)
     {
         $event->addRegistration($registration);
         $this->FillQueue($event, $registration->getNumparticipant(),$registration->getUser()->getId());
         $event->UpdateCounters();
+        
+        return $registration;
     }
     
     
