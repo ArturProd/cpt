@@ -21,20 +21,7 @@ function DisplayOpacityMask(visible)
 {# OnLoad
 {#************************************************************************************************************************ #}      
  $(function() {
-    {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-        {# Event Dialog setup #}
-        $("a#newevent").on("click", function(){
-           $("#popup_new_event").show();
-           $("#page_opacity_mask").show();
-       });
 
-        {% if (event is defined) and (eventform is defined) %}
-            {% include 'CptEventBundle:Event:new.html.twig' with {'event' : event, 'eventform' : eventform } %}
-        {% else %}
-            $("#popup_new_event").hide();
-            $("#popup_new_event").load("{{ url('event_manage')}}");
-        {% endif %}
-    {% endif %}
 });
           
 </script>
@@ -69,12 +56,7 @@ function DisplayOpacityMask(visible)
     </div>
 </div>
 
-{% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-{# popup for creating new articles, evt etc. #}
-<div id="popup_new_event">
-    {# external content to be loaded here #}
-</div>
-{% endif %}
+
 {# ************************************************************************************************************************ #} 
 {# Opacity Mask
 {#************************************************************************************************************************ #}     

@@ -10,31 +10,35 @@
             <a id="newevent" class="event_new_btn">{{'main.button.new'|trans}}</a>
         {% endif %}
     </div>
-            
-    <div id="calendar_container">
-        <div class="month_selector">
-            <ul>
-                <li><a id="monthselector_uparrow" class="calendar_arrow_up_withevents_btn" onclick="previous_month();"></a></li>
-                <li id="monthselector_month"></li>
-                <li id="monthselector_year"></li>
-                <li><a id="monthselector_downarrow" class="calendar_arrow_down_withevents_btn" onclick="next_month();"></a></li>
+
+    <div id="edit_event">        
+    </div>
+    <div id="display_events">
+        <div id="calendar_container">
+            <div class="month_selector">
+                <ul>
+                    <li><a id="monthselector_uparrow" class="calendar_arrow_up_withevents_btn" onclick="previous_month();"></a></li>
+                    <li id="monthselector_month"></li>
+                    <li id="monthselector_year"></li>
+                    <li><a id="monthselector_downarrow" class="calendar_arrow_down_withevents_btn" onclick="next_month();"></a></li>
+                </ul>
+            </div>
+            <div id="calendar">
+            </div>
+        </div>
+        <hr class="line_separator"/>
+        <div id="events_filter">
+            <ul >
+                <li id="events_filter_future" onclick="Set_filter_events(FILTER_FUTUREEVENTS);UpdateEventInterface();">{{'event.filter.future'|trans}}</li>
+                {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                <li id="events_filter_myevents" onclick="Set_filter_events(FILTER_MYEVENTS);UpdateEventInterface();">{{'event.filter.myevents'|trans}}</li>
+                {% endif %}
+                <li id="events_filter_pastevents" onclick="Set_filter_events(FILTER_PASTEVENTS);UpdateEventInterface();">{{'event.filter.pastevents'|trans}}</li>
             </ul>
         </div>
-        <div id="calendar">
+        <div id="loading_event" class="loading"></div>
+        <div id="eventcontainer">
         </div>
-    </div>
-    <hr class="line_separator"/>
-    <div id="events_filter">
-        <ul >
-            <li id="events_filter_future" onclick="Set_filter_events(FILTER_FUTUREEVENTS);UpdateEventInterface();">{{'event.filter.future'|trans}}</li>
-            {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-            <li id="events_filter_myevents" onclick="Set_filter_events(FILTER_MYEVENTS);UpdateEventInterface();">{{'event.filter.myevents'|trans}}</li>
-            {% endif %}
-            <li id="events_filter_pastevents" onclick="Set_filter_events(FILTER_PASTEVENTS);UpdateEventInterface();">{{'event.filter.pastevents'|trans}}</li>
-        </ul>
-    </div>
-    <div id="loading_event" class="loading"></div>
-    <div id="eventcontainer">
     </div>
 
 </div>

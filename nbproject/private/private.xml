@@ -13,20 +13,13 @@
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/cyril/dev/cpt/vendor/egeloen/ckeditor-bundle/Ivory/CKEditorBundle/README.md</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/PublicationBundle/Entity/Publication.php</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/BlogBundle/Controller/PostController.php</file>
-            <file>file:/home/cyril/dev/cpt/vendor/egeloen/ckeditor-bundle/Ivory/CKEditorBundle/Resources/public/contents.css</file>
-            <file>file:/home/cyril/dev/cpt/vendor/egeloen/ckeditor-bundle/Ivory/CKEditorBundle/Resources/public/plugins/clipboard/dialogs/paste.js</file>
-            <file>file:/home/cyril/dev/cpt/vendor/egeloen/ckeditor-bundle/Ivory/CKEditorBundle/Resources/public/config.js</file>
-            <file>file:/home/cyril/dev/cpt/vendor/egeloen/ckeditor-bundle/Ivory/CKEditorBundle/Resources/public/LICENSE.md</file>
-            <file>file:/home/cyril/dev/cpt/app/bootstrap.php.cache</file>
-            <file>file:/home/cyril/dev/cpt/vendor/egeloen/ckeditor-bundle/Ivory/CKEditorBundle/Resources/public/README.md</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/BlogBundle/Entity/Post.php</file>
-            <file>file:/home/cyril/dev/cpt/vendor/egeloen/ckeditor-bundle/Ivory/CKEditorBundle/Resources/public/build-config.js</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/PublicationBundle/Entity/Commentable.php</file>
-            <file>file:/home/cyril/dev/cpt/vendor/egeloen/ckeditor-bundle/Ivory/CKEditorBundle/UPGRADE.md</file>
-            <file>file:/home/cyril/dev/cpt/vendor/egeloen/ckeditor-bundle/Ivory/CKEditorBundle/IvoryCKEditorBundle.php</file>
+            <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Resources/views/Event/edit.html.twig</file>
+            <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Resources/views/Event/index.js.twig</file>
+            <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Resources/views/Event/new.back.twig</file>
+            <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Resources/views/Event/index.html.twig</file>
+            <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Resources/views/Event/eventdisplay.html.twig</file>
+            <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Resources/views/Event/edit.js.twig</file>
+            <file>file:/home/cyril/dev/cpt/src/Cpt/MainBundle/Resources/views/Default/index.html.twig</file>
         </group>
     </open-files>
 </project-private>

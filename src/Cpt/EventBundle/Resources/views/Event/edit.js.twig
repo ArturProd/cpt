@@ -1,0 +1,536 @@
+{% set queue_list_template = include('CptEventBundle:Event:ParticipantListQueue.html.twig') %}
+{% set reservation_list_row_template = include('CptEventBundle:Event:ParticipantListRow.html.twig') %}
+
+<script>
+{# ************************************************************************************************************************ #} 
+{# Global variables initialization
+{# ************************************************************************************************************************ #} 
+    var Registration_list = {};         {# the list that contains the registration objects #}
+    var Total_number_participant = 0;   {# total number of participants of the event #}
+    var Max_number_participant = 0;     {# maximum number of participants of the event #}
+    var Count_organizer = 0;            {# total number of organizers in the event #}
+    var Queue = [{{ event.queue|join(',') }}]; {# contains the event.queue in the form of comma separated values #}
+    var Disabled_organizer_user = null; {# Id of the organizer which was disabled (due to the fact there is just one organizer left) #}
+
+
+function InitRegistrations()
+{
+    {############################################}
+    {# Reset variables #}
+        Registration_list = {};         {# the list that contains the registration objects #}
+        Total_number_participant = 0;   {# total number of participants of the event #}
+        Max_number_participant = 0;     {# maximum number of participants of the event #}
+        Count_organizer = 0;            {# total number of organizers in the event #}
+        Queue = [{{ event.queue|join(',') }}]; {# contains the event.queue in the form of comma separated values #}
+        Disabled_organizer_user = null; {# Id of the organizer which was disabled (due to the fact there is just one organizer left) #}
+
+   {############################################}
+   {# Adding existing reservations to the list #} 
+    {% for registration in event.registrations %}
+        reservation_existing = CreateReservationItem({{  registration.id }}, {{ registration.user.id }}, {{ event.id }}, '{{ registration.user.username }}', {{ registration.numparticipant }}, {{ registration.numqueuedparticipant }}, {{ registration.organizer ? 1 : 0 }}, {{ registration.createdAt|date('U') }});
+        AddReservationItem(reservation_existing, true);
+    {% endfor %}
+
+    UpdateInterface();
+}
+  
+{# ************************************************************************************************************************ #} 
+{# updates the interface (Never call unless the Queue and RegistrationList are initialized and match!)
+{# ************************************************************************************************************************ #}     
+function UpdateInterface()
+{
+
+    UpdateNumQueuedParticipant();
+
+    {# Clear search field #}
+    $( "#user_search" ).value = "";
+    
+    count_orga_notqueued = 0;
+    last_orga_user = -1;
+    Total_number_participant = 0;
+    for (userid in Registration_list) {
+        registration = Registration_list[userid];
+        {# update queued attendees count label #}
+        $("#resa_queued_att_" + registration.user).html(registration.numqueuedparticipants);
+
+        {# Counts the number of organizer which are not queued to later disable/enable the organizer checkbox #}
+         if ( ($( "#resa_organizer_" + registration.user ).is(':checked')) && (!registration.fullqueued))
+         {
+             count_orga_notqueued ++;
+             last_orga_user = registration.user;
+         }
+         {# updates global counters #}
+         Total_number_participant += registration.numparticipants;
+         Count_organizer += registration.organizer ? 1 : 0;
+    };
+    
+    {# update the organizer checkboxes #}
+    if (count_orga_notqueued  === 1)
+    {   
+        $("#resa_organizer_" + last_orga_user).prop('disabled', true);
+        $("#remove_button_" + last_orga_user).prop('disabled', true);
+        Disabled_organizer_user = last_orga_user;
+    } else if (Disabled_organizer_user !== null) {
+        $("#resa_organizer_" + Disabled_organizer_user).prop('disabled', false);
+        $("#remove_button_" + Disabled_organizer_user).prop('disabled', false);
+        Disabled_organizer_user = null;
+    }
+    
+    {# update attendees queue table #}
+    index = 0;
+    $( "#queue_table_body" ).empty();
+    Queue.forEach(function(user_id) {
+        reservation = Registration_list[user_id];
+        waiting_queue = (index >= Max_number_participant) ? "oui" : "non";
+        $( "#queue_table_body" ).append( "{{ queue_list_template|jsstring|raw }}" );
+        index++;
+    });
+
+ }
+
+{# ************************************************************************************************************************ #}  
+{# Creates a reservation item based on parameters #}
+{# ************************************************************************************************************************ #}     
+function CreateReservationItem(id, user, event, username, numparticipants, numqueuedparticipants, organizer, createdAt)
+{
+    var reservation = new Object();
+    reservation.id = -1;
+    reservation.user = user;
+    reservation.event = event;
+    reservation.username = username;  
+    reservation.numparticipants = numparticipants; 
+    reservation.numqueuedparticipants = numqueuedparticipants;
+    reservation.createdAt = createdAt;
+    reservation.organizer= organizer;
+    reservation.fullqueued = (numparticipants === numqueuedparticipants);
+    
+    return reservation;
+}
+
+{# ************************************************************************************************************************ #} 
+{# Handles the changes of the maximum number of participants (Max_number_participant variable) #}
+{# ************************************************************************************************************************ #} 
+function UpdateMaxNumberParticipant()
+{
+     {# update the maximum number of participant according to the widget #}
+     raw_value = $('#event_maxnumattendees').val();
+
+     var value = parseInt($('#event_maxnumattendees').val());
+     
+    if (isNaN(value)) {# check if a number was entered #}
+    {
+        ModalDialog(null, null, "{{'form.not_valid_number.title'|trans}}", "{{'form.not_valid_number.content'|trans|raw}}", "{{'form.ok'|trans}}");
+        $('#event_maxnumattendees').val(Max_number_participant);
+    }
+    else
+    {
+        Max_number_participant = value;
+    }
+}
+
+{# ************************************************************************************************************************ #} 
+{# Updates the number of queued participants and fullqueued attribute for the registration objects in the Registration_list #}
+{# ************************************************************************************************************************ #} 
+function UpdateNumQueuedParticipant()
+{
+   UpdateMaxNumberParticipant();
+            
+    waiting_queue = Array();
+    for (var i=Max_number_participant; i<Queue.length; ++i)
+        waiting_queue.push(Queue[i]);
+    {# Resetting the number of queued attendees #}
+    for (userid in Registration_list) {
+        Registration_list[userid].numqueuedparticipants = 0;
+        Registration_list[userid].fullqueued = false;
+    };
+    
+    {# counting queued participants #}
+    waiting_queue.forEach(function(user_id) {
+        Registration_list[user_id].numqueuedparticipants++;
+        if (Registration_list[user_id].numqueuedparticipants === Registration_list[user_id].numparticipants)
+            Registration_list[user_id].fullqueued = true;
+    });
+}
+
+{# ************************************************************************************************************************ #} 
+{# handler when changing the number of attendee of a reservation 
+    parameter reservation must have the former number of attendees (unchanged) #}
+{# ************************************************************************************************************************ #}     
+function ChangeNumAttendees(reservation, new_num_attendee)
+{    
+        old_numparticipants = Registration_list[reservation.user].numparticipants;
+        Registration_list[reservation.user].numparticipants = new_num_attendee;
+
+        {# Updating the Queue #}
+        if (new_num_attendee > old_numparticipants) { {# in this case, new attendees are pushed at the end of the Queue #}
+            for (var i = 0; i < (new_num_attendee - old_numparticipants) ; i++) {
+              Queue.push(reservation.user);
+         
+            };
+        }
+        else if (new_num_attendee < old_numparticipants) { {# in this case, need to remove attendees starting by the end of the Queue #}
+            counter =  old_numparticipants - new_num_attendee; {# number of attendees to remove #}
+    
+            for (var i = Queue.length - 1 ; (counter > 0) && (i>=0) ; i--) {
+              if (Queue[i] === reservation.user)
+              {
+                Queue.splice(i,1);
+                counter--;
+              }
+              if (counter<0) { alert('An internal error occured when updating the attendees Queue. (counter < 0 )'); }
+            };
+            
+            if (counter > 0) { alert('An internal error occured when updating the attendees Queue. (counter > 0 )'); }
+
+        }
+        
+        UpdateInterface();
+}
+
+{# ************************************************************************************************************************ #} 
+{# Add a row to the reservation table based on a reservation object #}
+{# ************************************************************************************************************************ #} 
+function AddRowToTable(reservation)
+{
+        {# append a line to the table, using the javascript reservation object defined in this AddeservationItem function #}
+        $( "#reservation_table" ).append( "{{ reservation_list_row_template|jsstring|raw }}" );
+        
+        {# set the registration organizer default value #}
+        if (reservation.organizer)
+            $( "#resa_organizer_" + reservation.user ).attr("checked",true);
+        else
+            $( "#resa_organizer_" + reservation.user ).removeAttr("checked"); 
+        
+        {# bind change event of numparticipant control to the handler #}
+        $( "#resa_num_att_" + reservation.user ).on("change", function(event){
+            
+            var raw_value = $(this).val();
+            var value = parseInt(raw_value );
+            if (isNaN(value)) {# check if a number was entered #}
+            {
+                ModalDialog(null, null, "{{'form.not_valid_number.title'|trans}}", "{{'form.not_valid_number.content'|trans|raw}}", "{{'form.ok'|trans}}");
+                $(this).val(reservation.numparticipants);
+            } 
+            else 
+            {
+                ChangeNumAttendees(reservation , value );
+            }
+          });
+          
+        {# bind change event of organizer control to the handler #}
+        $( "#resa_organizer_" + reservation.user ).on("change", function(event){
+            checked = ($(this).is(':checked'));
+            reservation.organizer = checked ? 1 : 0;
+            UpdateInterface();
+        });
+}
+
+{# ************************************************************************************************************************ #} 
+{# Creates a reservation object based on a user #}
+{# ************************************************************************************************************************ #} 
+ function CreateReservationFromUser(user)
+ {
+     {# Math.round(new Date().getTime() / 1000)  ===> UNIX TimeStamp (same as twig filter |date('U') #}
+     return CreateReservationItem(-1 , user.id, {{ event.id }}, user.username, 1 , 0 , 0, Math.round(new Date().getTime() / 1000) );
+ }
+ 
+{# ************************************************************************************************************************ #} 
+{# Add a newly created reservation item in the reservation_list, created from the given user 
+{# already_in_queue: if false, will update the Queue. if true (like for the already existing users added), the Queue will not be updated
+{# ************************************************************************************************************************ #} 
+function AddReservationItem(reservation,already_in_queue)
+{
+    if (!(reservation.user in Registration_list))
+    {    
+         Registration_list[reservation.user] = reservation;
+        {# 
+            if not already in queue, just need to add it at the end of the queue
+            if it is already in queue (for initialization with existing queue and existing regitrations), no need to do anything
+        #}
+        if (!already_in_queue)
+        {
+            for (var i = 0; i < reservation.numparticipants; i++) {
+              Queue.push(reservation.user);
+            };
+        }
+
+        AddRowToTable(reservation);
+
+        return reservation;
+    }
+
+    // The user was already in the participant list
+    else alert('User is already in the list');  
+    return null; 
+}
+
+{# ************************************************************************************************************************ #} 
+{# Removes a all ids from a users from the queue #}
+{# ************************************************************************************************************************ #} 
+function RemoveUserIdFromQueue(user_id)
+{
+    {# Removing all occurence of this event from the Queue #}
+    Queue = jQuery.grep(Queue, function(n) {
+      return n !== user_id;   
+    });
+}
+
+
+{# ************************************************************************************************************************ #} 
+{# Removes a reservation from the Registration_list and update the Queue
+{# ************************************************************************************************************************ #} 
+function RemoveReservationItem( user_id )
+{
+    if (user_id in Registration_list){
+        delete Registration_list[user_id];             {# delete from participant list #}
+        $( "#reserv_list_row_"+  user_id ).remove();  {# remove row from the table #}
+        
+        RemoveUserIdFromQueue(user_id);        
+        
+        UpdateInterface();
+    }
+}
+
+{# ************************************************************************************************************************ #} 
+{# Handler for disabling the registration system
+{# ************************************************************************************************************************ #} 
+function HandleRegistrationAllowed(value)
+{
+    if (value) {# confirmation that reservations should be disabled #}
+    {
+            $("#tabs").tabs({disabled: [2]});
+            $( "#event_registration_allowed" ).attr("checked",false);
+    }
+}
+
+{# ************************************************************************************************************************ #} 
+{# Prepare form for submission
+{# ************************************************************************************************************************ #} 
+function PrepareEventFormSubmission()
+{
+    $('#event_queue_json').val(JSON.stringify(Queue));                      {# insert the json queue in the field #}
+    $('#registration_list_json').val(JSON.stringify(Registration_list));    {# insert the json registration list in the field #}
+    CKEDITOR.instances['event_content'].updateElement();                {# update the entity field with CKEDIOR content #}
+}
+
+{# ************************************************************************************************************************ #} 
+{# Checks at regular interval if the event was updated (new registrations..)
+{# ************************************************************************************************************************ #} 
+function CheckEventWasUpdated() {
+    {% if event.id != -1 %}  
+        $.getJSON('{{ url('event_was_updated', { 'id': event.id, 'unixtimestamp': event.UpdatedAt | date('U') })  }}', function(data) {
+            wasupdated = JSON.parse(data);
+            if (wasupdated)
+                ModalDialog(ReLoadEvent, null, "{{'event.changes_detected.title'|trans}}", "{{'event.changes_detected.content'|trans|raw}}", "{{'form.ok'|trans}}");
+            else
+                setTimeout("CheckEventWasUpdated()",15000);
+        });
+    {% endif %}
+}
+
+{# ************************************************************************************************************************ #} 
+{# Reloads the current event from db
+{# ************************************************************************************************************************ #} 
+function ReLoadEvent()
+{
+    $("#edit_event").load("{{ url('event_manage', { 'id': event.id })}}");
+}
+
+{# ************************************************************************************************************************ #} 
+{# Initialize the page
+{# ************************************************************************************************************************ #} 
+function InitializeEventPage()
+{
+    
+       {###################################################}
+       {# Initialize the registrations with existing ones #}
+       InitRegistrations();
+       
+       {############################################}
+       {# Unbind the events (reinit) #}
+       $('#save_button').off();
+       $('#copy_button').off();
+       $( "#event_registration_allowed" ).off();
+       $('#event_maxnumattendees').off();
+
+       {############################################}
+       {# Make the tab system #}
+        $( "#tabs" ).tabs();
+        
+       {############################################}
+       {# Event for disabling/enabling registration system#}        
+        $( "#event_registration_allowed" ).on("click", function(event){
+
+                checked = ($(this).is(':checked'));
+                if (!checked)
+                    {
+                        ModalDialog(HandleRegistrationAllowed, null, "{{'event.no_reservation.title'|trans}}", "{{'event.no_reservation.content.begin'|trans|raw}}{%if event.id != -1 %}{{'event.no_reservation.content.attendees_alert'|trans|raw}}{% endif %}{{'event.no_reservation.content.end'|trans|raw}}", "{{'event.no_reservation.yes'|trans}}", "{{'event.no_reservation.no'|trans}}");
+                        return false;
+                    }
+                    else
+                    {
+                        $("#tabs").tabs({disabled: []});
+                        return true;
+                    }
+
+        });
+ 
+       {############################################}
+       {# Handling the "copy" button #}
+        $('#copy_button').on("click", function( e ){
+            $("#copy_field").val(1); {# Setting value to 1 will make a copy #}
+        });
+
+       {############################################}
+       {# Making the form ajax #}
+        $('#eventform').on("submit", function( e ){
+            e.preventDefault(); {# Prevents event propagation (prevents default behavior of form submission) #}
+            PrepareEventFormSubmission();
+            AjaxPostForm(  $(this), null, function( response ){
+                $("#eventformdiv").html(response);
+            });
+            $('#eventform').find('input, textarea, button, select').attr('disabled','disabled');
+            return true;
+        });
+
+       {############################################}
+       {# Hiding the queue table #}
+        $('#queue_table').hide();
+        
+       {############################################}
+       {# Handling changes in the max number of attendees#}
+        $('#event_maxnumattendees').on("change", function(event){
+            UpdateInterface();
+            });
+
+       {############################################}
+        {# Autocomplete search field with ajax request #}
+        $( "#user_search" ).autocomplete({
+              source: function( request, response ) {
+                    $.ajax({
+                      url: "{{ url('cpt_user_getsearchresult') }}",
+                      type: "GET",
+                      dataType: "json",
+                      data: {
+                        search_string: request.term
+                      },
+                      success: function( data ) {
+                            response( $.map( data, function( user ) {
+                                if (!(user.id in Registration_list)){ {# adding user in the result list only if not already contained #}
+                                    return {
+                                        id: user.id,
+                                        username: user.username,
+                                        value: user.id,
+                                        label: user.username
+                                    };
+                                }
+                              }));
+                        }
+
+                    });
+              },
+              minLength: 3,
+              select: function( event, ui ) {  {# Selecting the user from the search list leads to adding the reservation object in the reservation_list #}
+                reservation = CreateReservationFromUser(ui.item);
+                AddReservationItem(reservation, false);
+                UpdateInterface();
+                $(this).val(''); return false;
+              },
+              open: function() {
+                $( this ).removeClass( "ui-corner-all" ).addClass( "ui-corner-top" );
+              },
+              close: function() {
+                $( this ).removeClass( "ui-corner-top" ).addClass( "ui-corner-all" );
+              }
+          });
+
+        {############################################}
+        {# Update google map when changing location #}         
+           $('#{{ eventform.city_name.vars.id }}, #{{ eventform.city_postal_code.vars.id }}, #{{ eventform.address.vars.id }}, #{{ eventform.corporate_name.vars.id }}').on("change", function(event){
+              UpdateGoogleMap();
+            });
+    
+       
+       {################################################}
+       {# Setting timer to check for event update #}
+       //CheckEventWasUpdated();
+    }
+    
+{# ************************************************************************************************************************ #} 
+{# Removes the markers from the google map #}
+{# ************************************************************************************************************************ #} 
+var markers = [];
+function RemoveGoogleMarkers()
+{
+    {# removes all markers #}
+    for (var i = 0; i < markers.length; i++) {
+        markers[i].setMap(null);
+    }
+    markers = [];
+}
+   
+{# ************************************************************************************************************************ #} 
+{# Updates the google map with location data #}
+{# ************************************************************************************************************************ #} 
+ function UpdateGoogleMap() 
+ {
+    {##############################################}
+    {# The map javascript object must be created  #}     
+    if ( typeof {{ map.JavascriptVariable() }} != "undefined") {# if the map is ready #}
+    {        
+        {##############################################}
+        {# Only updates if the city name was provided #}    
+         if ($('#{{ eventform.city_name.vars.id }}').val() != "")
+         {
+                address = "";
+
+                {################################################################}
+                {# If street name is provided, add it to the adress to geolocate#} 
+                if ($('#{{ eventform.address.vars.id }}').val() != "")
+                {
+                    address += $('#{{ eventform.address.vars.id }}').val();
+                }
+                {###################################################################}
+                {# Add city and postal code information to the adress to geolocate #} 
+                address += $('#{{ eventform.city_postal_code.vars.id }}').val();
+                address += " " + $('#{{ eventform.city_name.vars.id }}').val();                   
+
+                {########################}
+                {# Execute google query #} 
+                map = {{ map.JavascriptVariable() }};
+                 geocoder = new google.maps.Geocoder();
+                geocoder.geocode( { 'address': address}, function(results, status) {
+                    
+                
+                    RemoveGoogleMarkers();
+                    {##################################################################}
+                    {# if we have OK result from google, add the new marker to the map#}
+                  if (status === google.maps.GeocoderStatus.OK) {
+                        {###################################}
+                        {# Creates a new marker on the map #}                
+                        map.setCenter(results[0].geometry.location);
+                        var marker = new google.maps.Marker({
+                            map: map,
+                            position: results[0].geometry.location
+                        });
+                        markers.push(marker);
+                        {#####################################################}
+                        {# Updates form field with reslut longitude,latitude #} 
+                        $("#{{ eventform.location_long.vars.id }}").val(results[0].geometry.location.lng());
+                        $("#{{ eventform.location_lat.vars.id }}").val(results[0].geometry.location.lat());
+                   } 
+                });
+        }
+    }
+}
+
+    
+  $(function() {
+
+    InitializeEventPage();
+    
+
+
+  });
+  
+</script>

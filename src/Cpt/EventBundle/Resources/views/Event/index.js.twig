@@ -47,21 +47,12 @@ function Set_filter_events(value)
 
 }
 {#**************************************************************************#}
-{# Load and display popup to manage an event
+{# Load and display form to manage an event
 {#**************************************************************************#}
 function manage_event(id)
 {
-    $("#popup_new_event").load(Routing.generate('event_manage', {id:id,_locale:_locale}));
-    $("#popup_new_event").show();
-    DisplayOpacityMask(true);
-}
-{#**************************************************************************#}
-{# Close the manage event popup
-{#**************************************************************************#}
-function close_manage_event()
-{
-    $("#popup_new_event").hide();
-    DisplayOpacityMask(false);
+    $("#edit_event").load(Routing.generate('event_manage', {id:id,_locale:_locale}));
+    DisplayEventEditPanel(true);
 }
 {#**************************************************************************#}
 {# Toggle visibility of event container
@@ -245,7 +236,9 @@ function RetrieveEvents(year,month)
       }
   });
 }
-
+{#**************************************************************************#}
+{# Updates the whole interface
+{#**************************************************************************#}
 function UpdateEventInterface()
 {
     UpdateSelectorDate();
@@ -260,10 +253,29 @@ function UpdateEventInterface()
     },{{ update_ajax_delay }});
 }
 {#**************************************************************************#}
+{# Show or hide the event edition panel
+{#**************************************************************************#}
+function DisplayEventEditPanel(display)
+{
+    if (display){
+         $('#edit_event').show();
+         $('#display_events').hide();         
+    } else {
+         $('#edit_event').hide();
+         $('#display_events').show();
+    }
+}
+
+{#**************************************************************************#}
 {# Onload
 {#**************************************************************************#}
 $(function() {
+    DisplayEventEditPanel(false);
     Set_filter_events(FILTER_FUTUREEVENTS);
     UpdateEventInterface();
+    {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+        {# Event Dialog setup #}
+        $("a#newevent").on("click", function(){manage_event(-1);});
+    {% endif %}
 });
 </script>

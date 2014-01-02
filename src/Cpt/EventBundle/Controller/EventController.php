@@ -261,7 +261,7 @@ class EventController extends BaseController {
         $map = $this->get('ivory_google_map.map');
         $map->setLanguage($this->get('request')->getLocale());
 
-        return $this->render('CptEventBundle:Event:new.html.twig', array(
+        return $this->render('CptEventBundle:Event:edit.html.twig', array(
                     'event' => $event,
                     'eventform' => $form->createView(),
                     'map' => $map
