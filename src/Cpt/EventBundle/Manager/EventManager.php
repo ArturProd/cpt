@@ -123,8 +123,7 @@ class EventManager extends BaseManager implements EventManagerInterface {
         $qb = $this->getEventRepository()
                         ->createQueryBuilder('e')
                         ->Select('e')
-                        ->Where('e.begin >= :from')
-                        ->AndWhere('e.begin < :to') // We don't care about event end date: if begining is in a period, then the event is returned
+                        ->Where('(e.begin >= :from AND e.begin < :to) OR (e.end >= :from AND e.end < :to)')
                         ->AndWhere('e.enabled = :enabled')
                         ->setParameter('from', $begin)
                         ->setParameter('to', $end)
@@ -157,8 +156,7 @@ class EventManager extends BaseManager implements EventManagerInterface {
                 ->createQueryBuilder('e')
                 ->Select('e', 'r')
                 ->leftJoin('e.registrations', 'r', 'WITH', 'IDENTITY(r.user) = :userid')
-                ->Where('e.begin >= :from')
-                ->AndWhere('e.begin < :to') // We don't care about event end date: if begining is in a period, then the event is returned
+                ->Where('(e.begin >= :from AND e.begin < :to) OR (e.end >= :from AND e.end < :to)')
                 ->orderby('e.publicationDateStart', 'DESC')
                 ->setParameter('from', $begin)
                 ->setParameter('to', $end)
