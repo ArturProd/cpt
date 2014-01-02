@@ -454,6 +454,10 @@ class Event extends Publication implements EventInterface
         return $this->count_total_attendees;
     }
 
+    public function getAvailableSeats()
+    {
+        return $this->maxnumattendees - ($this->count_total_attendees - $this->count_queued_attendees);
+    }
 
     /**
      * Set restricted

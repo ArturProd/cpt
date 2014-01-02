@@ -13,19 +13,20 @@
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Controller/EventController.php</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Manager/RegistrationManager.php</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/MainBundle/Resources/public/css/cpt_post.css</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/MainBundle/Resources/public/css/cpt_buttons.css</file>
-            <file>file:/home/cyril/dev/cpt/vendor/yohang/calendr/src/CalendR/Calendar.php</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Resources/views/Event/calendar.html.twig</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/MainBundle/Resources/public/css/cpt_calendar.css</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Manager/EventManager.php</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Interfaces/Manager/RegistrationManagerInterface.php</file>
-            <file>file:/home/cyril/dev/cpt/vendor/yohang/calendr/src/CalendR/Period/Range.php</file>
-            <file>file:/home/cyril/dev/cpt/vendor/yohang/calendr/src/CalendR/Period/PeriodAbstract.php</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/MainBundle/Resources/public/css/cpt_main.css</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Resources/views/Event/index.html.twig</file>
+            <file>file:/home/cyril/dev/cpt/vendor/egeloen/ckeditor-bundle/Ivory/CKEditorBundle/README.md</file>
+            <file>file:/home/cyril/dev/cpt/src/Cpt/PublicationBundle/Entity/Publication.php</file>
+            <file>file:/home/cyril/dev/cpt/src/Cpt/BlogBundle/Controller/PostController.php</file>
+            <file>file:/home/cyril/dev/cpt/vendor/egeloen/ckeditor-bundle/Ivory/CKEditorBundle/Resources/public/contents.css</file>
+            <file>file:/home/cyril/dev/cpt/vendor/egeloen/ckeditor-bundle/Ivory/CKEditorBundle/Resources/public/plugins/clipboard/dialogs/paste.js</file>
+            <file>file:/home/cyril/dev/cpt/vendor/egeloen/ckeditor-bundle/Ivory/CKEditorBundle/Resources/public/config.js</file>
+            <file>file:/home/cyril/dev/cpt/vendor/egeloen/ckeditor-bundle/Ivory/CKEditorBundle/Resources/public/LICENSE.md</file>
+            <file>file:/home/cyril/dev/cpt/app/bootstrap.php.cache</file>
+            <file>file:/home/cyril/dev/cpt/vendor/egeloen/ckeditor-bundle/Ivory/CKEditorBundle/Resources/public/README.md</file>
+            <file>file:/home/cyril/dev/cpt/src/Cpt/BlogBundle/Entity/Post.php</file>
+            <file>file:/home/cyril/dev/cpt/vendor/egeloen/ckeditor-bundle/Ivory/CKEditorBundle/Resources/public/build-config.js</file>
+            <file>file:/home/cyril/dev/cpt/src/Cpt/PublicationBundle/Entity/Commentable.php</file>
+            <file>file:/home/cyril/dev/cpt/vendor/egeloen/ckeditor-bundle/Ivory/CKEditorBundle/UPGRADE.md</file>
+            <file>file:/home/cyril/dev/cpt/vendor/egeloen/ckeditor-bundle/Ivory/CKEditorBundle/IvoryCKEditorBundle.php</file>
         </group>
     </open-files>
 </project-private>

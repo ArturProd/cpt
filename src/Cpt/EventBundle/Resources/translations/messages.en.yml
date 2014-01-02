@@ -20,6 +20,13 @@ event.filter.future:                   Evènements futurs
 event.filter.myevents:                 Mes évènements
 event.filter.pastevents:               Evènements passés
 form.ok: Ok
+event.seats:                            seats
+event.attendees:                       "Attendees"
+event.maxattendees:                    "available seats:"
+event.totalattendees:                  "registered:"
+event.queuedattendees:                 "queued:"
+event.availableseats:                  available seats
+event.queuedseats:                     on waiting list
 Monday: Monday
 Tuesday: Tuesday
 Wednesday: Wednesday

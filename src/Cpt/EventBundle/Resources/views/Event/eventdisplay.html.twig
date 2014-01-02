@@ -74,6 +74,10 @@
 {# Event content
 {#****************************************************************************#}
  <div id="event_content{{event.id}}" class="event_content">
+     <div>
+         {% transchoice event.AvailableSeats %}event.availableseats{% endtranschoice %} 
+         {{event.AvailableSeats }} / {{event.maxnumattendees }} ({{event.CountQueuedAttendees }} {{ 'event.queuedseats'|trans }})
+     </div>
  {{ event.content|raw }}
  {% render controller("CptPublicationBundle:Comment:getCommentsContainer", { 'publication': event, '_locale': app.request.locale }) %}
 </div>

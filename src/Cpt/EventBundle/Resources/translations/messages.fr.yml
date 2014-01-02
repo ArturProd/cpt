@@ -51,6 +51,13 @@ event.filter.pastevents:              Past events
 event.book:                             réserver
 event.youhavebooked:                   vous avez réservé
 event.seats:                            place(s)
+event.attendees:                       "Participants"
+event.maxattendees:                    "max:"
+event.totalattendees:                  "enregistrés:"
+event.queuedattendees:                 "liste d'attente:"
+event.availableseats:                 place disponible|places disponibles
+event.availableseats:                 places disponibles
+event.queuedseats:                     sur la liste d'attente
 January:                                Janvier
 February:                               Février
 March:                                   Mars

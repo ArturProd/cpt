@@ -30,7 +30,7 @@ class PermissionsManager extends BaseManager {
 
     public function RestrictAccessToAjax($request) {
         if (!$request->isXmlHttpRequest()) {
-            throw new SymfonyException\AccessDeniedHttpException("Access denied. Please request through Ajax");
+             throw new AccessDeniedException("Access denied. Please request through Ajax");
             //throw new SymfonyException\ForbiddenHttpException("Ressource cannot be accessed this way.");    
         }
     }
@@ -46,7 +46,7 @@ class PermissionsManager extends BaseManager {
 
     public function RestrictAccessDenied($allow_access = false) {
         if (!$allow_access) {
-            throw new SymfonyException\AccessDeniedHttpException("Access denied.");
+            throw new AccessDeniedException();
         }
     }
 

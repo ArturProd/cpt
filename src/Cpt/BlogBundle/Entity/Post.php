@@ -71,21 +71,13 @@ class Post extends Publication implements PostInterface
      */
     public function __construct($author, $publishedhomepage=false, $enabled=true, $title="")
     {
-        $this->setAuthor($author);
-        $this->setTitle($title);
+        parent::__construct($author, $enabled, $title);
+        
         $this->link        = "";
         $this->permalinkGenerator = null;
         $this->publishedhomepage = $publishedhomepage;
-        $this->enabled = $enabled;
         $this->canBeCommented = true;
         
-        
-        $this->comments = new \Doctrine\Common\Collections\ArrayCollection;
-        $this->setPublicationDateStart(new \DateTime);
-        $this->setCommentsDefaultStatus(CommentInterface::STATUS_VALID);
- 
-        $this->setContent("");
-        $this->id = -1;
     }
 
     /**

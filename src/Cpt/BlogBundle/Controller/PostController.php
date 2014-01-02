@@ -160,7 +160,7 @@ class PostController extends BasePostController {
                 $this->getPostManager()->save($post);
                 return $this->CreateJsonOkResponse($this->GetPostViewData($post));
             } else {
-                return $this->CreateJsonFailedResponse($this->GetPostEditView($post, $form), BaseController::JsonResponseFailed);
+                return $this->CreateJsonFailedResponse($this->GetPostEditView($post, $form));
             }
         }
 
