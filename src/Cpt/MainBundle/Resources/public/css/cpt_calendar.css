@@ -7,14 +7,19 @@
 */
 #calendar_container{
     overflow: hidden;
+    text-align: center;
 }
 
 #calendar_container > div:first-child{
-    float: left;
+    display: inline-block;
+    vertical-align: top;
+    margin-top:20px;
+    min-width: 160px;
 }
 
 #calendar_container > div:last-child{
-    float: right;
+    display: inline-block;
+    margin-left:20px;
 }
 
 .month_selector > ul {

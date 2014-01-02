@@ -1,0 +1,176 @@
+{#****************************************************************************#}
+{# Modal Dialog and Flash Messages
+{#****************************************************************************#}
+          <script>
+            var modal_dialog_result = null;
+            function ModalDialog(callback_function, callbackdata, title, text, buttonOK_text, buttonCANCEL_text, button3_text)
+            {
+                var buttons = Array();
+                if (buttonOK_text)  
+                    buttons.push({ text: buttonOK_text, click: function() { $( this ).dialog( "close" ); if (callback_function) {callback_function(true, callbackdata); }} } );
+                if (buttonCANCEL_text)
+                    buttons.push({ text: buttonCANCEL_text, click: function() { $( this ).dialog( "close" ); if (callback_function) {callback_function(false, callbackdata);  } } });
+                if (button3_text)
+                    buttons.push({ text: button3_text, click: function() { $( this ).dialog( "close" ); if (callback_function) {callback_function(3, callbackdata);  } } });
+                
+                $( "#modal_dialog" ).dialog( "open" );
+                
+                $( "#modal_dialog" ).dialog( "option", "title", title );
+                $( "#modal_dialog" ).dialog( "option", "buttons", buttons );
+                $( "#modal_dialog_text" ).html(text);
+            }
+            
+            function RedirectHome()
+            {
+                  document.location='{{ url('cpt_main_home')}}';              
+            }
+
+{#****************************************************************************#}
+{# can_disable_links: make the attribute "disable" work on links
+{#****************************************************************************#}
+        function can_disable_links()
+        {
+            $('a').click(function(e) {
+                mylink = $(this).attr('disabled');
+                if (mylink === 'disabled') {
+ 
+                    e.preventDefault();
+                }
+            });
+        }
+{#****************************************************************************#}
+{# Aborts the ajax request from XHR object
+{#****************************************************************************#}        
+        function abort_ajax(jqXHR) {
+            if (jqXHR && jqXHR.readystate !== 4){
+                jqXHR.abort();
+            }
+        }
+        
+            $(function() {
+{#****************************************************************************#}
+{# Default Ajax error behavior
+{#****************************************************************************#}
+                /*$.ajaxSetup({
+                    error: function(jqXHR, textStatus, errorThrown ) {
+                        if (jqXHR.status === 0) {
+                            ModalDialog(null, null, "Non connecté", "Une erreur est subvenue.<BR/>Reconnectez-vous et essayez encore.", "Ok");
+                        } else if (jqXHR.status === 401) {
+                        ModalDialog(RedirectHome, null, "Session expirée", "Votre session a expiré.<br/>Vous allez être redirigé(e) vers la page d'accueil.<br/>Toutes modifications non enregistrées seront perdues.", "Ok");
+                        } else if (jqXHR.status === 404) {
+                            ModalDialog(RedirectHome, null, "Ressource inexistante", "Vous tentez d'accéder à une ressource qui n'existe pas.<br/>Vous allez être redirigé(e) vers la page d'accueil.<br/>Toutes modifications non enregistrées seront perdues.", "Ok");
+                        } else if (jqXHR.status === 500) {
+                            ModalDialog(RedirectHome, null, "Erreur", "Une erreur s'est produite sur le serveur.<br/>Vous allez être redirigé(e) vers la page d'accueil.<br/>Toutes modifications non enregistrées seront perdues.", "Ok");
+                        } else {
+                            ModalDialog(RedirectHome, null, "Erreur", "Une erreur s'est produite<br/>Vous allez être redirigé(e) vers la page d'accueil.<br/>Toutes modifications non enregistrées seront perdues.", "Ok");
+                        }
+                        
+                        {% if app.environment == 'dev' %}
+                          //  myWindow=window.open('', '_blank');
+                          //  myWindow.document.write("Text Status:" + textStatus);
+                          //  myWindow.document.write("Error Thrown:" + errorThrown );
+                           // myWindow.document.write(jqXHR.responseText);
+                           $('#debugerrors').html(errorThrown+"<BR>"+jqXHR.responseText);
+                            console.log(new Error().stack);
+                        {% endif %}
+                    }
+                });*/
+            });
+{#****************************************************************************#}
+{# Post an Ajax form
+{#****************************************************************************#}            
+            function AjaxPostForm( $form, precall, callback, parameters ){
+                if (precall)
+                    precall();
+                
+                /*
+                 * Get all form values
+                 */
+                var values = {};
+                $.each( $form.serializeArray(), function(i, field) {
+                  values[field.name] = field.value;
+                });
+                 
+                /*
+                 * Throw the form values to the server!
+                 */
+                $.ajax({
+                  type        : $form.attr( 'method' ),
+                  url         : $form.attr( 'action' ),
+                  data        : values,
+                  success     : function(data) {
+                    callback( data );
+                  },
+                });
+            }
+
+{#****************************************************************************#}
+{# Disable/Enable all controls within an object id (typically a form)
+{#****************************************************************************#}            
+            function DisableControls(containerid, enable)
+            {
+                if (enable)
+                    $('#'+containerid).find('input, textarea, button, select').removeAttr('disabled');
+                else
+                    $('#'+containerid).find('input, textarea, button, select').attr('disabled','disabled');
+            } 
+{#****************************************************************************#}
+{# Disable / Enable a given control
+{#****************************************************************************#}
+    function EnableControl(control, enable)
+    {
+        if (enable)
+            control.removeAttr('disabled');
+        else
+            control.attr('disabled','disabled');
+    }
+{#****************************************************************************#}
+{# Says if a given control is disabled
+{#****************************************************************************#}
+    function isDisabled(control)
+    {
+        return (control.attr('disabled') === 'disabled');
+    }
+{#****************************************************************************#}
+{# Make a form Ajax
+{#****************************************************************************#}
+            function AjaxForm(formid, precall, callback)
+            {
+                $('#'+formid).on("submit", function( e ){
+                e.preventDefault(); {# Prevents event propagation (prevents default behavior of form submission) #}
+                //PrepareEventFormSubmission();
+                AjaxPostForm( $(this), precall, callback);
+                DisableControls(formid, false);
+                return true;
+                });
+            }
+            $(function() {
+              $( "#modal_dialog" ).dialog({
+                autoOpen: false,
+                resizable: false,
+                closeOnEscape: false,
+                modal: true,
+                buttons: {
+                  "Delete all items": function() {
+                    $( this ).dialog( "close" );
+                  },
+                  Cancel: function() {
+                    $( this ).dialog( "close" );
+                  }
+                }
+                });              
+   
+               {# display flash message #}
+                flash = Array();
+                {% for key, flash in app.session.flashbag.get('popup_message') %}
+                    flash[{{ key }}] = "{{ flash }}";
+                {% endfor %}
+                if (flash.length>0)
+                    ModalDialog(null, null, flash[0], flash[1], "Ok");
+                }); 
+{#****************************************************************************#}
+{# Handles timers
+{#****************************************************************************#}
+    var alltimers = Array();
+
+          </script>

@@ -13,6 +13,10 @@ class CalendarManager extends BaseManager
       $monthdate->setDate($year, $month, 1);
       $currentdate = new \DateTime();
       
+      if ($monthdate<$currentdate){
+          return false;
+      }
+      
      $eventid = $this->getEventRepository()
         ->createQueryBuilder('e')
             ->Select('e.id')
@@ -41,6 +45,10 @@ class CalendarManager extends BaseManager
       $monthdate->setTime(0, 0, 0);
       $currentdate = new \DateTime();
       
+      if ($monthdate<$currentdate){
+          return false;
+      }
+      
      $eventid = $this->getEventRepository()
         ->createQueryBuilder('e')
             ->Select('e.id')
@@ -66,6 +74,7 @@ class CalendarManager extends BaseManager
       $monthdate = new \DateTime();
       $monthdate->setDate($year, $month+1, 1); // Adding 1 to the provided month
       $currentdate = new \DateTime();
+    
       
       $eventid = $this->getEventRepository()
         ->createQueryBuilder('e')
@@ -139,20 +148,31 @@ class CalendarManager extends BaseManager
         return ( $countregistration > 0 );
  }
  
-  
+ 
+ /**
+  * Returns the next date where an event is happening, or current date otherwise.
+  * 
+  * @param \DateTime $current
+  * @return \DateTime
+  */
   public function GetNextEventDateOrCurrent(\DateTime $current)
     {
           $event = $this->getEventRepository()
             ->createQueryBuilder('e')
-                ->Where('e.begin >= :from')
+                ->Where('e.end >= :from')
                 ->setMaxResults(1)
                 ->setParameter('from', $current)
             ->getQuery()
             ->getOneOrNullResult();
           
-          if ($event)
-              return $event->getBegin();
-          else
+          if ($event){
+              if ($event->getBegin()<=$current){
+                return $current;              
+              } else {
+                return $event->getBegin();
+              }
+          } else{
               return $current;
+          }
     }
 }
