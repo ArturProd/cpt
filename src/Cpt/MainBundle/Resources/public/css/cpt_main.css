@@ -271,3 +271,31 @@ hr.line_separator{
     margin-top: 20px;
     margin-bottom: 10px;
 }
+
+.message_information,
+.message_question,
+.message_error{
+    border-width: 3px;
+    border-style: solid;
+    font-weight: bold;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    padding: 5px;
+    margin: 10px;
+    vertical-align: middle;
+}
+
+.message_information{
+    background-color: #faff9e;
+    border-color: #F29516;
+    color:#F29516;
+}
+
+.message_question{
+    background-color: #F29516;     
+}
+
+.message_error{
+   background-color: #FA3113;     
+}

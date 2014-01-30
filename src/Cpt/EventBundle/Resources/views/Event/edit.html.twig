@@ -1,12 +1,6 @@
-{% include 'CptEventBundle:Event:edit.js.twig' with {'event': event, 'eventform':eventform, 'map':map} %}
+{% include 'CptEventBundle:Event:edit.js.twig' with {'event': event, 'eventform':eventform} %}
+{% include 'CptEventBundle:Event:edit_googleapi.js.twig' with {'event': event, 'eventform':eventform} %}
 
- {# Header #}
-<div class="row-fluid">
-      <div class="span12 popup_title cpt_bluebackground">
-        {{event.id==-1 ? 'event.popup.create_title'|trans: 'event.popup.edit_title'|trans }}
-        <a id="close_edit_event" class="popup_close_button" onclick='DisplayEventEditPanel(false);'>X</a>
-      </div>
-</div>   
 {% block javascripts %}
 
     {% javascripts
@@ -17,7 +11,11 @@
 
 {% endblock %}
 
-        
+<div class="cpt_page">        
+
+    <h1>{{event.id==-1 ? 'event.popup.create_title'|trans: 'event.popup.edit_title'|trans }}</h1>
+        <a id="close_edit_event" class="popup_close_button" onclick='DisplayEventEditPanel(false);'>X</a>
+
 {% form_theme eventform with ['ThraceFormBundle:Form:fields.html.twig'] %}
 
         {{ form_start(eventform, {'action': path('event_manage',  { 'id': event.id }), 'method': 'POST' }) }}
@@ -32,58 +30,89 @@
         {% endif %}
         <input type="hidden" value="{{ event.queue|join(',') }}" id="event_queue_json" name="event_queue_json" /> {# populated with the array of event.queu #}
         <input type="hidden" id="registration_list_json" name="registration_list_json" /> {# will hold the json value of the list_participant array before submitting the form  #}
-    <div id="tabs">
 
+
+
+    <h2>{{'event.tab.description'|trans}}</h2>
         <div>
-            {{'event.tab.description'|trans}}
-           {{ form_label(eventform.registration_allowed) }}{{ form_errors(eventform.registration_allowed) }}
+           {{ form_label(eventform.registration_allowed) }}
+           {{ form_errors(eventform.registration_allowed) }}
            {{ form_widget(eventform.registration_allowed) }}
-
+        </div>
+        <div>
             {{ form_label(eventform.enabled) }}{{ form_errors(eventform.enabled) }}
             {{ form_widget(eventform.enabled) }}
-                
+        </div>
+        <div>
             {{ form_label(eventform.cpt_event) }}{{ form_errors(eventform.cpt_event) }}
             {{ form_widget(eventform.cpt_event) }}
-
-            {{ form_label(eventform.title) }}{{ form_errors(eventform.title) }}
+        </div>
+        <div class="input_div">
+            {{ form_label(eventform.title, null, { 'attr': {'class': 'mandatory_field_label'} }) }}
+            {{ form_errors(eventform.title) }}
             {{ form_widget(eventform.title) }}
-
+        </div>
+        <div>
             {{ form_label(eventform.content) }}{{ form_errors(eventform.content) }}
             {{ form_widget(eventform.content) }}
-                
         </div>
+     <h2>{{'event.where'|trans}}</h2>
+     <div class="input_div">
+        <label class="input_label" for="placesearch">{{'event.googleplacelabel'|trans}}</label>
+        <input type="text" id="placesearch" name="placesearch" onFocus="geolocate();" value="" autocomplete="off" >
+     </div>
+     <div class="row-fluid">
+         <div class="span6">
+            <div class="input_div">
+            {{ form_label(eventform.corporate_name, null, { 'attr': {'class': 'input_label mandatory_field_label'} }) }}
+            {{ form_errors(eventform.corporate_name) }}
+            {{ form_widget(eventform.corporate_name) }}
+            </div>
+     
+            <div  class="input_div">
+            {#{ form_label(eventform.city_name, null, { 'attr': {'class': 'input_label mandatory_field_label'} }) }#}
+            {{ form_errors(eventform.city_name) }}
+            {{ form_widget(eventform.city_name, { 'id' : 'city_name'} ) }}
+            </div>
 
-        <div>
-            {{'event.tab.place_and_date'|trans}}
-            
-            {{ google_map_css(map) }}
-            {{ form_label(eventform.location_show_map) }}
-            {{ form_widget(eventform.location_show_map) }}
-
-            {{ google_map_container(map) }}
-            {{ google_map_js(map) }}
+            <div  class="input_div">
+            {#{ form_label(eventform.city_postal_code, null, { 'attr': {'class': 'input_label'} }) }#}
+            {{ form_errors(eventform.city_postal_code) }}
+            {{ form_widget(eventform.city_postal_code, { 'id':'city_postal_code'} ) }}
+            </div>
+                
+            <div  class="input_div">
+            {#{ form_label(eventform.address, null, { 'attr': {'class': 'input_label'} }) }#}
+            {{ form_errors(eventform.address) }}
+            {{ form_widget(eventform.address, {'id':'address'} ) }}
+            </div>
+             
+            <div  class="input_div">
+            {#{ form_label(eventform.address_num, null, { 'attr': {'class': 'input_label'} }) }#}
+            {{ form_errors(eventform.address_num) }}
+            {{ form_widget(eventform.address_num,  { 'id':'address_num'} ) }}
+            </div>
+             
+            <div  class="input_div">
+            {#{ form_label(eventform.country_name, null, { 'attr': {'class': 'input_label'} }) }#}
+            {{ form_errors(eventform.country_name) }}
+            {{ form_widget(eventform.country_name, {  'id':'country_name'} ) }}
+            </div>
+             
+            <div  class="input_div">
+            {#{ form_label(eventform.country_code, null, { 'attr': {'class': 'input_label'} }) }#}
+            {{ form_errors(eventform.country_code) }}
+            {{ form_widget(eventform.country_code, { 'id':'country_code'}) }}
+            </div>
+         </div>
+       <div class="span6"> 
+        <div id="map_canvas" style="width:200px;height:200px;"></div>
+       </div>>
+     </div>
             {# location #}
-            <h2>Lieu</h2>
-            <table>
-                 <tr>
-                     <td>{{ form_label(eventform.corporate_name) }}{{ form_errors(eventform.corporate_name) }}</td>
-                     <td>{{ form_widget(eventform.corporate_name) }}</td>
-                 </tr>
-                 <tr>
-                     <td>{{ form_label(eventform.city_name) }}{{ form_errors(eventform.city_name) }}</td>
-                     <td>{{ form_widget(eventform.city_name) }}</td>
-                 </tr>
-                 <tr>
-                     <td>{{ form_label(eventform.city_postal_code) }}{{ form_errors(eventform.city_postal_code) }}</td>
-                     <td>{{ form_widget(eventform.city_postal_code) }}</td>
-                 </tr>
-                 <tr>
-                     <td>{{ form_label(eventform.address) }}{{ form_errors(eventform.address) }}</td>
-                     <td>{{ form_widget(eventform.address) }}</td>
-                 </tr>
-              </table>
 
-              <h2>Dates et Heures</h2>
+     
+     <h2>{{'event.when'|trans}}</h2>
               <table>
                   <tr>
                      <td>{{ form_label(eventform.begin) }}{{ form_errors(eventform.begin) }}</td>
@@ -94,9 +123,8 @@
                      <td>{{ form_widget(eventform.end) }}</td>
                  </tr>
               </table>
-          </div>
-          <div>      
-            {{'event.tab.attendees'|trans}}
+
+      <h2>{{'event.attendees'|trans}}</h2>
             {# Participants #}
             {% if event.id !=-1 %}
                   <a href="{{ url('event_download_attendees', { 'eventid': event.id })  }}">{{'event.download_atendees_list'|trans}}</a>
@@ -137,10 +165,8 @@
                 <tbody id="queue_table_body">
                 </tbody>
             </table>
-          </div>
-    </div>
     {{ form_end(eventform) }}
-
+</div>
 
 
         

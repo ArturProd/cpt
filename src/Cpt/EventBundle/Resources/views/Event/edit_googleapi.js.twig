@@ -1,0 +1,155 @@
+<script type="text/javascript">
+var googlemap = null;               {# the google map #}
+var searchBox = null;      {# the google place autocomplete field #}
+var componentForm = {
+  street_number: 'short_name',
+  route: 'long_name',
+  locality: 'long_name',
+  //administrative_area_level_1: 'short_name',
+  country: 'long_name',
+  postal_code: 'short_name'
+};
+
+{# ************************************************************************************************************************ #} 
+{# Fillin the address from the google autocomplete result
+{# ************************************************************************************************************************ #}    
+function FillInAddress()
+{
+    var place = searchBox.getPlace();
+    var address_num = null;
+    var address = null;
+    var county_name = null;
+    var county_code = null;
+    var postal_code = null;
+    var city_name = null;
+    
+  // Get each component of the address from the place details
+  // and fill the corresponding field on the form.
+  for (var i = 0; i < place.address_components.length; i++) {
+    var addressType = place.address_components[i].types[0];
+        switch(addressType)
+        {
+            case 'street_number':
+                address_num = place.address_components[i]['short_name']; break;
+            case 'route':
+                address = place.address_components[i]['short_name']; break;
+            case 'country':
+                county_name = place.address_components[i]['long_name']; 
+                county_code = place.address_components[i]['short_name']; 
+                break;
+            case 'postal_code':
+                postal_code = place.address_components[i]['short_name']; break;
+            case 'locality':
+                city_name = place.address_components[i]['long_name']; break;
+        }
+  }
+        $('#address_num').attr('value',address_num);
+        $('#address').attr('value',address);
+        $('#county_name').attr('value',county_name);
+        $('#county_code').attr('value',county_code);
+        $('#city_postal_code').attr('value',postal_code);
+        $('#city_name').attr('value',city_name);  
+   UpdateMap();
+}
+  
+{# ************************************************************************************************************************ #} 
+{# Updates the google map #}
+{# ************************************************************************************************************************ #} 
+function UpdateMap()
+{
+    var place = searchBox.getPlace();
+
+    var markers = [];
+
+    for (var i = 0, marker; marker = markers[i]; i++) {
+      marker.setMap(null);
+    }
+
+    if (place){
+        // For each place, get the icon, place name, and location.
+        var bounds = new google.maps.LatLngBounds();
+
+        var image = {
+            url: place.icon,
+            size: new google.maps.Size(71, 71),
+            origin: new google.maps.Point(0, 0),
+            anchor: new google.maps.Point(17, 34),
+            scaledSize: new google.maps.Size(25, 25)
+        };
+        
+      // Create a marker for each place.
+      var marker = new google.maps.Marker({
+        map: googlemap,
+        icon: image,
+        title: place.name,
+        position: place.geometry.location
+      });
+
+      markers.push(marker);
+
+      bounds.extend(place.geometry.location);
+      googlemap.fitBounds(bounds);
+      googlemap.setZoom(12);
+    }
+}
+
+{# ************************************************************************************************************************ #} 
+{# Bias the autocomplete object to the user's geographical location,
+{# as supplied by the browser's 'navigator.geolocation' object.
+{# ************************************************************************************************************************ #} 
+function geolocate() {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(function(position) {
+      var geolocation = new google.maps.LatLng(
+          position.coords.latitude, position.coords.longitude);
+      searchBox.setBounds(new google.maps.LatLngBounds(geolocation,
+          geolocation));
+    });
+  }
+}
+
+{# ************************************************************************************************************************ #} 
+{# Init the google Map #}
+{# ************************************************************************************************************************ #} 
+function InitGoogleMapWidgets() {
+    mapcontainer = {"map":null,"coordinates":{},"bounds":{},"points":{},"sizes":{},"circles":{},"encoded_polylines":{},"ground_overlays":{},"polygons":{},"polylines":{},"rectangles":{},"info_windows":{},"marker_images":{},"marker_shapes":{},"markers":{},"marker_cluster":null,"kml_layers":{},"event_manager":{"dom_events":{},"dom_events_once":{},"events":{},"events_once":{}},"closable_info_windows":{},"functions":{"to_array":function (object) { var array = []; for (var key in object) { array.push(object[key]); } return array; }}};
+    mapcontainer.coordinates.coordinate_52cdd4f4a9526025416257 = coordinate_52cdd4f4a9526025416257 = new google.maps.LatLng(0, 0, false);
+    mapcontainer.map = new google.maps.Map(document.getElementById("map_canvas"), {"mapTypeId":google.maps.MapTypeId.ROADMAP,"zoom":3,"disableDefaultUI":false,"disableDoubleClickZoom":false});
+    mapcontainer.map.setCenter(coordinate_52cdd4f4a9526025416257);
+    googlemap = mapcontainer.map;
+
+   // googleautocomplete = new google.maps.places.Autocomplete(document.getElementById('placesearch', {"types":["(cities)"]}));
+
+
+  var defaultBounds = new google.maps.LatLngBounds(
+      new google.maps.LatLng(-33.8902, 151.1759),
+      new google.maps.LatLng(-33.8474, 151.2631));
+  googlemap.fitBounds(defaultBounds);
+
+  var input = /** @type {HTMLInputElement} */(
+      document.getElementById('placesearch'));
+// map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+  
+  searchBox =   new google.maps.places.Autocomplete(input, { types: ['geocode'] });
+  searchBox.bindTo('bounds', googlemap); 
+
+  // Listen for the event fired when the user selects an item from the
+  // pick list. Retrieve the matching places for that item.
+  google.maps.event.addListener(searchBox, 'place_changed', function() {
+        UpdateMap();
+        FillInAddress();
+    });
+
+    geolocate();
+   // googlemap.fitBounds(bounds);
+}
+
+{# ************************************************************************************************************************ #} 
+{# Loads google map API #}
+{# ************************************************************************************************************************ #} 
+function load_google_map_api () { 
+    google.load("maps", "3", {"other_params":"libraries=places&language=en&sensor=false","callback":InitGoogleMapWidgets}); 
+};
+
+</script>
+<script type="text/javascript" src="//www.google.com/jsapi?callback=load_google_map_api"></script>

@@ -1,0 +1,17 @@
+.cpt_page h1{
+    font-size: 20px;
+    color: darkgray;
+}
+
+.cpt_page h2{
+    font-size: 20px;
+    color: lightgrey;
+}
+
+
+#map_canvas{
+    width:200px;
+    height:200px;
+    border:1px solid #000;
+    background_color:#fff;
+}

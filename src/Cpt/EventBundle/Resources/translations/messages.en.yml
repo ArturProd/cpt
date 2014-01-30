@@ -16,9 +16,9 @@ event.button.manage:                    Manage event
 event.readmore:                         read more
 event.readless:                         read less
 event.noevent_todisplay:                There is no event to display for this month.
-event.filter.future:                   Evènements futurs
-event.filter.myevents:                 Mes évènements
-event.filter.pastevents:               Evènements passés
+event.filter.future:                   Month events
+event.filter.myevents:                 My events
+event.filter.pastevents:               Past events
 form.ok: Ok
 event.seats:                            seats
 event.attendees:                       "Attendees"
@@ -27,6 +27,9 @@ event.totalattendees:                  "registered:"
 event.queuedattendees:                 "queued:"
 event.availableseats:                  available seats
 event.queuedseats:                     on waiting list
+event.when:                             When?
+event.where:                            Where?
+event.googleplacelabel:               Search Place
 Monday: Monday
 Tuesday: Tuesday
 Wednesday: Wednesday

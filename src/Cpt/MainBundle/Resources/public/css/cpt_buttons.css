@@ -157,6 +157,14 @@
       user-select: none;
 }
 
+.cpt_event_btn{
+      background: url('../images/evenements/petit-logo-cpt.png') no-repeat;
+      min-height: 21px;
+      min-width: 21px;
+      display: inline-block;
+      border: 0px;
+}
+
 .btn_trash{
     background: url('../images/boutons/bouton-corbeille.png') no-repeat;
     height: 25px;

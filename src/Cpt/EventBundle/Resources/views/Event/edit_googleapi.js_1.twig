@@ -1,0 +1,169 @@
+<script type="text/javascript" src="//www.google.com/jsapi?callback=load_google_map_api"></script>
+<script>
+
+{# ************************************************************************************************************************ #} 
+{# Removes the markers from the google map #}
+{# ************************************************************************************************************************ #} 
+var markers = [];
+function RemoveGoogleMarkers()
+{
+    {# removes all markers #}
+    for (var i = 0; i < markers.length; i++) {
+        markers[i].setMap(null);
+    }
+    markers = [];
+}
+   
+{# ************************************************************************************************************************ #} 
+{# Updates the google map with location data #}
+{# ************************************************************************************************************************ #} 
+ function UpdateGoogleMap() 
+ {
+    {##############################################}
+    {# The map javascript object must be created  #}     
+    if ( typeof googlemap != "undefined") {# if the map is ready #}
+    {        
+        {##############################################}
+        {# Only updates if the city name was provided #}    
+         if ($('#{{ eventform.city_name.vars.id }}').val() != "")
+         {
+                address = "";
+
+                {################################################################}
+                {# If street name is provided, add it to the adress to geolocate#} 
+                if ($('#{{ eventform.address.vars.id }}').val() != "")
+                {
+                    address += $('#{{ eventform.address.vars.id }}').val();
+                }
+                {###################################################################}
+                {# Add city and postal code information to the adress to geolocate #} 
+                address += $('#{{ eventform.city_postal_code.vars.id }}').val();
+                address += " " + $('#{{ eventform.city_name.vars.id }}').val();                   
+
+                {########################}
+                {# Execute google query #} 
+                map = googlemap;
+                 geocoder = new google.maps.Geocoder();
+                geocoder.geocode( { 'address': address}, function(results, status) {
+                    
+                
+                    RemoveGoogleMarkers();
+                    {##################################################################}
+                    {# if we have OK result from google, add the new marker to the map#}
+                  if (status === google.maps.GeocoderStatus.OK) {
+                        {###################################}
+                        {# Creates a new marker on the map #}                
+                        map.setCenter(results[0].geometry.location);
+                        var marker = new google.maps.Marker({
+                            map: map,
+                            position: results[0].geometry.location
+                        });
+                        markers.push(marker);
+                        {#####################################################}
+                        {# Updates form field with reslut longitude,latitude #} 
+                        $("#{{ eventform.location_long.vars.id }}").val(results[0].geometry.location.lng());
+                        $("#{{ eventform.location_lat.vars.id }}").val(results[0].geometry.location.lat());
+                   } 
+                });
+        }
+    }
+}
+{# ************************************************************************************************************************ #} 
+{# Initialize the autocomplete widget #}
+{# ************************************************************************************************************************ #} 
+function InitPlaceAutocompleteWidget () {
+    googleautocomplete = new google.maps.places.Autocomplete(document.getElementById('placesearch', {"types":["(cities)"]}));
+}
+
+{# ************************************************************************************************************************ #} 
+{# Init the google Map #}
+{# ************************************************************************************************************************ #} 
+function InitGoogleMapWidget() {
+mapcontainer = {"map":null,"coordinates":{},"bounds":{},"points":{},"sizes":{},"circles":{},"encoded_polylines":{},"ground_overlays":{},"polygons":{},"polylines":{},"rectangles":{},"info_windows":{},"marker_images":{},"marker_shapes":{},"markers":{},"marker_cluster":null,"kml_layers":{},"event_manager":{"dom_events":{},"dom_events_once":{},"events":{},"events_once":{}},"closable_info_windows":{},"functions":{"to_array":function (object) { var array = []; for (var key in object) { array.push(object[key]); } return array; }}};
+mapcontainer.coordinates.coordinate_52cdd4f4a9526025416257 = coordinate_52cdd4f4a9526025416257 = new google.maps.LatLng(0, 0, false);
+mapcontainer.map = new google.maps.Map(document.getElementById("map_canvas"), {"mapTypeId":google.maps.MapTypeId.ROADMAP,"zoom":3,"disableDefaultUI":false,"disableDoubleClickZoom":false});
+mapcontainer.map.setCenter(coordinate_52cdd4f4a9526025416257);
+googlemap = mapcontainer.map;
+
+  var markers = [];
+  var map = new google.maps.Map(document.getElementById('map-canvas'), {
+    mapTypeId: google.maps.MapTypeId.ROADMAP
+  });
+
+  var defaultBounds = new google.maps.LatLngBounds(
+      new google.maps.LatLng(-33.8902, 151.1759),
+      new google.maps.LatLng(-33.8474, 151.2631));
+  map.fitBounds(defaultBounds);
+
+  // Create the search box and link it to the UI element.
+  var input = /** @type {HTMLInputElement} */(
+      document.getElementById('pac-input'));
+  map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+
+  var searchBox = new google.maps.places.SearchBox(
+    /** @type {HTMLInputElement} */(input));
+
+  // Listen for the event fired when the user selects an item from the
+  // pick list. Retrieve the matching places for that item.
+  google.maps.event.addListener(searchBox, 'places_changed', function() {
+    var places = searchBox.getPlaces();
+
+    for (var i = 0, marker; marker = markers[i]; i++) {
+      marker.setMap(null);
+    }
+
+    // For each place, get the icon, place name, and location.
+    markers = [];
+    var bounds = new google.maps.LatLngBounds();
+    for (var i = 0, place; place = places[i]; i++) {
+      var image = {
+        url: place.icon,
+        size: new google.maps.Size(71, 71),
+        origin: new google.maps.Point(0, 0),
+        anchor: new google.maps.Point(17, 34),
+        scaledSize: new google.maps.Size(25, 25)
+      };
+
+      // Create a marker for each place.
+      var marker = new google.maps.Marker({
+        map: map,
+        icon: image,
+        title: place.name,
+        position: place.geometry.location
+      });
+
+      markers.push(marker);
+
+      bounds.extend(place.geometry.location);
+    }
+
+    map.fitBounds(bounds);
+  });
+
+  // Bias the SearchBox results towards places that are within the bounds of the
+  // current map's viewport.
+  google.maps.event.addListener(map, 'bounds_changed', function() {
+    var bounds = map.getBounds();
+    searchBox.setBounds(bounds);
+  });
+
+
+}
+
+{# ************************************************************************************************************************ #} 
+{# Callback function when google map is done loading #}
+{# ************************************************************************************************************************ #} 
+function InitGoogleMapWidgets()
+{
+    InitGoogleMapWidget();
+    InitPlaceAutocompleteWidget();
+}
+
+{# ************************************************************************************************************************ #} 
+{# Loads google map API #}
+{# ************************************************************************************************************************ #} 
+function load_google_map_api () { 
+    google.load("maps", "3", {"other_params":"libraries=places&language=en&sensor=false","callback":InitGoogleMapWidgets}); 
+};
+
+</script>

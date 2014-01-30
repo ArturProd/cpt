@@ -9,6 +9,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request as Request;
 use Symfony\Component\HttpFoundation\Response;
 use Ivory\GoogleMap\Events\Event as GMapEvent;
+//use Ivory\GoogleMap\Places\Autocomplete;
+//use Ivory\GoogleMap\Places\AutocompleteType;
+//use Ivory\GoogleMap\Helper\Places\AutocompleteHelper;
+use Ivory\GoogleMap\Helper\MapHelper;
 
 class EventController extends BaseController {
 
@@ -72,15 +76,17 @@ class EventController extends BaseController {
             // Get the organizers and event queue
             try {
                 // If it is a copy action, copy the event
-                if (($event->getId() != -1) && ( $request->request->get('copy_field') == 1))
+                if (($event->getId() != -1) && ( $request->request->get('copy_field') == 1)){
                     $event = $this->getEventManager()->CopyEvent($event);
+                }
                 else { // If not, process the event queue
                     $registrationlist_json_array = json_decode($request->get('registration_list_json'));
                     $eventqueue_json_array = json_decode($request->get('event_queue_json'));
 
-                    if ((!$registrationlist_json_array ) || (!$eventqueue_json_array))
+                    if ((!$registrationlist_json_array ) || (!$eventqueue_json_array)){
                         throw new \InvalidArgumentException("decoded json is null");
-
+                    }
+                    
                     $event->setQueue($eventqueue_json_array);
                     $this->SetJsonRegistrationCollection($event, $registrationlist_json_array);
                 }
@@ -258,13 +264,33 @@ class EventController extends BaseController {
      * @return type
      */
     protected function GetEventEditView($event, $form) {
-        $map = $this->get('ivory_google_map.map');
-        $map->setLanguage($this->get('request')->getLocale());
+    //    $map = $this->get('ivory_google_map.map');
+    //    $map->setLanguage($this->get('request')->getLocale());
+//        $autocomplete = new Autocomplete();
+//
+//        $autocomplete->setPrefixJavascriptVariable('place_autocomplete_');
+//        $autocomplete->setInputId('place_autocomplete');
+//
+//      //  $autocomplete->setInputAttributes(array('class' => 'my-class'));
+//      //  $autocomplete->setInputAttribute('class', 'my-class');
+//
+//        $autocomplete->setTypes(array(AutocompleteType::CITIES));
+//        $autocomplete->setAsync(true);
+//        $autocomplete->setLanguage('en');
+        //$autocompleteHelper = new AutocompleteHelper();
+        
+      //  $mapHelper = new MapHelper();
+       // $mapHelper->setExtensionHelper('places', $autocompleteHelper);
 
+
+       // $googlejavascript = $mapHelper->renderJavascripts($map);
+
+       // $autocompleteHTML = $autocompleteHelper->renderHtmlContainer($autocomplete);
+       // $autocompleteJS = $autocompleteHelper->renderJavascripts($autocomplete);
         return $this->render('CptEventBundle:Event:edit.html.twig', array(
                     'event' => $event,
                     'eventform' => $form->createView(),
-                    'map' => $map
+      //              'map' => $map,
         ));
     }
 
@@ -308,5 +334,6 @@ class EventController extends BaseController {
 
         return $this->getRegistrationManager()->CreateRegistration($event, $user, $registration_json->numparticipants, $registration_json->organizer ? true : false );
     }
+  
     // </editor-fold>
 }

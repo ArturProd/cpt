@@ -32,9 +32,14 @@ Cpt\EventBundle\Entity\Event:
         type: boolean        
       country_code:
         type: text
+      country_name:
+        type: text
       city_name:
         type: text
       city_postal_code:
+        type: text
+        nullable: true
+      address_num:
         type: text
         nullable: true
       address:

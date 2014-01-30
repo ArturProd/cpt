@@ -1,6 +1,7 @@
 {% set queue_list_template = include('CptEventBundle:Event:ParticipantListQueue.html.twig') %}
 {% set reservation_list_row_template = include('CptEventBundle:Event:ParticipantListRow.html.twig') %}
 
+{# Loads the google API async and call back "load google map api"#}
 <script>
 {# ************************************************************************************************************************ #} 
 {# Global variables initialization
@@ -11,7 +12,6 @@
     var Count_organizer = 0;            {# total number of organizers in the event #}
     var Queue = [{{ event.queue|join(',') }}]; {# contains the event.queue in the form of comma separated values #}
     var Disabled_organizer_user = null; {# Id of the organizer which was disabled (due to the fact there is just one organizer left) #}
-
 
 function InitRegistrations()
 {
@@ -456,81 +456,13 @@ function InitializeEventPage()
        //CheckEventWasUpdated();
     }
     
-{# ************************************************************************************************************************ #} 
-{# Removes the markers from the google map #}
-{# ************************************************************************************************************************ #} 
-var markers = [];
-function RemoveGoogleMarkers()
-{
-    {# removes all markers #}
-    for (var i = 0; i < markers.length; i++) {
-        markers[i].setMap(null);
-    }
-    markers = [];
-}
-   
-{# ************************************************************************************************************************ #} 
-{# Updates the google map with location data #}
-{# ************************************************************************************************************************ #} 
- function UpdateGoogleMap() 
- {
-    {##############################################}
-    {# The map javascript object must be created  #}     
-    if ( typeof {{ map.JavascriptVariable() }} != "undefined") {# if the map is ready #}
-    {        
-        {##############################################}
-        {# Only updates if the city name was provided #}    
-         if ($('#{{ eventform.city_name.vars.id }}').val() != "")
-         {
-                address = "";
-
-                {################################################################}
-                {# If street name is provided, add it to the adress to geolocate#} 
-                if ($('#{{ eventform.address.vars.id }}').val() != "")
-                {
-                    address += $('#{{ eventform.address.vars.id }}').val();
-                }
-                {###################################################################}
-                {# Add city and postal code information to the adress to geolocate #} 
-                address += $('#{{ eventform.city_postal_code.vars.id }}').val();
-                address += " " + $('#{{ eventform.city_name.vars.id }}').val();                   
-
-                {########################}
-                {# Execute google query #} 
-                map = {{ map.JavascriptVariable() }};
-                 geocoder = new google.maps.Geocoder();
-                geocoder.geocode( { 'address': address}, function(results, status) {
-                    
-                
-                    RemoveGoogleMarkers();
-                    {##################################################################}
-                    {# if we have OK result from google, add the new marker to the map#}
-                  if (status === google.maps.GeocoderStatus.OK) {
-                        {###################################}
-                        {# Creates a new marker on the map #}                
-                        map.setCenter(results[0].geometry.location);
-                        var marker = new google.maps.Marker({
-                            map: map,
-                            position: results[0].geometry.location
-                        });
-                        markers.push(marker);
-                        {#####################################################}
-                        {# Updates form field with reslut longitude,latitude #} 
-                        $("#{{ eventform.location_long.vars.id }}").val(results[0].geometry.location.lng());
-                        $("#{{ eventform.location_lat.vars.id }}").val(results[0].geometry.location.lat());
-                   } 
-                });
-        }
-    }
-}
-
-    
-  $(function() {
+$(function() {
 
     InitializeEventPage();
-    
+//    UpdateGoogleMap();
+  //  InitAutocomplete();
 
 
-  });
+});
   
 </script>

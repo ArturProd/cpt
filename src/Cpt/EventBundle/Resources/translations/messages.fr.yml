@@ -14,7 +14,7 @@ form.event.end_date_time:           Dates et heures de fin
 form.event.city:                     Ville
 form.event.postal_code:                    Code Postal
 form.event.address:                 Adresse
-form.event.location_name:            Nom du Lieu
+form.event.location_name:           Lieu
 form.event.google_map_url:          URL Google Map
 form.event.location.show:           Afficher la carte
 event.download_atendees_list:       Télécharger la liste des participants
@@ -45,9 +45,9 @@ event.button.manage:                   gérer l'évènement
 event.readmore:                         lire la suite
 event.readless:                         replier
 event.noevent_todisplay:               Il n'y a pas d'évènement à afficher pour ce mois.
-event.filter.future:                   Future Events
-event.filter.myevents:                 My events
-event.filter.pastevents:              Past events
+event.filter.future:                   Evènements du mois
+event.filter.myevents:                 Mes évènements
+event.filter.pastevents:              Evènements passés
 event.book:                             réserver
 event.youhavebooked:                   vous avez réservé
 event.seats:                            place(s)
@@ -58,6 +58,9 @@ event.queuedattendees:                 "liste d'attente:"
 event.availableseats:                 place disponible|places disponibles
 event.availableseats:                 places disponibles
 event.queuedseats:                     sur la liste d'attente
+event.when:                             Quand?
+event.where:                             Où?
+event.googleplacelabel:               Recherche
 January:                                Janvier
 February:                               Février
 March:                                   Mars

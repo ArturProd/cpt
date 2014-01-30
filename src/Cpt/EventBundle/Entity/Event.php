@@ -32,8 +32,10 @@ class Event extends Publication implements EventInterface
         $this->restricted = false;
         $this->approved = false;
         $this->country_code = "FR";
+        $this->country_name = "FRANCE";
         $this->city_name = "";
         $this->city_postal_code = "";
+        $this->address_num = "";
         $this->address = "";
         $this->corporate_name = "";
         $this->cpt_event = true;
@@ -44,12 +46,11 @@ class Event extends Publication implements EventInterface
         $this->location_show_map = true;
         $this->location_long = "";
         $this->location_lat = "";
-        
         $this->participationlevel = EventInterface::PARTICIPATIONLEVEL_UNKNOWN;
     }
     
 
-    
+  
     public function UpdateCounters()
     {
         $this->ValidateRegistrationQueueIntegrity();
@@ -283,6 +284,12 @@ class Event extends Publication implements EventInterface
      */
     protected $country_code;
 
+     /**
+     * @var string
+     * @Expose
+     */
+    protected $country_name;
+    
     /**
      * @var string
      * @Expose
@@ -295,6 +302,12 @@ class Event extends Publication implements EventInterface
      */
     protected $city_postal_code;
 
+     /**
+     * @var string
+     * @Expose
+     */
+    protected $address_num;
+    
     /**
      * @var string
      * @Expose
@@ -506,6 +519,7 @@ class Event extends Publication implements EventInterface
         return $this->approved;
     }
     
+    
     /**
      * Set country_code
      *
@@ -575,6 +589,22 @@ class Event extends Publication implements EventInterface
         return $this->city_postal_code;
     }
 
+    public function getCountryName() {
+        return $this->country_name;
+    }
+
+    public function getAddressNum() {
+        return $this->address_num;
+    }
+
+    public function setCountryName($country_name) {
+        $this->country_name = $country_name;
+    }
+
+    public function setAddressNum($address_num) {
+        $this->address_num = $address_num;
+    }
+    
     /**
      * Set Address
      *

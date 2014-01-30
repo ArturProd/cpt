@@ -14,6 +14,7 @@ namespace Cpt\EventBundle\Form\Type;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\AbstractType;
+use Ivory\GoogleMap\Places\AutocompleteType;
 
 class EventType extends AbstractType
 {
@@ -22,7 +23,27 @@ class EventType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder
+        $builder/*->add('country', 'places_autocomplete', array(
+                    'mapped' => false,
+                    // Javascript prefix variable
+                    'prefix' => 'googleplace_country',
+
+                    // Autocomplete bound (array|Ivory\GoogleMap\Base\Bound)
+                    //'bound'  => $bound,
+
+                    // Autocomplete types
+                    'types'  => array(
+                        AutocompleteType::CITIES,
+                        // ...
+                    ),
+
+                    // TRUE if the autocomplete is loaded asynchonously else FALSE
+                    'async' => true,
+
+                    // Autocomplete language
+                    'language' => 'en',
+                ))*/
+                
                 ->add('save', 'submit', array(
                 ))
                 
@@ -58,7 +79,7 @@ class EventType extends AbstractType
             ->add('registration_allowed', 'checkbox', array(
                 'label'     => 'form.event.authorize_reservations',
                 'attr' => array(
-                    'class' => 'checkbox',
+                    'class' => 'input',
                     )
                 ))
                 
@@ -66,7 +87,7 @@ class EventType extends AbstractType
             ->add('cpt_event', 'checkbox', array(
                 'label'     => 'form.event.cpt_event',
                 'attr' => array(
-                    'class' => 'checkbox',
+                    'class' => 'input',
                     )
                 ))
             
@@ -75,7 +96,6 @@ class EventType extends AbstractType
                 'label' => 'Titre',
                 'attr' => array(
                     'maxlength'  => '80',
-                    'placeholder' => 'form.event.title',
                     ),
              ))                
              
@@ -123,14 +143,13 @@ class EventType extends AbstractType
               // Latitude
               ->add('location_lat', 'hidden', array(
                 ))
-                
             // City
                 ->add('city_name', 'text', array(
                 'label' => 'form.event.city',
                 'attr' => array(
                     'class' => 'input_text',
+                    'style'=>'display:none;',
                     'maxlength'  => '80',
-                    'placeholder' => 'form.event.city',
                     ),
              ))
              
@@ -140,8 +159,8 @@ class EventType extends AbstractType
                 'required' => false,
                 'attr' => array(
                     'class' => 'input_text',
+                    'style'=>'display:none;',
                     'maxlength'  => '80',
-                    'placeholder' => 'Code Postal',
                     ),
              )) 
              
@@ -152,10 +171,44 @@ class EventType extends AbstractType
                 'required' => false,
                 'attr' => array(
                     'class' => 'input_text',
+                    'style'=>'display:none;',
                     'maxlength'  => '50',
                     ),
              )) 
              
+             // Country name
+             ->add('country_name', 'text', array(
+                'label' => 'form.event.address',
+                'required' => false,
+                'attr' => array(
+                    'class' => 'input_text',
+                    'style'=>'display:none;',
+                    'maxlength'  => '50',
+                    ),
+              ))
+                
+             // Country code
+             ->add('country_code', 'text', array(
+                'label' => 'form.event.address',
+                'required' => false,
+                'attr' => array(
+                    'class' => 'input_text',
+                    'style'=>'display:none;',
+                    'maxlength'  => '50',
+                    ),
+              ))
+                
+              // Address num
+             ->add('address_num', 'text', array(
+                'label' => 'form.event.address',
+                'required' => false,
+                'attr' => array(
+                    'class' => 'input_text',
+                    'style'=>'display:none;',
+                    'maxlength'  => '50',
+                    ),
+              ))
+                 
              // Corporate name
              ->add('corporate_name', 'text', array(
                 'label' => 'form.event.location_name',

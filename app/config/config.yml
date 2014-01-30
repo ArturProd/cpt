@@ -8,7 +8,7 @@ imports:
     - { resource: sonata_media.yml }
     - { resource: sonata_doctrine_orm_admin.yml }
     - { resource: ivory_ckeditor.yml }
-    - { resource: ivory_google_map.yml }
+#    - { resource: ivory_google_map.yml }
     - { resource: sonata_fos_user.yml }
     - { resource: cpt.yml }
     - { resource: "@CptPublicationBundle/Resources/config/config.yml" }

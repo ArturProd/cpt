@@ -29,6 +29,10 @@ class PermissionsManager extends BaseManager {
     }
 
     public function RestrictAccessToAjax($request) {
+        if ($this->container->getParameter('kernel.environment') == "dev"){
+            return;
+        }
+        
         if (!$request->isXmlHttpRequest()) {
              throw new AccessDeniedException("Access denied. Please request through Ajax");
             //throw new SymfonyException\ForbiddenHttpException("Ressource cannot be accessed this way.");    
