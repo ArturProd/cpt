@@ -14,7 +14,6 @@ namespace Cpt\EventBundle\Form\Type;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\AbstractType;
-use Ivory\GoogleMap\Places\AutocompleteType;
 
 class EventType extends AbstractType
 {
@@ -108,9 +107,9 @@ class EventType extends AbstractType
              ->add('maxnumattendees', 'integer', array(
                 'label' => 'form.event.num_attendees_max',
                 'attr' => array(  
-                    'min' => 2
-               ),
-
+                    'min' => 2,
+                    'class' => 'input_text',
+                    ),
             ))
             // Begin date time
             ->add('begin', 'datetime', array(
@@ -122,7 +121,7 @@ class EventType extends AbstractType
             ->add('end', 'datetime', array(
                 'label' => 'form.event.end_date_time',
                 'date_widget' => 'single_text',
-                'required' => false,
+                'required' => true,
             ))
                 
                 

@@ -337,6 +337,61 @@ function ReLoadEvent()
 }
 
 {# ************************************************************************************************************************ #} 
+{# Check coherence of begin and end date
+{# ************************************************************************************************************************ #} 
+function EventDateTimeChanged()
+{
+    today = (new Date()).toISOString();
+    todaydate = today.split('T')[0];
+    $('#event_begin_date').attr('min',todaydate); {# set min value for begin date to be the same as today #}
+    $('#event_end_date').attr('min',$('#event_begin_date').val()); {# set min value for end date to be the same as begin date #}
+    
+    datefrom = $('#event_begin_date').val();
+    datefromarray = datefrom.split('-');
+    
+    dateto = $('#event_end_date').val();
+    datetoarray = dateto.split('-');
+    
+    datefrom = new Date(datefromarray[0],datefromarray[1],datefromarray[2],$('#event_begin_time_hour').val(),$('#event_begin_time_minute').val()); 
+    dateto = new Date(datetoarray[0],datetoarray[1],datetoarray[2],$('#event_end_time_hour').val(),$('#event_end_time_minute').val());
+    
+    if (dateto<datefrom){
+        //$('#error_dateevent').html('{{'event.error.dateevent'|trans}}');
+        $('#event_end_date').val($('#event_begin_date').val());
+        $('#event_end_time_hour').val(23);
+        $('#event_end_time_minute').val(59);
+    }
+    
+    datefrom = $('#event_begin_date').val();
+    datefromarray = datefrom.split('-');
+    
+    dateto = $('#event_end_date').val();
+    datetoarray = dateto.split('-');
+    
+    datefrom = new Date(datefromarray[0],datefromarray[1],datefromarray[2],$('#event_begin_time_hour').val(),$('#event_begin_time_minute').val()); 
+    dateto = new Date(datetoarray[0],datetoarray[1],datetoarray[2],$('#event_end_time_hour').val(),$('#event_end_time_minute').val());
+    
+    
+    diff = dateto.getTime() - datefrom.getTime();
+    
+    days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    diff -=  days * (1000 * 60 * 60 * 24);
+
+    hours = Math.floor(diff / (1000 * 60 * 60));
+    diff -= hours * (1000 * 60 * 60);
+
+    mins = Math.floor(diff / (1000 * 60));
+    
+    s = "{{'event.timespan.duration'|trans}} " + 
+        days + " {{'event.timespan.days'|trans}} "
+        + hours + " {{'event.timespan.hours'|trans}} " 
+        + mins + " {{'event.timespan.mins'|trans}}";
+
+    $('#event_timespan').html(s);
+
+}
+
+{# ************************************************************************************************************************ #} 
 {# Initialize the page
 {# ************************************************************************************************************************ #} 
 function InitializeEventPage()
@@ -346,6 +401,16 @@ function InitializeEventPage()
        {# Initialize the registrations with existing ones #}
        InitRegistrations();
        
+       {###################################################}
+       {# Initialize begin end dates time #}
+       $('#event_begin_date,#event_begin_time_hour,#event_begin_time_minute,#event_end_date,#event_end_time_hour,#event_end_time_minute').on('change',function(){
+           EventDateTimeChanged();
+       });
+       
+       $('#event_end_time_hour').val(23);
+       $('#event_end_time_minute').val(59);
+       EventDateTimeChanged();
+
        {############################################}
        {# Unbind the events (reinit) #}
        $('#save_button').off();
@@ -444,13 +509,6 @@ function InitializeEventPage()
               }
           });
 
-        {############################################}
-        {# Update google map when changing location #}         
-           $('#{{ eventform.city_name.vars.id }}, #{{ eventform.city_postal_code.vars.id }}, #{{ eventform.address.vars.id }}, #{{ eventform.corporate_name.vars.id }}').on("change", function(event){
-              UpdateGoogleMap();
-            });
-    
-       
        {################################################}
        {# Setting timer to check for event update #}
        //CheckEventWasUpdated();

@@ -44,7 +44,7 @@ class AppKernel extends Kernel
             new Cpt\BlogBundle\CptBlogBundle(),
             new Application\Sonata\UserBundle\ApplicationSonataUserBundle(),
             new Application\Sonata\MediaBundle\ApplicationSonataMediaBundle(),
-            new Thrace\FormBundle\ThraceFormBundle(),
+        //    new Thrace\FormBundle\ThraceFormBundle(),
          //   new Ivory\GoogleMapBundle\IvoryGoogleMapBundle(),
             new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
             new FrequenceWeb\Bundle\CalendRBundle\FrequenceWebCalendRBundle(),

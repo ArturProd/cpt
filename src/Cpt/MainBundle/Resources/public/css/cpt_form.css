@@ -50,8 +50,24 @@ input[disabled]{
     padding: 0 3px;
 } 
 
+.input_div input[type=number] { 
+    display: table-cell;
+    width: 100%;
+    -moz-border-radius: 0 5px 5px 0; 
+    -webkit-border-radius: 0 5px 5px 0; 
+    background: #FFF; 
+    border: 1px solid #CCC; 
+    border-radius: 0 5px 5px 0; 
+    color: #333; 
+    height: 38px; 
+    line-height: 24px; 
+    margin: 0px 8px 0px -5px; 
+    outline: none; 
+    padding: 0 3px;
+} 
+
 label { 
-    display: block; 
+    display: inline-block; 
     height: 36px; 
     line-height: 36px; 
     padding: 0 10px 0 20px;
@@ -60,3 +76,47 @@ label {
 .mandatory_field_label{
     color: #AA3333;
 }
+
+.cpt_datetime > input:first-of-type{
+    width: 130px;
+    margin-right: 3px;
+}
+
+.cpt_datetime > div:first-of-type {
+    display: inline-block;
+}
+
+.cpt_datetime > div:first-of-type > select{
+    width: 40px;
+    padding: 0px;
+}
+
+.event_timespan{
+    text-align: center;
+    font-size: small;
+}
+
+
+input[type=checkbox].cpt_event_checkbox  
+ {
+    padding: 0;
+    margin: 0;
+    position: absolute;
+    opacity: 0;
+ }
+
+ input[type=checkbox].cpt_event_checkbox + label
+ {
+      background: url('../images/evenements/petit-logo-cpt-grey.png') left center no-repeat;
+      border: 0px;
+      padding-left: 30px;
+ }
+
+ 
+ input[type=checkbox]:checked.cpt_event_checkbox + label
+ {
+      background: url('../images/evenements/petit-logo-cpt.png') left center no-repeat;
+      border: 0px;
+      padding-left: 30px;
+
+ }

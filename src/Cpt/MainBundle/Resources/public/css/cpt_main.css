@@ -272,6 +272,11 @@ hr.line_separator{
     margin-bottom: 10px;
 }
 
+.error{
+    color: red;
+    font-weight: bold;
+}
+
 .message_information,
 .message_question,
 .message_error{
@@ -298,4 +303,8 @@ hr.line_separator{
 
 .message_error{
    background-color: #FA3113;     
+}
+
+.cpt_integerselect{
+    width: 40px;
 }

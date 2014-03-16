@@ -8,13 +8,15 @@ form.event.copy:                     Copier l'évènement
 form.event.authorize_reservations:  Autoriser les réservations
 form.event.cpt_event:               Evenement chant pour tous
 form.event.title:                   Titre
-form.event.num_attendees_max:       Nombre max de participants
+form.event.num_attendees_max:       Maximum
 form.event.begin_date_time:           Dates et heures de début
 form.event.end_date_time:           Dates et heures de fin
 form.event.city:                     Ville
 form.event.postal_code:                    Code Postal
 form.event.address:                 Adresse
 form.event.location_name:           Lieu
+event.placesearcherror:             L'adresse doit au moins inclure le pays et le nom de la ville
+event.corporatename.placeholder:    'Nom du lieu (ex: Chez moi)'
 form.event.google_map_url:          URL Google Map
 form.event.location.show:           Afficher la carte
 event.download_atendees_list:       Télécharger la liste des participants
@@ -60,7 +62,13 @@ event.availableseats:                 places disponibles
 event.queuedseats:                     sur la liste d'attente
 event.when:                             Quand?
 event.where:                             Où?
-event.googleplacelabel:               Recherche
+event.googleplacelabel:               Adresse
+event.error.dateevent:                La fin de l'évènement ne peut être avant son début!
+event.timespan.duration:               "Durée:"
+event.timespan.days:                  jour(s)
+event.timespan.hours:                 heure(s)
+event.timespan.mins:                  minute(s)
+event.user.search:                    Ajouter
 January:                                Janvier
 February:                               Février
 March:                                   Mars

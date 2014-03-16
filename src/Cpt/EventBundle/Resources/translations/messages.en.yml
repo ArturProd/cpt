@@ -29,7 +29,17 @@ event.availableseats:                  available seats
 event.queuedseats:                     on waiting list
 event.when:                             When?
 event.where:                            Where?
-event.googleplacelabel:               Search Place
+event.googleplacelabel:               Address
+form.event.location_name:             Place
+event.placesearcherror:               Address must at least contain country name and city name
+event.corporatename.placeholder:     'Name of the place (ex: At home)'
+event.error.dateevent:                End of event cannot be before start of event!
+event.timespan.thatis:                "Duration:"
+event.timespan.days:                  day(s)
+event.timespan.hours:                 hour(s)
+event.timespan.mins:                  minute(s)
+event.user.search:                    Add
+form.event.num_attendees_max:       Maximum
 Monday: Monday
 Tuesday: Tuesday
 Wednesday: Wednesday

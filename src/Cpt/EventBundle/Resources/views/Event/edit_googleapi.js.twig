@@ -18,8 +18,8 @@ function FillInAddress()
     var place = searchBox.getPlace();
     var address_num = null;
     var address = null;
-    var county_name = null;
-    var county_code = null;
+    var country_name = null;
+    var country_code = null;
     var postal_code = null;
     var city_name = null;
     
@@ -34,8 +34,8 @@ function FillInAddress()
             case 'route':
                 address = place.address_components[i]['short_name']; break;
             case 'country':
-                county_name = place.address_components[i]['long_name']; 
-                county_code = place.address_components[i]['short_name']; 
+                country_name = place.address_components[i]['long_name']; 
+                country_code = place.address_components[i]['short_name']; 
                 break;
             case 'postal_code':
                 postal_code = place.address_components[i]['short_name']; break;
@@ -45,17 +45,22 @@ function FillInAddress()
   }
         $('#address_num').attr('value',address_num);
         $('#address').attr('value',address);
-        $('#county_name').attr('value',county_name);
-        $('#county_code').attr('value',county_code);
+        $('#county_name').attr('value',country_name);
+        $('#county_code').attr('value',country_code);
         $('#city_postal_code').attr('value',postal_code);
-        $('#city_name').attr('value',city_name);  
-   UpdateMap();
+        $('#city_name').attr('value',city_name);
+        if ((!city_name)||(!country_code)||(!country_name)){
+            $('#placesearch_error').html("{{'event.placesearcherror'|trans}}");
+        } else {
+            $('#placesearch_error').html("");
+        }
+        {# UpdateMap(); #}
 }
   
 {# ************************************************************************************************************************ #} 
 {# Updates the google map #}
 {# ************************************************************************************************************************ #} 
-function UpdateMap()
+{#function UpdateMap()
 {
     var place = searchBox.getPlace();
 
@@ -91,7 +96,7 @@ function UpdateMap()
       googlemap.fitBounds(bounds);
       googlemap.setZoom(12);
     }
-}
+}#}
 
 {# ************************************************************************************************************************ #} 
 {# Bias the autocomplete object to the user's geographical location,
@@ -114,29 +119,29 @@ function geolocate() {
 function InitGoogleMapWidgets() {
     mapcontainer = {"map":null,"coordinates":{},"bounds":{},"points":{},"sizes":{},"circles":{},"encoded_polylines":{},"ground_overlays":{},"polygons":{},"polylines":{},"rectangles":{},"info_windows":{},"marker_images":{},"marker_shapes":{},"markers":{},"marker_cluster":null,"kml_layers":{},"event_manager":{"dom_events":{},"dom_events_once":{},"events":{},"events_once":{}},"closable_info_windows":{},"functions":{"to_array":function (object) { var array = []; for (var key in object) { array.push(object[key]); } return array; }}};
     mapcontainer.coordinates.coordinate_52cdd4f4a9526025416257 = coordinate_52cdd4f4a9526025416257 = new google.maps.LatLng(0, 0, false);
-    mapcontainer.map = new google.maps.Map(document.getElementById("map_canvas"), {"mapTypeId":google.maps.MapTypeId.ROADMAP,"zoom":3,"disableDefaultUI":false,"disableDoubleClickZoom":false});
+    {#  mapcontainer.map = new google.maps.Map(document.getElementById("map_canvas"), {"mapTypeId":google.maps.MapTypeId.ROADMAP,"zoom":3,"disableDefaultUI":false,"disableDoubleClickZoom":false});
     mapcontainer.map.setCenter(coordinate_52cdd4f4a9526025416257);
-    googlemap = mapcontainer.map;
+    googlemap = mapcontainer.map; #}
 
    // googleautocomplete = new google.maps.places.Autocomplete(document.getElementById('placesearch', {"types":["(cities)"]}));
 
 
-  var defaultBounds = new google.maps.LatLngBounds(
+    {# var defaultBounds = new google.maps.LatLngBounds(
       new google.maps.LatLng(-33.8902, 151.1759),
       new google.maps.LatLng(-33.8474, 151.2631));
-  googlemap.fitBounds(defaultBounds);
+  googlemap.fitBounds(defaultBounds); #}
 
   var input = /** @type {HTMLInputElement} */(
       document.getElementById('placesearch'));
 // map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
   
   searchBox =   new google.maps.places.Autocomplete(input, { types: ['geocode'] });
-  searchBox.bindTo('bounds', googlemap); 
+  {# searchBox.bindTo('bounds', googlemap); #}
 
   // Listen for the event fired when the user selects an item from the
   // pick list. Retrieve the matching places for that item.
   google.maps.event.addListener(searchBox, 'place_changed', function() {
-        UpdateMap();
+      {# UpdateMap(); #}
         FillInAddress();
     });
 

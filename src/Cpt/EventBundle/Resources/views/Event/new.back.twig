@@ -7,20 +7,12 @@
         <a id="close_edit_event" class="popup_close_button" onclick='close_manage_event();'>X</a>
       </div>
 </div>   
-{% block javascripts %}
 
-    {% javascripts
-        '@ThraceFormBundle/Resources/public/js/spinner.js'
-    %}
-        <script src="{{ asset_url }}"></script>
-    {% endjavascripts %}
 
-{% endblock %}
-
+    
 {% set queue_list_template = include('CptEventBundle:Event:ParticipantListQueue.html.twig') %}
 {% set reservation_list_row_template = include('CptEventBundle:Event:ParticipantListRow.html.twig') %}
         
-{% form_theme eventform with ['ThraceFormBundle:Form:fields.html.twig'] %}
 
         {{ form_start(eventform, {'action': path('event_manage',  { 'id': event.id }), 'method': 'POST' }) }}
         {{ form_widget(eventform.restricted) }}

@@ -22,6 +22,10 @@ class BaseController extends Controller {
     public function getCommentManager() {
         return $this->get('cpt.manager.comment');
     }
+    
+    public function getUserManager() {
+        return $this->get('fos_user.user_manager');
+    }
 
     /**
      * @return PostManagerInterface

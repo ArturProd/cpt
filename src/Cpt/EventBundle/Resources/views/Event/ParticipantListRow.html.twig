@@ -3,7 +3,7 @@ Items are added by a javascript function.
 This file is made to be included in a javascript string (using twig filter extension jsstring #}
 <tr id='reserv_list_row_"+ reservation.user +"'>
     <td>" + reservation.username + "</td>
-    <td><input type='number' id='resa_num_att_"+ reservation.user +"' required='required'    min='1' value='" + reservation.numparticipants + "' /></td>
+    <td><input type='number' id='resa_num_att_"+ reservation.user +"' required='required'  class='cpt_integerselect'  min='1' value='" + reservation.numparticipants + "' /></td>
     <td id='resa_queued_att_"+ reservation.user +"'></td>
     <td><input type='checkbox' id='resa_organizer_"+ reservation.user +"' /></td>
     <td><button id='remove_button_"+ reservation.user +"' onclick='RemoveReservationItem(" + reservation.user + ");return false;'>X</button></td>        

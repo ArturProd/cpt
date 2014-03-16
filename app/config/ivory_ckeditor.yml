@@ -17,11 +17,11 @@ ivory_ck_editor:
             font_names:             "'Noto Sans', sans-serif; Geneva; 'Gill Sans'; Tahoma; 'GentiumBasicRegular'"
             forcePasteAsPlainText:  true
         evt_config:
-            toolbar:                [ [ "DocProps", "-", "Preview", "-", "Print", "Maximize" ], "/", [ "Bold", "Italic", "Underline", "Subscript", "Superscript", "-", "RemoveFormat", "-", "oembed"] ]
+            toolbar:                [ [ "Bold", "Italic", "Underline", "Subscript", "Superscript", "-", "RemoveFormat", "-", "oembed"] ]
             ui_color:               "#ffffff"
             extraPlugins:           "oembed"
             language:               "fr"
-            height:                 "200px"
+            height:                 "80px"
             width:                  "100%"
             font_names:             "'Noto Sans', sans-serif; Geneva; 'Gill Sans'; Tahoma; 'GentiumBasicRegular'"
             forcePasteAsPlainText:  true
