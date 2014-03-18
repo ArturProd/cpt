@@ -132,6 +132,10 @@ border: 0px;
     margin-bottom: 15px;
 }
 
+.column_title_event > div{
+    display: inline;
+}
+
 .column_title_article{
     background: url('../images/articles/picto-entete-articles.png') no-repeat;
     background-position:left top;

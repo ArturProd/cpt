@@ -5,9 +5,9 @@
 
 <div class="main_section">
     <div class="column_title_event">
-        {{'main.title.events'|trans}}
+        <div id="column_title_event_title">{{'main.title.events'|trans}}</div>
         {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-            <a id="newevent" class="event_new_btn">{{'main.button.new'|trans}}</a>
+        <div><a id="newevent" class="event_new_btn">{{'main.button.new'|trans}}</a></div>
         {% endif %}
     </div>
     {#****************************************************************************#}

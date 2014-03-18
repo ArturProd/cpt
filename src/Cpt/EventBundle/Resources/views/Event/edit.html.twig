@@ -3,8 +3,6 @@
 
 
 <div class="cpt_page">        
-
-    <h1>{{event.id==-1 ? 'event.popup.create_title'|trans: 'event.popup.edit_title'|trans }}</h1>
         <a id="close_edit_event" class="popup_close_button" onclick='DisplayEventEditPanel(false);'>X</a>
 
 
@@ -14,14 +12,10 @@
         {{ form_widget(eventform.location_long) }}
         {{ form_widget(eventform.location_lat) }}
         <input id="copy_field" name="copy_field" type="hidden" value="0"/>
-        <button id="save_button" type="submit">{{'form.save'|trans}}</button>
-        {% if event.id != -1 %}
-        <button id="copy_button" type="submit">{{'form.event.copy'|trans}}</button>
-        {% endif %}
         <input type="hidden" value="{{ event.queue|join(',') }}" id="event_queue_json" name="event_queue_json" /> {# populated with the array of event.queu #}
         <input type="hidden" id="registration_list_json" name="registration_list_json" /> {# will hold the json value of the list_participant array before submitting the form  #}
 
-    <h2>{{'event.tab.description'|trans}}</h2>
+    <h2><span class="cpt_blue">➤&nbsp;&nbsp;</span>{{'event.tab.description'|trans}}</h2>
         <div class="input_div">
             {{ form_label(eventform.title, null, { 'attr': {'class': 'mandatory_field_label'} }) }}
             {{ form_errors(eventform.title) }}
@@ -42,7 +36,7 @@
            {{ form_label(eventform.cpt_event) }}
 
         </div>
-     <h2>{{'event.where'|trans}}</h2>
+     <h2><span class="cpt_blue">➤&nbsp;&nbsp;</span>{{'event.where'|trans}}</h2>
     <div class="input_div">
             {{ form_label(eventform.corporate_name, null, { 'attr': {'class': 'input_label mandatory_field_label'} }) }}
             {{ form_errors(eventform.corporate_name) }}
@@ -98,7 +92,7 @@
        </div>>
      </div>
             {# location #}
-     <h2>{{'event.when'|trans}}</h2>
+     <h2><span class="cpt_blue">➤&nbsp;&nbsp;</span>{{'event.when'|trans}}</h2>
       <div class="row-fluid">
          <div class="span6">
           {{ form_label(eventform.begin) }}
@@ -114,21 +108,21 @@
      <div class="row-fluid">
          <div class="span12 event_timespan" id="event_timespan"></div>
      </div>
-      <h2>{{'event.attendees'|trans}}</h2>
+      <h2><span class="cpt_blue">➤&nbsp;&nbsp;</span>{{'event.attendees'|trans}}</h2>
         <div class="row-fluid">
-            <div class="span6">
+            <div class="span4">
                 <div class="input_div">
                     {{ form_label(eventform.maxnumattendees, null, { 'attr': {'class': 'input_label mandatory_field_label'} }) }}
-                    {{ form_widget(eventform.maxnumattendees, { 'id': 'maxnumattendees', 'attr':{ 'class': 'cpt_integerselect' } }) }}
+                    {{ form_widget(eventform.maxnumattendees, { 'id': 'event_maxnumattendees', 'attr':{ 'class': 'cpt_integerselect' } }) }}
                     {{ form_errors(eventform.maxnumattendees) }}
                 </div>
             </div>
-            <div class="span6">
+            <div class="span8">
                {{ form_label(eventform.registration_allowed, null, { 'attr': {'class': 'input_label mandatory_field_label'} }) }}
                {{ form_errors(eventform.registration_allowed) }}
                {{ form_widget(eventform.registration_allowed) }}    
                 {% if event.id !=-1 %}
-                      <a href="{{ url('event_download_attendees', { 'eventid': event.id })  }}">{{'event.download_atendees_list'|trans}}</a>
+                      <a href="{{ url('event_download_attendees', { 'eventid': event.id })  }}" class="btn_csv"></a>
                 {% endif %}
             </div>
         </div>
@@ -147,17 +141,19 @@
                 </div>
             </div>
             {# registration table #}
-            <table class='cpt_table' style='width:700px;' id='reservation_table'>
-                <tr>
-                    <th>Nom</th>
-                    <th>Nombre de places demandées</th>
-                    <th>Nombre de places demandées en attente</th>
-                    <th>Animateur</th>
-                    <th>Actions</th>
-                </tr>
-            </table>
+                <div id='reservation_table' class="reservation_table">
+                    <div class='reservation_table_row'>
+                        <div class="span3">{{'event.attendeestable.name'|trans}}</div>
+                        <div class="span3">{{'event.attendeestable.nbseatsrequested'|trans}}</div>
+                        <div class="span3">{{'event.attendeestable.nbseatsqueued'|trans}}</div>
+                        <div class="span2">{{'event.attendeestable.animator'|trans}}</div>
+                        <div class="span1">{{'event.attendeestable.actions'|trans}}</div>
+                    </div>
+                </div>
+      
+            
 
-            <button onclick="$('#queue_table').toggle();return false;">{{'event.show_hide_attendeelist'|trans}}</button>
+      {# <a onclick="$('#queue_table').toggle();return false;" class="btn_green">{{'event.show_hide_attendeelist'|trans}}</a> #}
 
             {# queue table #}
             <table class='cpt_table' style='width:700px;' id="queue_table">
@@ -172,6 +168,24 @@
                 <tbody id="queue_table_body">
                 </tbody>
             </table>
+       
+       <div class="row-fluid">
+        <div class="span4 button_container">
+            <button class="btn_cancel" onclick="DisplayEventEditPanel(false);" >{{'event.button.cancel'|trans}}</button>
+        </div>
+        {% if event.id != -1 %}
+            <div class="span4 button_container">           
+               <button id="copy_button" type="submit">{{'event.button.copy'|trans}}</button>
+            </div>
+           <div class="span4 button_container">
+                <button id="save_button" class="btn_save" type="submit">{{'event.button.save'|trans}}</button>
+            </div>
+        {% else %}
+            <div class="span8 button_container">           
+                <button id="save_button" class="btn_save" type="submit">{{'event.button.save'|trans}}</button>
+            </div>
+        {% endif %}
+       </div>
     {{ form_end(eventform) }}
 </div>
 

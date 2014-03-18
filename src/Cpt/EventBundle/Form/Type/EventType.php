@@ -43,8 +43,8 @@ class EventType extends AbstractType
                     'language' => 'en',
                 ))*/
                 
-                ->add('save', 'submit', array(
-                ))
+                /*->add('save', 'submit', array(
+                ))*/
                 
 
             // ************************
@@ -133,7 +133,9 @@ class EventType extends AbstractType
              ->add('location_show_map', 'checkbox', array(
                 'required' => false,
                 'label' => 'form.event.location.show',
-
+                'attr' => array(
+                    'style'=>'display:none;'
+                 )
                 ))
               // Longitude
               ->add('location_long', 'hidden', array(

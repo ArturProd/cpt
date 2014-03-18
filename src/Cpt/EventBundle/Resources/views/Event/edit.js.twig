@@ -207,7 +207,7 @@ function AddRowToTable(reservation)
             var raw_value = $(this).val();
             var value = parseInt(raw_value );
             if (isNaN(value)) {# check if a number was entered #}
-            {
+            {   
                 ModalDialog(null, null, "{{'form.not_valid_number.title'|trans}}", "{{'form.not_valid_number.content'|trans|raw}}", "{{'form.ok'|trans}}");
                 $(this).val(reservation.numparticipants);
             } 

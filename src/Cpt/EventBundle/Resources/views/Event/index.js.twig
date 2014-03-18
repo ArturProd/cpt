@@ -259,11 +259,17 @@ function DisplayEventEditPanel(display)
 {
     if (display){
          $('#edit_event').show();
-         $('#display_events').hide();         
+         $('#display_events').hide();
+         $('#newevent').hide();
+         $('#column_title_event_title').html('{{'main.title.events_edit'|trans}}');
     } else {
          $('#edit_event').hide();
          $('#display_events').show();
+         $('#newevent').show();
+         $('#column_title_event_title').html('{{'main.title.events'|trans}}');
     }
+    
+    window.scrollTo(0,0);
 }
 
 {#**************************************************************************#}

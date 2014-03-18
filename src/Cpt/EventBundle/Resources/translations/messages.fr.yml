@@ -36,6 +36,11 @@ event.attendeequeue.rank:             Rang
 event.attendeequeue.name:             Nom
 event.attendeequeue.requested_seats: Places
 event.attendeequeue.queued:           Fil d'attente?
+event.attendeestable.name:          Participant
+event.attendeestable.nbseatsrequested: "# demandées"
+event.attendeestable.nbseatsqueued: "# attente"
+event.attendeestable.animator:      Animateur
+event.attendeestable.actions: ""
 event.organizedby:                    Organizé par
 event.animatedby:                     Animé par
 event.organizedandanimatedby:         Organisé et animé par
@@ -44,6 +49,9 @@ at_hour:                                à
 event.button.validate:                valider
 event.button.modify:                  modifier
 event.button.manage:                   gérer l'évènement
+event.button.cancel:                    Annuler
+event.button.save:                    Enregistrer
+event.button.copy:                    "Copier l'évènement"
 event.readmore:                         lire la suite
 event.readless:                         replier
 event.noevent_todisplay:               Il n'y a pas d'évènement à afficher pour ce mois.
@@ -60,8 +68,8 @@ event.queuedattendees:                 "liste d'attente:"
 event.availableseats:                 place disponible|places disponibles
 event.availableseats:                 places disponibles
 event.queuedseats:                     sur la liste d'attente
-event.when:                             Quand?
-event.where:                             Où?
+event.when:                             Quand
+event.where:                             Où
 event.googleplacelabel:               Adresse
 event.error.dateevent:                La fin de l'évènement ne peut être avant son début!
 event.timespan.duration:               "Durée:"
