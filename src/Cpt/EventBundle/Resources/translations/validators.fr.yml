@@ -1,0 +1,10 @@
+event.title.not_blank: Veuillez renseigner le titre de l'évènement
+event.title.min_length: Le titre doit faire au moins {{ limit }} caractères
+event.title.max_length: Le titre ne peut pas être plus long que {{ limit }} caractères
+event.maxnumattendees.min_length: Le nombre de participant maximum doit etre au minimum de {{ limit }}
+event.corporate_name.not_blank: Veuillez indiquer un nom pour ce lieu
+event.country_code.not_blank: Veuillez vous assurer que le nom du pays est correctement renseigné
+event.corporatename.min_length: Le nom de ce lieu doit avoir au moins {{ limit }} caractères
+event.corporatename.max_length: Le nom de ce lieu ne doit pas excéder {{ limit }} caractères
+event.cityname.not_blank: Veuillez renseigner le nom de la ville
+event.content.not_blank: Veuillez renseigner la description de cet évènement

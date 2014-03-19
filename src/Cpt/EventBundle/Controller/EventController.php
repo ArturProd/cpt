@@ -97,13 +97,14 @@ class EventController extends BaseController {
             if ($form->isValid()) {
 
                 $this->getEventManager()->SaveEvent($event);
+                return $this->CreateJsonOkResponse(null);
             }
 
-            return $this->GetEventEditView($event, $form);
+           return $this->CreateJsonFailedResponse($this->GetEventEditView($event, $form));
         }
         // ****************************************************        
         // Display page
-        return $this->GetEventEditView($event, $form);
+        return new Response($this->GetEventEditView($event, $form));
     }
 
     /*
@@ -287,7 +288,7 @@ class EventController extends BaseController {
 
        // $autocompleteHTML = $autocompleteHelper->renderHtmlContainer($autocomplete);
        // $autocompleteJS = $autocompleteHelper->renderJavascripts($autocomplete);
-        return $this->render('CptEventBundle:Event:edit.html.twig', array(
+        return $this->renderView('CptEventBundle:Event:edit.html.twig', array(
                     'event' => $event,
                     'eventform' => $form->createView(),
       //              'map' => $map,

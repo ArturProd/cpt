@@ -43,6 +43,7 @@ event.timespan.hours:                 hour(s)
 event.timespan.mins:                  minute(s)
 event.user.search:                    Add
 form.event.num_attendees_max:       Maximum
+form.event.title:                   Title
 event.attendeestable.name:          Attendee
 event.attendeestable.nbseatsrequested: "# Requested"
 event.attendeestable.nbseatsqueued: "# Queued"

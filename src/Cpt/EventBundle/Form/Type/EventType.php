@@ -213,6 +213,7 @@ class EventType extends AbstractType
              // Corporate name
              ->add('corporate_name', 'text', array(
                 'label' => 'form.event.location_name',
+                'required' => true,
                 'attr' => array(
                     'class' => 'input_text',
                     'maxlength'  => '50',

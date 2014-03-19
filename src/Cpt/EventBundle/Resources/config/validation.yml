@@ -9,25 +9,25 @@ Cpt\EventBundle\Entity\Event:
         - Type:
                 type: datetime
       content:
-        - NotBlank: ~
+        - NotBlank: { message: "event.content.not_blank" }
         - Type:
                 type: string 
       title:
-        - NotBlank: ~
+        - NotBlank: { message: "event.title.not_blank" }
         - Type:
                 type: string 
         - Length:
                 min: 5
                 max: 50
-                minMessage: "Le titre doit faire au moins {{ limit }} caractères"
-                maxMessage: "Le titre ne peut pas être plus long que {{ limit }} caractères"
+                minMessage: "event.title.min_length"
+                maxMessage: "event.title.max_length"
       maxnumattendees:
         - NotBlank: ~
         - Type:
                 type: integer
         - Range:
                 min: 2
-                minMessage: Le nombre de participant maximum doit etre au minimum de {{ min }}
+                minMessage: "event.maxnumattendees.min_length"
       end:
         - Type:
                 type: datetime 
@@ -54,40 +54,30 @@ Cpt\EventBundle\Entity\Event:
         - Type:
                 type: bool       
       countrycode:
-        - NotBlank: ~
+        - NotBlank: { message: "event.country_code.not_blank" }
         - Country:
         - Length:
                 min: 2
                 max: 2
       cityname:
-        - NotBlank: ~
+        - NotBlank: { message: "event.cityname.not_blank" }
         - Type:
-                type: string         
-        - Length:
-                min: 2
-                max: 30
-                minMessage: "La ville doit faire au moins {{ limit }} caractères"
-                maxMessage: "La vgooille ne peut pas être plus longue que {{ limit }} caractères"
+                type: string
       citypostalcode:
         - Type:
                 type: string  
       address:
         - Type:
-                type: string   
-        - Length:
-                min: 2
-                max: 50
-                minMessage: "La rue doit faire au moins {{ limit }} caractères"
-                maxMessage: "La rue ne peut pas être plus longue que {{ limit }} caractères"
+                type: string
       corporatename:
-        - NotBlank: ~
+        - NotBlank: { message: "event.corporate_name.not_blank" }
         - Type:
                 type: string
         - Length:
-                min: 2
+                min: 3
                 max: 30
-                minMessage: "La ville doit faire au moins {{ limit }} caractères"
-                maxMessage: "La ville ne peut pas être plus longue que {{ limit }} caractères"
+                minMessage: "event.corporatename.min_length"
+                maxMessage: "event.corporatename.max_length"
 
 Cpt\EventBundle\Entity\Registration:
       constraints:

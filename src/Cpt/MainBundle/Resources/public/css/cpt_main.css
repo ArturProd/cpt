@@ -309,6 +309,20 @@ hr.line_separator{
    background-color: #FA3113;     
 }
 
+.form_error{
+    display: block;
+    margin-top: 10px;
+    border-width: 1px;
+    border-style: solid;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    padding: 5px;
+    vertical-align: middle;
+    color: red;
+    border-color: red;
+}
+
 .cpt_integerselect{
     width: 40px;
 }

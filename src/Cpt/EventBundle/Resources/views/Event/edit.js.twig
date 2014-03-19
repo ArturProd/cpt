@@ -391,6 +391,21 @@ function EventDateTimeChanged()
 
 }
 
+{#***********************************************#}
+{# Callback after Save the current event
+{#***********************************************#}
+function save_event_callback(response)
+{
+    if (response.status==="ok")
+    {
+        DisplayEventEditPanel(false);
+    }
+    else 
+    {
+     $("#edit_event").html(response.data);   
+    }
+}
+
 {# ************************************************************************************************************************ #} 
 {# Initialize the page
 {# ************************************************************************************************************************ #} 
@@ -448,16 +463,12 @@ function InitializeEventPage()
 
        {############################################}
        {# Making the form ajax #}
-        $('#eventform').on("submit", function( e ){
-            e.preventDefault(); {# Prevents event propagation (prevents default behavior of form submission) #}
-            PrepareEventFormSubmission();
-            AjaxPostForm(  $(this), null, function( response ){
-                $("#eventformdiv").html(response);
-            });
-            $('#eventform').find('input, textarea, button, select').attr('disabled','disabled');
-            return true;
-        });
+        AjaxForm( 'eventform', PrepareEventFormSubmission, save_event_callback);
 
+        $('#save_button').click(function(){
+         $('#eventform').submit();
+        });
+        
        {############################################}
        {# Hiding the queue table #}
         $('#queue_table').hide();
