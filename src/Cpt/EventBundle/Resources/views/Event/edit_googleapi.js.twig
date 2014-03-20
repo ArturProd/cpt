@@ -127,6 +127,8 @@ function geolocate() {
 {# Init the google Map #}
 {# ************************************************************************************************************************ #} 
 function InitGoogleMapWidgets() {
+    {% if event.id == -1 or (event.end|date('U') > "now"|date('U')) %} {# only if it is not passed #}
+
     mapcontainer = {"map":null,"coordinates":{},"bounds":{},"points":{},"sizes":{},"circles":{},"encoded_polylines":{},"ground_overlays":{},"polygons":{},"polylines":{},"rectangles":{},"info_windows":{},"marker_images":{},"marker_shapes":{},"markers":{},"marker_cluster":null,"kml_layers":{},"event_manager":{"dom_events":{},"dom_events_once":{},"events":{},"events_once":{}},"closable_info_windows":{},"functions":{"to_array":function (object) { var array = []; for (var key in object) { array.push(object[key]); } return array; }}};
     mapcontainer.coordinates.coordinate_52cdd4f4a9526025416257 = coordinate_52cdd4f4a9526025416257 = new google.maps.LatLng(0, 0, false);
     {#  mapcontainer.map = new google.maps.Map(document.getElementById("map_canvas"), {"mapTypeId":google.maps.MapTypeId.ROADMAP,"zoom":3,"disableDefaultUI":false,"disableDoubleClickZoom":false});
@@ -157,6 +159,7 @@ function InitGoogleMapWidgets() {
 
     geolocate();
    // googlemap.fitBounds(bounds);
+   {% endif %}
 }
 
 {# ************************************************************************************************************************ #} 

@@ -504,6 +504,8 @@ function InitializeEventPage()
 
        {############################################}
         {# Autocomplete user search field with ajax request #}
+        {% if event.id == -1 or (event.end|date('U') > "now"|date('U')) %} {# only if it is not passed #}
+    
         $( "#user_search" ).autocomplete({
               source: function( request, response ) {
                     $.ajax({
@@ -542,6 +544,7 @@ function InitializeEventPage()
                 $( this ).removeClass( "ui-corner-top" ).addClass( "ui-corner-all" );
               }
           });
+          {% endif %}
 
 
         {############################################}
@@ -558,6 +561,14 @@ function InitializeEventPage()
         {############################################}
         {# Hide the placesearch error field #}
         $('#placesearch_error').hide();
+        
+        {############################################}
+        {# Disable form controls if this is a past event (it is not editable anymore) #} 
+        {% if event.id != -1 and (event.end|date('U') < "now"|date('U')) %} {# only if it is not passed #}
+        DisableControls('edit_event', false);
+        $('#copy_button').removeAttr('disabled');
+        $('#cancel_button').removeAttr('disabled');
+        {% endif %}
         
        {################################################}
        {# Setting timer to check for event update #}

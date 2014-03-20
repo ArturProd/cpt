@@ -4,7 +4,31 @@
 
 <div class="cpt_page">        
         <a id="close_edit_event" class="popup_close_button" onclick='DisplayEventEditPanel(false);'>X</a>
+   
+{#***********************************************#}
+    {# SECTION: BUTTONS
+    {#***********************************************#}
+    <h2><span class="cpt_blue">➤&nbsp;&nbsp;</span>{{'event.tab.actions'|trans}}</h2>
 
+       <div class="row-fluid">
+        <div class="span4 button_container">
+            <button id="copy_button" class="btn_cancel" onclick="DisplayEventEditPanel(false);" >{{'event.button.cancel'|trans}}</button>
+        </div>
+        {% if event.id != -1 %}
+            <div class="span4 button_container">           
+               <button id="copy_button" class="btn_copy" type="submit">{{'event.button.copy'|trans}}</button>
+            </div>
+           {% if event.end|date('U') > "now"|date('U') %} {# An existing event can only be saved if it is not passed #}
+           <div class="span4 button_container">
+                <button id="save_button" class="btn_save">{{'event.button.save'|trans}}</button>
+            </div>
+            {% endif %}
+        {% else %}
+            <div class="span8 button_container">           
+                <button id="save_button" class="btn_save">{{'event.button.save'|trans}}</button>
+            </div>
+        {% endif %}
+       </div>
 
     {% form_theme eventform _self %}
 
@@ -98,11 +122,13 @@
     {{ form_errors(eventform.address) }}
     {{ form_errors(eventform.addressnum) }}
     {{ form_errors(eventform.countryname) }}
-    {{ form_errors(eventform.countrycode) }}    
+    {{ form_errors(eventform.countrycode) }}
+    {% if event.id == -1 or (event.end|date('U') > "now"|date('U')) %} {# only if it is not passed #}
     <div class="input_div">
         <label class="input_label" for="placesearch">{{'event.googleplacelabel'|trans}}</label>
         <input type="text" id="placesearch" name="placesearch" onFocus="geolocate();" value="" autocomplete="off" >
      </div>
+    {% endif %}
      <div class="input_div">
         <label class="input_label" for="address_display">{{'event.adresslabel'|trans}}</label>
         <input type="text" id="address_display"  value="" readonly>
@@ -215,16 +241,18 @@
     {#***********************************************#}
     {# Tool: User Search Field
     {#***********************************************#}
+        {% if event.id == -1 or (event.end|date('U') > "now"|date('U')) %} {# only if it is not passed #}
             <div class="row-fluid">
                 <div class="span12">
                     <div class="input_div">
                     <label class="input_label" for="user_search">{{'event.user.search'|trans}}</label>
                     <div class="ui-widget">
-                        <input id="user_search" type="text" class="input_text" />
+                        <input id="user_search" type="text" class="input_text" />        
                     </div>
                     </div>
                 </div>
             </div>
+        {% endif %}
     {#***********************************************#}
     {# Registration Table
     {#***********************************************#}
@@ -254,28 +282,7 @@
                 <tbody id="queue_table_body">
                 </tbody>
             </table>
-    {#***********************************************#}
-    {# SECTION: BUTTONS
-    {#***********************************************#}
-       <div class="row-fluid">
-        <div class="span4 button_container">
-            <button class="btn_cancel" onclick="DisplayEventEditPanel(false);" >{{'event.button.cancel'|trans}}</button>
-        </div>
-        {% if event.id != -1 %}
-            <div class="span4 button_container">           
-               <button id="copy_button" class="btn_copy" type="submit">{{'event.button.copy'|trans}}</button>
-            </div>
-           {% if event.end|date('U') > "now"|date('U') %} {# An existing event can only be saved if it is not passed #}
-           <div class="span4 button_container">
-                <button id="save_button" class="btn_save">{{'event.button.save'|trans}}</button>
-            </div>
-            {% endif %}
-        {% else %}
-            <div class="span8 button_container">           
-                <button id="save_button" class="btn_save">{{'event.button.save'|trans}}</button>
-            </div>
-        {% endif %}
-       </div>
+ 
     {{ form_end(eventform) }}
 </div>
 
