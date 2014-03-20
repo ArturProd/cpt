@@ -50,6 +50,7 @@ event.attendeestable.nbseatsrequested: "# Requested"
 event.attendeestable.nbseatsqueued: "# Queued"
 event.attendeestable.animator: Animator
 event.attendeestable.actions: ""
+form.event.authorize_reservations:  Authorize booking
 Monday: Monday
 Tuesday: Tuesday
 Wednesday: Wednesday
@@ -71,3 +72,20 @@ November: November
 December: December
 
 event.tab.actions: Event actions
+
+hint.event.button.cancel: Cancel and delete the event
+hint.event.button.copy: Copy this event into a new event
+hint.event.button.save: Save changes for this event
+hint.event.placesearch: Search for an adress
+hint.event.adress: The actual adress for this event
+hint.event.cptevent: Check this to make this event an official Chant Pour Tous event.
+hint.event.corporatename: Enter a short display name for this location. This can be for example the corporate name of the location.
+hint.event.begin: Enter the date and time for the begining of this event
+hint.event.end: Enter the date and time for the end of this event
+hint.event.title: Enter a meaningfull title for this event.
+hint.event.maxnumattendee: Maximum number of attendees for this event
+hint.event.usersearch: Search for a user to be added as an attendee of this event.
+hint.event.bookingquantity: Number of places requested by this attendee.
+hint.event.queuedquantity: Number of places in the queue for this attendee. If different from 0, it means that it is not possible for this user to bring as many friends as he requested.
+hint.event.animator: Indicates wether this attendee will animate the event or not
+hint.event.deleteattendee: Remove this attendee

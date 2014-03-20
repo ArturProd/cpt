@@ -3,8 +3,8 @@ Items are added by a javascript function.
 This file is made to be included in a javascript string (using twig filter extension jsstring #}
 <div id='reserv_list_row_"+ reservation.user +"' class='reservation_table_row'>
     <div class='span3'>" + reservation.username + "</div>
-    <div class='span3'><input type='number' id='resa_num_att_"+ reservation.user +"' required='required'  class='cpt_integerselect'  min='1' value='" + reservation.numparticipants + "' /></div>
-    <div class='span3' id='resa_queued_att_"+ reservation.user +"'></div>
-    <div class='span2'><input type='checkbox' id='resa_organizer_"+ reservation.user +"' /></div>
-    <div class='span1'><button id='remove_button_"+ reservation.user +"' onclick='RemoveReservationItem(" + reservation.user + ");return false;'>X</button></div>
+    <div class='span3'><input title='{{'hint.event.bookingquantity'|trans}}' type='number' id='resa_num_att_"+ reservation.user +"' required='required'  class='cpt_integerselect'  min='1' value='" + reservation.numparticipants + "' /></div>
+    <div class='span3' title='{{'hint.event.queuedquantity'|trans}}' id='resa_queued_att_"+ reservation.user +"'></div>
+    <div class='span2'><input title='{{'hint.event.animator'|trans}}' type='checkbox' id='resa_organizer_"+ reservation.user +"' /></div>
+    <div class='span1'><button title='{{'hint.event.deleteattendee'|trans}}' id='remove_button_"+ reservation.user +"' onclick='RemoveReservationItem(" + reservation.user + ");return false;'>X</button></div>
 </div>

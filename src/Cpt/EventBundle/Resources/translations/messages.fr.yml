@@ -99,3 +99,20 @@ Saturday: Samedi
 Sunday: Dimanche
 
 event.tab.actions: Actions sur l'évènement
+
+hint.event.button.cancel: Annuler et supprimer l'évènement
+hint.event.button.copy: Copier cet évènement dans un nouvel évènement
+hint.event.button.save: Enregistrer les modifications apportées à cet évènement
+hint.event.placesearch: Rechercher une adresse
+hint.event.adress: L'adresse de cet évènement
+hint.event.cptevent: Check this to make this event an official Chant Pour Tous event.
+hint.event.corporatename: Entrez un nom court à afficher pour ce lieu. Ce peut etre par exemple le nom officiel du lieu.
+hint.event.begin: Entrez la date et l'heure du début de cet évènement
+hint.event.end: Entrez la date et l'heure de la fin de cet évènement
+hint.event.title: Entrez un titre approprié pour cet évènement
+hint.event.maxnumattendee: Nombre maximum de participants à cet évènement.
+hint.event.usersearch: Rechercher un utilisateur à ajouter comme participant à cet évènement
+hint.event.bookingquantity: Nombre de places demandées par ce participant
+hint.event.queuedquantity: Nombre de places dans la file d'attente pour ce participant. Si différent de 0, celà signifie que ce participant ne peut pas venir avec autant d'amis qu'il le souhaite.
+hint.event.animator: Indique si ce participant est aussi un animateur de l'évènement ou non
+hint.event.deleteattendee: Supprimer ce participant
