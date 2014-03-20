@@ -1,9 +1,9 @@
 {% include 'CptEventBundle:Event:edit.js.twig' with {'event': event, 'eventform':eventform} %}
 {% include 'CptEventBundle:Event:edit_googleapi.js.twig' with {'event': event, 'eventform':eventform} %}
 
+<a id="close_edit_event" class="btn_blue" onclick='DisplayEventEditPanel(false);'>{{'event.button.backtoevent'|trans}}</a>
 
 <div class="cpt_page">        
-        <a id="close_edit_event" class="popup_close_button" onclick='DisplayEventEditPanel(false);'>X</a>
    
 {#***********************************************#}
     {# SECTION: BUTTONS
@@ -11,14 +11,14 @@
     <h2><span class="cpt_blue">➤&nbsp;&nbsp;</span>{{'event.tab.actions'|trans}}</h2>
 
        <div class="row-fluid">
-        <div class="span4 button_container">
-            <button id="cancel_button" title="{{'hint.event.button.cancel'|trans}}" class="btn_cancel" onclick="DisplayEventEditPanel(false);" >{{'event.button.cancel'|trans}}</button>
-        </div>
         {% if event.id != -1 %}
             <div class="span4 button_container">           
                <button id="copy_button" title="{{'hint.event.button.copy'|trans}}" class="btn_copy" type="submit">{{'event.button.copy'|trans}}</button>
             </div>
            {% if event.end|date('U') > "now"|date('U') %} {# An existing event can only be saved if it is not passed #}
+            <div class="span4 button_container">
+                <button id="cancel_button" title="{{'hint.event.button.cancel'|trans}}" class="btn_cancel" onclick="DisplayEventEditPanel(false);" >{{'event.button.cancel'|trans}}</button>
+            </div>
            <div class="span4 button_container">
                 <button id="save_button" title="{{'hint.event.button.save'|trans}}" class="btn_save">{{'event.button.save'|trans}}</button>
             </div>
@@ -282,7 +282,13 @@
                 <tbody id="queue_table_body">
                 </tbody>
             </table>
- 
+        <div class="row-fluid">
+           {% if event.id == -1 or event.end|date('U') > "now"|date('U') %} {# An existing event can only be saved if it is not passed #}
+            <div class="span4 offset8 button_container">
+                <button id="save_button2" title="{{'hint.event.button.save'|trans}}" class="btn_save">{{'event.button.save'|trans}}</button>
+            </div>
+            {% endif %}
+       </div>
     {{ form_end(eventform) }}
 </div>
 

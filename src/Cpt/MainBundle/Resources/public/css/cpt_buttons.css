@@ -61,9 +61,16 @@
 
 .event_manage_btn
 {
-      background: url('../images/evenements/bouton-gerer-mon-evenement.png') no-repeat;
-      height: 88px;
-      width: 17px;
+    display: inline-block;
+    background-image: url('../images/evenements/bouton-gerer-mon-evenement-gauche.png'), url('../images/evenements/bouton-gerer-mon-evenement-droite.png'), url('../images/evenements/bouton-gerer-mon-evenement.png');
+      background-repeat: no-repeat,  no-repeat, repeat-x;
+      background-position: left center, right center, center center ;
+      background-origin: padding-box;
+      padding-left: 5px;
+      padding-right: 5px;
+      min-width: 16px;
+      font-size: 10px;
+      line-height: 16px;
       color: white;
 }
 
@@ -171,6 +178,23 @@
     height: 25px;
     width: 25px;
     cursor: pointer; cursor: hand;
+}
+
+.btn_blue{
+    display: inline-block;
+    font-weight: bold;
+    padding-left: 10px;
+    padding-right: 10px;
+    background: url('../images/boutons/bouton-generique-bleu.png') repeat-x;
+    height: 20px;
+    color: white;
+    cursor: pointer; cursor: hand;
+    border-style: none;
+    vertical-align: central;
+}
+
+.btn_blue:hover{
+    color: white;
 }
 
 .btn_red{

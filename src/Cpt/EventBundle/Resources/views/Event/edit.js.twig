@@ -425,6 +425,7 @@ function save_event_callback(response)
 {
     if (response.status==="ok")
     {
+        UpdateEventInterface();
         DisplayEventEditPanel(false);
     }
     else 
@@ -456,6 +457,7 @@ function InitializeEventPage()
        {############################################}
        {# Unbind the events (reinit) #}
        $('#save_button').off();
+       $('#save_button2').off();
        $('#copy_button').off();
        $( "#event_registrationallowed" ).off();
        $('#event_maxnumattendees').off();
@@ -488,7 +490,7 @@ function InitializeEventPage()
        {# Making the form ajax #}
         AjaxForm( 'eventform', PrepareEventFormSubmission, save_event_callback);
 
-        $('#save_button').click(function(){
+        $('#save_button, #save_button2').click(function(){
          $('#eventform').submit();
         });
         

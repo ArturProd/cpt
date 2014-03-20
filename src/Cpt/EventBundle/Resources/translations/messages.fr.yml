@@ -99,6 +99,7 @@ Saturday: Samedi
 Sunday: Dimanche
 
 event.tab.actions: Actions sur l'évènement
+event.button.backtoevent: Retour à la liste d'évènements
 
 hint.event.button.cancel: Annuler et supprimer l'évènement
 hint.event.button.copy: Copier cet évènement dans un nouvel évènement

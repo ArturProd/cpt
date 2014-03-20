@@ -72,6 +72,7 @@ November: November
 December: December
 
 event.tab.actions: Event actions
+event.button.backtoevent: Back to event list
 
 hint.event.button.cancel: Cancel and delete the event
 hint.event.button.copy: Copy this event into a new event

@@ -15,7 +15,9 @@
         <group>
             <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Controller/EventController.php</file>
             <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Resources/translations/validators.fr.yml</file>
+            <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Resources/views/Event/index.js.twig</file>
             <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Form/Type/EventType.php</file>
+            <file>file:/home/cyril/dev/cpt/src/Cpt/MainBundle/Resources/public/css/cpt_buttons.css</file>
             <file>file:/home/cyril/dev/cpt/src/Cpt/MainBundle/Manager/UserManager.php</file>
             <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Resources/translations/validators.en.yml</file>
             <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Resources/views/Event/edit_googleapi.js.twig</file>
@@ -23,11 +25,16 @@
             <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Resources/translations/messages.fr.yml</file>
             <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Resources/views/Event/edit.js.twig</file>
             <file>file:/home/cyril/dev/cpt/app/Resources/views/base.js.twig</file>
+            <file>file:/home/cyril/dev/cpt/src/Cpt/MainBundle/Resources/views/Default/index.html.twig</file>
+            <file>file:/home/cyril/dev/cpt/src/Cpt/MainBundle/Resources/public/css/cpt_event.css</file>
             <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Resources/views/Event/edit.html.twig</file>
             <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Resources/translations/messages.en.yml</file>
+            <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Entity/Event.php</file>
+            <file>file:/home/cyril/dev/cpt/src/Cpt/MainBundle/Resources/public/css/bootstrap.css</file>
             <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Resources/config/services.yml</file>
             <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Resources/config/validation.yml</file>
             <file>file:/home/cyril/dev/cpt/src/Cpt/MainBundle/Resources/public/css/cpt_main.css</file>
+            <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Resources/views/Event/ParticipantListRow.html.twig</file>
             <file>file:/home/cyril/dev/cpt/src/Cpt/MainBundle/Resources/public/css/cpt_page.css</file>
         </group>
     </open-files>
