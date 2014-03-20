@@ -75,7 +75,7 @@ class EventType extends AbstractType
                        )
                 ))
             // Queue
-            ->add('registration_allowed', 'checkbox', array(
+            ->add('registrationallowed', 'checkbox', array(
                 'label'     => 'form.event.authorize_reservations',
                 'attr' => array(
                     'class' => 'input',
@@ -83,7 +83,7 @@ class EventType extends AbstractType
                 ))
                 
             // Event Cpt?
-            ->add('cpt_event', 'checkbox', array(
+            ->add('cptevent', 'checkbox', array(
                 'label'     => 'form.event.cpt_event',
                 'attr' => array(
                     'class' => 'input',
@@ -98,6 +98,16 @@ class EventType extends AbstractType
                     ),
              ))                
              
+                                 
+             // Corporate name
+             ->add('corporatename', 'text', array(
+                'label' => 'form.event.location_name',
+                'required' => true,
+                'attr' => array(
+                    'maxlength'  => '50',
+                    ),
+             ))
+                
              // Content
              ->add('content', 'ckeditor', array(
                     'config_name' => 'evt_config',          
@@ -138,14 +148,14 @@ class EventType extends AbstractType
                  )
                 ))
               // Longitude
-              ->add('location_long', 'hidden', array(
+              ->add('locationlong', 'hidden', array(
                 ))
               
               // Latitude
-              ->add('location_lat', 'hidden', array(
+              ->add('locationlat', 'hidden', array(
                 ))
             // City
-                ->add('city_name', 'text', array(
+                ->add('cityname', 'text', array(
                 'label' => 'form.event.city',
                 'attr' => array(
                     'class' => 'input_text',
@@ -155,7 +165,7 @@ class EventType extends AbstractType
              ))
              
              // Postal Code
-             ->add('city_postal_code', 'text', array(
+             ->add('citypostalcode', 'text', array(
                 'label' => 'form.event.postal_code',
                 'required' => false,
                 'attr' => array(
@@ -178,7 +188,7 @@ class EventType extends AbstractType
              )) 
              
              // Country name
-             ->add('country_name', 'text', array(
+             ->add('countryname', 'text', array(
                 'label' => 'form.event.address',
                 'required' => false,
                 'attr' => array(
@@ -189,7 +199,7 @@ class EventType extends AbstractType
               ))
                 
              // Country code
-             ->add('country_code', 'text', array(
+             ->add('countrycode', 'text', array(
                 'label' => 'form.event.address',
                 'required' => false,
                 'attr' => array(
@@ -200,7 +210,7 @@ class EventType extends AbstractType
               ))
                 
               // Address num
-             ->add('address_num', 'text', array(
+             ->add('addressnum', 'text', array(
                 'label' => 'form.event.address',
                 'required' => false,
                 'attr' => array(
@@ -208,17 +218,8 @@ class EventType extends AbstractType
                     'style'=>'display:none;',
                     'maxlength'  => '50',
                     ),
-              ))
-                 
-             // Corporate name
-             ->add('corporate_name', 'text', array(
-                'label' => 'form.event.location_name',
-                'required' => true,
-                'attr' => array(
-                    'class' => 'input_text',
-                    'maxlength'  => '50',
-                    ),
-             ));
+              ));
+
 
     }
 

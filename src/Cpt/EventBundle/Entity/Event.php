@@ -31,8 +31,8 @@ class Event extends Publication implements EventInterface
         $this->count_total_attendees = 0;
         $this->restricted = false;
         $this->approved = false;
-        $this->country_code = "FR";
-        $this->country_name = "FRANCE";
+        $this->country_code = "";
+        $this->country_name = "";
         $this->city_name = "";
         $this->city_postal_code = "";
         $this->address_num = "";

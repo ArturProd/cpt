@@ -391,6 +391,33 @@ function EventDateTimeChanged()
 
 }
 
+{# ************************************************************************************************************************ #} 
+{# Set the current address
+{# ************************************************************************************************************************ #}    
+function set_adress(address_num,address,postal_code,city_name,country_name,country_code )
+{
+        {# build the address string #}
+        var address_string = "";
+        address_string += address_num ? address_num + " " : "" ;
+        address_string += address ?  address + " " : "";
+        address_string += postal_code ? postal_code + " " : "";
+        address_string += city_name ? city_name + " " : "";
+        address_string += country_name ? country_name : "";
+        
+        {# set the fields #}
+        $('#address_display').attr('value', address_string);    
+        
+        $('#address_num').attr('value',address_num);
+        $('#address').attr('value',address);
+        $('#country_name').attr('value',country_name);
+        $('#country_code').attr('value',country_code);
+        $('#city_postal_code').attr('value',postal_code);
+        $('#city_name').attr('value',city_name);
+        
+        {# Clear search box #}
+        $('#placesearch').val('');
+}
+
 {#***********************************************#}
 {# Callback after Save the current event
 {#***********************************************#}
@@ -430,16 +457,12 @@ function InitializeEventPage()
        {# Unbind the events (reinit) #}
        $('#save_button').off();
        $('#copy_button').off();
-       $( "#event_registration_allowed" ).off();
+       $( "#event_registrationallowed" ).off();
        $('#event_maxnumattendees').off();
-
-       {############################################}
-       {# Make the tab system #}
-        $( "#tabs" ).tabs();
         
        {############################################}
        {# Event for disabling/enabling registration system#}        
-        $( "#event_registration_allowed" ).on("click", function(event){
+        $( "#event_registrationallowed" ).on("click", function(event){
 
                 checked = ($(this).is(':checked'));
                 if (!checked)
@@ -480,7 +503,7 @@ function InitializeEventPage()
             });
 
        {############################################}
-        {# Autocomplete search field with ajax request #}
+        {# Autocomplete user search field with ajax request #}
         $( "#user_search" ).autocomplete({
               source: function( request, response ) {
                     $.ajax({
@@ -520,6 +543,22 @@ function InitializeEventPage()
               }
           });
 
+
+        {############################################}
+        {# Initialize adress field #}
+        var address_num = $('#country_code').val();
+        var address = $('#address').val();
+        var country_name = $('#country_name').val();
+        var country_code = $('#country_code').val();
+        var postal_code = $('#city_postal_code').val();
+        var city_name = $('#city_name').val();
+        
+        set_adress(address_num,address,postal_code,city_name,country_name,country_code);
+        
+        {############################################}
+        {# Hide the placesearch error field #}
+        $('#placesearch_error').hide();
+        
        {################################################}
        {# Setting timer to check for event update #}
        //CheckEventWasUpdated();

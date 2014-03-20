@@ -225,3 +225,14 @@
     padding-left: 75px;
     font-size: large;
 }
+
+.btn_copy{
+    border: none;
+    background-color: white;
+    color: #444444;
+    background: url('../images/boutons/bouton-copy.gif') no-repeat;
+    height: 64px;
+    min-width: 64px;
+    padding-left: 75px;
+    font-size: large;
+}

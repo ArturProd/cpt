@@ -51,7 +51,7 @@ event.button.modify:                  modifier
 event.button.manage:                   gérer l'évènement
 event.button.cancel:                    Annuler
 event.button.save:                    Enregistrer
-event.button.copy:                    "Copier l'évènement"
+event.button.copy:                    "Copier"
 event.readmore:                         lire la suite
 event.readless:                         replier
 event.noevent_todisplay:               Il n'y a pas d'évènement à afficher pour ce mois.
@@ -70,7 +70,8 @@ event.availableseats:                 places disponibles
 event.queuedseats:                     sur la liste d'attente
 event.when:                             Quand
 event.where:                             Où
-event.googleplacelabel:               Adresse
+event.googleplacelabel:               Rechercher
+event.adresslabel:                     Adresse
 event.error.dateevent:                La fin de l'évènement ne peut être avant son début!
 event.timespan.duration:               "Durée:"
 event.timespan.days:                  jour(s)

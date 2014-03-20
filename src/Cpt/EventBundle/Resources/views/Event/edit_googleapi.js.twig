@@ -10,6 +10,7 @@ var componentForm = {
   postal_code: 'short_name'
 };
 
+
 {# ************************************************************************************************************************ #} 
 {# Fillin the address from the google autocomplete result
 {# ************************************************************************************************************************ #}    
@@ -22,9 +23,19 @@ function FillInAddress()
     var country_code = null;
     var postal_code = null;
     var city_name = null;
+  
+    {# Clear the location attributes #}
+    $('#address_num').attr('value',"");
+    $('#address').attr('value',"");
+    $('#country_name').attr('value',"");
+    $('#country_code').attr('value',"");
+    $('#city_postal_code').attr('value',"");
+    $('#city_name').attr('value',"");
+    $('#address_display').attr('value',"");
     
-  // Get each component of the address from the place details
-  // and fill the corresponding field on the form.
+        
+  {# Get each component of the address from the place details
+  and fill the corresponding field on the form. #}
   for (var i = 0; i < place.address_components.length; i++) {
     var addressType = place.address_components[i].types[0];
         switch(addressType)
@@ -43,16 +54,15 @@ function FillInAddress()
                 city_name = place.address_components[i]['long_name']; break;
         }
   }
-        $('#address_num').attr('value',address_num);
-        $('#address').attr('value',address);
-        $('#county_name').attr('value',country_name);
-        $('#county_code').attr('value',country_code);
-        $('#city_postal_code').attr('value',postal_code);
-        $('#city_name').attr('value',city_name);
+
+        set_adress(address_num,address,postal_code,city_name,country_name,country_code );
+                
         if ((!city_name)||(!country_code)||(!country_name)){
             $('#placesearch_error').html("{{'event.placesearcherror'|trans}}");
+            $('#placesearch_error').show();
         } else {
             $('#placesearch_error').html("");
+            $('#placesearch_error').hide();
         }
         {# UpdateMap(); #}
 }

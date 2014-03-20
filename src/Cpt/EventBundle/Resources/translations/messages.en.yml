@@ -15,7 +15,7 @@ event.button.modify:                  modify
 event.button.manage:                    Manage event
 event.button.cancel:                    Cancel
 event.button.save:                    Save
-event.button.copy:                    Copy event
+event.button.copy:                    Copy
 event.readmore:                         read more
 event.readless:                         read less
 event.noevent_todisplay:                There is no event to display for this month.
@@ -32,7 +32,8 @@ event.availableseats:                  available seats
 event.queuedseats:                     on waiting list
 event.when:                             When
 event.where:                            Where
-event.googleplacelabel:               Address
+event.googleplacelabel:               Search
+event.adresslabel:                     Adress
 form.event.location_name:             Place
 event.placesearcherror:               Address must at least contain country name and city name
 event.corporatename.placeholder:     'Name of the place (ex: At home)'
