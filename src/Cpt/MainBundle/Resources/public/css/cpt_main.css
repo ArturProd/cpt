@@ -113,6 +113,7 @@ border: 0px;
 .loading{
     background: url('../images/loading.gif') no-repeat;    
     background-position: left center;
+    background-size:40px 40px;
     font-size: 24px;
     min-width: 100px;
     height: 100px;

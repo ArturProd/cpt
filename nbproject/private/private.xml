@@ -24,12 +24,12 @@
             <file>file:/home/cyril/dev/cpt/src/Cpt/BlogBundle/Controller/PostController.php</file>
             <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Resources/translations/messages.fr.yml</file>
             <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Resources/views/Event/edit.js.twig</file>
+            <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Manager/EventManager.php</file>
             <file>file:/home/cyril/dev/cpt/app/Resources/views/base.js.twig</file>
             <file>file:/home/cyril/dev/cpt/src/Cpt/MainBundle/Resources/views/Default/index.html.twig</file>
             <file>file:/home/cyril/dev/cpt/src/Cpt/MainBundle/Resources/public/css/cpt_event.css</file>
             <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Resources/views/Event/edit.html.twig</file>
             <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Resources/translations/messages.en.yml</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Entity/Event.php</file>
             <file>file:/home/cyril/dev/cpt/src/Cpt/MainBundle/Resources/public/css/bootstrap.css</file>
             <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Resources/config/services.yml</file>
             <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Resources/config/validation.yml</file>

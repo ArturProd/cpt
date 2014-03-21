@@ -428,7 +428,7 @@ function save_event_callback(response)
         UpdateEventInterface();
         DisplayEventEditPanel(false);
     }
-    else 
+    else {# can be failed or "copy" in case the event was copied #}
     {
      $("#edit_event").html(response.data);   
     }
@@ -484,6 +484,8 @@ function InitializeEventPage()
        {# Handling the "copy" button #}
         $('#copy_button').on("click", function( e ){
             $("#copy_field").val(1); {# Setting value to 1 will make a copy #}
+            DisableControls('eventform', true); {# !!! Re-enable controls before submission: if not, all fields will be empty!! #}
+            $('#eventform').submit();
         });
 
        {############################################}
@@ -569,7 +571,6 @@ function InitializeEventPage()
         {% if event.id != -1 and (event.end|date('U') < "now"|date('U')) %} {# only if it is not passed #}
         DisableControls('edit_event', false);
         $('#copy_button').removeAttr('disabled');
-        $('#cancel_button').removeAttr('disabled');
         {% endif %}
         
        {################################################}

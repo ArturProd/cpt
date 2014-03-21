@@ -13,7 +13,7 @@
        <div class="row-fluid">
         {% if event.id != -1 %}
             <div class="span4 button_container">           
-               <button id="copy_button" title="{{'hint.event.button.copy'|trans}}" class="btn_copy" type="submit">{{'event.button.copy'|trans}}</button>
+               <button id="copy_button" title="{{'hint.event.button.copy'|trans}}" class="btn_copy" formnovalidate>{{'event.button.copy'|trans}}</button>
             </div>
            {% if event.end|date('U') > "now"|date('U') %} {# An existing event can only be saved if it is not passed #}
             <div class="span4 button_container">

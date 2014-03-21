@@ -82,6 +82,8 @@ class EventManager extends BaseManager implements EventManagerInterface {
             $event->setComments(new ArrayCollection());
             $event->setQueue(Array());
             $this->GetRegistrationManager()->AddDefaultRegistration($event);
+            $event->setBegin(new \DateTime);
+            $event->setEnd(new \DateTime);
         }
 
         return $event;

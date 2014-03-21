@@ -43,7 +43,6 @@ class EventController extends BaseController {
      */
     public function newAction($id = null) {
         $request = $this->getRequest();
-
         $this->getPermissionManager()->RestrictAccessToLoggedIn();
         $this->getPermissionManager()->RestrictAccessToAjax($request);
 
@@ -69,7 +68,6 @@ class EventController extends BaseController {
         // ****************************************************        
         // POSTing form: save the event
         if ($request->isMethod('POST')) {
-
             $form->bind($request);
 
 
@@ -78,8 +76,11 @@ class EventController extends BaseController {
                 // If it is a copy action, copy the event
                 if (($event->getId() != -1) && ( $request->request->get('copy_field') == 1)){
                     $event = $this->getEventManager()->CopyEvent($event);
+                    $form = $this->get('form.factory')->createNamed('event', 'cpt_edit_event', $event, Array('attr' => Array('id' => 'eventform')));
+                    return $this->CreateJsonResponse($this->GetEventEditView($event, $form), "copy");
                 }
-                else { // If not, process the event queue
+                
+                 // If not, process the event queue
                     $registrationlist_json_array = json_decode($request->get('registration_list_json'));
                     $eventqueue_json_array = json_decode($request->get('event_queue_json'));
 
@@ -89,18 +90,16 @@ class EventController extends BaseController {
                     
                     $event->setQueue($eventqueue_json_array);
                     $this->SetJsonRegistrationCollection($event, $registrationlist_json_array);
-                }
+                    
+                   if ($form->isValid()) {
+                        $this->getEventManager()->SaveEvent($event);
+                        return $this->CreateJsonOkResponse(null);
+                    } else {
+                       return $this->CreateJsonFailedResponse($this->GetEventEditView($event, $form));
+                    }
             } catch (Exception $e) {
                 return new Response("Paramètre incorrects", 400);
             }
-
-            if ($form->isValid()) {
-
-                $this->getEventManager()->SaveEvent($event);
-                return $this->CreateJsonOkResponse(null);
-            }
-
-           return $this->CreateJsonFailedResponse($this->GetEventEditView($event, $form));
         }
         // ****************************************************        
         // Display page
