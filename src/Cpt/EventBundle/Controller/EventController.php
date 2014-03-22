@@ -121,7 +121,7 @@ class EventController extends BaseController {
         $this->getPermissionManager()->RestrictAccessToAjax();
 
         $event = $this->getEventManager()->getEventById($id);
-        $this->RestrictResourceNotFound($event);
+        $this->GetPermissionManager()->RestrictResourceNotFound($event);
 
         $this->getPermissionManager()->RestrictAccessToUser($event->getAuthor()->getId());
 
@@ -139,12 +139,12 @@ class EventController extends BaseController {
         $this->getPermissionManager()->RestrictAccessToLoggedIn();
 
         $event = $this->getEventManager()->getEventById($eventid);
-        $this->RestrictResourceNotFound($event);
+        $this->GetPermissionManager()->RestrictResourceNotFound($event);
 
         $filename = "attendees.csv";
         $content = $this->render('CptEventBundle:Event:attendees_list.html.twig', array('event' => $event));
 
-        $this->SendCsvFileResponse($content);
+        return $this->CreateCsvFileResponse($content);
     }
 
     /**

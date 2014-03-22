@@ -10,7 +10,10 @@ use Cpt\EventBundle\Interfaces\Manager\EventManagerInterface as EventManagerInte
 use Cpt\EventBundle\Interfaces\Manager\RegistrationManagerInterface as RegistrationManagerInterface;
 use Cpt\EventBundle\Interfaces\Manager\CalendarManagerInterface as CalendarManagerInterface;
 use Cpt\MainBundle\Interfaces\Manager\PermissionManagerInterface as PermissionManagerInterface;
+use Symfony\Component\HttpFoundation\Response;
 
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
 
@@ -146,11 +149,8 @@ class BaseController extends Controller {
         return $response;
     }
 
-    public function SendCSVFileResponse($content) {
+    public function CreateCSVFileResponse($response, $filename="csvfile") {
 
-        $response = new Response();
-
-        $response->setContent($content);
         $response->setStatusCode(200);
 
         $response->headers->set('Content-Type', 'text/csv');
@@ -160,8 +160,8 @@ class BaseController extends Controller {
         $response->headers->set('Pragma', 'no-cache');
         $response->headers->set('Expires', '0');
         $response->setCharset('UTF-8');
-
-        $response->send();
+        
+        return $response;
     }
 
     public function isUserAdmin() {

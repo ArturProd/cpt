@@ -6,7 +6,7 @@
             <url>src/Cpt/MainBundle/Controller/BaseController.php</url>
             <bookmark id="1">
                 <name/>
-                <line>16</line>
+                <line>17</line>
                 <key/>
             </bookmark>
         </file>
@@ -36,6 +36,7 @@
             <file>file:/home/cyril/dev/cpt/src/Cpt/MainBundle/Resources/public/css/cpt_main.css</file>
             <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Resources/views/Event/ParticipantListRow.html.twig</file>
             <file>file:/home/cyril/dev/cpt/src/Cpt/MainBundle/Resources/public/css/cpt_page.css</file>
+            <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Resources/views/Event/attendees_list.html.twig</file>
         </group>
     </open-files>
 </project-private>

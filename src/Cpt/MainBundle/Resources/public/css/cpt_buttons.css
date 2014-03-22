@@ -214,17 +214,23 @@
     color: white;
     cursor: pointer; cursor: hand;
     border-style: none;
-    vertical-align: central;
+    vertical-align: middle;
     margin: 5px;
     padding: 5px;
     line-height: 15px;
 }
 
 .btn_csv{
+    display: inline-block;
+    cursor: pointer; cursor: hand;
     background: url('../images/boutons/csv.jpg');
-    height: 64px;
-    width: 64px;
-    margin: 5px;    
+    border-style: none;
+    vertical-align: middle;
+    margin: 5px;   
+    margin-left: 20px;
+    height: 32px;
+    width: 32px;
+    background-size: 32px 32px;
 }
 
 

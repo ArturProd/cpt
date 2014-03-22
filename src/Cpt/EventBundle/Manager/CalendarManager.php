@@ -161,6 +161,7 @@ class CalendarManager extends BaseManager
             ->createQueryBuilder('e')
                 ->Where('e.end >= :from')
                 ->setMaxResults(1)
+                ->orderBy('e.end', 'ASC')
                 ->setParameter('from', $current)
             ->getQuery()
             ->getOneOrNullResult();
