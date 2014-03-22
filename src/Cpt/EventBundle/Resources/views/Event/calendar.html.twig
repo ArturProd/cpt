@@ -21,14 +21,24 @@
         {% for day in week %}
 
                 {% set dayevents = events.find(day) %}
+                {% set day_link = '' %}
         
                 {% if not month.contains(day.begin) %}
                       {% set cell_class = 'cal_day_outmonth_noevents' %}
                 {% elseif (dayevents|length > 0) %}
+                        {% set day_link = '#event_anchor' ~ dayevents[0].begin|date("j") %}
                     {% if cpt_event_hasMyEvent(dayevents)%}
-                      {% set cell_class = 'cal_day_inmonth_withmyevents' %}
+                        {% if (day.end < date()) %}
+                            {% set cell_class = 'cal_day_inmonth_past_withmyevents' %}
+                        {% else %}
+                            {% set cell_class = 'cal_day_inmonth_withmyevents' %}
+                        {% endif %}
                     {% else %}
-                        {% set cell_class = 'cal_day_inmonth_withevents' %}
+                        {% if (day.end < date()) %}                             
+                            {% set cell_class = 'cal_day_inmonth_past_withevents' %}
+                        {% else %}
+                            {% set cell_class = 'cal_day_inmonth_withevents' %}
+                        {% endif %}
                     {% endif %}
                 {% else %}
                       {% set cell_class = 'cal_day_inmonth_noevents' %}
@@ -43,9 +53,15 @@
                 {% else %}{% set cell_class ='cal_day_outmonth_noevents'%}{% endif %}
                 #}
   
+                {% if (day.current) %}
+                    {% set cell_class2 = ' cal_day_current_date' %}
+                {% else %}
+                    {% set cell_class2 = '' %}
+                {% endif %}
+        
                 <td class='cal_day'>
-                    <div class="{{cell_class}}">
-                        <a href="#">{{day.begin|date("j") }}</a>
+                    <div class="{{cell_class}} {{cell_class2}}">
+                        <a href="{{ day_link }}">{{day.begin|date("j") }}</a>
                     </div>
                 </td>
         {% endfor %}

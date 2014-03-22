@@ -64,6 +64,7 @@
 {
     display: inline-block;
     margin-top: 4px;
+    margin-right: 3px;
     font-size: 18px;
 }
 
@@ -76,6 +77,8 @@
 
 }
 
+
+
 .cal_day_outmonth_withevents > a,
 .cal_day_outmonth_noevents > a
 {
@@ -87,9 +90,16 @@
     color: black;
 }
 .cal_day_inmonth_withmyevents > a,
-.cal_day_inmonth_withevents > a
+.cal_day_inmonth_withevents > a,
+.cal_day_inmonth_past_withmyevents > a,
+.cal_day_inmonth_past_withevents > a
 {
     color: white;
+}
+
+.cal_day_current_date > a
+{
+    color: gold;
 }
 
 .cal_day_inmonth_withmyevents{
@@ -98,8 +108,20 @@
     width: 29px;
 }
 
+.cal_day_inmonth_past_withmyevents{
+    background: url('../images/evenements/marquage-date-mon-cpt-calendrier-past.png') no-repeat;
+    height: 29px;
+    width: 29px;
+}
+
 .cal_day_inmonth_withevents{
     background: url('../images/evenements/marquage-date-cpt-calendrier.png') no-repeat;
+    height: 29px;
+    width: 29px;
+}
+
+.cal_day_inmonth_past_withevents{
+    background: url('../images/evenements/marquage-date-cpt-calendrier-past.png') no-repeat;
     height: 29px;
     width: 29px;
 }
