@@ -100,6 +100,12 @@ Sunday: Dimanche
 
 event.tab.actions: Actions sur l'évènement
 event.button.backtoevent: Retour à la liste d'évènements
+event.canceldialog.title: Annuler un évènement
+event.canceldialog.text: Vous êtes sur le point d'annuler cet évènement. Toutes les données liées seront supprimées, tel que le contenu de l'évènement, les commentaires et les participants. Êtes-vous sûr(e) de vouloir continuer?
+event.cancel.eventwascancelled: L'évènement a été annulé et supprimé.
+event.save.eventwassaved: L'évènement a été sauvegardé.
+event.edit.formcontainserror: Le formulaire contient des erreurs
+event.copy.eventwascopied: Vous éditez maintenant une copie de l'évènement
 
 hint.event.button.cancel: Annuler et supprimer l'évènement
 hint.event.button.copy: Copier cet évènement dans un nouvel évènement

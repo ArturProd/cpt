@@ -73,6 +73,12 @@ December: December
 
 event.tab.actions: Event actions
 event.button.backtoevent: Back to event list
+event.canceldialog.title: Cancel an event
+event.canceldialog.text: You are about to cancel this event. All related data such as event content, comments and registrations will be lost. Attendees will be notified by email. Do you want to continue?
+event.cancel.eventwascancelled: The event was cancelled and deleted.
+event.save.eventwassaved: The event was saved.
+event.edit.formcontainserror: The form contains error
+event.copy.eventwascopied: You are now editing a copy of the event.
 
 hint.event.button.cancel: Cancel and delete the event
 hint.event.button.copy: Copy this event into a new event

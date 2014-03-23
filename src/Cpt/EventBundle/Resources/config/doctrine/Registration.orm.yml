@@ -19,6 +19,7 @@ Cpt\EventBundle\Entity\Registration:
         joinColumn:
           name: event_id
           referencedColumnName: id
+          onDelete: CASCADE
   lifecycleCallbacks:
         prePersist: [prePersist]
         preUpdate: [preUpdate]

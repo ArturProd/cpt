@@ -17,7 +17,7 @@
             </div>
            {% if event.end|date('U') > "now"|date('U') %} {# An existing event can only be saved if it is not passed #}
             <div class="span4 button_container">
-                <button id="cancel_button" title="{{'hint.event.button.cancel'|trans}}" class="btn_cancel" onclick="DisplayEventEditPanel(false);" >{{'event.button.cancel'|trans}}</button>
+                <button id="cancel_button" title="{{'hint.event.button.cancel'|trans}}" class="btn_cancel" >{{'event.button.cancel'|trans}}</button>
             </div>
            <div class="span4 button_container">
                 <button id="save_button" title="{{'hint.event.button.save'|trans}}" class="btn_save">{{'event.button.save'|trans}}</button>
@@ -117,12 +117,6 @@
     {# Field: Place Search
     {#***********************************************#}
     <div class="form_error" id="placesearch_error"></div>
-    {{ form_errors(eventform.cityname) }}
-    {{ form_errors(eventform.citypostalcode) }}    
-    {{ form_errors(eventform.address) }}
-    {{ form_errors(eventform.addressnum) }}
-    {{ form_errors(eventform.countryname) }}
-    {{ form_errors(eventform.countrycode) }}
     {% if event.id == -1 or (event.end|date('U') > "now"|date('U')) %} {# only if it is not passed #}
     <div class="input_div">
         <label title="{{'hint.event.placesearch'|trans}}" class="input_label" for="placesearch">{{'event.googleplacelabel'|trans}}</label>

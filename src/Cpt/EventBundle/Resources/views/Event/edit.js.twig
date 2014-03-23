@@ -427,12 +427,52 @@ function save_event_callback(response)
     {
         UpdateEventInterface();
         DisplayEventEditPanel(false);
+        show_event_usermessage('{{'event.save.eventwassaved'|trans}}');
     }
     else {# can be failed or "copy" in case the event was copied #}
     {
-     $("#edit_event").html(response.data);   
+     $("#edit_event").html(response.data);
+     if (response.status==="copy"){
+        show_event_usermessage('{{'event.copy.eventwascopied'|trans}}');
+     } else {
+        show_event_usermessage('{{'event.edit.formcontainserror'|trans}}');
+     }
     }
 }
+
+{#***********************************************#}
+{# Callback after Save the current event
+{#***********************************************#}
+function cancel_event_callback(response)
+{
+    if (response.status==="ok")
+    {
+        UpdateEventInterface();
+        DisplayEventEditPanel(false);
+        show_event_usermessage('{{'event.cancel.eventwascancelled'|trans}}');
+    }
+    else {# can be failed or "copy" in case the event was copied #}
+    {
+        alert('An error occured when cancelling this event');
+    }
+}
+
+{#***********************************************#}
+{# Cancels the event
+{#***********************************************#}
+function cancel_event(areyousure)
+{
+    if (areyousure){
+        $.ajax({
+          type        : 'DELETE',
+          url         : Routing.generate('event_cancel', {id:{{ event.id }},_locale:_locale}),
+          success     : function(data) {
+            cancel_event_callback( data );
+          }
+        });
+    }
+}
+
 
 {# ************************************************************************************************************************ #} 
 {# Initialize the page
@@ -487,6 +527,14 @@ function InitializeEventPage()
             DisableControls('eventform', true); {# !!! Re-enable controls before submission: if not, all fields will be empty!! #}
             $('#eventform').submit();
         });
+        
+       {############################################}
+       {# Handling the "cancel" button #}
+        {% if ( (event.id != -1) and ( event.end|date('U') > "now"|date('U') ) ) %} {# cancel only available for already existing event which are not passed #}
+        $('#cancel_button').on("click", function( e ){
+            ModalDialog(cancel_event, null, '{{'event.canceldialog.title'|trans}}', '{{'event.canceldialog.text'|trans}}', '{{'form.button.yes'|trans}}', '{{'form.button.no'|trans}}');           
+        });
+        {% endif %}
 
        {############################################}
        {# Making the form ajax #}

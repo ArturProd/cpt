@@ -29,6 +29,16 @@ month_names[10] = "{{'october'|trans}}";
 month_names[11] = "{{'november'|trans}}";
 month_names[12] = "{{'december'|trans}}";
 
+{#***********************************************#}
+{# Affiche un message informatif à l'utilisateur
+{#***********************************************#}
+function show_event_usermessage(message)
+{
+    $('#event_user_messages').html(message);
+    $('#event_user_messages').show().delay(5000).slideUp(1000);
+}
+
+
 {#****************************************************************************#}
 {# Switches event filter
 {#  1: all, 2: my events, 3: past events
@@ -51,6 +61,7 @@ function Set_filter_events(value)
 {#**************************************************************************#}
 function manage_event(id)
 {
+    $("#edit_event").html('<div id="loading_event" class="loading"></div>');
     $("#edit_event").load(Routing.generate('event_manage', {id:id,_locale:_locale}));
     DisplayEventEditPanel(true);
 }
@@ -283,5 +294,7 @@ $(function() {
         {# Event Dialog setup #}
         $("a#newevent").on("click", function(){manage_event(-1);});
     {% endif %}
+    
+    $('#event_user_messages').hide();
 });
 </script>

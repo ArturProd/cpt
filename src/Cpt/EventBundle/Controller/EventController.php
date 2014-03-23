@@ -117,8 +117,10 @@ class EventController extends BaseController {
      * @return type
      */
     public function wasEventUpdatedAction($id, $unixtimestamp) {
+        $request = $this->getRequest();
+
         $this->getPermissionManager()->RestrictAccessToLoggedIn();
-        $this->getPermissionManager()->RestrictAccessToAjax();
+        $this->getPermissionManager()->RestrictAccessToAjax($request);
 
         $event = $this->getEventManager()->getEventById($id);
         $this->GetPermissionManager()->RestrictResourceNotFound($event);
@@ -243,6 +245,8 @@ class EventController extends BaseController {
         $this->getPermissionManager()->RestrictAccessToLoggedIn();
         
         $event = $this->getEventManager()->getEventById($eventid);
+        $this->GetPermissionManager()->RestrictResourceNotFound($event);
+
         $user = $this->getUser();
         
         $registration = $this->getRegistrationManager()
@@ -252,6 +256,24 @@ class EventController extends BaseController {
 
         return $this->CreateJsonOkResponse($responsedata);
     }
+    
+    public function cancelEventAction($id)
+    {        
+        $request = $this->getRequest();
+
+        $this->getPermissionManager()->RestrictAccessToLoggedIn();
+        $this->getPermissionManager()->RestrictAccessToAjax($request);
+
+        
+        $event = $this->getEventManager()->getEventById($id);
+        $this->GetPermissionManager()->RestrictResourceNotFound($event);
+        
+        $result = $this->getEventManager()->cancelEvent($event);
+        
+        return $this->CreateJsonOkResponse($result);
+    }
+    
+    
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="Protected">

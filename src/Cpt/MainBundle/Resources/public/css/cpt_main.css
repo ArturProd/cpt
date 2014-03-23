@@ -285,9 +285,8 @@ hr.line_separator{
 .message_information,
 .message_question,
 .message_error{
-    border-width: 3px;
+    border-width: 1px;
     border-style: solid;
-    font-weight: bold;
     -webkit-border-radius: 10px;
     -moz-border-radius: 10px;
     border-radius: 10px;

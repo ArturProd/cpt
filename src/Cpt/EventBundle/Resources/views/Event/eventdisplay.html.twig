@@ -48,9 +48,6 @@
 {{ event.Address is not empty ?  " " ~ event.Address ~ " |"}}       {# Location address #}
 {{ 'at_hour'|trans ~ " " ~ event.begin|date('H:i') }}
     </div>
-    <div style="display:inline-block">
-        <a id="event_readmore_btn{{event.id}}">{{'event.readmore'|trans}}</a>
-    </div>
 {#****************************************************************************#}
 {# Action panel
 {#****************************************************************************#}
@@ -71,6 +68,9 @@
         <a class="event_manage_btn" onclick="manage_event({{event.id}})">{{'event.button.manage'|trans}}</a>
     {% endif %}
 {% endif %}
+    <div style="display:inline-block">
+        <a id="event_readmore_btn{{event.id}}">{{'event.readmore'|trans}}</a>
+    </div>
 </div>
 {#****************************************************************************#}
 {# Event content

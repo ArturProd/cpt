@@ -17,12 +17,12 @@
             <generator strategy="AUTO"/>
         </id>
         <many-to-one field="publication" target-entity="Publication" inversed-by="comments">
-            <join-column name="publication_id" referenced-column-name="id" />
+            <join-column name="publication_id" referenced-column-name="id" on-delete="CASCADE"/>
         </many-to-one>
     
         <!-- Publication <=> Author -->
         <many-to-one field="author" target-entity="Application\Sonata\UserBundle\Entity\User" inversed-by="comments">
-            <join-column name="author_id" referenced-column-name="id" />
+            <join-column name="author_id" referenced-column-name="id"/>
         </many-to-one>
         
         <field name="message"           type="text"         column="message"  />

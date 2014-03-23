@@ -19,6 +19,15 @@ event_manage:
         copy: 1|0
     options:
         expose: true 
+
+event_cancel:
+    path:     /cancel/{id}
+    defaults: { _controller: CptEventBundle:Event:cancelEvent  }
+    requirements:
+        id:  \d+
+        _method: DELETE
+    options:
+        expose: true 
         
 event_view:
     path:     /view/{id}

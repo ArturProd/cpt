@@ -107,6 +107,12 @@ class EventManager extends BaseManager implements EventManagerInterface {
         return $event;
     }
 
+    public function cancelEvent(EventInterface $event){
+        // To do: add email sending
+        
+        $this->em->remove($event);
+        $this->em->flush();
+    }
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="Protected">
