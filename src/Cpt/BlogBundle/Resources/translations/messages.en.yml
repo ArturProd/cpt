@@ -18,3 +18,5 @@ sidemenu.link_view_comments: Comments
 breadcrumb.link_comment_create: Add
 article.filter.all: All
 article.filter.myarticles: My Articles
+hint.post.linktothisarticle: Link to this article
+hint.post.editarticle: Edit this article

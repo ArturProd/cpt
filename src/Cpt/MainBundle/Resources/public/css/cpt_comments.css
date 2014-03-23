@@ -27,7 +27,7 @@
 .comment > li{
     word-wrap: break-word;
     margin-top: 10px;
-    background-color: #FAFAFA;
+    background-color: #FDFDFD;
     border-style: solid;
     border-width: 1px;
     border-color: #EAEAEA;
@@ -37,7 +37,7 @@
 }
 
 .comment_header{
-  background-color: #DADADA;
+  background-color: #EAEAEA;
   text-align: justify;
   border-bottom-style: solid;
   border-bottom-color: #EAEAEA;

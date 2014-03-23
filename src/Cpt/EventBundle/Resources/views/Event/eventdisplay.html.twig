@@ -1,8 +1,8 @@
 {#****************************************************************************#}
 {# Event Header
 {#****************************************************************************#}
+<a name="event_anchor{{event.begin|date("j") }}"></a> {# anchor for clicking on the calendar date #}
 <div class="event_header">
-    <a name="event_anchor{{event.begin|date("j") }}"></a> {# anchor for clicking on the calendar date #}
     <div>
         {% if event.CptEvent %}<div class='cpt_event_btn'></div>{%endif%}
         {{ event.cityname }}                                   {# City name #}

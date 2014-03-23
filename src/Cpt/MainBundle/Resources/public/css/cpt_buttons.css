@@ -17,11 +17,13 @@
 
 .article_new_btn
 {
-      background: url('../images/articles/bouton-nouveau-articles.png') no-repeat;
+      background-image: url('../images/articles/bouton-nouveau-articles-gauche.png'), url('../images/articles/bouton-nouveau-articles.png');
+      background-repeat: no-repeat, repeat-x;
+      background-position: left center, center center ;
       height: 18px;
-      width: 65px;
       float: right;
       padding-left: 10px;
+      padding-right: 5px;
       color: white;
         font-size: 10px;
 }
@@ -32,11 +34,13 @@
 
 .event_new_btn
 {
-  background: url('../images/evenements/bouton-nouveau-evenements.png') no-repeat;
+  background-image: url('../images/evenements/bouton-nouveau-evenements-gauche.png'),  url('../images/evenements/bouton-nouveau-evenements.png');
+  background-repeat: no-repeat, repeat-x;
+  background-position: left center, center center ;
   height: 18px;
-  width: 65px;
   float: right;
   padding-left: 10px;
+  padding-right: 5px;
   color: white;
   font-size: 10px;
 }
@@ -265,4 +269,28 @@
     min-width: 64px;
     padding-left: 75px;
     font-size: large;
+}
+
+.btn_link{
+    border: none;
+    background-color: white;
+    color: #444444;
+    background: url('../images/boutons/bouton-link.png') no-repeat;
+    height: 16px;
+    width: 16px;
+    font-size: large;
+    display: inline-block;
+    margin-right: 8px;
+}
+
+.btn_settings{
+    border: none;
+    background-color: white;
+    color: #444444;
+    background: url('../images/boutons/bouton-settings.png') no-repeat;
+    height: 16px;
+    width: 16px;
+    font-size: large;
+    display: inline-block;
+    margin-right: 8px;
 }
