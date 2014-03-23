@@ -79,6 +79,8 @@ event.cancel.eventwascancelled: The event was cancelled and deleted.
 event.save.eventwassaved: The event was saved.
 event.edit.formcontainserror: The form contains error
 event.copy.eventwascopied: You are now editing a copy of the event.
+event.info.thisisapastevent: This event is in the past and cannot be edited anymore
+event.info.existingevent: Modification to this event will be communicated to attendees by email when saving
 
 hint.event.button.cancel: Cancel and delete the event
 hint.event.button.copy: Copy this event into a new event

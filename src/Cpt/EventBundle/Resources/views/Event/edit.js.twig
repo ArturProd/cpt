@@ -473,6 +473,15 @@ function cancel_event(areyousure)
     }
 }
 
+{#***********************************************#}
+{# Hides the copy button
+{#***********************************************#}
+function HideCopyButton()
+{
+    $('#copy_button').off();
+    $('#copy_button').fadeOut(2000);
+}
+
 
 {# ************************************************************************************************************************ #} 
 {# Initialize the page
@@ -544,6 +553,19 @@ function InitializeEventPage()
          $('#eventform').submit();
         });
         
+        {############################################}
+        {# Detecting form change => hide the copy button if it is available #}
+        $("#eventform :input").change(function() {
+            HideCopyButton();
+        });
+        
+        setTimeout(function(){
+            if (CKEDITOR !== undefined){ {# HACK: the CKEDITOR is not defined right away, and it would raise an error #}
+                CKEDITOR.instances['event_content'].document.on('keydown', function() {HideCopyButton();});
+            }
+        },1000);
+            
+
        {############################################}
        {# Hiding the queue table #}
         $('#queue_table').hide();
@@ -616,10 +638,18 @@ function InitializeEventPage()
         
         {############################################}
         {# Disable form controls if this is a past event (it is not editable anymore) #} 
-        {% if event.id != -1 and (event.end|date('U') < "now"|date('U')) %} {# only if it is not passed #}
+        {% if event.id != -1 and (event.end|date('U') <= "now"|date('U')) %} {# only if it is not passed #}
         DisableControls('edit_event', false);
         $('#copy_button').removeAttr('disabled');
+        show_event_usermessage('{{'event.info.thisisapastevent'|trans}}');
         {% endif %}
+ 
+        {############################################}
+        {# Show info message if existing future event #} 
+        {% if event.id != -1 and (event.end|date('U') > "now"|date('U')) %} {# only if it is not passed #}
+        show_event_usermessage('{{'event.info.existingevent'|trans}}');
+        {% endif %}
+
         
        {################################################}
        {# Setting timer to check for event update #}
