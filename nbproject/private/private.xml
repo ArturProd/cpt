@@ -13,33 +13,26 @@
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/MainBundle/Controller/BaseController.php</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/MainBundle/Resources/translations/messages.fr.yml</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Controller/CalendarController.php</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Resources/views/Event/eventdisplay.html.twig</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Resources/translations/messages.fr.yml</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Manager/CalendarManager.php</file>
-            <file>file:/home/cyril/dev/cpt/app/Resources/views/base.html.twig</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Resources/views/Event/edit.html.twig</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Interfaces/Manager/CalendarManagerInterface.php</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/MainBundle/Resources/public/css/cpt_topbanner.css</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/MainBundle/Resources/public/css/cpt_comments.css</file>
             <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Controller/EventController.php</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Resources/config/doctrine/Event.orm.yml</file>
+            <file>file:/home/cyril/dev/cpt/src/Cpt/BlogBundle/Resources/views/Post/articles.html.twig</file>
+            <file>file:/home/cyril/dev/cpt/app/config/routing_dev.yml</file>
             <file>file:/home/cyril/dev/cpt/src/Cpt/BlogBundle/Resources/translations/messages.fr.yml</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Resources/views/Event/index.js.twig</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Resources/views/Event/calendar.html.twig</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/MainBundle/Resources/public/css/cpt_calendar.css</file>
+            <file>file:/home/cyril/dev/cpt/src/Cpt/BlogBundle/Resources/config/core.xml</file>
+            <file>file:/home/cyril/dev/cpt/src/Cpt/BlogBundle/Resources/config/routing/news.xml</file>
+            <file>file:/home/cyril/dev/cpt/src/Cpt/BlogBundle/Controller/PostController.php</file>
+            <file>file:/home/cyril/dev/cpt/src/Cpt/BlogBundle/Resources/views/Post/edit.html.twig</file>
+            <file>file:/home/cyril/dev/cpt/src/Cpt/BlogBundle/Resources/translations/validators.fr.yml</file>
             <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Resources/views/Event/edit.js.twig</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Manager/EventManager.php</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/PublicationBundle/Resources/config/doctrine/Comment.orm.xml</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/MainBundle/Resources/views/Default/index.html.twig</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Resources/translations/messages.en.yml</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/BlogBundle/Resources/views/Post/preview_post.html.twig</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/MainBundle/Resources/translations/messages.en.yml</file>
+            <file>file:/home/cyril/dev/cpt/src/Cpt/BlogBundle/Resources/config/validation.xml</file>
+            <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Resources/views/Event/edit.html.twig</file>
+            <file>file:/home/cyril/dev/cpt/src/Cpt/BlogBundle/Resources/views/Post/articles.js.twig</file>
+            <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Resources/config/validation.yml</file>
+            <file>file:/home/cyril/dev/cpt/src/Cpt/BlogBundle/Form/Type/PostType.php</file>
+            <file>file:/home/cyril/dev/cpt/app/config/routing.yml</file>
             <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Resources/config/routing.yml</file>
+            <file>file:/home/cyril/dev/cpt/src/Cpt/BlogBundle/Resources/translations/validators.en.yml</file>
             <file>file:/home/cyril/dev/cpt/src/Cpt/BlogBundle/Resources/translations/messages.en.yml</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Resources/views/Event/attendees_list.html.twig</file>
+            <file>file:/home/cyril/dev/cpt/app/logs/.gitkeep</file>
         </group>
     </open-files>
 </project-private>

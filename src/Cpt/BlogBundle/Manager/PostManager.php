@@ -151,6 +151,7 @@ class PostManager extends BaseManager implements PostManagerInterface {
             throw new AccessDeniedException();
 
         $criteria['author'] = $this->getUser()->getId();
+        $criteria['publishedhomepage'] = false;
 
         $pager = $this->getPager($criteria, $page, $maxPerPage);
         $pager->setMaxPageLinks($maxPageLinks);
