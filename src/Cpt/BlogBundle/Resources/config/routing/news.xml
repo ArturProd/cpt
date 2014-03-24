@@ -33,7 +33,8 @@
     
      <route id="cpt_blog_post_delete" pattern="/{id}/delete">
         <default key="_controller">CptBlogBundle:Post:deletePost</default>
-        <requirement key="_method">GET|POST</requirement>
+        <requirement key="_method">DELETE</requirement>
+        <option key="expose">true</option>
     </route>
             
   

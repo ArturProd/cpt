@@ -15,6 +15,12 @@ cpt_event:
     prefix:   /{_locale}/event
     requirements:
         _locale: en|fr
+
+news:
+    resource: '@CptBlogBundle/Resources/config/routing/news.xml'
+    prefix:   /{_locale}/articles
+    requirements:
+        _locale: en|fr
     
 fos_user_security:
     resource: "@FOSUserBundle/Resources/config/routing/security.xml"
@@ -46,9 +52,6 @@ gallery:
 media:
     resource: '@SonataMediaBundle/Resources/config/routing/media.xml'
     prefix: /media
-news:
-    resource: '@CptBlogBundle/Resources/config/routing/news.xml'
-    prefix: /articles
     
 admin:
     resource: '@SonataAdminBundle/Resources/config/routing/sonata_admin.xml'

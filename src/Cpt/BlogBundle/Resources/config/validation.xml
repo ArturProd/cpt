@@ -7,7 +7,15 @@
 
     <class name="Cpt\BlogBundle\Entity\Post">
         <getter property="title">
-            <constraint name="NotBlank" />
+            <constraint name="NotBlank">
+                <option name="message">article.title.notblank</option>
+            </constraint>
+            <constraint name="Length">
+                <option name="min">3</option>
+                <option name="max">62</option>                
+                <option name="minMessage">article.title.length.min</option>
+                <option name="maxMessage">article.title.length.max</option>
+            </constraint>
         </getter>
 
         <getter property="author">
@@ -15,7 +23,15 @@
         </getter>
 
         <getter property="Content">
-            <constraint name="NotBlank"/>
+            <constraint name="NotBlank">
+                <option name="message">article.content.notblank</option>
+            </constraint>
+            <constraint name="Length">
+                <option name="min">40</option>
+                <option name="max">30000</option>                
+                <option name="minMessage">article.content.length.min</option>
+                <option name="maxMessage">article.content.length.max</option>
+            </constraint>
         </getter>
         <getter property="commentsDefaultStatus">
             <constraint name="NotBlank" />

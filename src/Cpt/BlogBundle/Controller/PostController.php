@@ -168,11 +168,15 @@ class PostController extends BasePostController {
     }
 
     public function deletePostAction($id) {
-        $post = $this->getPostById($id);
-        if (!$post) {
-            return $this->CreateJsonOkResponse(false);
-        }
+       $request = $this->getRequest();
 
+        $this->getPermissionManager()->RestrictAccessToLoggedIn();
+        $this->getPermissionManager()->RestrictAccessToAjax($request);
+        
+        $post = $this->getPostById($id);
+        $this->GetPermissionManager()->RestrictResourceNotFound($post);
+
+        
         $this->getPostManager()->delete($post);
         return $this->CreateJsonOkResponse(true);
     }

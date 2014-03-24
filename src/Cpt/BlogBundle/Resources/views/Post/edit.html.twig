@@ -1,17 +1,19 @@
-{##############################################}
+{# ############################################ #}
 {# Variables:
 {#      - article: the article object to load. Pass a dummy article to edit a new one
-{##############################################}
+{# ############################################ #}
 <script type="text/javascript">
 
 {# handles the deletion of the post #}
 $(function() {
     
     AjaxForm("posteditform", prepare_postform_submission, save_post_callback);
-        
+
+    {% if post.id != -1 %}    
     $('#delete_post_button').click(function() {
-            ModalDialog(delete_article, null, "{{ 'article.delete.popuptitle'|trans }}", "{{ 'article.delete.popupcontent'|trans }}", "{{ 'article.delete.okbutton'|trans }}", "{{ 'article.delete.cancelbutton'|trans }}");
+          ModalDialog(delete_article, null, "{{ 'article.delete.popuptitle'|trans }}", "{{ 'article.delete.popupcontent'|trans }}", "{{ 'article.delete.okbutton'|trans }}", "{{ 'article.delete.cancelbutton'|trans }}");
      });
+     {% endif %}
      
      $('#createarticle').click(function(){
          //AjaxPostForm('cpt_blog_post_edit', delete_article_callback);
@@ -19,9 +21,10 @@ $(function() {
      });
      
      $('#close_edit_article').click(function(){
-         ArticlePopupDisplay(false);
+         ArticleEditDisplay(false);
      });  
      
+     $('#loadingarticles').hide();     
 });
 
 {#***********************************************#}
@@ -32,6 +35,25 @@ function prepare_postform_submission()
     CKEDITOR.instances['post_content'].updateElement();                {# update the entity field with CKEDIOR content #}
 }
 
+{% if post.id != -1 %}
+{#***********************************************#}
+{# Callback after Save the current event
+{#***********************************************#}
+function delete_article_callback(response)
+{
+    if (response.status==="ok")
+    {
+        ArticleEditDisplay(false);
+        show_article_usermessage("{{'post.deletedmessage'|trans}}");
+        refresh_article_page();
+    }
+    else
+    {
+        alert('An error occured');
+        console.log(response);
+    }
+}
+
 {#***********************************************#}
 {# Deletes current article #}
 {#***********************************************#}
@@ -39,11 +61,16 @@ function delete_article(confirmed)
 {
     if (confirmed)
     {
-        AjaxPostForm('delete_post_form', null, function(response){
-            ArticlePopupDisplay(false);
+        $.ajax({
+          type        : 'DELETE',
+          url         : Routing.generate('cpt_blog_post_delete', { 'id': {{post.id}}, _locale:_locale}),
+          success     : function(data) {
+            delete_article_callback( data );
+          }
         });
     }
 }
+{% endif %}
 
 {#***********************************************#}
 {# Callback after Save the current post
@@ -53,72 +80,89 @@ function save_post_callback(response)
     if (response.status==="ok")
     {
         post = response.data;           {# in case of success, data contains an array with at least element post.id #}
-        ArticlePopupDisplay(false);
+        ArticleEditDisplay(false);
         //getAndAddPost(post);
         refresh_article_page();
+        show_article_usermessage("{{'post.savedmessage'|trans}}");
     }
     else
         load_post_popup(response.data); {# in case of failure (invalid form..), data will contain the form as html #}
 }
 </script>
 
-<form action="{{ url('cpt_blog_post_delete', { 'id': post.id, '_locale': app.request.locale })}}" method="POST" id="delete_post_form" style="display:none;" ></form>
+{% form_theme posteditform _self %}
 
-
-{{ form_start(posteditform, {'action': path('cpt_blog_post_edit', { 'id': post.id }), 'method': 'POST' }) }}
-{# Header #}
-<div class="row-fluid">
-      <div class="span12 popup_title cpt_redbackground">
-        {{post.id==-1 ? 'title_create_post'|trans: 'title_edit_post'|trans }}
-        <a id="close_edit_article" class="popup_close_button">X</a>
-      </div>
-</div>
-{# Errors #}
-<div class="row-fluid">
-    <div class="span10 offset1">
-        <p>{{ form_errors(posteditform) }}</p>
-    </div>
-</div>
-{# Controls #}
-<div class="row-fluid">
-        <div class="span10 offset1">
-            {#****************************************************************************#}
-            {# Button to enable or disable article
-            {#****************************************************************************#}
-            {{ form_widget(posteditform.enabled) }}{{ form_label(posteditform.enabled) }}
-            {#****************************************************************************#}
-            {# Button to have the article "a la une"
-            {#****************************************************************************#}
-            {% if is_granted('ROLE_ADMIN') %}
-            {{ form_widget(posteditform.publishedhomepage) }}{{ form_label(posteditform.publishedhomepage) }}
-            {% endif %}
-            {#****************************************************************************#}
-            {# Button to save the save article
-            {#****************************************************************************#}
-            <div id='createarticle' class="btn_red">{{'btn_create_post'|trans }}</div>
-            {#****************************************************************************#}
-            {# Button to delete the post (only displayed for already existing post        #}
-            {#****************************************************************************#}
-            {% if post.id!=-1 %}
-            <div id='delete_post_button' class="btn_trash"></div> 
-            {% endif %}
+    {% block form_errors %}
+    {% spaceless %}
+        {% if errors is defined and errors|length > 0 %}
+        <div class="form_error">
+        <ul>
+            {% for error in errors %}
+                <li>{{
+                    error.messagePluralization is null
+                        ? error.messageTemplate|trans(error.messageParameters, 'validators')
+                        : error.messageTemplate|transchoice(error.messagePluralization, error.messageParameters, 'validators')
+                }}</li>
+            {% endfor %}
+        </ul>
         </div>
-</div>
+        {% endif %}
+    {% endspaceless %}
+    {% endblock form_errors %}
+    
+{{ form_start(posteditform, {'action': path('cpt_blog_post_edit', { 'id': post.id }), 'method': 'POST' }) }}
+<div class="cpt_page">
+    <a id="close_edit_article" class="btn_red" onclick='ArticleEditDisplay(false);'>{{'post.button.backtoarticlelist'|trans}}</a>
 
-{# Title #}
-  <div class="row-fluid">
-      <div class="span10 offset1">
-          {{ form_widget(posteditform.title) }}
-          {{ form_errors(posteditform.title) }}
+    {# Controls #}
+    <h2><span class="cpt_red">➤&nbsp;&nbsp;</span>{{'post.actions'|trans}}</h2>
+    <div class="row-fluid">
+        {#****************************************************************************#}
+        {# Button to delete the post (only displayed for already existing post        #}
+        {#****************************************************************************#}
+        {% if post.id!=-1 %}
+        <div class="span4 button_container" title="{{'hint.post.button.delete'|trans}}">           
+           <button id="delete_post_button" title="{{'hint.post.button.delete'|trans}}" class="btn_cancel" type="button">{{'post.button.delete'|trans}}</button>
+        </div>                
+        {% endif %}
+        {#****************************************************************************#}
+        {# Button to save the save article
+        {#****************************************************************************#}
+        <div class="span4 button_container" title="{{'hint.post.button.save'|trans}}">
+            <button id="createarticle" title="{{'hint.post.button.save'|trans}}" class="btn_save" type="button">{{'btn_create_post'|trans }}</button>
+        </div>        
+    </div>
+    <h2><span class="cpt_red">➤&nbsp;&nbsp;</span>{{'post.parameters'|trans}}</h2>
+    <div class="row-fluid">
+            <div class="span10 offset1">
+                {#****************************************************************************#}
+                {# Button to enable or disable article
+                {#****************************************************************************#}
+                {{ form_widget(posteditform.enabled) }}{{ form_label(posteditform.enabled) }}
+                {#****************************************************************************#}
+                {# Button to have the article "a la une"
+                {#****************************************************************************#}
+                {% if is_granted('ROLE_ADMIN') %}
+                {{ form_widget(posteditform.publishedhomepage) }}{{ form_label(posteditform.publishedhomepage) }}
+                {% endif %}
+            </div>
+    </div>
+            
+    <h2><span class="cpt_red">➤&nbsp;&nbsp;</span>{{'post.article'|trans}}</h2>
+    {# Title #}
+      <div class="row-fluid">
+          <div class="span10 offset1">
+              {{ form_errors(posteditform.title) }}
+              {{ form_errors(posteditform) }}
+              {{ form_widget(posteditform.title) }}
+          </div>
       </div>
-  </div>
-{# Content #}
-   <div class="row-fluid">     
-       <div class="span10 offset1">
-          {#{ form_widget(form.content) }#}
-          {{ form_errors(posteditform.content) }}
-          {{ form_widget(posteditform.content) }}     
-      </div>
-   </div>
+    {# Content #}
+       <div class="row-fluid">     
+           <div class="span10 offset1">
+              {{ form_widget(posteditform.content) }}     
+          </div>
+       </div>
+</div>      
     {{ form_end(posteditform) }}
 

@@ -5,68 +5,73 @@
 {# Includes common comment handling javascript
 {#****************************************************************************#}
 {% include 'CptBlogBundle:Post:articles.js.twig' %}
-
-
 {#
 {#
-{##############################################################################}
+{# #############################################################################}
 {# HTML
-{##############################################################################}
- <div class="main_section">        
+{# #############################################################################}
+
+ <div class="main_section">
+    {#**************************************************************************#}
+    {# Article column title
+    {#**************************************************************************#}
     <div class="column_title_article">
-        {{'main.title.articles'|trans}}
+        <div id="column_title_event_title">{{'main.title.articles'|trans}}</div>
         {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-            <a id='newarticle' class="article_new_btn">{{'main.button.new'|trans}}</a>
+            <div><a id='newarticle' class="article_new_btn">{{'main.button.new'|trans}}</a></div>
         {% endif %}
     </div>
+    {#****************************************************************************#}
+    {# Messages to user regarding articles
+    {#****************************************************************************#}
+        <div id="article_user_messages" class="row-fluid message_information" ></div>
     {#**************************************************************************#}
-    {# A la une
+    {# Article list
     {#**************************************************************************#}
-    <div id="homepage_articles_label" class="alaune_label">{{ "article.alaune_label"|trans }}</div>
-    <div id="homepage_aticles">
-    {# preview_post.html.twig => loaded and appened by ajax request #}
-    </div>
-    
-    {#**************************************************************************#}
-    {# Separator
-    {#**************************************************************************#}
-    <div>
-        <hr class="line_separator"/>
+     <div id="articles_display">
         {#**************************************************************************#}
-        {# Filter All / MyArticles
+        {# A la une
         {#**************************************************************************#}
-        <div id="articles_filter">
-            <ul>
-                <li id="articles_filter_all">{{ "article.filter.all"|trans }}</li>
-                <li id="articles_filter_myarticles">{{ "article.filter.myarticles"|trans }}</li>
-            </ul>
+        <div id="homepage_articles_label" class="alaune_label">{{ "article.alaune_label"|trans }}</div>
+        <div id="homepage_aticles"></div>{# preview_post.html.twig => loaded and appened by ajax request #}   
+
+        {#**************************************************************************#}
+        {# Separator
+        {#**************************************************************************#}
+        <div>
+            <hr class="line_separator"/>
+            {#**************************************************************************#}
+            {# Filter All / MyArticles
+            {#**************************************************************************#}
+            <div id="articles_filter">
+                <ul>
+                    <li id="articles_filter_all">{{ "article.filter.all"|trans }}</li>
+                    <li id="articles_filter_myarticles">{{ "article.filter.myarticles"|trans }}</li>
+                </ul>
+            </div>
+            {#**************************************************************************#}
+            {# Labels Date / Title ..
+            {#**************************************************************************#}
+            <div class="post_date_label">Date</div>
+            <div class="post_titre_label">Titre</div>
         </div>
         {#**************************************************************************#}
-        {# Labels Date / Title ..
+        {# All other articles
         {#**************************************************************************#}
-        <div class="post_date_label">Date</div>
-        <div class="post_titre_label">Titre</div>
+        {# Display article list #}        {# preview_post.html.twig => loaded and appened by ajax request #}
+
+        <div id="articles"></div>
+        <ul id="postpagination" class="post_pagination"></ul>
     </div>
     {#**************************************************************************#}
-    {# All other articles
+    {# Popup to create and edit an article
     {#**************************************************************************#}
-    {# Display article list #}
-    <div id="articles">
-        {# preview_post.html.twig => loaded and appened by ajax request #}
-    </div>
-    <ul id="postpagination" class="post_pagination">
-    </ul>
+    {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+    <div id="edit_article"></div>
+    {% endif %}
     {#**************************************************************************#}
     {# Ajax Loading icon
     {#**************************************************************************#}
-    <div id="loadingarticles" class="loading">
-        Loading articles...
-    </div>
+    <div id="loadingarticles" class="loading"></div>
 </div>
-{#**************************************************************************#}
-{# Popup to create and edit an article
-{#**************************************************************************#}
-{% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-<div id="popup_new_article">
-</div>
-{% endif %}
+

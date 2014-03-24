@@ -20,3 +20,12 @@ article.filter.all: All
 article.filter.myarticles: My Articles
 hint.post.linktothisarticle: Link to this article
 hint.post.editarticle: Edit this article
+post.actions: Article actions
+post.article: Article
+post.parameters: Parameters
+hint.post.button.delete: Delete this article
+post.button.delete: Delete
+hint.post.button.save: Save this article
+post.button.backtoarticlelist: Back to articles list
+post.deletedmessage: The article was deleted
+post.savedmessage: The article was saved

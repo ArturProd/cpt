@@ -1,0 +1,6 @@
+article.title.notblank: Veuillez renseigner le titre de l'article
+article.content.notblank: Veuillez renseigner le contenu de l'article
+article.title.length.max: Le titre ne peut avoir plus de {{ limit }} caractères
+article.title.length.min: Le titre doit au moins avoir {{ limit }} caractères
+article.content.length.max: Cet article est trop long. Un article ne peut contenir plus de {{ limit }} caractères en tant que document html.
+article.content.length.min: Cet article est trop court. Un article doit contenir au moins {{ limit }} caractères entant que document html.

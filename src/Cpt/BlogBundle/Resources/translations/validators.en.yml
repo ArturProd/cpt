@@ -1,0 +1,6 @@
+article.title.notblank: Please fill-in the article title
+article.content.notblank: Please fill-in the article content
+article.title.length.max: The title cannot exceed {{ limit }} characters
+article.title.length.min: The title must at least contain {{ limit }} characters
+article.content.length.max: This article is too long. An article cannot exceed {{ limit }} characters as an html document
+article.content.length.min: This article is too short. An article must at least contain {{ limit }} characters as an html document

@@ -9,6 +9,16 @@ var alaune_opened_article_id = -1; {# id of the alaune article to be opened by d
 var filter_myarticles = false;                    {# 0 => display all articles, 1 => display only my articles #}
 var article_permalink = "{{ article_permalink|default(null) is null ? null : article_permalink }}";
 count_article_loaded = 0;
+
+{#***********************************************#}
+{# Affiche un message informatif à l'utilisateur
+{#***********************************************#}
+function show_article_usermessage(message)
+{
+    $('#article_user_messages').html(message);
+    $('#article_user_messages').show().delay(5000).slideUp(1000);
+}
+
 {#****************************************************************************#}
 {# Show or hide an article
 {#****************************************************************************#}
@@ -160,25 +170,31 @@ function getAndAddPost(post, opendefault)
 {# ***************************************************************************#} 
 {# Show or hide article popup
 {#****************************************************************************#}     
-function ArticlePopupDisplay(visible)
+function ArticleEditDisplay(visible)
 {
-    DisplayOpacityMask(visible);
+    //DisplayOpacityMask(visible);
 
     if (visible)
     {
-        $("#popup_new_article").show();
+        $("#edit_article").show();
+        $("#articles_display").hide();
+        $('#column_title_event_title').html("{{'title_edit_post'|trans}}");
+        $('#newarticle').hide();        
         window.scrollTo(0, 0);
     }
-    else
-        $("#popup_new_article").hide();
+    else {
+        $("#edit_article").hide();
+        $("#articles_display").show();
+        $('#column_title_event_title').html("{{'main.title.articles'|trans}}");
+        $('#newarticle').show();
+}
 }
 {#****************************************************************************#}
 {# Loads the post popup with a given html content
 {#****************************************************************************#}
 function load_post_popup(html)
 {
-        $("#popup_new_article").html(html);
-        ArticlePopupDisplay(true);
+        $("#edit_article").html(html);
         window.scrollTo(0, 0);    
 }
 {#****************************************************************************#}
@@ -186,9 +202,14 @@ function load_post_popup(html)
 {#****************************************************************************#}
 function EditPost(postid)
 {
-    $.getJSON('{{ url('cpt_blog_post_edit')}}', {postid:postid}, function(response) {
+    $("#edit_article").html("");
+
+    $.getJSON('{{ url('cpt_blog_post_edit')}}', {postid:postid, _locale:_locale}, function(response) {
         load_post_popup(response.data);
     }); 
+    
+    $('#loadingarticles').show();
+    ArticleEditDisplay(true);
 }
 {#****************************************************************************#}
 {# Creates pagination links
@@ -295,6 +316,8 @@ $(function() {
     show_articlefilter(false);
     getPostList(1,true);
     show_alaune(false);
+    $('#article_user_messages').hide();
+
 
     {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}        
     {# Articles Dialog Setup #}
@@ -302,8 +325,8 @@ $(function() {
         EditPost(-1);
    });
 
-    ArticlePopupDisplay(false);
-    
+    ArticleEditDisplay(false);
+        
     {# Article filter setup #}
     $("#articles_filter_all").on("click", function(){
         Set_filter_onlymyarticles(false);

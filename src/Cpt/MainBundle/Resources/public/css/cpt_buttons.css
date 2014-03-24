@@ -184,12 +184,12 @@
     cursor: pointer; cursor: hand;
 }
 
+.btn_red,
 .btn_blue{
     display: inline-block;
     font-weight: bold;
     padding-left: 10px;
     padding-right: 10px;
-    background: url('../images/boutons/bouton-generique-bleu.png') repeat-x;
     height: 20px;
     color: white;
     cursor: pointer; cursor: hand;
@@ -197,18 +197,19 @@
     vertical-align: central;
 }
 
-.btn_blue:hover{
-    color: white;
+.btn_blue{
+    background: url('../images/boutons/bouton-generique-bleu.png') repeat-x;
 }
 
 .btn_red{
-    display: inline-block;
-    background: url('../images/boutons/bouton-generique-rouge-milieu.png') repeat-x;
-    height: 25px;
+    background: url('../images/boutons/bouton-generique-rouge.png') repeat-x;
+}
+
+.event_new_btn:hover,
+.article_new_btn:hover,
+.btn_red:hover,
+.btn_blue:hover{
     color: white;
-    cursor: pointer; cursor: hand;
-    border-style: none;
-    vertical-align: central;
 }
 
 .btn_green{
