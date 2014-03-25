@@ -19,11 +19,11 @@
 {#****************************************************************************#}
 {# Event Edit Actions & Link to Event
 {#****************************************************************************#}
-<div class="inline-block float-right"><a href=""  target='_blank' class="btn_link" name="{{'hint.event.linktothisevent'}}"></a></div>
+<div class="inline-block float-right"><a href=""  target='_blank' class="btn_link" title="{{'hint.event.linktothisevent'}}"></a></div>
 {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
     {% set registration = cpt_event_getRegistration(event,app.user) %}
     {% if (registration is not null) and (registration.organizer) %}
-    <div class="inline-block float-right"><a class="btn_settings" name="{{'event.button.manage'|trans}}" onclick="manage_event({{event.id}});"></a></div>
+    <div class="inline-block float-right" title="{{'event.button.manage'|trans}}"><a class="btn_settings" onclick="manage_event({{event.id}});"></a></div>
     {% endif %}
  {% endif %}
 {#****************************************************************************#}

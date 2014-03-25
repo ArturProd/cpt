@@ -29,3 +29,5 @@ hint.post.button.save: Save this article
 post.button.backtoarticlelist: Back to articles list
 post.deletedmessage: The article was deleted
 post.savedmessage: The article was saved
+event.button.manage: Manage event
+hint.event.linktothisevent: Link to this event
