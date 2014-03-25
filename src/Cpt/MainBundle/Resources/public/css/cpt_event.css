@@ -20,14 +20,17 @@
     overflow: hidden;
 }
 
+.event_header > div{
+    display: inline-block;
+}
+
 .event_header > div:last-child{
     float: right;
-    display: inline-block;
 }
 
 .event_header > div:first-child{
     float:left;
-    margin-right: 100px;
+    margin-right: 10px;
     text-transform:uppercase;
 }
 
@@ -53,6 +56,7 @@
 
 .event_content{
     border: 1px solid transparent; /* Tries to fix the jquery slideup jump bug */
+    margin-top: 15px;
 }
 
 #events_filter > ul {

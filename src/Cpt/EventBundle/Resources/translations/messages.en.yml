@@ -98,3 +98,4 @@ hint.event.bookingquantity: Number of places requested by this attendee.
 hint.event.queuedquantity: Number of places in the queue for this attendee. If different from 0, it means that it is not possible for this user to bring as many friends as he requested.
 hint.event.animator: Indicates wether this attendee will animate the event or not
 hint.event.deleteattendee: Remove this attendee
+hint.event.linktothisevent: Link to this event

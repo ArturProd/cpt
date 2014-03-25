@@ -99,7 +99,7 @@
 
 .cal_day_current_date > a
 {
-    color: gold;
+    font-weight: bold;
 }
 
 .cal_day_inmonth_withmyevents{

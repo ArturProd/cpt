@@ -127,3 +127,4 @@ hint.event.bookingquantity: Nombre de places demandées par ce participant
 hint.event.queuedquantity: Nombre de places dans la file d'attente pour ce participant. Si différent de 0, celà signifie que ce participant ne peut pas venir avec autant d'amis qu'il le souhaite.
 hint.event.animator: Indique si ce participant est aussi un animateur de l'évènement ou non
 hint.event.deleteattendee: Supprimer ce participant
+hint.event.linktothisevent: Lien vers cet évènement

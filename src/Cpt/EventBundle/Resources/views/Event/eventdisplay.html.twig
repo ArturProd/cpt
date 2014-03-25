@@ -1,10 +1,10 @@
-{#****************************************************************************#}
+{# ****************************************************************************#}
 {# Event Header
-{#****************************************************************************#}
+{# ****************************************************************************#}
 <a name="event_anchor{{event.begin|date("j") }}"></a> {# anchor for clicking on the calendar date #}
 <div class="event_header">
+    {% if event.CptEvent %}<div class='cpt_event_btn'></div>{%endif%}
     <div>
-        {% if event.CptEvent %}<div class='cpt_event_btn'></div>{%endif%}
         {{ event.cityname }}                                   {# City name #}
     </div>
     <div>
@@ -16,6 +16,16 @@
         {% endif %}
     </div>
 </div>
+{#****************************************************************************#}
+{# Event Edit Actions & Link to Event
+{#****************************************************************************#}
+<div class="inline-block float-right"><a href=""  target='_blank' class="btn_link" name="{{'hint.event.linktothisevent'}}"></a></div>
+{% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+    {% set registration = cpt_event_getRegistration(event,app.user) %}
+    {% if (registration is not null) and (registration.organizer) %}
+    <div class="inline-block float-right"><a class="btn_settings" name="{{'event.button.manage'|trans}}" onclick="manage_event({{event.id}});"></a></div>
+    {% endif %}
+ {% endif %}
 {#****************************************************************************#}
 {# Event Sub Header
 {#****************************************************************************#}
@@ -46,8 +56,19 @@
 {% endif %}
     <div style="display:inline-block">
 {{ event.Address is not empty ?  " " ~ event.Address ~ " |"}}       {# Location address #}
-{{ 'at_hour'|trans ~ " " ~ event.begin|date('H:i') }}
     </div>
+    <div style="display:inline-block">
+{{ 'at_hour'|trans ~ " " ~ event.begin|date('H:i') ~ " |" }}        {# Time #}
+    </div>
+&nbsp;
+    </div>
+     <div style="display:inline-block">
+         {% transchoice event.AvailableSeats %}event.availableseats{% endtranschoice %} 
+         {{event.AvailableSeats }} / {{event.maxnumattendees }} ({{event.CountQueuedAttendees }} {{ 'event.queuedseats'|trans }})&nbsp;|&nbsp;
+     </div>
+     <div style="display:inline-block">
+        <a id="event_readmore_btn{{event.id}}">{{'event.readmore'|trans}}</a>
+     </div>
 {#****************************************************************************#}
 {# Action panel
 {#****************************************************************************#}
@@ -64,22 +85,13 @@
         <input type="number" name="numparticipant{{event.id}}" id="numparticipant{{event.id}}" value="{{registration.numparticipant}}" min="0" max="999" class="event_numattendee_select">
         {{'event.seats'|trans}}
         <a id="registrationmodify_btn{{event.id}}" class="event_book_btn">{{'event.button.modify'|trans}}</a>
-    {% else %}
-        <a class="event_manage_btn" onclick="manage_event({{event.id}})">{{'event.button.manage'|trans}}</a>
     {% endif %}
 {% endif %}
-    <div style="display:inline-block">
-        <a id="event_readmore_btn{{event.id}}">{{'event.readmore'|trans}}</a>
-    </div>
 </div>
 {#****************************************************************************#}
 {# Event content
 {#****************************************************************************#}
  <div id="event_content{{event.id}}" class="event_content">
-     <div>
-         {% transchoice event.AvailableSeats %}event.availableseats{% endtranschoice %} 
-         {{event.AvailableSeats }} / {{event.maxnumattendees }} ({{event.CountQueuedAttendees }} {{ 'event.queuedseats'|trans }})
-     </div>
  {{ event.content|raw }}
  {% render controller("CptPublicationBundle:Comment:getCommentsContainer", { 'publication': event, '_locale': app.request.locale }) %}
 </div>
