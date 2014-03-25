@@ -1,8 +1,14 @@
-cpt_main_article_permalink:
-    pattern:  /article/{article_permalink}
+cpt_base_article_permalink:
+    pattern:  /permalink/article/{article_permalink}
     defaults: { _controller: CptMainBundle:Default:showArticle }
     requirements:
         article_permalink:  .+?
+
+cpt_base_event_permalink:
+    pattern:  /permalink/event/{event_permalink}
+    defaults: { _controller: CptMainBundle:Default:showEvent }
+    requirements:
+        event_permalink:  .+?
         
 cpt_main_home:
     pattern:  /home

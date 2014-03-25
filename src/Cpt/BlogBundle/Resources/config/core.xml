@@ -11,7 +11,7 @@
             <argument />
         </service>
 
-        <service id="cpt.blog.permalink.category" class="Cpt\BlogBundle\Manager\PermalinkCategoryManager" />
+        <!--service id="cpt.blog.permalink.category" class="Cpt\BlogBundle\Manager\PermalinkCategoryManager" /-->
 
         <!-- email security token -->
         <service id="cpt.blog.hash.generator" class="Cpt\BlogBundle\Util\HashGenerator">

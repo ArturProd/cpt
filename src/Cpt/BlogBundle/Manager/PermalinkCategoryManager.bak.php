@@ -11,7 +11,7 @@
 
 namespace Cpt\BlogBundle\Manager;
 
-use Cpt\BlogBundle\Interfaces\Manager\PermalinkManagerInterface as PermalinkInterface;
+use Cpt\PublicationBundle\Interfaces\Manager\PermalinkManagerInterface  as PermalinkInterface;
 use Cpt\BlogBundle\Interfaces\Entity\PostInterface as PostInterface;
 
 class PermalinkCategoryManager implements PermalinkInterface

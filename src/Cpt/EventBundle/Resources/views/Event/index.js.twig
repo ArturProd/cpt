@@ -1,7 +1,10 @@
 <script type="text/javascript">
-const FILTER_FUTUREEVENTS = 'futureevents';
-const FILTER_MYEVENTS = 'myevents';
-const FILTER_PASTEVENTS = 'pastevents';
+    
+var FILTER_FUTUREEVENTS = 'futureevents';   {# constant #}
+var FILTER_MYEVENTS = 'myevents';           {# constant #}
+var FILTER_PASTEVENTS = 'pastevents';       {# constant #}
+
+var event_permalink = "{{ event_permalink|default(null) is null ? null : event_permalink }}";
 
 var event_list = null;
 

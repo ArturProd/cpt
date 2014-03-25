@@ -12,7 +12,7 @@ cpt_publication:
 
 cpt_event:
     resource: "@CptEventBundle/Resources/config/routing.yml"
-    prefix:   /{_locale}/event
+    prefix:   /{_locale}/events
     requirements:
         _locale: en|fr
 

@@ -37,3 +37,9 @@ services:
         arguments: ['@cpt.event.manager','@cpt.registration.manager']
         tags:
             - { name: twig.extension }
+
+    cpt.twig.permalink_extension:
+        class: Cpt\EventBundle\Twig\PermalinkExtension
+        arguments: []
+        tags:
+            - { name: twig.extension }

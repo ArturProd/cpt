@@ -178,14 +178,14 @@ function ArticleEditDisplay(visible)
     {
         $("#edit_article").show();
         $("#articles_display").hide();
-        $('#column_title_event_title').html("{{'title_edit_post'|trans}}");
+        $('#column_title_article_title').html("{{'title_edit_post'|trans}}");
         $('#newarticle').hide();        
         window.scrollTo(0, 0);
     }
     else {
         $("#edit_article").hide();
         $("#articles_display").show();
-        $('#column_title_event_title').html("{{'main.title.articles'|trans}}");
+        $('#column_title_article_title').html("{{'main.title.articles'|trans}}");
         $('#newarticle').show();
 }
 }

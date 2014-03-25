@@ -9,16 +9,16 @@
  * file that was distributed with this source code.
  */
 
-namespace Cpt\BlogBundle\Interfaces\Manager;
+namespace Cpt\PublicationBundle\Interfaces\Manager;
 
-use Cpt\BlogBundle\Interfaces\Entity\PostInterface as PostInterface;
+use Cpt\PublicationBundle\Interfaces\Entity\PublicationInterface as PublicationInterface;
 
 interface PermalinkManagerInterface
 {
     /**
      * @param \Cpt\BlogBundle\Model\PostInterface $post
      */
-    public function generate(PostInterface $post);
+    public function generate(PublicationInterface $publication);
 
     /**
      * @param string $permalink

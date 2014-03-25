@@ -18,19 +18,22 @@ class EventController extends BaseController {
 
     // <editor-fold defaultstate="collapsed" desc="Actions">
 
+  
     /**
      * Displays the whole Event Section
      * 
      * @return type
      */
-    public function indexAction() {
+    public function indexAction($event_permalink) {
         $currentdate = $this->getCalendarManager()->GetNextEventDateOrCurrent(new \Datetime);
         $update_ajax_delay = $this->container->getParameter("cpt.event.update_ajax_delay");
 
         
         return $this->render('CptEventBundle:Event:index.html.twig', array(
                     'currentdate' => $currentdate,
-                    'update_ajax_delay' => $update_ajax_delay
+                    'update_ajax_delay' => $update_ajax_delay,
+                    'event_permalink' => $event_permalink
+         
         ));
     }
 
