@@ -61,9 +61,6 @@ class EventManager extends BaseManager implements EventManagerInterface {
         try {
         $event->UpdateCounters();
 
-        // Deleting all existing registrations, as the new collection will be peristed
-        $this->getRegistrationManager()->DeleteAllRegistrations($event);
-
         $this->em->persist($event);
 
         $this->em->flush();

@@ -293,6 +293,20 @@ function DisplayEventEditPanel(display)
 }
 
 {#**************************************************************************#}
+{# Registers logged in user to an event
+{#**************************************************************************#}
+function RegisterToEvent(eventid, numattendees){
+     $.getJSON( Routing.generate('event_register', {eventid:eventid, numattendees:numattendees, _locale:_locale}),null, function(response){
+       if (response.status === "ok")
+       {
+           retrieveEventView(eventid);
+       } else {
+           alert('failed to register to event ' + eventid);
+       }     
+     });
+}
+
+{#**************************************************************************#}
 {# Onload
 {#**************************************************************************#}
 $(function() {

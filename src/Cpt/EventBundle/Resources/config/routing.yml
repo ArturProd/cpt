@@ -35,7 +35,16 @@ event_view:
     requirements:
         id:  \d+
     options:
-        expose: true        
+        expose: true
+        
+event_register:
+    path:     /register/{eventid}/{numattendees}
+    defaults: { _controller: CptEventBundle:Event:registerForEvent  }
+    requirements:
+        eventid:  \d+
+        numattendees: \d+
+    options:
+        expose: true   
         
 event_was_updated:
     path:     /edit/{id}/wasupdated/{unixtimestamp}

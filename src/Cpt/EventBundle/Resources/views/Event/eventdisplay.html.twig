@@ -81,10 +81,12 @@
         {{'event.seats'|trans}}
         <a id="registrationmodify_btn{{event.id}}" class="event_book_btn">{{'event.button.validate'|trans}}</a>
     {% elseif not registration.organizer %}                         {# case: user logged in, is not organizer, has booked #}
-        {{'event.youhavebooked'|trans}}
-        <input type="number" name="numparticipant{{event.id}}" id="numparticipant{{event.id}}" value="{{registration.numparticipant}}" min="0" max="999" class="event_numattendee_select">
-        {{'event.seats'|trans}}
-        <a id="registrationmodify_btn{{event.id}}" class="event_book_btn">{{'event.button.modify'|trans}}</a>
+        <span class="cpt_red">{{'event.youhavebooked'|trans}}
+                <input type="number" name="numparticipant{{event.id}}" id="numparticipant{{event.id}}" value="{{registration.numparticipant}}" min="0" max="999" class="event_numattendee_select" title="{{'hint.event.numattendeebooked'|trans}}">
+            {{'event.seats'|trans}}
+            {% if registration.numqueuedparticipant >0 %}&nbsp;{{ 'event.numqueuedattendees'|trans({'%count%': registration.numqueuedparticipant}) }}{% endif %}
+        </span>
+        <br/><a id="registrationmodify_btn{{event.id}}" class="btn_blue">{{'event.button.modify'|trans}}</a>
     {% endif %}
 {% endif %}
 </div>
@@ -103,6 +105,12 @@
 $(function() {
     {# hide the modify or validate button #}
     $('#registrationmodify_btn{{event.id}}').hide();
+    
+    {# handles click on registration button button #}
+    $('#registrationmodify_btn{{event.id}}').on("click", function(){
+        var reg_numattendees = $("#numparticipant{{event.id}}").val();
+        RegisterToEvent({{event.id}}, reg_numattendees);
+    });
     
     {# handles the "readmore" button #}
     $("#event_readmore_btn{{event.id}}").on("click", function(){

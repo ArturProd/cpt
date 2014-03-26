@@ -4,6 +4,7 @@ Cpt\EventBundle\Entity\Event:
     lifecycleCallbacks:
         prePersist: [prePersist]
         preUpdate: [preUpdate]
+        postLoad: [postLoad]
     oneToMany:
       registrations:
         targetEntity: Registration

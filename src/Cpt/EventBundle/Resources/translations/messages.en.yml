@@ -6,7 +6,7 @@ event.organizedby:                    Organized by
 event.animatedby:                     Animated by
 event.organizedandanimatedby:         Organized and animated by
 event.book:                             book
-event.youhavebooked:                   you have booked
+event.youhavebooked:                   You have booked
 event.seats:                            seat(s)
 and:                                     and
 at_hour:                                 at
@@ -99,3 +99,6 @@ hint.event.queuedquantity: Number of places in the queue for this attendee. If d
 hint.event.animator: Indicates wether this attendee will animate the event or not
 hint.event.deleteattendee: Remove this attendee
 hint.event.linktothisevent: Link to this event
+hint.event.numattendeebooked: Change this number to modify the number of reserved seats. Set it to 0 to cancel your reservation.
+
+event.numqueuedattendees: (%count% are on waiting list)

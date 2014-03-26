@@ -49,6 +49,18 @@ class Event extends Publication implements EventInterface
         $this->participationlevel = EventInterface::PARTICIPATIONLEVEL_UNKNOWN;
     }
     
+    public function postLoad()
+    {
+        // Transform the event queue into array of integer
+        $eventqueue = $this->getQueue();                
+        $new_queue = Array();
+        // Checking the queue are integers
+        foreach($eventqueue as $key => $userid) {
+            array_push ( $new_queue , intval($userid));
+        }
+        
+        $this->setQueue($new_queue);
+    }
 
   
     public function UpdateCounters()
@@ -370,8 +382,9 @@ class Event extends Publication implements EventInterface
      * @return Event
      */
     public function addRegistration(\Cpt\EventBundle\Entity\Registration $registrations)
-    {
-        $this->registrations[] = $registrations;
+    {  
+        $this->registrations->count(); // Force loading
+        $this->registrations->add($registrations);
 
         return $this;
     }

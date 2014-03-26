@@ -59,7 +59,7 @@ event.filter.future:                   Evènements du mois
 event.filter.myevents:                 Mes évènements
 event.filter.pastevents:              Evènements passés
 event.book:                             réserver
-event.youhavebooked:                   vous avez réservé
+event.youhavebooked:                   Vous avez réservé
 event.seats:                            place(s)
 event.attendees:                       "Participants"
 event.maxattendees:                    "max:"
@@ -128,3 +128,6 @@ hint.event.queuedquantity: Nombre de places dans la file d'attente pour ce parti
 hint.event.animator: Indique si ce participant est aussi un animateur de l'évènement ou non
 hint.event.deleteattendee: Supprimer ce participant
 hint.event.linktothisevent: Lien vers cet évènement
+hint.event.numattendeebooked: Changez ce nombre pour modifier le nombre de places réservées. Indiquez 0 pour annuler votre réservation.
+
+event.numqueuedattendees: (dont %count% sur liste d'attente)

@@ -21,10 +21,13 @@ class RegistrationManager extends BaseManager implements RegistrationManagerInte
     
     public function RegisterUserForEvent(EventInterface $event, UserInterface $user, $numparticipants = 1, $organizer = false)
     {
+      
         $registration = $this->CreateRegistration($event, $user, $numparticipants, $organizer);
         $this->AddRegistration($event, $registration);
         
-        return $registration;
+        $this->getEventManager()->SaveEvent($event);
+        
+        return true;
     }
     
     public function AddRegistration(EventInterface $event, RegistrationInterface $registration)
@@ -62,6 +65,14 @@ class RegistrationManager extends BaseManager implements RegistrationManagerInte
 
     public function CreateRegistration(EventInterface $event, $user, $numparticipants, $organizer)
     {
+        if (!is_integer($numparticipants)) {
+            throw new \Symfony\Component\Security\Core\Exception\InvalidArgumentException("num participants must be an integer");
+        }
+        
+        if (!is_bool($organizer)) {
+            throw new \Symfony\Component\Security\Core\Exception\InvalidArgumentException("organizer must be boolean");
+        }
+        
         $registration = new Registration($user, $event, $numparticipants, $organizer);
   
         return $registration; 

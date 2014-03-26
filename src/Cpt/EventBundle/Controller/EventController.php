@@ -106,6 +106,7 @@ class EventController extends BaseController {
                     $this->SetJsonRegistrationCollection($event, $registrationlist_json_array);
                     
                    if ($form->isValid()) {
+                        $this->getRegistrationManager()->DeleteAllRegistrations($event); // The registrations are recreated from scratch, so we delete the old ones
                         $this->getEventManager()->SaveEvent($event);
                         return $this->CreateJsonOkResponse(null);
                     } else {
@@ -279,21 +280,33 @@ class EventController extends BaseController {
         }
     }
     
-    public function registerForEventAction($eventid, $numparticipants)
+    public function registerForEventAction($eventid, $numattendees)
     {        
+        $request = $this->getRequest();
+
         $this->getPermissionManager()->RestrictAccessToLoggedIn();
+        $this->getPermissionManager()->RestrictAccessToAjax($request);
+        
+        $numattendees = intval($numattendees);
+        $eventid = intval($eventid);
         
         $event = $this->getEventManager()->getEventById($eventid);
         $this->GetPermissionManager()->RestrictResourceNotFound($event);
 
         $user = $this->getUser();
         
-        $registration = $this->getRegistrationManager()
-                ->RegisterUserForEvent($event, $user, $numparticipants, false);
+        if ($this->getRegistrationManager()
+                ->RegisterUserForEvent($event, $user, $numattendees, false))
+        {
+            return $this->CreateJsonOkResponse();
+        } else {
+            return $this->CreateJsonFailedResponse();
+        }
         
-        $responsedata = $this->getSerializer()->serialize($registration, 'json');
+        //$responsedata = $this->getSerializer()->serialize($registration, 'json');
 
-        return $this->CreateJsonOkResponse($responsedata);
+        // return $this->CreateJsonOkResponse($responsedata);
+        //return $this->getEventAction($eventid);
     }
     
     public function cancelEventAction($id)
