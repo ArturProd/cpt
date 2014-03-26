@@ -196,6 +196,31 @@ class EventController extends BaseController {
 
         return $this->CreateJsonOkResponse($serializedevents);
     }
+    
+      /**
+     * Get one event per id
+     * Returns a Json response
+     * 
+     * Request parameters:
+     *      - 'myevents': if present, retreives only "myevents"
+     *      - 'pastevents": if present, retreives only past events
+     * 
+     * @param type $year
+     * @param type $month
+     * @return JsonResponse
+     */
+    public function getEventsForIdAction(Request $request, $id) {
+       $eventCollection = Array();
+       $eventCollection['events'] = Array();
+       $eventCollection['events'][0] = $this->getEventManager()->getEventById($id);
+       $this->GetPermissionManager()->RestrictResourceNotFound( $eventCollection['events'][0]);
+
+
+       $serializer = $this->getSerializer();
+       $serializedevents = $serializer->serialize($eventCollection, 'json');
+
+       return $this->CreateJsonOkResponse($serializedevents);
+    }
 
     /**
      * Single Event Display

@@ -77,3 +77,11 @@ event_get_events_for_month:
     options:
         expose: true
 
+event_get_events_for_id:
+    path:     /eventid/{id}
+    defaults: { _controller: CptEventBundle:Event:getEventsForId }
+    requirements:
+        id:  \d+
+    options:
+        expose: true
+

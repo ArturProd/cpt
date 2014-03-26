@@ -102,8 +102,10 @@ function retrieveEventView(id)
              $( "#eventcontainer" + id ).html( response.data );
              count_retreived_event++;
              
-             if ((null!==event_list)&&(count_retreived_event === event_list.length)){
-                 toggle_event_container(true);
+             if (null!==event_list){
+                if (count_retreived_event === event_list.length){
+                    toggle_event_container(true);
+                }
              } else if ('null'!==event_list)
              {
                  toggle_event_container(true);
@@ -232,7 +234,10 @@ function RetrieveEvents(year,month)
     
     {% if permalink_event_id|default(null) is null %} {# we are not retreiving a single event but the full list for the month #}
     EventlistjqXHR = $.getJSON( Routing.generate('event_get_events_for_month', {year:year, month:month,_locale:_locale}),{filter:event_filter_value}, function(response){
-        
+    {% else %} {# retreiving a single event from event id (happens when permalink is provided) #}
+    EventlistjqXHR = $.getJSON( Routing.generate('event_get_events_for_id', {id:{{permalink_event_id}}, _locale:_locale}),{filter:event_filter_value}, function(response){
+    {% endif %}
+            
       $('#eventcontainer').html('');
       toggle_event_container(false);
       count_retreived_event = 0;
@@ -252,11 +257,6 @@ function RetrieveEvents(year,month)
             
       }
   });
-  {% else %}
-      $('#eventcontainer').html('');
-      toggle_event_container(false);
-      retrieveEventView({{permalink_event_id}});
-  {% endif %}
 }
 {#**************************************************************************#}
 {# Updates the whole interface
