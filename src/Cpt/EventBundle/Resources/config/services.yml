@@ -3,7 +3,7 @@ parameters:
     cpt.event.event.manager.class:         Cpt\EventBundle\Manager\EventManager
     cpt.event.calendar.manager.class:      Cpt\EventBundle\Manager\CalendarManager
     cpt.event.registration.manager.class: Cpt\EventBundle\Manager\RegistrationManager
-    cpt.event.event.entity:                 Cpt\EventBundle\Entity\Comment
+    cpt.event.event.entity:                 Cpt\EventBundle\Entity\Event
     cpt.event.registration.entity:         Cpt\EventBundle\Entity\Registration
 
 services:

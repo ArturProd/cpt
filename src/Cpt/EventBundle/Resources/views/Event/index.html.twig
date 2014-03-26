@@ -1,7 +1,7 @@
 {% set year = currentdate|date("Y") %}
 {% set month = currentdate|date("m") %}
 
-{% include 'CptEventBundle:Event:index.js.twig' with {'year': year, 'month':month} %}
+{% include 'CptEventBundle:Event:index.js.twig' with {'year': year, 'month':month, 'permalink_event_id':permalink_event_id } %}
 
 <div class="main_section">
     <div class="column_title_event">
@@ -17,6 +17,7 @@
     <div id="edit_event">        
     </div>
     <div id="display_events">
+        {% if permalink_event_id|default(null) is null %}
         <div id="calendar_container">
             <div class="month_selector">
                 <ul>
@@ -39,6 +40,7 @@
                 <li id="events_filter_pastevents" onclick="Set_filter_events(FILTER_PASTEVENTS);UpdateEventInterface();">{{'event.filter.pastevents'|trans}}</li>
             </ul>
         </div>
+        {% endif %}
         <div id="loading_event" class="loading"></div>
         <div id="eventcontainer">
         </div>

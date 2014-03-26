@@ -19,7 +19,7 @@
 {#****************************************************************************#}
 {# Event Edit Actions & Link to Event
 {#****************************************************************************#}
-<div class="inline-block float-right"><a href="{{ url('cpt_base_event_permalink', { 'event_permalink': event_permalink(event) }, true) }}"  target='_blank' class="btn_link" title="{{'hint.event.linktothisevent'}}"></a></div>
+<div class="inline-block float-right"><a href="{{ url('cpt_base_event_permalink', { 'event_permalink': event_permalink(event) }, true) }}"  target='_blank' class="btn_link" title="{{'hint.event.linktothisevent'|trans}}"></a></div>
 {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
     {% set registration = cpt_event_getRegistration(event,app.user) %}
     {% if (registration is not null) and (registration.organizer) %}

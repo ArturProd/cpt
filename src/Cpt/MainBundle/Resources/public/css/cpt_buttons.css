@@ -276,7 +276,7 @@
     border: none;
     background-color: white;
     color: #444444;
-    background: url('../images/boutons/bouton-link.png') no-repeat;
+    background: url('../images/boutons/bouton-link-light.png') no-repeat;
     height: 16px;
     width: 16px;
     font-size: large;
@@ -284,14 +284,22 @@
     margin-right: 8px;
 }
 
+.btn_link:hover{
+    background: url('../images/boutons/bouton-link.png') no-repeat;
+}
+
 .btn_settings{
     border: none;
     background-color: white;
     color: #444444;
-    background: url('../images/boutons/bouton-settings.png') no-repeat;
+    background: url('../images/boutons/bouton-settings-light.png') no-repeat;
     height: 16px;
     width: 16px;
     font-size: large;
     display: inline-block;
     margin-right: 8px;
+}
+
+.btn_settings:hover{
+    background: url('../images/boutons/bouton-settings.png') no-repeat;
 }

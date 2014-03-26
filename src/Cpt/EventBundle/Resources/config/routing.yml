@@ -76,3 +76,4 @@ event_get_events_for_month:
         month: \d+
     options:
         expose: true
+

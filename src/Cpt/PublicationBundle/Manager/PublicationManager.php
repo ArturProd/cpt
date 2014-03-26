@@ -19,4 +19,22 @@ class PublicationManager extends BaseManager {
             ->setParameter('desactivated', false)
             ->setParameter('publicationdatestart', new \DateTime());
     }
+    
+    /**
+     * @param string $date  Date in format YYYY-MM-DD
+     * @param string $step  Interval step: year|month|day
+     * @param string $alias Table alias for the publicationDateStart column
+     *
+     * @return array
+     */
+    protected function getPublicationDateQueryParts($date, $step, $alias = 'p') {
+        return array(
+            'query' => sprintf('%s.publicationDateStart >= :startDate AND %s.publicationDateStart < :endDate', $alias, $alias),
+            'params' => array(
+                'startDate' => new \DateTime($date),
+                'endDate' => new \DateTime($date . '+1 ' . $step)
+            )
+        );
+    }
+    
 }

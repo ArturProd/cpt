@@ -27,13 +27,23 @@ class EventController extends BaseController {
     public function indexAction($event_permalink) {
         $currentdate = $this->getCalendarManager()->GetNextEventDateOrCurrent(new \Datetime);
         $update_ajax_delay = $this->container->getParameter("cpt.event.update_ajax_delay");
+        $permalink_event_id = null;
+        
+        if (!empty($event_permalink))
+        {            
+            if (!preg_match('/.+?/', $event_permalink)) {
+                $this->GetPermissionManager()->RestrictResourceNotFound();
+            }
 
+            $events = Array();
+            $events[] = $this->getEventManager()->findOneByPermalink($event_permalink);
+            $permalink_event_id = $events[0]['id'];
+        }
         
         return $this->render('CptEventBundle:Event:index.html.twig', array(
                     'currentdate' => $currentdate,
                     'update_ajax_delay' => $update_ajax_delay,
-                    'event_permalink' => $event_permalink
-         
+                    'permalink_event_id' => $permalink_event_id         
         ));
     }
 

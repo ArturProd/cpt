@@ -8,6 +8,8 @@ use Cpt\EventBundle\Entity\Event as Event;
 use Cpt\EventBundle\Interfaces\Entity\EventInterface as EventInterface;
 use FOS\UserBundle\Model\UserInterface as UserInterface;
 use Doctrine\Common\Collections\ArrayCollection as ArrayCollection;
+use Cpt\PublicationBundle\Manager\PermalinkDateManager as PermalinkDateManager;
+
 
 class EventManager extends BaseManager implements EventManagerInterface {
 
@@ -112,6 +114,51 @@ class EventManager extends BaseManager implements EventManagerInterface {
         
         $this->em->remove($event);
         $this->em->flush();
+    }
+    
+    public function findOneByPermalink($permalink) {
+        try {
+            $repository = $this->em->getRepository($this->class);
+
+            $query = $repository->createQueryBuilder('p');
+            $query->select('p.id');
+            $PermalinkGenerator = new PermalinkDateManager();
+            $urlParameters = $PermalinkGenerator->getParameters($permalink);
+
+            $parameters = array();
+
+            if (isset($urlParameters['year']) && isset($urlParameters['month']) && isset($urlParameters['day'])) {
+                $pdqp = $this->getPublicationDateQueryParts(sprintf('%d-%d-%d', $urlParameters['year'], $urlParameters['month'], $urlParameters['day']), 'day');
+
+                $parameters = array_merge($parameters, $pdqp['params']);
+
+                $query->andWhere($pdqp['query']);
+            }
+
+            if (isset($urlParameters['slug'])) {
+                $query->andWhere('p.slug = :slug');
+                $parameters['slug'] = $urlParameters['slug'];
+            }
+
+            if (count($parameters) == 0) {
+                throw new SymfonyException\NotFoundHttpException("Resource not found.");
+            }
+
+            $query->setParameters($parameters);
+            $entity = $query->getQuery()->getSingleResult();
+
+            if (!$entity) {
+                throw new SymfonyException\NotFoundHttpException("Resource not found.");
+            }
+
+            if (!$this->getSecurityContext()->isGranted('VIEW', $entity)) {
+                throw new AccessDeniedException();
+            }
+
+            return $entity;
+        } catch (NoResultException $e) {
+            throw new SymfonyException\NotFoundHttpException("Resource not found.");
+        }
     }
     // </editor-fold>
 
