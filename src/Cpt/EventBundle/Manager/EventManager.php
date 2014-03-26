@@ -156,8 +156,8 @@ class EventManager extends BaseManager implements EventManagerInterface {
             }
 
             return $entity;
-        } catch (NoResultException $e) {
-            throw new SymfonyException\NotFoundHttpException("Resource not found.");
+        } catch (\Doctrine\Orm\NoResultException $e) {
+            $this->getPermissionManager()->RestrictResourceNotFound();
         }
     }
     // </editor-fold>

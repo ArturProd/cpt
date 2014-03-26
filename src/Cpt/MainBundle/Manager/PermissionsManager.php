@@ -9,6 +9,7 @@ use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
 use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
 use Symfony\Component\Security\Acl\Permission\MaskBuilder;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException as AccessDeniedException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException as NotFoundHttpException;
 
 class PermissionsManager extends BaseManager {
 
@@ -20,12 +21,12 @@ class PermissionsManager extends BaseManager {
             
     public function RestrictResourceNotFound($ressource = null) {
         if (!$ressource) {
-            throw new SymfonyException\NotFoundHttpException("Resource not found.");
+            throw new NotFoundHttpException("Resource not found.");
         }
     }
 
     public function RestrictPageNotFound($message = "Page not found") {
-        throw new SymfonyException\NotFoundHttpException($message);
+        throw new NotFoundHttpException($message);
     }
 
     public function RestrictAccessToAjax($request) {
