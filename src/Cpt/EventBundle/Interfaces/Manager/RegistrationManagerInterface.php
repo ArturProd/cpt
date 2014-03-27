@@ -16,7 +16,7 @@ interface RegistrationManagerInterface {
 
      function isCreatorAlsoAnimator(EventInterface $event);
     
-     function AddRegistration(EventInterface $event, RegistrationInterface $registration);
+     //function AddRegistrationAndUpdateQueue(EventInterface $event, RegistrationInterface $registration);
 
      function getRegistration(EventInterface $event, UserInterface $user);
     

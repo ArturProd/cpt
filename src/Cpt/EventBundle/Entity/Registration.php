@@ -67,6 +67,7 @@ class Registration implements RegistrationInterface
         $this->numqueuedparticipant = 0;
         $this->id = -1;
     }
+    
 
    public function prePersist()
     {
@@ -195,6 +196,11 @@ class Registration implements RegistrationInterface
         $this->numqueuedparticipant = $numqueuedparticipant;
 
         return $this;
+    }
+    
+    public function getNumConfirmed()
+    {
+        return $this->numparticipant - $this->numqueuedparticipant;
     }
 
     /**

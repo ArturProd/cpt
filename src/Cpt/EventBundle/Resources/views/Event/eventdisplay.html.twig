@@ -62,10 +62,10 @@
     </div>
 &nbsp;
     </div>
-     <div style="display:inline-block">
+     {# <div style="display:inline-block">                          // number of avalaible seats 
          {% transchoice event.AvailableSeats %}event.availableseats{% endtranschoice %} 
          {{event.AvailableSeats }} / {{event.maxnumattendees }} ({{event.CountQueuedAttendees }} {{ 'event.queuedseats'|trans }})&nbsp;|&nbsp;
-     </div>
+     </div> #} 
      <div style="display:inline-block">
         <a id="event_readmore_btn{{event.id}}">{{'event.readmore'|trans}}</a>
      </div>
@@ -73,20 +73,22 @@
 {# Action panel
 {#****************************************************************************#}
 <div>
-{% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+{% if is_granted("IS_AUTHENTICATED_REMEMBERED") and (event.end|date('U') > "now"|date('U') )%}
     {% set registration = cpt_event_getRegistration(event,app.user) %}
     {% if registration is null %}                                   {# case: user logged in but no reservation done #}
         {{'event.book'|trans}}
-        <input type="number" name="numparticipant{{event.id}}" id="numparticipant{{event.id}}" value="0" min="0" max="999" class="event_numattendee_select">
+        <input type="number" name="numparticipant{{event.id}}" id="numparticipant{{event.id}}" value="1" min="1" max="999" class="event_numattendee_select">
         {{'event.seats'|trans}}
         <a id="registrationmodify_btn{{event.id}}" class="event_book_btn">{{'event.button.validate'|trans}}</a>
     {% elseif not registration.organizer %}                         {# case: user logged in, is not organizer, has booked #}
-        <span class="cpt_red">{{'event.youhavebooked'|trans}}
+            {{'event.youhavebooked'|trans}}
                 <input type="number" name="numparticipant{{event.id}}" id="numparticipant{{event.id}}" value="{{registration.numparticipant}}" min="0" max="999" class="event_numattendee_select" title="{{'hint.event.numattendeebooked'|trans}}">
-            {{'event.seats'|trans}}
-            {% if registration.numqueuedparticipant >0 %}&nbsp;{{ 'event.numqueuedattendees'|trans({'%count%': registration.numqueuedparticipant}) }}{% endif %}
+                {{'event.seats'|trans}}
+        &nbsp;<a id="registrationmodify_btn{{event.id}}" class="btn_blue">{{'event.button.modify_registration'|trans}}</a>
+        <span class="cpt_red">
+            <br/><b>{{ 'event.numconfirmed'|trans({'%count%': registration.numconfirmed}) }}{% if registration.numqueuedparticipant >0 %}{{ 'event.numqueuedattendees'|trans({'%count%': registration.numqueuedparticipant}) }}{% endif %}</b>
+            <br/><a id="registrationcancel_btn{{event.id}}" class="btn_blue">{{'event.button.cancel_registration'|trans}}</a>
         </span>
-        <br/><a id="registrationmodify_btn{{event.id}}" class="btn_blue">{{'event.button.modify'|trans}}</a>
     {% endif %}
 {% endif %}
 </div>
@@ -122,7 +124,16 @@ $(function() {
     
     {# on change number of participant, show the modify or validate button #}
     $("#numparticipant{{event.id}}").on('change', function(){
-        $('#registrationmodify_btn{{event.id}}').show();
+        value = parseInt($("#numparticipant{{event.id}}").val());
+        if (value != $("#numparticipant{{event.id}}").val()) { {# testing if value is an integer #}
+            $('#registrationmodify_btn{{event.id}}').hide();
+        } else {
+            if ({{registration.numparticipant}} != value){
+                $('#registrationmodify_btn{{event.id}}').show();
+            } else {
+                $('#registrationmodify_btn{{event.id}}').hide();
+            }
+        } 
    });    
 });
 </script>

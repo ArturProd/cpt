@@ -23,20 +23,65 @@ class RegistrationManager extends BaseManager implements RegistrationManagerInte
     {
       
         $registration = $this->CreateRegistration($event, $user, $numparticipants, $organizer);
-        $this->AddRegistration($event, $registration);
+        $this->AddRegistrationAndUpdateQueue($event, $registration);
         
         $this->getEventManager()->SaveEvent($event);
         
         return true;
     }
     
-    public function AddRegistration(EventInterface $event, RegistrationInterface $registration)
+    protected function AddRegistrationAndUpdateQueue(EventInterface $event, RegistrationInterface $p_registration)
     {
-        $event->addRegistration($registration);
-        $this->FillQueue($event, $registration->getNumparticipant(),$registration->getUser()->getId());
+        $found = false;
+        $old_num_participant = 0;
+        $user_id = $p_registration->getUserId();
+        
+        // Searching for an existing registration for this user to this event
+        foreach($event->getRegistrations() as $registration)
+        {
+            if ($registration->getUserId() == $user_id)
+            {
+                $old_num_participant = $registration->getNumParticipant();
+                $registration->setNumParticipant($p_registration->getNumparticipant());
+                $registration->setOrganizer($p_registration->getOrganizer());
+                $found = true;
+                break;
+            }
+        }
+        
+        // If not found, we add the registration and fill the queue
+        if (!$found){
+            $event->addRegistration($p_registration);
+            $this->FillQueue($event, $p_registration->getNumparticipant(),$user_id);
+        } else if ($p_registration->getNumparticipant() > $old_num_participant) // There are more participants => we can just fill the rest of the queue
+        {
+            $this->FillQueue($event, $registration->getNumparticipant() - $old_num_participant ,$registration->getUser()->getId());
+        }
+        else { // we must shring the queue
+            $queue = $event->getQueue();
+            $user_id_index = -1;
+            
+            for($i=0; $i<count($queue);++$i)
+            {
+                if ($queue[$i] == $user_id)
+                {
+                    $user_id_index = $i;
+                    break;
+                }
+            }
+            
+            if ($user_id_index == -1){ // Would be very bad => means that the queue is broken                
+                $this->get('logger')->error('RegistrationManager: Could not find user id ' + $user_id + ' in the queue of event ' + $event->getId() + ' but registration exists for this user and this event.');
+                throw new Exception("Internal Error");
+            }
+            
+            $shrinked_user_queue = array_fill ( 0 , $p_registration->getNumparticipant() , $user_id );
+            array_splice ( $queue , $user_id_index , $old_num_participant , $shrinked_user_queue );
+            $event->setQueue($queue);
+        }
+        
         $event->UpdateCounters();
         
-        return $registration;
     }
     
     
@@ -180,7 +225,7 @@ class RegistrationManager extends BaseManager implements RegistrationManagerInte
         // By default, creator is also an organizer
         $registration = new Registration($registred_user, $event, 1, true);
         
-        $this->AddRegistration($event,$registration);
+        $this->AddRegistrationAndUpdateQueue($event,$registration);
 
     }
     // <editor-fold defaultstate="collapsed" desc="Protected">

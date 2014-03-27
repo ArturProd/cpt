@@ -6,12 +6,13 @@ event.organizedby:                    Organized by
 event.animatedby:                     Animated by
 event.organizedandanimatedby:         Organized and animated by
 event.book:                             book
-event.youhavebooked:                   You have booked
+event.youhavebooked:                   You have requested
 event.seats:                            seat(s)
 and:                                     and
 at_hour:                                 at
 event.button.validate:                  validate
-event.button.modify:                  modify
+event.button.modify_registration:    Validate change
+event.button.cancel_registration:     Cancel my registration
 event.button.manage:                    Manage event
 event.button.cancel:                    Cancel
 event.button.save:                    Save
@@ -101,4 +102,6 @@ hint.event.deleteattendee: Remove this attendee
 hint.event.linktothisevent: Link to this event
 hint.event.numattendeebooked: Change this number to modify the number of reserved seats. Set it to 0 to cancel your reservation.
 
-event.numqueuedattendees: (%count% are on waiting list)
+event.numconfirmed: "%count% confirmed"
+event.numqueuedattendees: ", %count% on waiting list"
+event.button.cancel_registration: Cancel registration
