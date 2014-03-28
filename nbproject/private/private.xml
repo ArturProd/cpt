@@ -13,34 +13,12 @@
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Controller/DefaultController.php</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/BlogBundle/Resources/views/Post/articles.html.twig</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/BlogBundle/Resources/config/core.xml</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/MainBundle/Controller/DefaultController.php</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Resources/translations/validators.en.yml</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Twig/PermalinkExtension.php</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Twig/EventManagerExtension.php</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/CptEventBundle.php</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Resources/views/Event/eventdisplay.html.twig</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Resources/translations/messages.fr.yml</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/BlogBundle/Manager/PermalinkDateManager.php</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Resources/views/Event/edit.html.twig</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/BlogBundle/Resources/views/Post/articles.js.twig</file>
-            <file>file:/home/cyril/dev/cpt/app/config/routing.yml</file>
             <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Controller/EventController.php</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Resources/views/Event/index.js.twig</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/MainBundle/Resources/public/css/cpt_buttons.css</file>
-            <file>file:/home/cyril/dev/cpt/app/logs/dev.log</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Twig/MakeJsStringExtension.php</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/BlogBundle/Manager/PermalinkCategoryManager.bak.php</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/BlogBundle/Resources/views/Post/preview_post.html.twig</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Resources/translations/messages.en.yml</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/PublicationBundle/Interfaces/Manager/PermalinkManagerInterface.php</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Resources/config/services.yml</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Resources/config/routing.yml</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Resources/views/Event/index.html.twig</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/MainBundle/Resources/config/routing.yml</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/BlogBundle/Twig/Extension/NewsExtension.php</file>
+            <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Interfaces/Manager/RegistrationManagerInterface.php</file>
+            <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Manager/RegistrationManager.php</file>
+            <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Resources/views/Event/eventdisplay.html.twig</file>
+            <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Manager/EventManager.php</file>
+            <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Interfaces/Manager/EventManagerInterface.php</file>
         </group>
     </open-files>
 </project-private>

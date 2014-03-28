@@ -63,6 +63,12 @@ class Event extends Publication implements EventInterface
     }
 
   
+    /**
+     * Based on the event queue, updates:
+     *  - For each registration the total number of attendees and the number of queued attendees (waiting list)
+     *  - For the event, the total number of attendee and the total number of queued attendees
+     * @throws \InvalidArgumentException
+     */
     public function UpdateCounters()
     {
         $this->ValidateRegistrationQueueIntegrity();
@@ -82,6 +88,8 @@ class Event extends Publication implements EventInterface
             $count_queued = count(array_keys($waiting_attendees,$registration->getUser()->getId()));
             $registration->setNumqueuedparticipant($count_queued);
             
+            $count_registration_attendees = count(array_keys($queue,$registration->getUser()->getId()));
+            $registration->setNumparticipant($count_registration_attendees);
             $countQueuedAttendees += $count_queued;
             
             // Checking if a non-queued attendee is the organizer
@@ -115,8 +123,9 @@ class Event extends Publication implements EventInterface
             }
         }
         
+        // Not necessary anymore as the num of attendees for each registration is updated with event "Update Counter"
         // Checking the Queue matches with the Registration num participants
-        foreach($registrations as $key => $registration )
+      /*  foreach($registrations as $key => $registration )
         {
             if ($this->getId() != $registration->getEvent()->getId()) {
                 throw new \LogicException("Provided event id does not match with registration id EventManager.ValidateQueue");
@@ -125,7 +134,7 @@ class Event extends Publication implements EventInterface
             if ($registration->getNumparticipant() !== count( array_keys( $eventqueue, $registration->getUser()->getId() ))) {
                 throw new \InvalidArgumentException("Queue does not match with RegistrationList");
             }
-        }
+        } */
      }
     
     /* Unmapped */

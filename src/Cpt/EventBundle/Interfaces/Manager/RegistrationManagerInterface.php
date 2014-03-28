@@ -12,7 +12,7 @@ use FOS\UserBundle\Model\UserInterface as UserInterface;
  */
 interface RegistrationManagerInterface {
     
-     function RegisterUserForEvent(EventInterface $event, UserInterface $user, $numparticipants = 1, $organizer = false);
+     function RegisterUserForEvent(EventInterface $event, UserInterface $user, $numparticipants = 1);
 
      function isCreatorAlsoAnimator(EventInterface $event);
     

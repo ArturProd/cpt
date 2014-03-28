@@ -19,10 +19,21 @@ use Cpt\EventBundle\Entity\Registration as Registration;
  */
 class RegistrationManager extends BaseManager implements RegistrationManagerInterface {
     
-    public function RegisterUserForEvent(EventInterface $event, UserInterface $user, $numparticipants = 1, $organizer = false)
+    /**
+     * 
+     * Register a user for an event, or update the registration
+     * For new registrations, organizer is set to false
+     * For updated registrations, organizer is not changed
+     * 
+     * @param \Cpt\EventBundle\Interfaces\Entity\EventInterface $event
+     * @param \FOS\UserBundle\Model\UserInterface $user
+     * @param type $numparticipants
+     * @return boolean
+     */
+    public function RegisterUserForEvent(EventInterface $event, UserInterface $user, $numparticipants = 1)
     {
       
-        $registration = $this->CreateRegistration($event, $user, $numparticipants, $organizer);
+        $registration = $this->CreateRegistration($event, $user, $numparticipants, false);
         $this->AddRegistrationAndUpdateQueue($event, $registration);
         
         $this->getEventManager()->SaveEvent($event);
@@ -32,56 +43,88 @@ class RegistrationManager extends BaseManager implements RegistrationManagerInte
     
     protected function AddRegistrationAndUpdateQueue(EventInterface $event, RegistrationInterface $p_registration)
     {
-        $found = false;
         $old_num_participant = 0;
         $user_id = $p_registration->getUserId();
+        $found_registration = null;
         
         // Searching for an existing registration for this user to this event
         foreach($event->getRegistrations() as $registration)
         {
             if ($registration->getUserId() == $user_id)
-            {
+            {   // If the registration exists, organizer is not modified
                 $old_num_participant = $registration->getNumParticipant();
-                $registration->setNumParticipant($p_registration->getNumparticipant());
-                $registration->setOrganizer($p_registration->getOrganizer());
-                $found = true;
+                $found_registration = $registration;                
                 break;
             }
         }
         
-        // If not found, we add the registration and fill the queue
-        if (!$found){
+        // If not found, we add the registration as provided and fill the queue (new registrations are necessarily at the end)
+        if (!$found_registration){
             $event->addRegistration($p_registration);
             $this->FillQueue($event, $p_registration->getNumparticipant(),$user_id);
-        } else if ($p_registration->getNumparticipant() > $old_num_participant) // There are more participants => we can just fill the rest of the queue
-        {
-            $this->FillQueue($event, $registration->getNumparticipant() - $old_num_participant ,$registration->getUser()->getId());
-        }
-        else { // we must shring the queue
-            $queue = $event->getQueue();
-            $user_id_index = -1;
             
-            for($i=0; $i<count($queue);++$i)
+            $event->UpdateCounters();
+            
+            return $p_registration;
+        } 
+        else if ($p_registration->getNumparticipant() == $old_num_participant){
+            // Same num of participant, nothing to do
+            return $found_registration;
+        } else {
+
+            // Update the event queue
+            $this->UpdateEventQueue($event, $user_id, $p_registration->getNumparticipant(), $old_num_participant );
+            
+            $event->UpdateCounters();
+            
+            return $found_registration;            
+        }
+    }
+    
+    
+    /**
+     * 
+     * Updates the event.queue for a given event and a user_id, changing the number of attendees
+     * 
+     * @param type $event The event having the queue to be updated
+     * @param type $user_id The user id to consider
+     * @param type $new_num_attendees The new number of attendees
+     * @param type $old_num_attendees The old number of attendees
+     */
+    protected function UpdateEventQueue(EventInterface $event, $user_id, $new_num_attendees, $old_num_attendees)
+    {
+            $old_queue = $event->getQueue();
+            $new_queue = Array();
+            $count_user_id = 0;
+            
+            // Shrink the queue
+            if ($new_num_attendees < $old_num_attendees)
             {
-                if ($queue[$i] == $user_id)
+                // Going through the old queue
+                for ($i = 0; $i<count($old_queue);++$i)
                 {
-                    $user_id_index = $i;
-                    break;
+                    // If it is an attendee from a different user, push it to new queue
+                    if ($old_queue[$i] != $user_id)
+                    {
+                        array_push($new_queue,$old_queue[$i]);
+                    // Else, push it to new queue only to the point tota number does not exceed the new count
+                    } else {
+                        $count_user_id++;
+
+                        if ($count_user_id <= $new_num_attendees)
+                        {
+                            array_push($new_queue,$old_queue[$i]);
+                        } 
+                    }
                 }
+                
+                // Assign the new queue
+                $event->setQueue($new_queue);
+   
+            } else if ($new_num_attendees > $old_num_attendees) {
+                $count_to_be_added = $new_num_attendees - $old_num_attendees;
+                $this->FillQueue($event, $count_to_be_added ,$user_id);
             }
-            
-            if ($user_id_index == -1){ // Would be very bad => means that the queue is broken                
-                $this->get('logger')->error('RegistrationManager: Could not find user id ' + $user_id + ' in the queue of event ' + $event->getId() + ' but registration exists for this user and this event.');
-                throw new Exception("Internal Error");
-            }
-            
-            $shrinked_user_queue = array_fill ( 0 , $p_registration->getNumparticipant() , $user_id );
-            array_splice ( $queue , $user_id_index , $old_num_participant , $shrinked_user_queue );
-            $event->setQueue($queue);
-        }
-        
-        $event->UpdateCounters();
-        
     }
     
     
