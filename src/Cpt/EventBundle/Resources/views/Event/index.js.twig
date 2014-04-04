@@ -172,6 +172,8 @@ function update_arrows(year,month)
             $("#monthselector_downarrow").attr("class","calendar_arrow_down_withoutevents_btn");
         }
     });
+    
+    registerJqXHR(UpdateArrowjqXHR);
 }
 {#**************************************************************************#}
 {# Go to next month
@@ -257,6 +259,8 @@ function RetrieveEvents(year,month)
             
       }
   });
+  
+  registerJqXHR(EventlistjqXHR);
 }
 {#**************************************************************************#}
 {# Updates the whole interface
@@ -296,7 +300,7 @@ function DisplayEventEditPanel(display)
 {# Registers logged in user to an event
 {#**************************************************************************#}
 function RegisterToEvent(eventid, numattendees){
-     $.getJSON( Routing.generate('event_register', {eventid:eventid, numattendees:numattendees, _locale:_locale}),null, function(response){
+     var jqXHR = $.getJSON( Routing.generate('event_register', {eventid:eventid, numattendees:numattendees, _locale:_locale}),null, function(response){
        if (response.status === "ok")
        {
            retrieveEventView(eventid);
@@ -304,6 +308,8 @@ function RegisterToEvent(eventid, numattendees){
            alert('failed to register to event ' + eventid);
        }     
      });
+     
+     registerJqXHR(jqXHR);
 }
 
 {#**************************************************************************#}

@@ -6,7 +6,10 @@ var modal_dialog_result = null;
 const MESSAGE_TYPE_CONFIRMATION = 0;
 const MESSAGE_TYPE_QUESTION = 1;
 const MESSAGE_TYPE_ERROR = 2;
-
+var registreredjqXHR = []; {# all ajax request (jqXHR) should be stored in here so that they can be cancelled #}
+var registeredTimers = [];
+var registeredIntervals = [];
+                           
 function ModalDialog(callback_function, callbackdata, title, text, buttonOK_text, buttonCANCEL_text, button3_text)
 {
     var buttons = Array();
@@ -50,7 +53,38 @@ function abort_ajax(jqXHR) {
         jqXHR.abort();
     }
 }
-        
+{#****************************************************************************#}
+{# Register ajax request for further cancellation
+{#****************************************************************************#}
+function registerJqXHR(pJqXHR)
+{
+    registreredjqXHR.push(pJqXHR);
+}
+{#****************************************************************************#}
+{# Cancel all registered jqXHR
+{#****************************************************************************#}
+function cancelAllJqXHR()
+{
+    registreredjqXHR.forEach(function(jqXHR){abort_ajax(jqXHR);});
+    registreredjqXHR = [];
+}
+
+function registerInterval(interval){
+    registeredIntervals.push(interval);    
+}
+
+function registerTimer(timer){
+    registeredTimers.push(timer);    
+}
+
+function cancelAllTimers()
+{
+    registeredTimers.forEach(function(timer){clearTimeout(timer);});
+    registeredIntervals.forEach(function(interval){window.clearInterval(interval);});
+
+    registeredTimers = [];
+}
+
     $(function() {
 {#****************************************************************************#}
 {# Default Ajax error behavior

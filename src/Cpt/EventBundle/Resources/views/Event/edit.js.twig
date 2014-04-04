@@ -318,13 +318,17 @@ function PrepareEventFormSubmission()
 {# ************************************************************************************************************************ #} 
 function CheckEventWasUpdated() {
     {% if event.id != -1 %}  
-        $.getJSON('{{ url('event_was_updated', { 'id': event.id, 'unixtimestamp': event.UpdatedAt | date('U') })  }}', function(data) {
+        var jqXHR = $.getJSON('{{ url('event_was_updated', { 'id': event.id, 'unixtimestamp': event.UpdatedAt | date('U') })  }}', function(data) {
             wasupdated = JSON.parse(data);
             if (wasupdated)
                 ModalDialog(ReLoadEvent, null, "{{'event.changes_detected.title'|trans}}", "{{'event.changes_detected.content'|trans|raw}}", "{{'form.ok'|trans}}");
-            else
-                setTimeout("CheckEventWasUpdated()",15000);
+            else {
+             var timeout = setTimeout("CheckEventWasUpdated()",15000);
+             registerTimer(timeout);
+            }
         });
+        
+        registerJqXHR(jqXHR);
     {% endif %}
 }
 

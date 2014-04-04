@@ -48,8 +48,7 @@ class CommentController extends BaseController {
         $request = $this->getRequest();
 
         $this->getPermissionManager()->RestrictAccessToAjax($request);
-
-        $user = $this->getUser();
+        
         $publicationid = $this->GetNumericParameter('publicationid');
         $beforeid = $this->GetNumericParameter('beforeid', -1);  // To only get comments after a given comment id
         if ($beforeid == -1) { // If we are retreiving the most recent comments, we use the initial number of comments to be retreived
@@ -61,6 +60,13 @@ class CommentController extends BaseController {
         $comments = $this->getCommentManager()->get_older_comments($publicationid, $howmany, $beforeid);
 
         $view_comments = Array();
+        
+        $user = null;
+        
+        if ($this->getPermissionManager()->isLoggedIn()){
+            $user = $this->getUser();
+        }
+        
         foreach ($comments as $comment) {
             $this->SetCanModify($comment, $user);
             $view_comments[] = $comment->toViewArray();

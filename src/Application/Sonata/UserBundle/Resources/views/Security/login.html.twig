@@ -3,6 +3,12 @@
 {% endif %}
 <script type="text/javascript">
     $(function() {
+        $('#sign_in_form').submit(function(event){
+            cancelAllJqXHR();
+            cancelAllTimers();
+        });
+        
+        
         $('registerModal').hide()
         $( "#registerModal" ).dialog({
           autoOpen: false,
@@ -23,7 +29,7 @@
     });
 </script>
 
-<form action="{{ path("fos_user_security_check") }}" method="post" class="form-signin">
+<form action="{{ path("fos_user_security_check") }}" method="post" class="form-signin" id="sign_in_form">
         <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
 
     <ul>

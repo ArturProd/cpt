@@ -15,7 +15,7 @@ function get_more_comments(publicationid, callback)
         newer_comment_ids[publicationid] = null;
         
     {# Get Comment array as a json object #}
-    $.getJSON('{{ url('cpt_comment_list_json')}}', {publicationid:publicationid, beforeid:older_comment_ids[publicationid]}, function(response) {
+    var jqXHR = $.getJSON('{{ url('cpt_comment_list_json')}}', {publicationid:publicationid, beforeid:older_comment_ids[publicationid]}, function(response) {
         if (response.status!=='ok')
         {
             no_more_older_comments(publicationid,0); {# if for some reason the response is not ok, hide the button to get more commments #}
@@ -36,7 +36,11 @@ function get_more_comments(publicationid, callback)
         
         if (callback)
             callback(comments);
-    });    
+    });
+    
+    registerJqXHR(jqXHR);
+    
+  
 }
 
 {#****************************************************************************#}
@@ -54,7 +58,7 @@ function get_new_comments(publicationid)
     
 
     {# Get Comment array as a json object #}
-    $.getJSON( URL_get_new_comments, {publicationid:publicationid, aftercommentid:newercommentid}, function(response) {
+    var jqXHR = $.getJSON( URL_get_new_comments, {publicationid:publicationid, aftercommentid:newercommentid}, function(response) {
         if (response.status!=='ok')
           return;
         
@@ -65,9 +69,10 @@ function get_new_comments(publicationid)
         
         if (comments.length>0)
             newer_comment_ids[publicationid] = comments[comments.length-1].id;
-        
-         setTimeout("get_new_comments("+publicationid+")",TIMEOUT_COMMENT_CHECK_MS);
+
       });
+      
+      registerJqXHR(jqXHR);
 }
 {#****************************************************************************#}
 {# Disable the link to get more comments for a given publication if commentcount === 0

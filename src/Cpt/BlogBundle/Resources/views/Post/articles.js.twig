@@ -85,15 +85,17 @@ function getPostList(page, opendefault){
     if (article_permalink)
     {
         show_articlefilter(false);
-        $.getJSON( "{{ url('cpt_blog_getsinglearticlelist') }}", {article_permalink:'{{article_permalink}}'}, function(response){
+        var jqXHR = $.getJSON( "{{ url('cpt_blog_getsinglearticlelist') }}", {article_permalink:'{{article_permalink}}'}, function(response){
             PopulateArticles(response, opendefault);
         });
+        registerJqXHR(jqXHR);
     }
     else
-        $.getJSON( "{{ url('cpt_blog_getarticlelist') }}", {page:page, myarticles:filter_myarticles}, function(response){
+        var jqXHR = $.getJSON( "{{ url('cpt_blog_getarticlelist') }}", {page:page, myarticles:filter_myarticles}, function(response){
             PopulateArticles(response, opendefault);
             CreatePagination();            
         });
+        registerJqXHR(jqXHR);
 }
 {#**************************************************************************#}
 {# Show/Hides the whole "A la une" section
@@ -204,9 +206,11 @@ function EditPost(postid)
 {
     $("#edit_article").html("");
 
-    $.getJSON('{{ url('cpt_blog_post_edit')}}', {postid:postid, _locale:_locale}, function(response) {
+    var jqXHR = $.getJSON('{{ url('cpt_blog_post_edit')}}', {postid:postid, _locale:_locale}, function(response) {
         load_post_popup(response.data);
     }); 
+    
+    registerJqXHR(jqXHR);
     
     $('#loadingarticles').show();
     ArticleEditDisplay(true);

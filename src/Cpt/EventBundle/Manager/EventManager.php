@@ -40,6 +40,11 @@ class EventManager extends BaseManager implements EventManagerInterface {
   
     // <editor-fold defaultstate="collapsed" desc="Public: Event related">
 
+    public function getAllEvents()
+    {
+        return $this->getEventRepository()->findAll();
+    }
+    
     public function createEvent(UserInterface $author, $enabled = true, $approved = true, $restricted = false) {
         $event = new Event();
 
