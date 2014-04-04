@@ -67,7 +67,7 @@ class EventController extends BaseController {
         if ((null != $id) && (-1 != $id)) {
             $event = $this->getEventManager()->getEventById($id);
 
-            $this->getPermissionManager()->RestrictAccessToUser($event->getAuthor()->getId());
+            $this->getPermissionManager()->RestrictAccessToUsers($event->getResponsibleUsersIds());
         } else {
             $author = $this->container->get('security.context')->getToken()->getUser();
             $event = $this->getEventManager()->createEvent($author);
@@ -140,7 +140,7 @@ class EventController extends BaseController {
         $event = $this->getEventManager()->getEventById($id);
         $this->GetPermissionManager()->RestrictResourceNotFound($event);
 
-        $this->getPermissionManager()->RestrictAccessToUser($event->getAuthor()->getId());
+        $this->getPermissionManager()->RestrictAccessToUsers($event->getResponsibleUsersIds());
 
         $lastupdatedate = $event->getUpdatedAt()->getTimestamp();
 
@@ -298,7 +298,13 @@ class EventController extends BaseController {
         if ($this->getRegistrationManager()
                 ->RegisterUserForEvent($event, $user, $numattendees, false))
         {
-            return $this->CreateJsonOkResponse();
+            $event = $this->getEventManager()->getEventById($eventid);
+
+            $html_string = $this->renderView('CptEventBundle:Event:eventdisplay.html.twig', array(
+                'event' => $event,
+            ));
+        
+            return $this->CreateJsonOkResponse($html_string);
         } else {
             return $this->CreateJsonFailedResponse();
         }
@@ -325,7 +331,28 @@ class EventController extends BaseController {
         return $this->CreateJsonOkResponse($result);
     }
     
-    
+    public function cancelRegistrationAction($eventid){
+        $request = $this->getRequest();
+
+        $this->getPermissionManager()->RestrictAccessToLoggedIn();
+        $this->getPermissionManager()->RestrictAccessToAjax($request);
+        
+        $user = $this->getUser();
+        $event = $this->getEventManager()->getEventById($eventid);
+        
+        $this->getRegistrationManager()->CancelRegistration($event, $user);
+        
+        $this->get('session')->getFlashBag()->add(
+            'notice',
+            $this->get('translator')->trans('registration.has_been_cancelled')
+        );
+        
+        $html_string = $this->renderView('CptEventBundle:Event:eventdisplay.html.twig', array(
+                'event' => $event,
+            ));
+            
+        return $this->CreateJsonOkResponse($html_string);
+    }
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="Protected">

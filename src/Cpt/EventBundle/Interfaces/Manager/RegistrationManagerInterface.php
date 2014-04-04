@@ -20,7 +20,7 @@ interface RegistrationManagerInterface {
 
      function getRegistration(EventInterface $event, UserInterface $user);
     
-     function RemoveRegistration(EventInterface $event, $user);
+     function CancelRegistration(EventInterface $event, UserInterface $user);
     
      function CreateRegistration(EventInterface $event, $user, $numparticipants, $organizer);
     

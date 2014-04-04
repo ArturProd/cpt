@@ -76,6 +76,9 @@ function UpdateInterface()
         Disabled_organizer_user = null;
     }
     
+    {# Make sure event author cannot delete his registration #}
+    $("#remove_button_" + {{event.author.id}}).prop('disabled', true);
+
     {# update attendees queue table #}
     index = 0;
     $( "#queue_table_body" ).empty();

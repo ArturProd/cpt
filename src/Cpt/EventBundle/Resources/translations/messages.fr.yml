@@ -50,7 +50,7 @@ event.button.validate:                valider
 event.button.modify_registration:     Valider la modification
 event.button.cancel_registration:     Annuler ma réservation
 event.button.manage:                   gérer l'évènement
-event.button.cancel:                    Annuler
+event.button.cancel:                    Supprimer
 event.button.save:                    Enregistrer
 event.button.copy:                    "Copier"
 event.readmore:                         lire la suite
@@ -129,7 +129,9 @@ hint.event.queuedquantity: Nombre de places dans la file d'attente pour ce parti
 hint.event.animator: Indique si ce participant est aussi un animateur de l'évènement ou non
 hint.event.deleteattendee: Supprimer ce participant
 hint.event.linktothisevent: Lien vers cet évènement
-hint.event.numattendeebooked: Changez ce nombre pour modifier le nombre de places réservées. Indiquez 0 pour annuler votre réservation.
+hint.event.numattendeebooked: Changez ce nombre pour modifier le nombre de places réservées.
+hint.event.modifyregistration: Valider le changement. En changeant le nombre de participants, certains d'entre eux peuvent êtres placés dans la file d'attente.
+registration.has_been_cancelled: Votre enregistrement pour cet évènement est annulé.
 
 event.numconfirmed: "%count% places confirmées"
 event.numqueuedattendees: ", %count% sur la liste d'attente"

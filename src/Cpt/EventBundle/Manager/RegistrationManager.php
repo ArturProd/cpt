@@ -41,6 +41,49 @@ class RegistrationManager extends BaseManager implements RegistrationManagerInte
         return true;
     }
     
+    public function CancelRegistration(EventInterface $event, UserInterface $user){
+        // The author cannot cancel his registration
+        if ($event->getAuthor()->getId() == $user->getId()){
+            throw new \Exception("The author of the event cannot cancel his registration.");
+        }
+        
+        // Check that there will still be an animator         
+        $found_other_animator = false;
+        foreach($event->getRegistrations() as $registration)
+        {
+            // There is at least one registration for another user which is set an organizer
+            if (($registration->getUser()->getId() != $user->getId()) && $registration->getOrganizer()){
+                $found_other_animator = true;
+                break;
+            }
+        }
+        
+        if (!$found_other_animator){
+            throw new \Exception("Cannot cancel this registration: there must be at least one organizer for the event");
+        }
+        
+        // Find the registration
+        $registration = $this->getRegistration($event, $user);
+        
+        if (!$registration){
+            throw new \Exception("Cannot cancel this registration: registration not found");
+        }
+        
+        // Remove the registration from the event
+        $event->removeRegistration($registration);
+                
+        
+        // Update event queue
+        $queue = $event->getQueue();
+        $new_queue = array_diff($queue, [$user->getId()]);
+        $event->setQueue($new_queue);
+        
+        // Save event
+        $this->getEventManager()->SaveEvent($event);
+
+    }
+
+    
     protected function AddRegistrationAndUpdateQueue(EventInterface $event, RegistrationInterface $p_registration)
     {
         $old_num_participant = 0;
@@ -139,7 +182,7 @@ class RegistrationManager extends BaseManager implements RegistrationManagerInte
             ->getOneOrNullResult();
     }
     
-    public function RemoveRegistration(EventInterface $event, $user)
+    protected function RemoveRegistration(EventInterface $event, $user)
     {
         return $this->getRegistrationRepository()
             ->createQueryBuilder('u')
@@ -245,6 +288,11 @@ class RegistrationManager extends BaseManager implements RegistrationManagerInte
         }
             
         return false;
+    }
+    
+    public function isAuthor(EventInterface $event, UserInterface $user)
+    {
+        return ($event->getAuthor()->getId() == $user->getId());
     }
     
     public function isAuthorSingleOrganizer(EventInterface $event)

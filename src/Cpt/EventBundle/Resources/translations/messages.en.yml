@@ -14,7 +14,7 @@ event.button.validate:                  validate
 event.button.modify_registration:    Validate change
 event.button.cancel_registration:     Cancel my registration
 event.button.manage:                    Manage event
-event.button.cancel:                    Cancel
+event.button.cancel:                    Delete
 event.button.save:                    Save
 event.button.copy:                    Copy
 event.readmore:                         read more
@@ -100,8 +100,10 @@ hint.event.queuedquantity: Number of places in the queue for this attendee. If d
 hint.event.animator: Indicates wether this attendee will animate the event or not
 hint.event.deleteattendee: Remove this attendee
 hint.event.linktothisevent: Link to this event
-hint.event.numattendeebooked: Change this number to modify the number of reserved seats. Set it to 0 to cancel your reservation.
-
+hint.event.numattendeebooked: Change this number to modify the number of reserved seats.
+hint.event.modifyregistration: Validate your change. By changing the number of attendees, some of them might end-up in the waiting list.
+registration.has_been_cancelled: Your registration to this event is cancelled.
+        
 event.numconfirmed: "%count% confirmed"
 event.numqueuedattendees: ", %count% on waiting list"
 event.button.cancel_registration: Cancel registration

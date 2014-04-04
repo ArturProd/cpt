@@ -300,16 +300,36 @@ function DisplayEventEditPanel(display)
 {# Registers logged in user to an event
 {#**************************************************************************#}
 function RegisterToEvent(eventid, numattendees){
+    $('#loading_event_'+eventid).show();
      var jqXHR = $.getJSON( Routing.generate('event_register', {eventid:eventid, numattendees:numattendees, _locale:_locale}),null, function(response){
        if (response.status === "ok")
        {
-           retrieveEventView(eventid);
+           $('#eventcontainer'+eventid).hide();
+           $('#eventcontainer'+eventid).html(response.data);
+           $('#eventcontainer'+eventid).delay(300).show();
        } else {
            alert('failed to register to event ' + eventid);
        }     
      });
      
      registerJqXHR(jqXHR);
+}
+
+function CancelRegistrationToEvent(eventid)
+{
+     $('#loading_event_'+eventid).show();
+     var jqXHR = $.getJSON( Routing.generate('event_cancel_registration', {eventid:eventid,_locale:_locale}),null, function(response){
+       if (response.status === "ok")
+       {
+           $('#eventcontainer'+eventid).hide();
+           $('#eventcontainer'+eventid).html(response.data);
+           $('#eventcontainer'+eventid).delay(300).show();
+       } else {
+           alert('failed to cancel registration' + eventid);
+       }     
+     });
+     
+     registerJqXHR(jqXHR);    
 }
 
 {#**************************************************************************#}

@@ -10,6 +10,7 @@ Cpt\EventBundle\Entity\Event:
         targetEntity: Registration
         mappedBy: event
         cascade: ["persist"]
+        orphanRemoval: true
     fields:
       begin:
         type: datetime

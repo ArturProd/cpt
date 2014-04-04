@@ -62,7 +62,23 @@ class Event extends Publication implements EventInterface
         $this->setQueue($new_queue);
     }
 
-  
+    public function getResponsibleUsersIds()
+    {
+        $result = Array();
+        $result[] = $this->getAuthor()->getId();
+        
+        foreach($this->getRegistrations() as $registration)
+        {
+            if (($registration->getUser()->getId() !== $this->getAuthor()->getId())
+                    && $registration->getOrganizer())
+                {                
+                    $result[] = $registration->getUser()->getId();
+                }
+        }
+        
+        return $result;
+    }
+    
     /**
      * Based on the event queue, updates:
      *  - For each registration the total number of attendees and the number of queued attendees (waiting list)

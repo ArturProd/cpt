@@ -66,6 +66,31 @@ class PermissionsManager extends BaseManager {
 
         throw new SymfonyException\ForbiddenHttpException("Access denied.");
     }
+    
+    /**
+     * Restrict the access to a list of useres identified by their user id
+     * 
+     * @param type $userid_array an array of user_id (integer)
+     * @param type $authorizeAdmin
+     * @return type
+     * @throws SymfonyException\ForbiddenHttpException
+     */
+    public function RestrictAccesstoUsers($userid_array,$authorizeAdmin = true) {
+        $this->RestrictAccessToLoggedIn();
+
+        if (($authorizeAdmin) && $this->getSecurityContext()->isGranted('ROLE_ADMIN')) {
+            return;
+        } 
+        
+        foreach($userid_array as $userid)
+        {
+            if ($userid == $this->getSecurityContext()->getToken()->getUser()->getId()) {
+                return;
+            }
+        }
+
+        throw new SymfonyException\ForbiddenHttpException("Access denied.");
+    }
 
     public function ensureGrantedPublication($permission, $domainobject=null) {
         if ($this->getSecurityContext()->isGranted($permission, $this->getPublicationClassIdentity())) {

@@ -6,8 +6,8 @@
 <div class="cpt_page">        
    
 {#***********************************************#}
-    {# SECTION: BUTTONS
-    {#***********************************************#}
+{# SECTION: BUTTONS
+{#***********************************************#}
     <h2><span class="cpt_blue">➤&nbsp;&nbsp;</span>{{'event.tab.actions'|trans}}</h2>
 
        <div class="row-fluid">
@@ -207,6 +207,7 @@
 {# SECTION: ATTENDEES
 {#***********************************************#}    
       <h2><span class="cpt_blue">➤&nbsp;&nbsp;</span>{{'event.attendees'|trans}}</h2>
+      <div class="cpt_red">{{ 'event.organizedby'|trans}} {{event.author.displayname}}</div></br>
         <div class="row-fluid">
     {#***********************************************#}
     {# Field: MaxNumAttendees

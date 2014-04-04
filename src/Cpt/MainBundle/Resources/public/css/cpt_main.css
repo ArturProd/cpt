@@ -118,6 +118,14 @@ border: 0px;
     height: 100px;
 }
 
+.loading-mini{
+    background: url('../images/loading.gif') no-repeat;    
+    background-position: center center;
+    background-size:30px 30px;
+    font-size: 24px;
+    height: 30px;
+}
+
 .column_title_event{
     background: url('../images/evenements/picto-entete-evenements.png') no-repeat;
     background-position:left top;

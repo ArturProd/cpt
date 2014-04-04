@@ -45,6 +45,15 @@ event_register:
         numattendees: \d+
     options:
         expose: true   
+
+event_cancel_registration:
+    path:     /cancel_registration/{eventid}
+    defaults: { _controller: CptEventBundle:Event:cancelRegistration  }
+    requirements:
+        eventid:  \d+
+    options:
+        expose: true
+        
         
 event_was_updated:
     path:     /edit/{id}/wasupdated/{unixtimestamp}

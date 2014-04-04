@@ -22,7 +22,7 @@
 <div class="inline-block float-right"><a href="{{ url('cpt_base_event_permalink', { 'event_permalink': event_permalink(event) }, true) }}"  target='_blank' class="btn_link" title="{{'hint.event.linktothisevent'|trans}}"></a></div>
 {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
     {% set registration = cpt_event_getRegistration(event,app.user) %}
-    {% if (registration is not null) and (registration.organizer) %}
+    {% if ((registration is not null) and (registration.organizer)) or (cpt_event_isAuthor(event, app.user)) %}
     <div class="inline-block float-right" title="{{'event.button.manage'|trans}}"><a class="btn_settings" onclick="manage_event({{event.id}});"></a></div>
     {% endif %}
  {% endif %}
@@ -75,22 +75,29 @@
 <div>
 {% if is_granted("IS_AUTHENTICATED_REMEMBERED") and (event.end|date('U') > "now"|date('U') )%}
     {% set registration = cpt_event_getRegistration(event,app.user) %}
-    {% if registration is null %}                                   {# case: user logged in but no reservation done #}
+    {% if (registration is null) %}                                   {# case: user logged in but no reservation done #}
+        {% if (not cpt_event_isAuthor(event, app.user)) %}
         {{'event.book'|trans}}
         <input type="number" name="numparticipant{{event.id}}" id="numparticipant{{event.id}}" value="1" min="1" max="999" class="event_numattendee_select">
         {{'event.seats'|trans}}
         <a id="registrationmodify_btn{{event.id}}" class="btn_blue">{{'event.button.validate'|trans}}</a>
-    {% elseif not registration.organizer %}                         {# case: user logged in, is not organizer, has booked #}
+        {% endif %}
+    {% elseif not registration.organizer and not cpt_event_isAuthor(event, app.user) %}                         {# case: user logged in, is not organizer and not author, has booked #}
             {{'event.youhavebooked'|trans}}
-                <input type="number" name="numparticipant{{event.id}}" id="numparticipant{{event.id}}" value="{{registration.numparticipant}}" min="0" max="999" class="event_numattendee_select" title="{{'hint.event.numattendeebooked'|trans}}">
+                <input type="number" name="numparticipant{{event.id}}" id="numparticipant{{event.id}}" value="{{registration.numparticipant}}" min="1" max="999" class="event_numattendee_select" title="{{'hint.event.numattendeebooked'|trans}}">
                 {{'event.seats'|trans}}
-        &nbsp;<a id="registrationmodify_btn{{event.id}}" class="btn_blue">{{'event.button.modify_registration'|trans}}</a>
+        &nbsp;<a id="registrationmodify_btn{{event.id}}" class="btn_blue" title="{{'hint.event.modifyregistration'|trans}}">{{'event.button.modify_registration'|trans}}</a>
+        {# Number of booked seats and Flash messages #}
         <span class="cpt_red">
             <br/><b>{{ 'event.numconfirmed'|trans({'%count%': registration.numconfirmed}) }}{% if registration.numqueuedparticipant >0 %}{{ 'event.numqueuedattendees'|trans({'%count%': registration.numqueuedparticipant}) }}{% endif %}</b>
             <br/><a id="registrationcancel_btn{{event.id}}" class="btn_blue">{{'event.button.cancel_registration'|trans}}</a>
         </span>
     {% endif %}
 {% endif %}
+    {% for flashMessage in app.session.flashbag.get('notice') %}
+        <div class="cpt_red">{{ flashMessage }}</div>
+    {% endfor %}
+    <div id="loading_event_{{event.id}}" class="loading-mini"></div>
 </div>
 {#****************************************************************************#}
 {# Event content
@@ -105,6 +112,9 @@
 {#****************************************************************************#}
 <script type="text/javascript">
 $(function() {
+    {# hiding the loading icon #}
+    $('#loading_event_{{event.id}}').hide();
+    
     {# hide the modify or validate button #}
     $('#registrationmodify_btn{{event.id}}').hide();
     
@@ -124,9 +134,12 @@ $(function() {
     
     {# on change number of participant, show the modify or validate button #}
     {# only for logged in user, future events for which user has registered #}
+    {# and for which he is not an organizer #}
     {% if is_granted("IS_AUTHENTICATED_REMEMBERED") 
         and ((event.end|date('U') > "now"|date('U')) )
-        and registration is not null %}
+        and registration is not null 
+        and not registration.organizer
+    %}
     $("#numparticipant{{event.id}}").on('change', function(){
         value = parseInt($("#numparticipant{{event.id}}").val());
         if (value != $("#numparticipant{{event.id}}").val()) { {# testing if value is an integer #}
@@ -138,6 +151,10 @@ $(function() {
                 $('#registrationmodify_btn{{event.id}}').hide();
             }
         } 
+   });
+   
+   $("#registrationcancel_btn{{event.id}}").on('click',function(){
+        CancelRegistrationToEvent({{event.id}});
    });
    
     {# user is logged in but has not yet registered => show the validation button #} 
