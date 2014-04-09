@@ -11,6 +11,9 @@ Cpt\EventBundle\Entity\Event:
         mappedBy: event
         cascade: ["persist"]
         orphanRemoval: true
+    indexes:
+        country_code_index:
+            columns: [ country_code ]
     fields:
       begin:
         type: datetime
@@ -33,7 +36,8 @@ Cpt\EventBundle\Entity\Event:
       cpt_event:
         type: boolean        
       country_code:
-        type: text
+        type: string
+        length: 4
       country_name:
         type: text
       city_name:

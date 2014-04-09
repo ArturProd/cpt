@@ -144,10 +144,11 @@ function event_content_toggle(id,open)
 {#**************************************************************************#}
 {# Updates the month selector arrow
 {#**************************************************************************#}
-function update_arrows(year,month)
+function update_arrows(year,month,country)
 {
+    
     abort_ajax(UpdateArrowjqXHR);
-    UpdateArrowjqXHR = $.getJSON( Routing.generate('event_get_calendar_arrow_type', {year:year,month:month,_locale:_locale}), function(response){
+    UpdateArrowjqXHR = $.getJSON( Routing.generate('event_get_calendar_arrow_type', {year:year,month:month,_locale:_locale}),{country_code:country}, function(response){
         {# Ensure that received response matches with current month and year#}
         if ((response.data.month != current_month)||(response.data.year != current_year)){
             return; {# Mismatch #}
@@ -212,20 +213,20 @@ function UpdateSelectorDate()
 {#**************************************************************************#}
 {# Load the calendar for current month and year
 {#**************************************************************************#}
-function LoadCalendar(year,month)
+function LoadCalendar(year,month,country)
 { 
     if (calendarjqXHR && calendarjqXHR.readystate !== 4){ {# Abort any previously sent ajax request. readystate 4 = DONE  #}
         calendarjqXHR.abort();
     }
    
-    calendarjqXHR = $.get(Routing.generate('event_view_calendar', {year:year,month:month,_locale:_locale}),function(data){
+    calendarjqXHR = $.get(Routing.generate('event_view_calendar', {year:year,month:month,_locale:_locale}),{country_code:country},function(data){
         $('#calendar').html(data);
     });
 }
 {#**************************************************************************#}
 {# Retreives a list of events from server
 {#**************************************************************************#}
-function RetrieveEvents(year,month)
+function RetrieveEvents(year,month,country)
 {
     {# abort any previously sent ajax requests #}
     abort_ajax(EventlistjqXHR);
@@ -233,9 +234,10 @@ function RetrieveEvents(year,month)
     {# also abort the ajax request to retreive event view #}
     EventviewjqXHR.forEach(function(jqXHR){abort_ajax(jqXHR);});
     EventviewjqXHR = [];
+    var selected_country = $('#country_select').val();
     
     {% if permalink_event_id|default(null) is null %} {# we are not retreiving a single event but the full list for the month #}
-    EventlistjqXHR = $.getJSON( Routing.generate('event_get_events_for_month', {year:year, month:month,_locale:_locale}),{filter:event_filter_value}, function(response){
+    EventlistjqXHR = $.getJSON( Routing.generate('event_get_events_for_month', {year:year, month:month,_locale:_locale}),{filter:event_filter_value,country_code:country}, function(response){
     {% else %} {# retreiving a single event from event id (happens when permalink is provided) #}
     EventlistjqXHR = $.getJSON( Routing.generate('event_get_events_for_id', {id:{{permalink_event_id}}, _locale:_locale}),{filter:event_filter_value}, function(response){
     {% endif %}
@@ -267,16 +269,20 @@ function RetrieveEvents(year,month)
 {#**************************************************************************#}
 function UpdateEventInterface()
 {
+    var selected_country = $('#country_select').val();
+
     UpdateSelectorDate();
     
     if (ajaxUpdateTimer)
         clearTimeout(ajaxUpdateTimer);
     
     ajaxUpdateTimer = setTimeout(function(){
-        update_arrows(current_year,current_month);            
-        LoadCalendar(current_year, current_month);
-        RetrieveEvents(current_year,current_month);
+        update_arrows(current_year,current_month,selected_country);            
+        LoadCalendar(current_year, current_month,selected_country);
+        RetrieveEvents(current_year,current_month,selected_country);
     },{{ update_ajax_delay }});
+    
+    registerTimer(ajaxUpdateTimer);
 }
 {#**************************************************************************#}
 {# Show or hide the event edition panel
@@ -345,5 +351,9 @@ $(function() {
     {% endif %}
     
     $('#event_user_messages').hide();
+    
+    $('#country_select').on('change', function(){
+        UpdateEventInterface();
+    });
 });
 </script>

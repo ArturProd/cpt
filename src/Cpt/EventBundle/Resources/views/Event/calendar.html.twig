@@ -2,7 +2,7 @@
 {#% set month = calendr_month(year, month) %#}
 {% set year = calendr_year(currentdate|date("Y")) %}
 {% set month = calendr_month(currentdate|date("Y"), currentdate|date("M")) %}
-{% set events = calendr_events(month) %}
+{% set events = calendr_events(month, options) %}
 {% set cell_class = 'unknown' %}
 
 <table class="cal_table">

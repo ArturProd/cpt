@@ -324,3 +324,15 @@ hr.line_separator{
 }
 
 input[disabled],select[disabled],textarea[disabled],input[readonly],select[readonly],textarea[readonly]{cursor:not-allowed;background-color:whitesmoke;}
+
+.countryselect{
+    margin: 0px;
+    font-size: smaller;
+    height: 20px;
+    width: 70%;
+    padding: 0px;
+}
+
+#countryform{
+    margin: 0px;
+}

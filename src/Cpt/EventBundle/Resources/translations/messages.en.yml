@@ -102,6 +102,7 @@ hint.event.deleteattendee: Remove this attendee
 hint.event.linktothisevent: Link to this event
 hint.event.numattendeebooked: Change this number to modify the number of reserved seats.
 hint.event.modifyregistration: Validate your change. By changing the number of attendees, some of them might end-up in the waiting list.
+hint.country.select: Select the country you want to see the events for
 registration.has_been_cancelled: Your registration to this event is cancelled.
         
 event.numconfirmed: "%count% confirmed"

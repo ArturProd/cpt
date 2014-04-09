@@ -50,7 +50,8 @@ class EventType extends AbstractType
             // ************************
             // GENERAL
             // ************************
-                 
+
+                
             // Enabled
             ->add('enabled', 'checkbox', array(
                 'required' => false,

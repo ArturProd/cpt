@@ -162,6 +162,11 @@ class EventManager extends BaseManager implements EventManagerInterface {
             $this->getPermissionManager()->RestrictResourceNotFound();
         }
     }
+
+    public function getCountries()
+    {
+        return $this->getCountryRepository()->findAll();
+    }
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="Protected">
@@ -181,8 +186,14 @@ class EventManager extends BaseManager implements EventManagerInterface {
                         ->createQueryBuilder('e')
                         ->Select('e')
                         ->Where('(e.begin >= :from AND e.begin < :to) OR (e.end >= :from AND e.end < :to)')
-                        ->AndWhere('e.enabled = :enabled')
-                        ->setParameter('from', $begin)
+                        ->AndWhere('e.enabled = :enabled');
+        
+        if (array_key_exists('country_code', $options)){
+            $qb->AndWhere('e.country_code = :country_code')
+                ->setParameter('country_code', $options['country_code']);
+        }
+                        
+                        $qb->setParameter('from', $begin)
                         ->setParameter('to', $end)
                         ->setParameter('enabled', true);
         
@@ -213,8 +224,14 @@ class EventManager extends BaseManager implements EventManagerInterface {
                 ->createQueryBuilder('e')
                 ->Select('e', 'r')
                 ->leftJoin('e.registrations', 'r', 'WITH', 'IDENTITY(r.user) = :userid')
-                ->Where('(e.begin >= :from AND e.begin < :to) OR (e.end >= :from AND e.end < :to)')
-                ->orderby('e.publicationDateStart', 'DESC')
+                ->Where('(e.begin >= :from AND e.begin < :to) OR (e.end >= :from AND e.end < :to)');
+        
+        if (array_key_exists('country_code', $options)){
+            $qb->AndWhere('e.country_code = :country_code')
+                ->setParameter('country_code', $options['country_code']);
+        }
+        
+                $qb->orderby('e.publicationDateStart', 'DESC')
                 ->setParameter('from', $begin)
                 ->setParameter('to', $end)
                 ->setParameter('userid', $user->getId());

@@ -1,0 +1,11 @@
+Cpt\EventBundle\Entity\Country:
+    type: entity
+    repositoryClass: Cpt\EventBundle\Entity\CountryRepository
+    id:
+        country_code:
+            type: string
+            length: 4
+    fields:
+        country_name:
+            type: string
+            length: 50

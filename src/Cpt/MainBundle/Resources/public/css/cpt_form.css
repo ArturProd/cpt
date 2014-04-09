@@ -71,7 +71,11 @@ label {
     height: 36px; 
     line-height: 36px; 
     padding: 0 10px 0 20px;
-} 
+}
+
+.longlabel{
+    width: 290px !important;
+}
 
 .mandatory_field_label{
     color: #AA3333;

@@ -1,0 +1,69 @@
+{% extends 'CptMainBundle::main.html.twig' %}
+
+{% block leftcol %}
+<div class="cpt_page">        
+
+ <div class="main_section">
+    {#**************************************************************************#}
+    {# Article column title
+    {#**************************************************************************#}
+    <div class="column_title_event">
+        <div>{{'main.title.profile'|trans}}</div>
+        {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+            <div><a id='newarticle' class="article_new_btn">{{'main.button.new'|trans}}</a></div>
+        {% endif %}
+    </div>
+    {{ form_start(userform, {'action': '', 'method': 'POST' }) }}
+    <h2><span class="cpt_blue">➤&nbsp;&nbsp;</span>{{'main.user.profile.personalinfo'|trans}}</h2>
+
+        <div class="input_div">
+            {{ form_label(userform.firstname, null, { 'attr': {'class': 'mandatory_field_label'} }) }}
+            {{ form_widget(userform.firstname) }}
+        </div>
+        <div class="input_div">
+            {{ form_label(userform.lastname) }}
+            {{ form_widget(userform.lastname) }}
+        </div>
+        <div class="input_div">
+            {{ form_label(userform.phone) }}
+            {{ form_widget(userform.phone) }}
+        </div>
+        <div class="input_div">
+            {{ form_label(userform.website) }}
+            {{ form_widget(userform.website) }}
+        </div>
+        <div class="input_div">
+            {{ form_label(userform.biography) }}
+            {{ form_widget(userform.biography) }}
+        </div>
+
+        <h2><span class="cpt_blue">➤&nbsp;&nbsp;</span>{{'main.user.profile.accountinfo'|trans}}</h2>
+
+        <div class="input_div">
+            {{ form_label(userform.email) }}
+            {{ form_widget(userform.email) }}
+        </div>
+        <div class="input_div">
+            {{ form_label(userform.password , null, { 'attr': {'class': 'longlabel'} }) }}
+            {{ form_widget(userform.password) }}
+        </div>
+        <div class="input_div">
+            {{ form_label(userform.passwordconfirm, null, { 'attr': {'class': 'longlabel'} }) }}
+            {{ form_widget(userform.passwordconfirm) }}
+        </div>
+        <div class="input_div">
+            {{ form_label(userform.professional, null, { 'attr': {'class': 'longlabel'} }) }}
+            {{ form_widget(userform.professional) }}
+        </div>
+        
+    {{ form_end(userform) }}
+ </div>
+ 
+</div>
+
+{% endblock %}
+
+
+{% block rightcol %}
+        {% render controller("CptBlogBundle:Post:view", {"article_permalink": null, "_locale": app.request.locale}) %}
+{% endblock %}

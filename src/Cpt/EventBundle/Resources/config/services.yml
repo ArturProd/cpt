@@ -26,6 +26,11 @@ services:
       class: Cpt\EventBundle\Form\Type\EventType
       tags:
          -  { name: form.type }
+
+    cpt_country:
+      class: Cpt\EventBundle\Form\Type\CountryType
+      tags:
+         -  { name: form.type }
          
     cpt.twig.make_js_string_extension:
         class: Cpt\EventBundle\Twig\MakeJsStringExtension

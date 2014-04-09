@@ -7,7 +7,7 @@ use Cpt\EventBundle\Interfaces\Entity\EventInterface as EventInterface;
 
 class CalendarManager extends BaseManager
 {
-  public function isFutureEventBeforeMonth($year, $month)
+  public function isFutureEventBeforeMonth($year, $month, $options=Array())
   {
       $monthdate = new \DateTime();
       $monthdate->setDate($year, $month, 1);
@@ -17,22 +17,28 @@ class CalendarManager extends BaseManager
           return false;
       }
       
-     $eventid = $this->getEventRepository()
+     $qb = $this->getEventRepository()
         ->createQueryBuilder('e')
             ->Select('e.id')
             ->Where('(e.begin < :monthdate) OR (e.end < :monthdate)') // The event begins or end before current month
             ->AndWhere('(e.end > :currentdatetime) OR (e.begin > :currentdatetime)') // The event ends or begin after current datetime (it is a future event)
             ->setParameter('monthdate', $monthdate)
             ->setParameter('currentdatetime', $currentdate)
-            ->setMaxResults( 1 )
-        ->getQuery()
+            ->setMaxResults( 1 );
+     
+        if (array_key_exists('country_code', $options)){
+            $qb->AndWhere('e.country_code = :country_code')
+                ->setParameter('country_code', $options['country_code']);
+        }
+        
+        $eventid = $qb->getQuery()
         ->getArrayResult();
 
       return (!empty($eventid));
 
   }
   
-  public function isMyFutureEventBeforeMonth($year, $month)
+  public function isMyFutureEventBeforeMonth($year, $month, $options=Array())
   {
       if (!$this->getPermissionManager()->isLoggedIn()) {
               return false;
@@ -49,7 +55,7 @@ class CalendarManager extends BaseManager
           return false;
       }
       
-     $eventid = $this->getEventRepository()
+     $qb = $this->getEventRepository()
         ->createQueryBuilder('e')
             ->Select('e.id')
             ->innerJoin('e.registrations', 'r')
@@ -61,36 +67,48 @@ class CalendarManager extends BaseManager
             ->setParameter('monthdate', $monthdate)
             ->setParameter('currentdatetime', $currentdate)
             ->setParameter('userid', $user->getId())
-            ->setMaxResults( 1 )
-        ->getQuery()
+            ->setMaxResults( 1 );
+     
+        if (array_key_exists('country_code', $options)){
+            $qb->AndWhere('e.country_code = :country_code')
+                ->setParameter('country_code', $options['country_code']);
+        }
+        
+        $eventid = $qb->getQuery()
         ->getArrayResult();
 
       return (!empty($eventid));
 
   }
 
-  public function isFutureEventAfterMonth($year, $month)
+  public function isFutureEventAfterMonth($year, $month, $options=Array())
   {
       $monthdate = new \DateTime();
       $monthdate->setDate($year, $month+1, 1); // Adding 1 to the provided month
       $currentdate = new \DateTime();
     
       
-      $eventid = $this->getEventRepository()
+      $qb = $this->getEventRepository()
         ->createQueryBuilder('e')
             ->Select('e.id')
             ->Where('(e.end >= :monthdate) OR (e.begin >= :monthdate)') // The event ends or begin after current month (remember that event.end can be null!!)
             ->AndWhere('(e.end > :currentdatetime) OR (e.begin > :currentdatetime)') // The event ends or begin after current datetime (it is a future event)
             ->setParameter('monthdate', $monthdate)
             ->setParameter('currentdatetime', $currentdate)
-            ->setMaxResults( 1 )
-          ->getQuery()
+            ->setMaxResults( 1 );
+      
+        if (array_key_exists('country_code', $options)){
+            $qb->AndWhere('e.country_code = :country_code')
+                ->setParameter('country_code', $options['country_code']);
+        }
+        
+        $eventid = $qb->getQuery()
           ->getArrayResult();
 
       return (!empty($eventid));
   }
   
-  public function isMyFutureEventAfterMonth($year, $month)
+  public function isMyFutureEventAfterMonth($year, $month, $options=Array())
   {
       if (!$this->getPermissionManager()->isLoggedIn()) {
               return false;
@@ -103,7 +121,7 @@ class CalendarManager extends BaseManager
       $monthdate->setTime(0, 0, 0);
       $currentdate = new \DateTime();
       
-      $eventid = $this->getEventRepository()
+      $qb = $this->getEventRepository()
         ->createQueryBuilder('e')
             ->Select('e.id')
             ->innerJoin('e.registrations', 'r')
@@ -113,8 +131,14 @@ class CalendarManager extends BaseManager
             ->setParameter('monthdate', $monthdate)
             ->setParameter('currentdatetime', $currentdate)
             ->setParameter('userid', $user->getId())
-            ->setMaxResults( 1 )
-          ->getQuery()
+            ->setMaxResults( 1 );
+
+        if (array_key_exists('country_code', $options)){
+            $qb->AndWhere('e.country_code = :country_code')
+                ->setParameter('country_code', $options['country_code']);
+        }
+
+        $eventid = $qb->getQuery()
           ->getArrayResult();
 
         return (!empty($eventid));
@@ -155,15 +179,21 @@ class CalendarManager extends BaseManager
   * @param \DateTime $current
   * @return \DateTime
   */
-  public function GetNextEventDateOrCurrent(\DateTime $current)
+  public function GetNextEventDateOrCurrent(\DateTime $current, $options=Array())
     {
-          $event = $this->getEventRepository()
+          $qb = $this->getEventRepository()
             ->createQueryBuilder('e')
                 ->Where('e.end >= :from')
                 ->setMaxResults(1)
                 ->orderBy('e.end', 'ASC')
-                ->setParameter('from', $current)
-            ->getQuery()
+                ->setParameter('from', $current);
+          
+            if (array_key_exists('country_code', $options)){
+                $qb->AndWhere('e.country_code = :country_code')
+                ->setParameter('country_code', $options['country_code']);
+            }
+        
+            $event = $qb->getQuery()
             ->getOneOrNullResult();
           
           if ($event){

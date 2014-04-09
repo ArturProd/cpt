@@ -109,6 +109,7 @@ event.edit.formcontainserror: Le formulaire contient des erreurs
 event.copy.eventwascopied: Vous éditez maintenant une copie de l'évènement
 event.info.thisisapastevent: Cet évènement est passé et ne peut plus être édité
 event.info.existingevent: Les modifications apportées à cet évènement seront communiquées aux participants par email lors de la sauvegarde.
+hint.country.select: Sélèctionnez le pays pour lequel voir les évènements
 
 
 

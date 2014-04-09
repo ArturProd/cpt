@@ -52,6 +52,10 @@ abstract class BaseManager {
     protected function getEventRepository() {
         return $this->em->getRepository('CptEventBundle:Event');
     }
+    
+    protected function getCountryRepository() {
+        return $this->em->getRepository('CptEventBundle:Country');
+    }
 
     protected function getRegistrationRepository() {
         return $this->em->getRepository('CptEventBundle:Registration');

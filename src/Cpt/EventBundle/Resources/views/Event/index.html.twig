@@ -38,6 +38,11 @@
                 <li id="events_filter_myevents" onclick="Set_filter_events(FILTER_MYEVENTS);UpdateEventInterface();">{{'event.filter.myevents'|trans}}</li>
                 {% endif %}
                 <li id="events_filter_pastevents" onclick="Set_filter_events(FILTER_PASTEVENTS);UpdateEventInterface();">{{'event.filter.pastevents'|trans}}</li>
+                <li style="display:inline-block">
+                {{ form_start(countryform, {'action': '', 'method': 'POST' }) }}
+                {{ form_widget(countryform.country, {'id':'country_select', 'attr':{ 'class': 'countryselect' , 'title':'hint.country.select'|trans} }) }}           
+                {{ form_end(countryform) }}
+                </li>
             </ul>
         </div>
         {% endif %}

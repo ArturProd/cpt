@@ -13,9 +13,22 @@ main.title.events: Events
 main.title.events_edit: Events > Edit
 main.title.about: About...
 main.title.articles: Articles
+main.title.profile: Profile
 main.about.subtitle: What is a «CHANT POUR TOUS»?
 main.about.text: A "chant pour tous" is a <b>collective, free</b> event <b>open to everybody</b>, where we sing improvised music. L'évènement est dirigé (et généralement organisé) par un ou plusieurs <b>animateurs</b> qui décident librement des règles et du déroulement...
 home.herounit.title: Improvisation vocale a capella
 home.herounit.text: Venez profiter de l'experience chant pour tous, inspirées par Bobby McFerrin, qui vous permettra de blah blah blah et tototo et tutu lalalallalalalala lkjdslk lsdjf slfdj qsdf mqksfdmqkmksdf smdjf msdjf smd jsmldjfmsldjfmsdlfs  smldjfmsldfssmd s dmflsmld  
 form.button.yes: Yes
 form.button.no: No
+user.firstname: First name
+user.lastname: Last name
+user.website: Website
+user.biography: Biography
+user.locale: Language
+user.phone: Phone
+user.email: Email
+user.password: Password
+user.passwordconfirm: Password confirmation
+main.user.profile.personalinfo: Personal informations
+main.user.profile.accountinfo: My Account
+main.user.profile.parameters: Parameters

@@ -18,3 +18,9 @@ cpt_main_useradmin:
   pattern:  /useradmin
   defaults: { _controller: CptMainBundle:UserAdmin:index }
   
+cpt_main_userprofile_show:
+    pattern:  /profile/{userid}
+    defaults: { _controller: CptMainBundle:User:showProfile }
+    requirements:
+        userid:  \d+
+  

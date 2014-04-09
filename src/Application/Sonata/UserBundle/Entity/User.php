@@ -44,7 +44,6 @@ class User extends BaseUser
     
     protected $publications;
     
-   
     
     public function getDisplayName()
     {

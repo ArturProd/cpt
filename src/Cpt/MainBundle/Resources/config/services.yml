@@ -6,3 +6,8 @@ services:
     cpt.permission.manager:
         class:        "%cpt.manager.permissionManager.class%"
         arguments: ['@service_container']
+        
+    cpt_form_user:
+      class: Cpt\MainBundle\Form\Type\UserType
+      tags:
+         -  { name: form.type }

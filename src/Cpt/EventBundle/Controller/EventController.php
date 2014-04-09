@@ -41,10 +41,15 @@ class EventController extends BaseController {
 
         }
         
+        //$countries = $this->getEventManager()->getCountries();
+        $countryform = $this->get('form.factory')->createNamed('country', 'cpt_country', null, Array('attr' => Array('id' => 'countryform')));
+
         return $this->render('CptEventBundle:Event:index.html.twig', array(
                     'currentdate' => $currentdate,
                     'update_ajax_delay' => $update_ajax_delay,
-                    'permalink_event_id' => $permalink_event_id         
+                    'permalink_event_id' => $permalink_event_id,
+                  //  'countries' => $countries,
+                    'countryform' => $countryform->createView()
         ));
     }
 
@@ -188,6 +193,10 @@ class EventController extends BaseController {
                 case 'pastevents':  $options['pastevents'] = true; break;
                 case 'futureevents':  $options['futureevents'] = true; break;
             }
+        }
+        
+        if ($request->query->has('country_code')){
+            $options['country_code'] = $request->query->get('country_code');
         }
         
         $month = $this->getCalendR()->getMonth($year, $month);
