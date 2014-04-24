@@ -73,6 +73,7 @@ November: November
 December: December
 
 event.tab.actions: Event actions
+event.button.back:  Back
 event.button.backtoevent: Back to event list
 event.canceldialog.title: Cancel an event
 event.canceldialog.text: You are about to cancel this event. All related data such as event content, comments and registrations will be lost. Attendees will be notified by email. Do you want to continue?
@@ -108,3 +109,4 @@ registration.has_been_cancelled: Your registration to this event is cancelled.
 event.numconfirmed: "%count% confirmed"
 event.numqueuedattendees: ", %count% on waiting list"
 event.button.cancel_registration: Cancel registration
+main.title.register: Sign-up

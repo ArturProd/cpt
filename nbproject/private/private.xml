@@ -13,32 +13,15 @@
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Manager/BaseManager.php</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Manager/RegistrationManager.php</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/MainBundle/Controller/BaseController.php</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/MainBundle/Manager/PermissionsManager.php</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Twig/EventManagerExtension.php</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Resources/translations/messages.fr.yml</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Resources/views/Event/eventdisplay.html.twig</file>
             <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Resources/views/Event/edit.html.twig</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Interfaces/Manager/RegistrationManagerInterface.php</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Resources/config/doctrine/Registration.orm.yml</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Form/Type/CountryType.php</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Entity/CountryRepository.php</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/DataFixtures/ORM/LoadCountryData.php</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Entity/RegistrationRepository.php</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Controller/EventController.php</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Resources/config/doctrine/Event.orm.yml</file>
             <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Resources/views/Event/index.js.twig</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Form/Type/EventType.php</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Entity/Registration.php</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Resources/config/doctrine/Country.orm.yml</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/TestBundle/DataFixtures.bak/ORM/LoadUserData.php</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Resources/views/Event/edit.js.twig</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Manager/EventManager.php</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Resources/translations/messages.en.yml</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/PublicationBundle/Resources/views/Comment/comments.js.twig</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Resources/config/routing.yml</file>
+            <file>file:/home/cyril/dev/cpt/src/Cpt/MainBundle/Resources/public/css/cpt_registration.css</file>
+            <file>file:/home/cyril/dev/cpt/src/Cpt/MainBundle/Resources/translations/messages.en.yml</file>
+            <file>file:/home/cyril/dev/cpt/src/Cpt/MainBundle/Resources/views/Default/main.js.twig</file>
+            <file>file:/home/cyril/dev/cpt/src/Cpt/MainBundle/Resources/translations/messages.fr.yml</file>
+            <file>file:/home/cyril/dev/cpt/src/Cpt/MainBundle/Resources/public/css/cpt_form.css</file>
+            <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Resources/views/Event/index.html.twig</file>
+            <file>file:/home/cyril/dev/cpt/src/Application/Sonata/UserBundle/Resources/views/Registration/register.html.twig</file>
         </group>
     </open-files>
 </project-private>

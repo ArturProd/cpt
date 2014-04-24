@@ -1,0 +1,53 @@
+{# empty Twig template #}
+ <script type="text/javascript">
+var PAGE_EVENT = 0;
+var PAGE_ABOUT = 1;
+var PAGE_REGISTER = 2;
+var PAGE_PROFILE = 3;
+
+{# ************************************************************************************************************************ #} 
+{# Shows a page (event, about, register, profile) in the left column
+{# Parameters: page: the page type
+{# id: additional id parameters (ex: profile user id)
+{#************************************************************************************************************************ #}      
+function ShowPage(page_type, page_id)
+{
+    if (page_type === PAGE_EVENT){
+        $('#leftcol_event').show();
+        $('#leftcol_registration').hide();
+    } else if (page_type === PAGE_ABOUT) {
+        $('#leftcol_event').hide();
+        $('#leftcol_registration').hide();
+    } else if (page_type === PAGE_REGISTER) {
+        $('#leftcol_event').hide();
+        $('#leftcol_registration').show();
+    } else if (page_type === PAGE_PROFILE) {
+        $('#leftcol_event').hide();
+        $('#leftcol_registration').hide();
+    }
+}
+
+function FillInRegistrationAdress()
+{
+    
+}
+
+{# ************************************************************************************************************************ #} 
+{# OnLoad
+{#************************************************************************************************************************ #}      
+ $(function() {
+    ShowPage(PAGE_EVENT);
+    
+      var input = /** @type {HTMLInputElement} */(
+      document.getElementById('registration_placesearch'));
+  
+    registration_searchBox =   new google.maps.places.Autocomplete(input, { types: ['geocode'] });
+
+    google.maps.event.addListener(searchBox, 'place_changed', function() {
+        {# UpdateMap(); #}
+          FillInRegistrationAdress();
+      });
+    
+});
+          
+</script>

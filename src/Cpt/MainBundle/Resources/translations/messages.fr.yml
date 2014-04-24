@@ -9,6 +9,7 @@ main.menu.item.login: Connection
 main.menu.item.register: Créer un compte
 main.menu.item.about: A Propos
 main.button.new: Nouveau
+main.button.back: Retour
 main.title.events: Événement
 main.title.events_edit: Événement > Édition
 main.title.about: A propos...

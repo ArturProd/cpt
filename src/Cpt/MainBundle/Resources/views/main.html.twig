@@ -4,6 +4,9 @@
 {# #############################################################################}
 {# JAVASCRIPT
 {# #############################################################################}
+
+{% include 'CptMainBundle:Default:main.js.twig' %}
+
  <script type="text/javascript">
 {# ************************************************************************************************************************ #} 
 {# Show or hide the opacity mask (ex: for popup display)
@@ -47,6 +50,11 @@ function DisplayOpacityMask(visible)
     {#************************************************************************************************************************ #}     
     <div class="span5">
         {% block leftcol %}{% endblock %}
+        {% if (not is_granted("IS_AUTHENTICATED_REMEMBERED")) %}
+        <div id="leftcol_registration">
+           {% render controller("FOSUserBundle:Registration:register") %}
+        </div>
+        {% endif %}
     </div>
     {# ************************************************************************************************************************ #} 
     {# Articles Section

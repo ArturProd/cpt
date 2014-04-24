@@ -10,7 +10,9 @@ fos_user:
     user_class: Application\Sonata\UserBundle\Entity\User
     service:
         user_manager: custom_user_manager
-
+    registration:
+        form:
+            type: application_user_registration
 
 
 sonata_user:

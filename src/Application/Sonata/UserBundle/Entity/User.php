@@ -44,7 +44,27 @@ class User extends BaseUser
     
     protected $publications;
     
+    protected $country_code;
     
+    protected $city_name;
+    
+    public function getCountryCode() {
+        return $this->country_code;
+    }
+
+    public function getCityName() {
+        return $this->city_name;
+    }
+
+    public function setCountryCode($country_code) {
+        $this->country_code = $country_code;
+    }
+
+    public function setCityName($city_name) {
+        $this->city_name = $city_name;
+    }
+
+        
     public function getDisplayName()
     {
         return $this->getUsername() . ($this->getLastname() ? " ".$this->getLastname() : "");

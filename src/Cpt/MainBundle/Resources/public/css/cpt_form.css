@@ -34,6 +34,12 @@ input[disabled]{
     margin-bottom: 0; 
 }
 
+.controls{
+    display: table-cell;
+}
+
+.input_div input[type=password],
+.input_div input[type=email],
 .input_div input[type=text] { 
     display: table-cell;
     width: 100%;

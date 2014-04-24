@@ -101,6 +101,7 @@ Sunday: Dimanche
 
 event.tab.actions: Actions sur l'évènement
 event.button.backtoevent: Retour à la liste d'évènements
+event.button.back:  Retour
 event.canceldialog.title: Annuler un évènement
 event.canceldialog.text: Vous êtes sur le point d'annuler cet évènement. Toutes les données liées seront supprimées, tel que le contenu de l'évènement, les commentaires et les participants. Êtes-vous sûr(e) de vouloir continuer?
 event.cancel.eventwascancelled: L'évènement a été annulé et supprimé.
@@ -137,3 +138,5 @@ registration.has_been_cancelled: Votre enregistrement pour cet évènement est a
 event.numconfirmed: "%count% places confirmées"
 event.numqueuedattendees: ", %count% sur la liste d'attente"
 event.button.cancel_registration: Annuler ma réservation
+
+main.title.register: Créer un compte
