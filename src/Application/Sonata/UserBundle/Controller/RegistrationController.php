@@ -47,4 +47,74 @@ class RegistrationController extends BaseController {
         ));
     }
 
+    
+    /**
+     * Tell the user to check his email provider
+     */
+    public function checkEmailAction()
+    {
+        $email = $this->container->get('session')->get('fos_user_send_confirmation_email/email');
+        $this->container->get('session')->remove('fos_user_send_confirmation_email/email');
+        $user = $this->container->get('fos_user.user_manager')->findUserByEmail($email);
+
+        if (null === $user) {
+            throw new NotFoundHttpException(sprintf('The user with email "%s" does not exist', $email));
+        }
+
+        return $this->container->get('templating')->renderResponse('FOSUserBundle:Registration:checkEmail.html.'.$this->getEngine(), array(
+            'user' => $user,
+        ));
+    }
+
+    /**
+     * Receive the confirmation token from user email provider, login the user
+     */
+    public function confirmAction($token)
+    {
+        $user = $this->container->get('fos_user.user_manager')->findUserByConfirmationToken($token);
+
+        if (null === $user) {
+            $response = new RedirectResponse($this->container->get('router')->generate('cpt_main_home'));
+            return $response;
+        }
+
+        $user->setConfirmationToken(null);
+        $user->setEnabled(true);
+        $user->setLastLogin(new \DateTime());
+
+        $this->container->get('fos_user.user_manager')->updateUser($user);
+        $response = new RedirectResponse($this->container->get('router')->generate('fos_user_registration_confirmed'));
+        $this->authenticateUser($user, $response);
+
+        return $response;
+    }
+
+    /**
+     * Tell the user his account is now confirmed
+     */
+    public function confirmedAction()
+    {
+        $user = $this->container->get('security.context')->getToken()->getUser();
+        if (!is_object($user) || !$user instanceof UserInterface) {
+            $response = new RedirectResponse($this->container->get('router')->generate('cpt_main_home'));
+            return $response;
+        }
+        
+        
+        $this->container->get('session')->getFlashBag()->add(
+            'notice',
+            $this->container->get('translator')->trans('registration.confirmed')
+        );
+                
+        $response = new RedirectResponse($this->container->get('router')->generate('cpt_main_home'));
+
+        return $response;
+        /*
+        return $this->container->get('templating')->renderResponse('FOSUserBundle:Registration:confirmed.html.'.$this->getEngine(), array(
+            'user' => $user,
+        ));
+         * 
+         */
+    }
+    
 }

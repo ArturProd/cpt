@@ -5,7 +5,8 @@ parameters:
     cpt.blog.max_article_perpage: 2 # interval in ms to check for new comments
     cpt.blog.max_page_link: 4 # Number of link in the navigation pager
     cpt.event.update_ajax_delay: 400 # Delay in ms between changes in month and sending request ajax to update calendar, events etc.
-
+    cpt.notice.slideupdelay: 20000  #delay when display a flash message, before the message is hidden
 twig:
   globals:
     cpt_comment_checkfornew_interval: %cpt.publication.comment.checkfornew_interval% # interval in ms to check for new comments
+    cpt_notice_slideupdelay: %cpt.notice.slideupdelay%

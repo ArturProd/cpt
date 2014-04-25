@@ -11,11 +11,21 @@
         {% endif %}
     </div>
     {#****************************************************************************#}
-    {# Messages to user regarding events
+    {# Flash messages
     {#****************************************************************************#}
-        <div id="event_user_messages" class="row-fluid message_information" ></div>
+    <div id="event_user_messages" class="row-fluid message_information" >
+        {% for flashMessage in app.session.flashbag.get('notice') %}
+            {{ flashMessage }}
+        {% endfor %}
+    </div>
+    {#****************************************************************************#}
+    {# Edit Event Container
+    {#****************************************************************************#}
     <div id="edit_event">        
     </div>
+    {#****************************************************************************#}
+    {# Event Display
+    {#****************************************************************************#}    
     <div id="display_events">
         {% if permalink_event_id|default(null) is null %}
         <div id="calendar_container">

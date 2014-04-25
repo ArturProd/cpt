@@ -9,3 +9,4 @@ form.email:       "Email"
 form.password:    "Mot de passe"
 form.password_confirmation: "Confirmation du mot de passe"
 registration.submit:        "Créer mon compte"
+registration.confirmed: Votre compte est maintenant activé.

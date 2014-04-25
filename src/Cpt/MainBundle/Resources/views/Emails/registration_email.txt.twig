@@ -1,0 +1,16 @@
+{% block subject %}
+{% autoescape false %}
+{{ 'registration.email.subject'|trans({'%username%': user.username, '%confirmationUrl%': confirmationUrl}) }}
+{% endautoescape %}
+{% endblock %}
+{% block body_text %}
+{% autoescape false %}
+    <html>
+        <body>
+        <center><a href="{{confirmationUrl}}">{{ "<img src='attachmenturl[0]'>"|raw }}</a></center>
+        <p>{{ 'registration.email.message'|trans({'%username%': user.username, '%confirmationUrl%': confirmationUrl}) }}</p>
+        </body>
+    </html>
+{% endautoescape %}
+{% endblock %}
+{% block body_html %}{% endblock %}

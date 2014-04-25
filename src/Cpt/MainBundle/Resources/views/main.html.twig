@@ -51,6 +51,7 @@ function DisplayOpacityMask(visible)
     <div class="span5">
         {% block leftcol %}{% endblock %}
         {% if (not is_granted("IS_AUTHENTICATED_REMEMBERED")) %}
+        {# Registration panel #}
         <div id="leftcol_registration">
            {% render controller("FOSUserBundle:Registration:register") %}
         </div>

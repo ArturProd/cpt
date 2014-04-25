@@ -33,5 +33,5 @@ assetic:
 swiftmailer:
     delivery_address:  rocknrocknroll@gmail.com
     transport: gmail
-    username:  rocknrocknroll
+    username:  rocknrocknroll@gmail.com
     password:  lyriclyric

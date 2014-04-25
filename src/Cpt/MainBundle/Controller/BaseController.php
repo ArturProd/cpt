@@ -187,12 +187,9 @@ class BaseController extends Controller {
     }
     
     
-    protected function setFlashMessage($title, $content) {
+    protected function setFlashMessage($content) {
         $this->get('session')->getFlashBag()->add(
-                'popup_message', $title
-        );
-        $this->get('session')->getFlashBag()->add(
-                'popup_message', $content
+                'notice', $title
         );
     }
 

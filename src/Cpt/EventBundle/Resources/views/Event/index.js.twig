@@ -3,7 +3,7 @@
 var FILTER_FUTUREEVENTS = 'futureevents';   {# constant #}
 var FILTER_MYEVENTS = 'myevents';           {# constant #}
 var FILTER_PASTEVENTS = 'pastevents';       {# constant #}
-
+var EVENT_MESSAGE_SLIDE_UP_DELAY = {{ cpt_notice_slideupdelay }};
 
 var event_list = null;
 
@@ -37,7 +37,7 @@ month_names[12] = "{{'december'|trans}}";
 function show_event_usermessage(message)
 {
     $('#event_user_messages').html(message);
-    $('#event_user_messages').show().delay(5000).slideUp(1000);
+    $('#event_user_messages').show().delay(EVENT_MESSAGE_SLIDE_UP_DELAY).slideUp(1000);
 }
 
 
@@ -350,10 +350,17 @@ $(function() {
         $("a#newevent").on("click", function(){manage_event(-1);});
     {% endif %}
     
-    $('#event_user_messages').hide();
-    
+    {# Display flash messages if any #}
+    {% if app.session.flashbag.has('notice') %}
+        $('#event_user_messages').hide();        
+        $('#event_user_messages').show().delay(EVENT_MESSAGE_SLIDE_UP_DELAY).slideUp(1000);
+    {% else %}
+        $('#event_user_messages').hide();
+    {% endif %}
+
     $('#country_select').on('change', function(){
         UpdateEventInterface();
     });
+
 });
 </script>

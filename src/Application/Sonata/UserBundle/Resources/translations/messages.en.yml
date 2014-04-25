@@ -1,0 +1,12 @@
+security:
+  login:
+    username:     "User"
+    password:     "Password"
+    remember_me:  "Stay connected"
+    submit:       "Login"
+form.username:    "Username"
+form.email:       "Email"
+form.password:    "Password"
+form.password_confirmation: "Password confirmation"
+registration.submit:        "Create your account"
+registration.confirmed: Your account is now activated.

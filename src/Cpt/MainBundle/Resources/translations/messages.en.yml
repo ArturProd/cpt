@@ -35,3 +35,22 @@ main.user.profile.accountinfo: My Account
 main.user.profile.parameters: Parameters
 form.registration.country: Country
 form.registration.firstname: Firstname
+
+registration:
+    check_email: An email has been sent to %email%. It contains an activation link you must click to activate your account.
+    confirmed: Congrats %username%, your account is now activated.
+    back: Back to the originating page.
+    submit: Register
+    flash:
+        user_created: The user has been created successfully
+    email:
+        subject: Activate your account at www.chantpourtous.com, %username%!
+        message: |
+            <p>Hello %username%!</p><br>
+            <p>Thank you for creating a free account on Chant pour Tous website!</p>
+            <p><b>To activate your account - please visit %confirmationUrl%</b></p><br>
+            <p>On this website, you can create events related to singing, vocal and corporal improvisation.</p>
+            <p>You can also subscribe to events, publish articles, and much more!</p><br>            
+            <p>Ha yes... all this comes for free!</p><br>            
+            Kind regards,<br>
+            www.chantpourtous.com

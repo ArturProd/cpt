@@ -128,6 +128,10 @@ function AjaxPostForm( $form, precall, callback, parameters ){
     $.each( $form.serializeArray(), function(i, field) {
       values[field.name] = field.value;
     });
+    
+    {% if app.environment == 'dev' %}
+    console.log(values);
+    {% endif %}
 
     /*
      * Throw the form values to the server!

@@ -1,6 +1,10 @@
 # app/config/config.yml
 parameters:
     cpt.manager.permissionManager.class:      Cpt\MainBundle\Manager\PermissionsManager
+    cpt.manager.mailerManager.class:           Cpt\MainBundle\Manager\MailManager
+    cpt.mailer.template.resetting:              CptMainBundle:Emails:resetting_email.txt.twig
+    cpt.mailer.template.registration:              CptMainBundle:Emails:registration_email.txt.twig
+    cpt.mail.from_email:                        donotreply@chantpourtous.com
 
 services:
     cpt.permission.manager:
@@ -17,3 +21,12 @@ services:
         arguments: [%fos_user.model.user.class%]
         tags:
             - { name: form.type, alias: application_user_registration }         
+
+    cpt.mailer.manager:
+        class:   "%cpt.manager.mailerManager.class%"
+        arguments: 
+            - '@service_container'
+            - '@mailer'
+            - '@router'
+            - '@templating'
+            - { confirmation.template: %cpt.mailer.template.registration%, resetting.template: %cpt.mailer.template.resetting%, from_email: {confirmation: %cpt.mail.from_email%, resetting: %cpt.mail.from_email%} }

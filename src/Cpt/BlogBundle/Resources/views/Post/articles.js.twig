@@ -1,4 +1,6 @@
 <script type="text/javascript">
+var ARTICLE_MESSAGE_SLIDE_UP_DELAY = {{ cpt_notice_slideupdelay }};
+
 var post_list = [ ];    {# the actual post list (retreived from ajax request #}
 var post_pager = [ ];   {# data used to paginate the post list (retreived from ajax request) #}
 var pagination_currentpage = 1;
@@ -16,7 +18,7 @@ count_article_loaded = 0;
 function show_article_usermessage(message)
 {
     $('#article_user_messages').html(message);
-    $('#article_user_messages').show().delay(5000).slideUp(1000);
+    $('#article_user_messages').show().delay(ARTICLE_MESSAGE_SLIDE_UP_DELAY).slideUp(1000);
 }
 
 {#****************************************************************************#}

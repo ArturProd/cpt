@@ -1,13 +1,25 @@
 {#{ removed from form declaration "form_enctype(form)" car ça faisait tout planter }#}
 <script type="text/javascript">
-    $(function() {
-        $('#sign_in_form').submit(function(event){
-            cancelAllJqXHR();
-            cancelAllTimers();
-        });
+    
+    function register_callback(response)
+    {
+        $("#registration_div").html(response);
         
+    }
+
+    $(function() {
+      
+      $('#loading_register').hide();
+      
         $( "#registerformopener" ).click(function() {
           ShowPage(PAGE_REGISTER);
+        });
+        
+        AjaxForm( 'registration_form', null, register_callback);
+
+        $('#register_button').click(function(){
+            $('#loading_register').show();
+            $('#registration_form').submit();
         });
 
     });
@@ -18,34 +30,39 @@
     <div class="column_title_event">
         <div id="column_title_event_title">{{'main.title.register'|trans}}</div>
         <div><a class="event_new_btn" onclick="ShowPage(PAGE_EVENT);">{{'main.button.back'|trans}}</a></div>
-    </div>    
-    <form action="{{ path('fos_user_registration_register') }}" {{ form_enctype(form) }} method="POST" class="fos_user_registration_register" id="sign_in_form">
-            {{ form_errors(form) }}            
-        <div  class="input_div">
-            {{ form_label(form.email) }}            
-            {{ form_widget(form.email) }}
-        </div>
-        <div  class="input_div">
-            {#{ form_label(eventform.city_name, null, { 'attr': {'class': 'input_label mandatory_field_label'} }) }#}
-            {{ form_label(form.username) }}            
-            {{ form_widget(form.username) }}
-        </div>
-        <div  class="input_div">
-            {#{ form_label(eventform.city_name, null, { 'attr': {'class': 'input_label mandatory_field_label'} }) }#}
-            {{ form_widget(form.plainPassword) }}
-        </div>
-        <div  class="input_div">
-            {{ form_label(form.firstname) }}            
-            {{ form_widget(form.firstname) }}
-        </div>
-        <div  class="input_div">
-            {{ form_label(form.country_code) }}            
-            {{ form_widget(form.country_code) }}
-        </div>        
-        <div>
-            <input type="submit" value="{{ 'registration.submit'|trans({}) }}" />
-        </div>
-        {{ form(form) }}
-    </form>
+    </div>
+    <div id="registration_div">
+        {{ form_start(form, {'action': path('fos_user_registration_register'), '_locale': app.request.locale, 'attr': { 'id': 'registration_form', 'class': 'os_user_registration_register' }, 'method': 'POST' }) }}
+
+        <!--form action="{{ path('fos_user_registration_register') }}" {{ form_enctype(form) }} method="POST" class="fos_user_registration_register" id="registration_form"-->
+                {{ form_errors(form) }}            
+            <div  class="input_div">
+                {{ form_label(form.email) }}            
+                {{ form_widget(form.email) }}
+            </div>
+            <div  class="input_div">
+                {#{ form_label(eventform.city_name, null, { 'attr': {'class': 'input_label mandatory_field_label'} }) }#}
+                {{ form_label(form.username) }}            
+                {{ form_widget(form.username) }}
+            </div>
+            <div  class="input_div">
+                {#{ form_label(eventform.city_name, null, { 'attr': {'class': 'input_label mandatory_field_label'} }) }#}
+                {{ form_widget(form.plainPassword) }}
+            </div>
+            <div  class="input_div">
+                {{ form_label(form.firstname) }}            
+                {{ form_widget(form.firstname) }}
+            </div>
+            <div  class="input_div">
+                {{ form_label(form.country_code) }}            
+                {{ form_widget(form.country_code) }}
+            </div>        
+            <div>
+                <button id="register_button" type="button">{{ 'registration.submit'|trans({}) }}</button>
+                <div id="loading_register" class="loading"></div>
+            </div>
+            {{ form(form) }}
+        {{ form_end(form) }}
+    </div>
 </div>
 
