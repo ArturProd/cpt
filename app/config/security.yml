@@ -47,6 +47,8 @@ security:
                 check_path:     /login_check
                 failure_path:   null
                 default_target_path: cpt_main_home
+                use_referer: false
+                always_use_default_target_path: true
             logout:       
                 path:   /logout
                 target: cpt_main_home

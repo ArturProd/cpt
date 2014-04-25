@@ -33,3 +33,5 @@ user.passwordconfirm: Password confirmation
 main.user.profile.personalinfo: Personal informations
 main.user.profile.accountinfo: My Account
 main.user.profile.parameters: Parameters
+form.registration.country: Country
+form.registration.firstname: Firstname

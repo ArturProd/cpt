@@ -95,5 +95,8 @@ swiftmailer:
 
 cpt_event: ~
 
+parameters:
+    # hack not to have the ajax request into the session referer...
+    security.exception_listener.class: Cpt\MainBundle\Security\Firewall\ExceptionListener 
 
 

@@ -15,6 +15,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use FOS\UserBundle\Form\Type\RegistrationFormType as BaseType;
+use Symfony\Component\Intl\Intl;
 
 class RegistrationFormType extends BaseType
 {
@@ -34,9 +35,25 @@ class RegistrationFormType extends BaseType
     {
         parent::buildForm($builder, $options);
         
-        $builder
-            ->add('firstname', null, array('label' => 'form.firstname'))
-            ->add('cityname', null, array('label' => 'form.firstname'));
+         $countries = Intl::getRegionBundle()->getCountryNames();
+        $builder->add('firstname', null, array('label' => 'form.registration.firstname'))
+            ->add('country_code', 'country', array(
+                'label' => 'form.registration.country', 
+                'choices' => $countries,
+                'preferred_choices' => array(
+                    'FR', // France
+                    'UK', // UK
+                    'ES', // Spain
+                    'DE', // Germany
+                    'BE', // Belgium
+                    'DK', // Denmark
+                    'EL', // Greece
+                    'IT', // Greece
+                    'NL', // Netherlands
+                    'US', // USA
+
+                ),
+            ));
     }
 
     public function getName()

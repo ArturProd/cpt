@@ -33,3 +33,5 @@ user.passwordconfirm: Confirmation du mot de passe
 main.user.profile.personalinfo: Informations personnelles
 main.user.profile.accountinfo: Mon compte
 main.user.profile.parameters: Paramètres
+form.registration.country: Pays
+form.registration.firstname: Prénom

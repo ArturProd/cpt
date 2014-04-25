@@ -38,16 +38,6 @@ function FillInRegistrationAdress()
  $(function() {
     ShowPage(PAGE_EVENT);
     
-      var input = /** @type {HTMLInputElement} */(
-      document.getElementById('registration_placesearch'));
-  
-    registration_searchBox =   new google.maps.places.Autocomplete(input, { types: ['geocode'] });
-
-    google.maps.event.addListener(searchBox, 'place_changed', function() {
-        {# UpdateMap(); #}
-          FillInRegistrationAdress();
-      });
-    
 });
           
 </script>

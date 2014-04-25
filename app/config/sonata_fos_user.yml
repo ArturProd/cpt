@@ -21,3 +21,11 @@ sonata_user:
     class:
         user:               Application\Sonata\UserBundle\Entity\User
         group:              Application\Sonata\UserBundle\Entity\Group
+    profile:
+        register:
+            # This allows you to specify where you want your user redirected once he activated his account
+            confirm:
+                redirect:
+                    # Set it to false to disable redirection
+                    route: 'cpt_main_home'
+                    route_parameters: ~
