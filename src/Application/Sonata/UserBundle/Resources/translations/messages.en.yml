@@ -10,3 +10,4 @@ form.password:    "Password"
 form.password_confirmation: "Password confirmation"
 registration.submit:        "Create your account"
 registration.confirmed: Your account is now activated.
+register.mandatoryfields: Create your account

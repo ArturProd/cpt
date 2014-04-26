@@ -4,6 +4,12 @@ var PAGE_EVENT = 0;
 var PAGE_ABOUT = 1;
 var PAGE_REGISTER = 2;
 var PAGE_PROFILE = 3;
+{# ************************************************************************************************************************ #} 
+{# Set the html of the left column button (back, new event etc.)
+{# ************************************************************************************************************************ #} 
+function SetLeftcolButton(html){
+    $('#leftcol_button').html(html);
+}
 
 {# ************************************************************************************************************************ #} 
 {# Shows a page (event, about, register, profile) in the left column
@@ -15,17 +21,22 @@ function ShowPage(page_type, page_id)
     if (page_type === PAGE_EVENT){
         $('#leftcol_event').show();
         $('#leftcol_registration').hide();
+        $('#column_title_event_title').html('{{'main.title.events'|trans}}');
     } else if (page_type === PAGE_ABOUT) {
         $('#leftcol_event').hide();
         $('#leftcol_registration').hide();
     } else if (page_type === PAGE_REGISTER) {
         $('#leftcol_event').hide();
         $('#leftcol_registration').show();
+        $('#column_title_event_title').html("{{'main.title.register'|trans}}");
+       SetLeftcolButton("<a class='event_new_btn' onclick='ShowPage(PAGE_EVENT);'>{{'main.button.back'|trans}}</a>"); {# set the left column button to go back to PAGE_EVENT #}
     } else if (page_type === PAGE_PROFILE) {
         $('#leftcol_event').hide();
         $('#leftcol_registration').hide();
     }
 }
+
+
 
 function FillInRegistrationAdress()
 {

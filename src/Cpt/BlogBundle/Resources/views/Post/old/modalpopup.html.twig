@@ -1,24 +1,3 @@
-<script type="text/javascript">
-    $(function() {
-        $( "#modalpopup" ).dialog({
-          autoOpen: false,
-          show: {
-            effect: "blind",
-            duration: 100
-          },
-          hide: {
-            effect: "blind",
-            duration: 100
-          }
-        });
-
-        $( "#registerformopener" ).click(function() {
-          $( "#registerform" ).dialog( "open" );
-        });
-
-    });
-</script>
-
 <form action="{{ path("fos_user_security_check") }}" method="post" class="form-signin">
         <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
 

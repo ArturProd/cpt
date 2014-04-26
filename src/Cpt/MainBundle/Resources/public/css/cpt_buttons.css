@@ -13,6 +13,7 @@
     -webkit-border-radius:4px;-moz-border-radius:4px;border-radius:4px;
     text-decoration: none;
     color: white;
+    font-size: 16px !important;
 }
 
 .article_new_btn
@@ -57,6 +58,7 @@
       color: white;
 }
 
+.btn-create-account:hover,
 .event_book_btn:hover{
     cursor: pointer; cursor: hand;
     color: white;

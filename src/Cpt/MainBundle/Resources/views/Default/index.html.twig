@@ -1,8 +1,14 @@
 {% extends 'CptMainBundle::main.html.twig' %}
 
 {% block leftcol %}
-    <div id="leftcol_event">
-        {% render controller("CptEventBundle:Event:index", {"event_permalink": event_permalink, "_locale": app.request.locale }) %}
+    <div class="main_section">
+        <div class="column_title_event">
+            <div id="column_title_event_title">{{'main.title.register'|trans}}</div>
+            <div id="leftcol_button"></div>
+        </div>
+        <div id="leftcol_event">
+            {% render controller("CptEventBundle:Event:index", {"event_permalink": event_permalink, "_locale": app.request.locale }) %}
+        </div>
     </div>
 {% endblock %}
 

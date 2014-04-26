@@ -1,4 +1,3 @@
-{#{ removed from form declaration "form_enctype(form)" car ça faisait tout planter }#}
 <script type="text/javascript">
     
     function register_callback(response)
@@ -8,13 +7,9 @@
     }
 
     $(function() {
-      
+    {# hide the loader icon #}
       $('#loading_register').hide();
       
-        $( "#registerformopener" ).click(function() {
-          ShowPage(PAGE_REGISTER);
-        });
-        
         AjaxForm( 'registration_form', null, register_callback);
 
         $('#register_button').click(function(){
@@ -24,18 +19,12 @@
 
     });
 </script>
-<!--registration modal popup-->
-
-<div class="main_section registration">
-    <div class="column_title_event">
-        <div id="column_title_event_title">{{'main.title.register'|trans}}</div>
-        <div><a class="event_new_btn" onclick="ShowPage(PAGE_EVENT);">{{'main.button.back'|trans}}</a></div>
-    </div>
-    <div id="registration_div">
+    <div id="registration_div" class="cpt_page">
         {{ form_start(form, {'action': path('fos_user_registration_register'), '_locale': app.request.locale, 'attr': { 'id': 'registration_form', 'class': 'os_user_registration_register' }, 'method': 'POST' }) }}
+        
+        <h2><span class="cpt_blue">➤&nbsp;&nbsp;</span>{{'register.mandatoryfields'|trans}}</h2>
 
-        <!--form action="{{ path('fos_user_registration_register') }}" {{ form_enctype(form) }} method="POST" class="fos_user_registration_register" id="registration_form"-->
-                {{ form_errors(form) }}            
+            {{ form_errors(form) }}            
             <div  class="input_div">
                 {{ form_label(form.email) }}            
                 {{ form_widget(form.email) }}
@@ -64,5 +53,5 @@
             {{ form(form) }}
         {{ form_end(form) }}
     </div>
-</div>
+
 

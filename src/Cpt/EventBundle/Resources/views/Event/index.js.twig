@@ -342,6 +342,13 @@ function CancelRegistrationToEvent(eventid)
 {# Onload
 {#**************************************************************************#}
 $(function() {
+    {# Set the left column button to "new event" button #}
+    {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+        SetLeftcolButton("<a id='newevent' class='event_new_btn'>{{'main.button.new'|trans}}</a>");
+    {% else %}
+        SetLeftcolButton("");
+    {% endif %}
+    
     DisplayEventEditPanel(false);
     Set_filter_events(FILTER_FUTUREEVENTS);
     UpdateEventInterface();

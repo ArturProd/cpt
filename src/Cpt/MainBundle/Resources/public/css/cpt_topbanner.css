@@ -42,3 +42,7 @@
 .banner_icons li:nth-child(3) a
 {   background-image:url('../images/bandeau/bandeau-picto-youtube.png');
 }
+
+.banner_icons li:nth-child(4)
+{   margin-top: 7px;
+}

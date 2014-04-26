@@ -4,12 +4,6 @@
 {% include 'CptEventBundle:Event:index.js.twig' with {'year': year, 'month':month, 'permalink_event_id':permalink_event_id } %}
 
 <div class="main_section">
-    <div class="column_title_event">
-        <div id="column_title_event_title">{{'main.title.events'|trans}}</div>
-        {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-        <div><a id="newevent" class="event_new_btn">{{'main.button.new'|trans}}</a></div>
-        {% endif %}
-    </div>
     {#****************************************************************************#}
     {# Flash messages
     {#****************************************************************************#}

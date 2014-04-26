@@ -12,6 +12,7 @@
     var Count_organizer = 0;            {# total number of organizers in the event #}
     var Queue = [{{ event.queue|join(',') }}]; {# contains the event.queue in the form of comma separated values #}
     var Disabled_organizer_user = null; {# Id of the organizer which was disabled (due to the fact there is just one organizer left) #}
+    var EVENT_EDIT_CKEDITOR_READY_TIMEOUT = {{ CKEDITOR_READY_TIMEOUT }}
 
 function InitRegistrations()
 {
@@ -570,7 +571,7 @@ function InitializeEventPage()
             if (CKEDITOR !== undefined){ {# HACK: the CKEDITOR is not defined right away, and it would raise an error #}
                 CKEDITOR.instances['event_content'].document.on('keydown', function() {HideCopyButton();});
             }
-        },1000);
+        },EVENT_EDIT_CKEDITOR_READY_TIMEOUT);
             
 
        {############################################}

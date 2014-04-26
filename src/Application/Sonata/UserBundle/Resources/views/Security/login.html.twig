@@ -11,7 +11,14 @@
         <li><input type="password" id="password" name="_password" required="required" placeholder="{{ 'security.login.password'|trans({}) }}"/></li>
         <li><input type="checkbox" id="remember_me" name="_remember_me" value="on" /><label for="remember_me">{{ 'security.login.remember_me'|trans({}) }}</label>
             <input type="submit" id="_submit" name="_submit" value="{{ 'security.login.submit'|trans({}) }}" /></li>
-        <li><a id="registerformopener" href="#registerformopener" data-toggle="modal" class="btn-create-account">{{"main.menu.item.register"|trans}}</a></li>
+        <li><a id="registerformopener" href="#registerformopener" class="btn-create-account">{{"main.menu.item.register"|trans}}</a></li>
 
     </ul>
 </form>
+        
+<script type="text/javascript">
+            {# bind the register button #}
+        $( "#registerformopener" ).click(function() {
+          ShowPage(PAGE_REGISTER);
+        });
+</script>
