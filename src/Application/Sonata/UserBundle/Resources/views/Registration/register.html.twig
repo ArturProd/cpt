@@ -19,37 +19,62 @@
 
     });
 </script>
+    {% form_theme form _self %}
+
+    {% block form_errors %}
+    {% spaceless %}
+        {% if errors is defined and errors|length > 0 %}
+        <div class="form_error">
+        <ul>
+            {% for error in errors %}
+                <li>{{
+                    error.messagePluralization is null
+                        ? error.messageTemplate|trans(error.messageParameters, 'validators')
+                        : error.messageTemplate|transchoice(error.messagePluralization, error.messageParameters, 'validators')
+                }}</li>
+            {% endfor %}
+        </ul>
+        </div>
+        {% endif %}
+    {% endspaceless %}
+    {% endblock form_errors %}
+    
     <div id="registration_div" class="cpt_page">
-        {{ form_start(form, {'action': path('fos_user_registration_register'), '_locale': app.request.locale, 'attr': { 'id': 'registration_form', 'class': 'os_user_registration_register' }, 'method': 'POST' }) }}
-        
+        <p>{{'register.explain'|trans}}</p>
+        {{ form_start(form, {'action': path('fos_user_registration_register'), '_locale': app.request.locale, 'attr': { 'id': 'registration_form', 'class': 'os_user_registration_register' }, 'method': 'POST' }) }}        
         <h2><span class="cpt_blue">➤&nbsp;&nbsp;</span>{{'register.mandatoryfields'|trans}}</h2>
 
-            {{ form_errors(form) }}            
+            {{ form_errors(form) }}
+            {{ form_errors(form.email) }}           
             <div  class="input_div">
-                {{ form_label(form.email) }}            
+                {{ form_label(form.email) }}
                 {{ form_widget(form.email) }}
             </div>
+             {{ form_errors(form.username) }}              
             <div  class="input_div">
                 {#{ form_label(eventform.city_name, null, { 'attr': {'class': 'input_label mandatory_field_label'} }) }#}
                 {{ form_label(form.username) }}            
                 {{ form_widget(form.username) }}
             </div>
+                {{ form_errors(form.plainPassword) }}
             <div  class="input_div">
                 {#{ form_label(eventform.city_name, null, { 'attr': {'class': 'input_label mandatory_field_label'} }) }#}
                 {{ form_widget(form.plainPassword) }}
             </div>
-            <div  class="input_div">
+                {{ form_errors(form.firstname) }}
+            <div class="input_div">
                 {{ form_label(form.firstname) }}            
                 {{ form_widget(form.firstname) }}
             </div>
+                {{ form_errors(form.country_code) }}            
             <div  class="input_div">
                 {{ form_label(form.country_code) }}            
                 {{ form_widget(form.country_code) }}
             </div>        
-            <div>
-                <button id="register_button" type="button">{{ 'registration.submit'|trans({}) }}</button>
+            <div style="text-align:right">
+                <button id="register_button" type="button" class="btn_account" >{{ 'registration.submit'|trans({}) }}</button>
+            </div>                
                 <div id="loading_register" class="loading"></div>
-            </div>
             {{ form(form) }}
         {{ form_end(form) }}
     </div>

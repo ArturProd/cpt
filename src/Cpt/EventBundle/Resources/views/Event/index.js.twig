@@ -65,7 +65,7 @@ function manage_event(id)
 {
     $("#edit_event").html('<div id="loading_event" class="loading"></div>');
     $("#edit_event").load(Routing.generate('event_manage', {id:id,_locale:_locale}));
-    DisplayEventEditPanel(true);
+    // DisplayEventEditPanel(true);
 }
 {#**************************************************************************#}
 {# Toggle visibility of event container
@@ -342,19 +342,11 @@ function CancelRegistrationToEvent(eventid)
 {# Onload
 {#**************************************************************************#}
 $(function() {
-    {# Set the left column button to "new event" button #}
-    {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-        SetLeftcolButton("<a id='newevent' class='event_new_btn'>{{'main.button.new'|trans}}</a>");
-    {% else %}
-        SetLeftcolButton("");
-    {% endif %}
-    
-    DisplayEventEditPanel(false);
+    // DisplayEventEditPanel(false);
     Set_filter_events(FILTER_FUTUREEVENTS);
     UpdateEventInterface();
     {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
         {# Event Dialog setup #}
-        $("a#newevent").on("click", function(){manage_event(-1);});
     {% endif %}
     
     {# Display flash messages if any #}

@@ -317,6 +317,13 @@ hr.line_separator{
     vertical-align: middle;
     color: red;
     border-color: red;
+    padding-bottom: 0px;
+    font-weight: normal !important;
+}
+
+.form_error > ul{
+    list-style-type: none;
+    margin-left: 0px;
 }
 
 .cpt_integerselect{

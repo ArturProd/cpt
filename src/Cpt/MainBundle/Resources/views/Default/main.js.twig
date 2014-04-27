@@ -4,6 +4,7 @@ var PAGE_EVENT = 0;
 var PAGE_ABOUT = 1;
 var PAGE_REGISTER = 2;
 var PAGE_PROFILE = 3;
+var PAGE_EDIT_EVENT = 4;
 {# ************************************************************************************************************************ #} 
 {# Set the html of the left column button (back, new event etc.)
 {# ************************************************************************************************************************ #} 
@@ -21,10 +22,22 @@ function ShowPage(page_type, page_id)
     if (page_type === PAGE_EVENT){
         $('#leftcol_event').show();
         $('#leftcol_registration').hide();
+        
+        $('#edit_event').hide();
+        $('#display_events').show();
+         
         $('#column_title_event_title').html('{{'main.title.events'|trans}}');
+        {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+        SetLeftcolButton("<a id='newevent' class='event_new_btn'>{{'main.button.new'|trans}}</a>"); {# New Event button #}
+        $("a#newevent").on("click", function(){ShowPage(PAGE_EDIT_EVENT)});
+        {% else %}
+        SetLeftcolButton(""); {# user is not logged in => there is no button here #}
+        {% endif %}
     } else if (page_type === PAGE_ABOUT) {
         $('#leftcol_event').hide();
         $('#leftcol_registration').hide();
+        $('#leftcol_about').show();
+        showAboutPage();
     } else if (page_type === PAGE_REGISTER) {
         $('#leftcol_event').hide();
         $('#leftcol_registration').show();
@@ -33,15 +46,30 @@ function ShowPage(page_type, page_id)
     } else if (page_type === PAGE_PROFILE) {
         $('#leftcol_event').hide();
         $('#leftcol_registration').hide();
+    } else if (page_type === PAGE_EDIT_EVENT){
+        $('#leftcol_registration').hide();
+        $('#leftcol_event').show();
+
+         $('#edit_event').show();
+         $('#display_events').hide();
+
+         $('#column_title_event_title').html('{{'main.title.events_edit'|trans}}');
+         if (!page_id){
+             page_id = -1;
+         }
+        manage_event(page_id);
+        //etLeftcolButton("<a  class='btn_blue' onclick='DisplayEventEditPanel(false);'>{{'event.button.backtoevent'|trans}}</a>");
+        SetLeftcolButton("<a id='close_edit_event' class='event_new_btn' onclick='ShowPage(PAGE_EVENT);'>{{'main.button.back'|trans}}</a>"); {# set the left column button to go back to PAGE_EVENT #}
     }
 }
 
-
-
-function FillInRegistrationAdress()
-{
-    
+function showAboutPage()
+{    {# Retreive the event view from server and add it to previously created DOM element #}
+    $.get( Routing.generate('cpt_main_about', {_locale:_locale}), function(response){
+             $('#leftcol_about').html( response );
+     });
 }
+
 
 {# ************************************************************************************************************************ #} 
 {# OnLoad

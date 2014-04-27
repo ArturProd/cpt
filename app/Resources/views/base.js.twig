@@ -225,6 +225,18 @@ function HideUserMessage()
 {
         $('#user_messages').hide();
 }
+
+function isCKEDITORLoaded(instancename){
+    if (CKEDITOR !== undefined){ {# HACK: the CKEDITOR is not defined right away, and it would raise an error #}
+        if (CKEDITOR.instances[instancename] !== undefined) {
+            if (CKEDITOR.instances[instancename].document !== undefined) {
+                return true;
+            }
+        }
+    }
+    
+    return false;
+}
 {#****************************************************************************#}
 {# Onload
 {#****************************************************************************#}

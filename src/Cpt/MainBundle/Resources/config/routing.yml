@@ -23,4 +23,10 @@ cpt_main_userprofile_show:
     defaults: { _controller: CptMainBundle:User:showProfile }
     requirements:
         userid:  \d+
+
+cpt_main_about:
+    pattern:  /about
+    defaults: { _controller: CptMainBundle:Default:about }
+    options:
+        expose: true
   

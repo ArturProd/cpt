@@ -71,6 +71,16 @@ function PopulateArticles(response, opendefault)
         getAndAddPost(post_list[i], opendefault);
 }
 {#**************************************************************************#}
+{# Display articles using permalink (aka article url)
+{#**************************************************************************#}
+function displayArticleByPermalink(permalink, opendefault){
+        var jqXHR = $.getJSON( "{{ url('cpt_blog_getsinglearticlelist') }}", {article_permalink:'{{article_permalink}}'}, function(response){
+            PopulateArticles(response, opendefault);
+            show_articlefilter(false);
+        });
+        registerJqXHR(jqXHR);
+}
+{#**************************************************************************#}
 {# Retreives an array of post id from server, and call getAndAddPost
 {#**************************************************************************#}
 function getPostList(page, opendefault){
@@ -86,11 +96,7 @@ function getPostList(page, opendefault){
 
     if (article_permalink)
     {
-        show_articlefilter(false);
-        var jqXHR = $.getJSON( "{{ url('cpt_blog_getsinglearticlelist') }}", {article_permalink:'{{article_permalink}}'}, function(response){
-            PopulateArticles(response, opendefault);
-        });
-        registerJqXHR(jqXHR);
+        displayArticleByPermalink(article_permalink, opendefault);
     }
     else
         var jqXHR = $.getJSON( "{{ url('cpt_blog_getarticlelist') }}", {page:page, myarticles:filter_myarticles}, function(response){

@@ -434,7 +434,8 @@ function save_event_callback(response)
     if (response.status==="ok")
     {
         UpdateEventInterface();
-        DisplayEventEditPanel(false);
+        //DisplayEventEditPanel(false);
+        ShowPage(PAGE_EVENT)
         show_event_usermessage('{{'event.save.eventwassaved'|trans}}');
     }
     else {# can be failed or "copy" in case the event was copied #}
@@ -456,7 +457,8 @@ function cancel_event_callback(response)
     if (response.status==="ok")
     {
         UpdateEventInterface();
-        DisplayEventEditPanel(false);
+        // DisplayEventEditPanel(false);
+        ShowPage(PAGE_EVENT)
         show_event_usermessage('{{'event.cancel.eventwascancelled'|trans}}');
     }
     else {# can be failed or "copy" in case the event was copied #}
@@ -496,7 +498,14 @@ function HideCopyButton()
 {# ************************************************************************************************************************ #} 
 function InitializeEventPage()
 {
-    
+        {###################################################}
+        {# Initialize CKEDITOR when it is loaded #}
+        CKEDITOR.on('instanceReady', function (e) {
+            if(e.editor.name == "event_content"){
+                CKEDITOR.instances['event_content'].document.on('keydown', function() {HideCopyButton();});
+            }
+        });
+
        {###################################################}
        {# Initialize the registrations with existing ones #}
        InitRegistrations();
@@ -567,12 +576,6 @@ function InitializeEventPage()
             HideCopyButton();
         });
         
-        setTimeout(function(){
-            if (CKEDITOR !== undefined){ {# HACK: the CKEDITOR is not defined right away, and it would raise an error #}
-                CKEDITOR.instances['event_content'].document.on('keydown', function() {HideCopyButton();});
-            }
-        },EVENT_EDIT_CKEDITOR_READY_TIMEOUT);
-            
 
        {############################################}
        {# Hiding the queue table #}

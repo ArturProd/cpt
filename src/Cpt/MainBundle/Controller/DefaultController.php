@@ -7,6 +7,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class DefaultController extends Controller
 {
+    
+    public function aboutAction()
+    {
+       return $this->render('CptMainBundle:Default:about.html.twig');     
+    }
+        
     public function indexAction()
     {
          

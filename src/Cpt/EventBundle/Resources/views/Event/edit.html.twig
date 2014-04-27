@@ -1,8 +1,3 @@
-{% include 'CptEventBundle:Event:edit.js.twig' with {'event': event, 'eventform':eventform} %}
-{% include 'CptEventBundle:Event:edit_googleapi.js.twig' with {'event': event, 'eventform':eventform} %}
-
-<a id="close_edit_event" class="btn_blue" onclick='DisplayEventEditPanel(false);'>{{'event.button.backtoevent'|trans}}</a>
-
 <div class="cpt_page">        
    
 {#***********************************************#}
@@ -287,7 +282,6 @@
     {{ form_end(eventform) }}
 </div>
 
-
-        
- 
+{% include 'CptEventBundle:Event:edit.js.twig' with {'event': event, 'eventform':eventform} %}
+{% include 'CptEventBundle:Event:edit_googleapi.js.twig' with {'event': event, 'eventform':eventform} %}
   

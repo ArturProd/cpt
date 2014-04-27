@@ -11,3 +11,4 @@ form.password_confirmation: "Confirmation du mot de passe"
 registration.submit:        "Créer mon compte"
 registration.confirmed: Votre compte est maintenant activé.
 register.mandatoryfields: Créez votre compte
+register.explain: Aprés avoir créé votre compte, vous pourrez créer des évènements et vous y inscrire, publier des articles, et plus encore gratuitement!

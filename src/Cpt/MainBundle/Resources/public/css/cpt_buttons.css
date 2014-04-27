@@ -305,3 +305,15 @@
 .btn_settings:hover{
     background: url('../images/boutons/bouton-settings.png') no-repeat;
 }
+
+.btn_account{
+    border: none;
+    background-color: white;
+    color: #444444;
+    background: url('../images/boutons/bouton-account.png') no-repeat;
+    height: 59px;
+    min-width: 59px;
+    padding-left: 75px;
+    margin-right: 8px;
+    font-size: large;
+}

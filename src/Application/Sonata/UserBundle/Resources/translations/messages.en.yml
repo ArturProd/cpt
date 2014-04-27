@@ -11,3 +11,4 @@ form.password_confirmation: "Password confirmation"
 registration.submit:        "Create your account"
 registration.confirmed: Your account is now activated.
 register.mandatoryfields: Create your account
+register.explain: After creating your account, you will be able to create and attend events, publish articles, and more for free!
