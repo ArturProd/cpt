@@ -68,18 +68,68 @@ function PopulateArticles(response, opendefault)
     post_pager = $.parseJSON(response.data.pager);
 
         for(i = 0; i<post_list.length ; ++i)
-        getAndAddPost(post_list[i], opendefault);
+        getAndAddPost(post_list[i].id, post_list[i].publishedhomepage, opendefault);
+}
+
+{#**************************************************************************#}
+{# Hide everything not required when displaying a single article
+{#**************************************************************************#}
+function hideDecorations()
+{
+    $('.post_date_label, .post_titre_label').hide();
+    $('#postpagination').hide();
+    show_alaune(false);
+    show_articlefilter(false);
+}
+{#**************************************************************************#}
+{# Show the article section
+{#**************************************************************************#}
+function showArticlesSection(){
+    $('#articles').show();
+    $('#homepage_aticles').show();
+    $('#loadingarticles').hide();
+    $('#postpagination').show();
+}
+{#**************************************************************************#}
+{# Clear all the articles and display loading icon
+{#**************************************************************************#}
+function clearArticlesSection()
+{
+    $('#articles').empty();
+    $('#articles').hide();
+    $('#homepage_aticles').hide();
+    $('#loadingarticles').hide().fadeIn(2000);
+    $('#postpagination').hide();
 }
 {#**************************************************************************#}
 {# Display articles using permalink (aka article url)
 {#**************************************************************************#}
 function displayArticleByPermalink(permalink, opendefault){
-        var jqXHR = $.getJSON( "{{ url('cpt_blog_getsinglearticlelist') }}", {article_permalink:'{{article_permalink}}'}, function(response){
+        var jqXHR = $.getJSON( "{{ url('cpt_blog_getsinglearticlelist_bypermalink') }}", {article_permalink:'{{article_permalink}}'}, function(response){
             PopulateArticles(response, opendefault);
             show_articlefilter(false);
         });
         registerJqXHR(jqXHR);
 }
+{#**************************************************************************#}
+{# Displays a single article by id (ex: this is used by about page)
+{#**************************************************************************#}
+function displaySingleArticleById(postid){
+    clearArticlesSection();
+    
+    $('#postcontainer'+postid).remove();
+
+     $.get( "{{ url('cpt_blog_post_getjsonview') }}", {id:postid} , function( response ) {
+        if (response.status === "ok"){
+            createPostContainer(postid, '#articles');
+            $( "#postcontainer" + postid ).html( response.data );
+            toogle_article(postid,0,true);
+            showArticlesSection();
+            hideDecorations();
+        }
+    });
+}
+
 {#**************************************************************************#}
 {# Retreives an array of post id from server, and call getAndAddPost
 {#**************************************************************************#}
@@ -88,11 +138,7 @@ function getPostList(page, opendefault){
     count_article_loaded = 0;
     alaune_opened_article_id = -1;
 
-    $('#articles').empty();
-    $('#articles').hide();
-    $('#homepage_aticles').hide();
-    $('#loadingarticles').hide().fadeIn(2000);
-    $('#postpagination').hide();
+    clearArticlesSection();
 
     if (article_permalink)
     {
@@ -114,13 +160,18 @@ function show_alaune(show)
     {
         $('#homepage_articles_label').show();
         $('#homepage_articles_label').show();
+        $('#homepage_aticles').show();
     }
     else
     {
         $('#homepage_articles_label').hide();
-        $('#homepage_articles_label').hide();            
+        $('#homepage_articles_label').hide();
+        $('#homepage_aticles').hide();
     }
 }
+{#**************************************************************************#}
+{# Show/Hides the articles filter
+{#**************************************************************************#}
 function show_articlefilter(show)
 {
     if (show)
@@ -129,40 +180,44 @@ function show_articlefilter(show)
         $('#articles_filter').hide();
 }
 {#**************************************************************************#}
+{# Creates a container for the article and add it to the dom element
+{#**************************************************************************#}
+function createPostContainer(postid, domelementname)
+{
+    jQuery('<div/>', {
+        id: 'postcontainer'+postid,
+        class: 'postcontainer'
+    }).appendTo(domelementname);
+}
+{#**************************************************************************#}
 {# Retreives the html view of a post from a server based on its id, and add it to the DOM
 {#**************************************************************************#}
-function getAndAddPost(post, opendefault)
+function getAndAddPost(postid, publishedhomepage, opendefault)
 {
    {# if the post container already exists, delete it #}
    //if ($('postcontainer'+post.id)!==null)
-    $('#postcontainer'+post.id).remove();
+    $('#postcontainer'+postid).remove();
 
    {# add the div container for this post #}
-    if (post.publishedhomepage)
+    if (publishedhomepage)
     { {# "A la une" posts #}
-        jQuery('<div/>', {
-            id: 'postcontainer'+post.id,
-            class: 'postcontainer'
-        }).appendTo('#homepage_aticles');
+        createPostContainer(postid, '#homepage_aticles');
         
         if (alaune_opened_article_id<0)
-            alaune_opened_article_id = post.id;
+            alaune_opened_article_id = postid;
         
         show_alaune(true); {# shows the "a la une" section which is hidden by default #}
     }
     else
     { {# Other posts #}
-        jQuery('<div/>', {
-            id: 'postcontainer'+post.id,
-            class: 'postcontainer'
-        }).appendTo('#articles');
+        createPostContainer(postid, '#articles');
         
         show_articlefilter(true); {# as there is at least one article not "a laune", we show the filter #}
     }
     {# retreive post view from server and add it to container #}
-    $.get( "{{ url('cpt_blog_post_getjsonview') }}", {id:post.id} , function( response ) {
+    $.get( "{{ url('cpt_blog_post_getjsonview') }}", {id:postid} , function( response ) {
         if (response.status === "ok")
-            $( "#postcontainer" + post.id ).html( response.data );
+            $( "#postcontainer" + postid ).html( response.data );
         
         {# if this is the last one to be retreive, prepare the accordion #}
         count_article_loaded ++;
@@ -170,10 +225,7 @@ function getAndAddPost(post, opendefault)
         {
             opened_article_id = (alaune_opened_article_id < 0) ? post_list[0].id : alaune_opened_article_id;
             toogle_article(opened_article_id,0,opendefault);
-            $('#articles').show();
-            $('#homepage_aticles').show();
-            $('#loadingarticles').hide();
-            $('#postpagination').show();
+            showArticlesSection();
         }
     });
 }
@@ -318,12 +370,11 @@ function Set_filter_onlymyarticles(value)
     $("#articles_filter_myarticles").toggleClass("cpt_red", filter_myarticles);
     $("#articles_filter_myarticles").toggleClass("cpt_grey", !filter_myarticles);
 }
-
-{#**************************************************************************#}
-{# Onload
-{#**************************************************************************#}
-$(function() {
-    
+{#****************************************************************************#}
+{# Loads the article column first page
+{#****************************************************************************#}
+function InitArticlesColumn()
+{
     Set_filter_onlymyarticles(false);
     show_articlefilter(false);
     getPostList(1,true);
@@ -347,5 +398,12 @@ $(function() {
         Set_filter_onlymyarticles(true);
     });
     {% endif %}
+}
+{#**************************************************************************#}
+{# Onload
+{#**************************************************************************#}
+$(function() {
+    
+    InitArticlesColumn();
 });
 </script>

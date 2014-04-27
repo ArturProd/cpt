@@ -70,6 +70,7 @@ class PostManager extends BaseManager implements PostManagerInterface {
         }
     }
 
+   
     /**
      * @param string                                 $permalink
      * @param \Cpt\BlogBundle\Model\BlogInterface $blog

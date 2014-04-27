@@ -6,8 +6,13 @@
 </ul>
 
  <script type="text/javascript">
+ function displayAboutArticle(postid){
+     displaySingleArticleById(postid);
+ }
  $(function() {
-     $('#aboutlink1').on('click', function(){displayArticleByPermalink("http://cpt/web/app_dev.php/en/permalink/article/2014/1/2/w-lfkxjsmdlwfkj-mlwjgmsldjg-m");});
+     $('#aboutlink1').on('click', function(){displayAboutArticle(30);});
+     $('#aboutlink2').on('click', function(){displayAboutArticle(29);});
+     $('#aboutlink3').on('click', function(){displayAboutArticle(1);});
 });
           
 </script>

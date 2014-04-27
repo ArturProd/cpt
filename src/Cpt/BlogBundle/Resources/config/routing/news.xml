@@ -14,11 +14,11 @@
         <requirement key="_method">GET</requirement>
     </route>
 
-    <route id="cpt_blog_getsinglearticlelist" pattern="/jsonsinglepostlist">
-        <default key="_controller">CptBlogBundle:Post:getSingleArticleList</default>
+    <route id="cpt_blog_getsinglearticlelist_bypermalink" pattern="/jsonsinglepostlist">
+        <default key="_controller">CptBlogBundle:Post:getSingleArticleListByPemarlink</default>
         <requirement key="_method">GET</requirement>
     </route>
-        
+       
     <route id="cpt_blog_post_getjsonview" pattern="/postview">
         <default key="_controller">CptBlogBundle:Post:postGetJsonView</default>
         <requirement key="_method">GET|POST</requirement>

@@ -67,7 +67,7 @@ class PostController extends BasePostController {
         return $this->CreateJsonOkResponse(Array('posts' => $serializedposts, 'pager' => $serializedpager));
     }
 
-    public function getSingleArticleListAction() {
+    public function getSingleArticleListByPemarlinkAction() {
         $article_permalink = $this->getRequest()->get('article_permalink');
 
         if (!preg_match('/.+?/', $article_permalink)) {
@@ -82,7 +82,7 @@ class PostController extends BasePostController {
 
         return $this->CreateJsonOkResponse(Array('posts' => $serializedpost, 'pager' => null));
     }
-
+    
     // <editor-fold defaultstate="collapsed" desc="Single post actions ">
 
     /**
