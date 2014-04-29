@@ -80,12 +80,17 @@ class CommentManager extends BaseManager implements CommentManagerInterface {
      */
     public function delete(CommentInterface $comment) {
         $this->getPermissionManager()->ensureGrantedComment('DELETE',$comment);
+        
+        $aclProvider = $this->getAclProvider();
+        $objectIdentity = ObjectIdentity::fromDomainObject($comment);
+        $aclProvider->deleteAcl($objectIdentity);
 
         $publication = $comment->getPublication();
         $this->em->remove($comment);
         $this->em->flush();
 
         $this->updateCommentsCount($publication);
+        
     }
 
     public function get_newer_comments($publicationid, $newerthanid) {

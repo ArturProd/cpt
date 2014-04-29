@@ -143,6 +143,9 @@ class PostManager extends BaseManager implements PostManagerInterface {
         if (!$this->getSecurityContext()->isGranted('DELETE', $objectIdentity))
             throw new AccessDeniedException();
 
+        $aclProvider = $this->getAclProvider();
+        $aclProvider->deleteAcl($objectIdentity);
+        
         $this->em->remove($post);
         $this->em->flush();
     }

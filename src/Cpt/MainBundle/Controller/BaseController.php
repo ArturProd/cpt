@@ -81,6 +81,11 @@ class BaseController extends Controller {
     public function getSerializer() {
         return $this->get('jms_serializer');
     }
+    
+    public function getMailManager(){
+        return $this->get('cpt.mailer.manager');
+    }
+            
 
     public function getSecurityContext() {
         return $this->get('security.context');

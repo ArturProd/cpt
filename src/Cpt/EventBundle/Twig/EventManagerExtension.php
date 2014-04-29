@@ -98,10 +98,10 @@ class EventManagerExtension extends \Twig_Extension
         return $this->registrationmanager->isAuthor($event,$user);
     }
     
-   /* public function isOrganizer(EventInterface $event, UserInterface $user)
+    public function isOrganizer(EventInterface $event, UserInterface $user)
     {
         return $this->eventmanager->isOrganizer($event,$user);
-    }*/
+    }
     
     public function getRegistration(EventInterface $event, UserInterface $user)
     {

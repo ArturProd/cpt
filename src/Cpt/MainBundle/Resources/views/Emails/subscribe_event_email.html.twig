@@ -1,0 +1,135 @@
+{% set user = registration.user %}
+{% set event = registration.event %}
+{% block subject %}
+{% autoescape false %}
+{% if cpt_event_isAuthor(event,user) %}
+{{ 'email.subscribeevent.subject.author'|trans({'%eventname%': event.title}) }}
+{% elseif cpt_event_isOrganizer(event,user) %}
+{{ 'email.subscribeevent.subject.leader'|trans({'%eventname%': event.title}) }}
+{% else %}
+{{ 'email.subscribeevent.subject.attendee'|trans({'%eventname%': event.title}) }}    
+{% endif %}
+{% endautoescape %}
+{% endblock %}
+{% block body_text %}
+{% autoescape false %}
+{% endautoescape %}
+{% endblock %}
+{% block body_html %}
+    {% autoescape false %}
+    <html>
+        <head>
+            <title>
+                {% if cpt_event_isAuthor(event,user) %}
+                {{ 'email.subscribeevent.subject.author'|trans({'%eventname%': event.title}) }}
+                {% elseif cpt_event_isOrganizer(event,user) %}
+                {{ 'email.subscribeevent.subject.leader'|trans({'%eventname%': event.title}) }}
+                {% else %}
+                {{ 'email.subscribeevent.subject.attendee'|trans({'%eventname%': event.title}) }}    
+                {% endif %}
+            </title>
+            <style>
+                .maindiv{
+                    width: 400px;
+                    -webkit-border-radius: 20px;
+                    -moz-border-radius: 20px;
+                    border-radius: 20px;
+                    border:20px solid #066FB2;
+                    background:rgba(255,255,255,0.9);
+                    -webkit-box-shadow: #8299AB 11px 11px 11px;
+                    -moz-box-shadow: #8299AB 11px 11px 11px; 
+                    box-shadow: #8299AB 11px 11px 11px;
+                }
+            </style>
+        </head>        
+        <body>
+            <div class="maindiv">
+                <center><a href="{{url('cpt_main_home')}}">{{ "<img src='attachmenturl[0]'>"|raw }}</a></center>
+                {% if cpt_event_isAuthor(event,user) %}
+                {{ 'email.subscribeevent.message.header.author'|trans({'%eventname%': event.title, '%username%': user.displayname}) }}
+                {% elseif cpt_event_isOrganizer(event,user) %}
+                {{ 'email.subscribeevent.message.header.leader'|trans({'%eventname%': event.title, '%username%': user.displayname}) }}        
+                {% else %}
+                {{ 'email.subscribeevent.message.header.attendee'|trans({'%eventname%': event.title, '%username%': user.displayname}) }}        
+                {% endif %}
+                {% if registration.numqueuedparticipant > 0 %}
+                {{ 'email.subscribeevent.message.allseatsnotconfirmed'|trans }}
+                {% endif %}
+                <table>
+                    <tr>
+                        <td>{{ 'email.subscribeevent.message.seatsrequested'|trans}}</td>
+                        <td>{{registration.numparticipant}}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ 'email.subscribeevent.message.seatsconfirmed'|trans}}</td>
+                        <td>{{registration.numconfirmed}}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ 'email.subscribeevent.message.seatswaitinglist'|trans}}</td>
+                        <td>{{registration.numqueuedparticipant}}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ 'email.subscribeevent.message.when'|trans}}</td>
+                        <td>
+                            {{ event.begin | date('l') | trans}}                   {# Begin date #}
+                            {{ event.begin|date('d/m') }}                          {# Begin hour #}
+                            {% if not cpt_event_isBeginEndSameDay(event) %}
+                            - {{ event.end | date('l') | trans}}                   {# End date #}
+                            {{ event.end |date('d/m') }}                           {# End hour #}
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>{{ 'email.subscribeevent.message.where'|trans}}</td>
+                        <td>{{ event.CorporateName}} | {{ event.Address is not empty ?  " " ~ event.Address }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ 'email.subscribeevent.message.organizedby'|trans}}</td>
+                        <td>
+                            {% if cpt_event_isAuthorSingleOrganizer(event) %}
+                                <div style="display:inline-block">
+                                {{ 'event.organizedandanimatedby'|trans}}
+                                <b>{{" " ~ event.author.displayname}}</b>              {# Organizer + Animator name #}
+                                </div>
+                            {% else %}
+                                <div style="display:inline-block">
+                                {{ 'event.organizedby'|trans}}
+                                <b>{{" " ~ event.author.displayname}}</b>{{" |"}}              {# Organizer name #}
+                                </div>
+                                <div style="display:inline-block">
+                                {{ 'event.animatedby'|trans}}
+                                {% for registration in event.registrations %}
+                                    {{ loop.last and not loop.first ? 'and'|trans ~ " " }}
+                                    <b>{{ registration.user.displayname ~ " "}}</b>             {# Animator name #}
+                                {% endfor %}
+                                </div>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>{{ 'email.subscribeevent.message.eventtype'|trans}}</td>
+                        <td>
+                            {% if event.cptevent %}
+                            {{ 'email.subscribeevent.message.cptevent'|trans}}
+                            {% else %}
+                            {{ 'email.subscribeevent.message.notcptevent'|trans}}    
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>{{ 'email.subscribeevent.message.description'|trans}}</td>
+                        <td>{{ event.content|raw }}</td>
+                    </tr>
+                </table>
+
+                {{ 'email.subscribeevent.message.footer.general'|trans }}
+                {% if event.cptevent %}
+                {{ 'email.subscribeevent.message.footer.cptevent'|trans}}
+                {% else %}
+                {{ 'email.subscribeevent.message.footer.notcptevent'|trans}}    
+                {% endif %}
+            </div>
+        </body>
+    </html>
+    {% endautoescape %}
+{% endblock %}

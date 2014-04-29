@@ -113,6 +113,13 @@ class EventController extends BaseController {
                    if ($form->isValid()) {
                         $this->getRegistrationManager()->DeleteAllRegistrations($event); // The registrations are recreated from scratch, so we delete the old ones
                         $this->getEventManager()->SaveEvent($event);
+                        
+                        // send an email for each registration
+                        foreach ($event->getRegistrations() as $registration)
+                        {
+                            $this->getMailManager()->sendEventSubscriptionEmailMessage($registration);
+                        }
+                        
                         return $this->CreateJsonOkResponse(null);
                     } else {
                        return $this->CreateJsonFailedResponse($this->GetEventEditView($event, $form));
@@ -304,11 +311,15 @@ class EventController extends BaseController {
 
         $user = $this->getUser();
         
-        if ($this->getRegistrationManager()
-                ->RegisterUserForEvent($event, $user, $numattendees, false))
+        $registration = $this->getRegistrationManager()
+                ->RegisterUserForEvent($event, $user, $numattendees, false);
+        
+        if ($registration)
         {
             $event = $this->getEventManager()->getEventById($eventid);
-
+            
+            $this->getMailManager()->sendEventSubscriptionEmailMessage($registration);
+            
             $html_string = $this->renderView('CptEventBundle:Event:eventdisplay.html.twig', array(
                 'event' => $event,
             ));

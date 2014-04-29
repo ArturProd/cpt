@@ -22,7 +22,7 @@ function ShowPage(page_type, page_id)
     if (page_type === PAGE_EVENT){
         $('#leftcol_event').show();
         $('#leftcol_registration').hide();
-        
+        $('#leftcol_about').hide();
         $('#edit_event').hide();
         $('#display_events').show();
          
@@ -37,6 +37,8 @@ function ShowPage(page_type, page_id)
         $('#leftcol_event').hide();
         $('#leftcol_registration').hide();
         $('#leftcol_about').show();
+        $('#column_title_event_title').html('{{'main.title.chantpourtous'|trans}}');
+        SetLeftcolButton("<a class='event_new_btn' onclick='InitArticlesColumn();ShowPage(PAGE_EVENT);'>{{'main.button.back'|trans}}</a>"); {# set the left column button to go back to PAGE_EVENT #}
         showAboutPage();
     } else if (page_type === PAGE_REGISTER) {
         $('#leftcol_event').hide();
@@ -46,6 +48,7 @@ function ShowPage(page_type, page_id)
     } else if (page_type === PAGE_PROFILE) {
         $('#leftcol_event').hide();
         $('#leftcol_registration').hide();
+        showProfilePage();
     } else if (page_type === PAGE_EDIT_EVENT){
         $('#leftcol_registration').hide();
         $('#leftcol_event').show();
@@ -69,6 +72,13 @@ function showAboutPage()
              $('#leftcol_about').html( response );
      });
 }
+/*
+function showProfilePage()
+{
+    $.get( '{{ path('sonata_user_profile_show') }}', {_locale:_locale}), function(response){
+             $('#leftcol_about').html( response );
+     });
+}*/
 
 
 {# ************************************************************************************************************************ #} 

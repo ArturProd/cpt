@@ -8,6 +8,7 @@ use Cpt\MainBundle\Interfaces\Manager\MailManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface as Container;
 
 use FOS\UserBundle\Model\UserInterface;
+use Cpt\EventBundle\Interfaces\Entity\RegistrationInterface;
 
 /**
  * Description of MailManager
@@ -36,7 +37,7 @@ class MailManager extends BaseManager implements MailManagerInterface
         $url = $this->router->generate('fos_user_registration_confirm', array('token' => $user->getConfirmationToken()), true);
         
         $attachements = Array() ;
-        $attachements[] = $this->container->get('kernel')->locateResource('@CptMainBundle/Resources/views/Emails/logo-email.png');
+        $attachements[] = $this->getCptLogo();
 
         $rendered = $this->templating->render($template, array(
             'user' => $user,
@@ -56,6 +57,21 @@ class MailManager extends BaseManager implements MailManagerInterface
         $this->sendEmailMessage($rendered, $this->parameters['from_email']['resetting'], $user->getEmail());
     }
 
+    public function sendEventSubscriptionEmailMessage(RegistrationInterface $registration){
+        $user = $registration->getUser();
+        
+        $template = 'CptMainBundle:Emails:subscribe_event_email.html.twig';
+        
+        $attachements = Array() ;
+        $attachements[] = $this->getCptLogo();
+
+        $rendered = $this->templating->render($template, array(
+            'registration' => $registration
+        ));
+        
+        $this->sendEmailMessage($rendered, $this->parameters['from_email']['confirmation'], $user->getEmail(), $attachements);
+    }
+    
     /**
      * @param string $renderedTemplate
      * @param string $toEmail
@@ -84,5 +100,10 @@ class MailManager extends BaseManager implements MailManagerInterface
         $message->setBody($body, "text/html");
         
         $this->mailer->send($message);
+    }
+    
+    protected function getCptLogo()
+    {
+       return $this->container->get('kernel')->locateResource('@CptMainBundle/Resources/views/Emails/logo-email.png');
     }
 }

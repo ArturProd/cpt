@@ -317,7 +317,7 @@ class EventManager extends BaseManager implements EventManagerInterface {
      * @param boolean $is_attendee if we already know if the user is at least an attendee, then it can be provided to improve performances
      * @return boolean
      */
-    protected function isOrganizer(EventInterface $event, UserInterface $user, $is_attendee = true) {
+    public function isOrganizer(EventInterface $event, UserInterface $user, $is_attendee = true) {
         if (!$is_attendee) { // If we already know that the user is not an attendee, he cannot be an organizer
             return false;
         }

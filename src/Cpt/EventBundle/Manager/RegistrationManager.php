@@ -33,12 +33,12 @@ class RegistrationManager extends BaseManager implements RegistrationManagerInte
     public function RegisterUserForEvent(EventInterface $event, UserInterface $user, $numparticipants = 1)
     {
       
-        $registration = $this->CreateRegistration($event, $user, $numparticipants, false);
-        $this->AddRegistrationAndUpdateQueue($event, $registration);
+        $dummy_registration = $this->CreateRegistration($event, $user, $numparticipants, false);
+        $registration = $this->AddRegistrationAndUpdateQueue($event, $dummy_registration);
         
         $this->getEventManager()->SaveEvent($event);
         
-        return true;
+        return $registration;
     }
     
     public function CancelRegistration(EventInterface $event, UserInterface $user){

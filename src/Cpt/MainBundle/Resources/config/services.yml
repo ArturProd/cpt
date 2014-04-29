@@ -30,3 +30,20 @@ services:
             - '@router'
             - '@templating'
             - { confirmation.template: %cpt.mailer.template.registration%, resetting.template: %cpt.mailer.template.resetting%, from_email: {confirmation: %cpt.mail.from_email%, resetting: %cpt.mail.from_email%} }
+
+    cpt.twig.make_js_string_extension:
+        class: Cpt\EventBundle\Twig\MakeJsStringExtension
+        tags:
+            - { name: twig.extension }
+            
+    cpt.twig.eventmanager_extension:
+        class: Cpt\EventBundle\Twig\EventManagerExtension
+        arguments: ['@cpt.event.manager','@cpt.registration.manager']
+        tags:
+            - { name: twig.extension }
+
+    cpt.twig.permalink_extension:
+        class: Cpt\EventBundle\Twig\PermalinkExtension
+        arguments: []
+        tags:
+            - { name: twig.extension }

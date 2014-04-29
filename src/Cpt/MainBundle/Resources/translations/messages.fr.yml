@@ -53,5 +53,35 @@ registration:
             <p>Ha oui... tout ceci est gratuit!</p><br>            
             Cordialement,<br>
             www.chantpourtous.com<br>
-
+email.subscribeevent.subject.attendee: Votre inscription à "%eventname%"
+email.subscribeevent.subject.author: Création de l'évènement "%eventname%"
+email.subscribeevent.subject.leader: Vous animez l'évènement "%eventname%"
+email.subscribeevent.message.header.attendee: |
+    <p>Bonjour %username%,</p>
+    <p>Merci pour votre inscription à "%eventname%".<p>
+email.subscribeevent.message.header.author: |
+    <p>Bonjour %username%,</p>
+    <p>Merci pour organiser l'évènement "%eventname%". Vous trouverez ci-dessous les détails de votre évènement tels que les participants pourront les recevoir par email lors de leur inscription:<p>
+email.subscribeevent.message.header.leader: |
+    <p>Bonjour %username%,</p>
+    <p>Merci pour votre inscription à "%eventname%".  Vous trouverez ci-dessous les détails de votre évènement tels que les participants pourront les recevoir par email lors de leur inscription:<p>      
+email.subscribeevent.message.footer: |
+    <p>Notez que les personnes ayant une place sur la liste d'attente ne sont par garanties de pouvoir participer à cet évènement.<p>
+email.subscribeevent.message.footer.cptevent:
+    <p>Cet évènement est GRATUIT pour les participants. Les organisateurs peuvent cependant accepter des donations strictement facultatives.</p>
+email.subscribeevent.message.footer.notcptevent:
+    <p>Cet évènement n'est pas un Chant pour Tous. Contrairement aux chants pour tous, il n'est pas nécessairement ni gratuit, ni concernant l'improvisation vocale et corporelle, ni ouvert à tous. Veuillez vous référer à la description ou contacter l'organisateur pour avoir plus de détail.</p>
+email.subscribeevent.message.allseatsnotconfirmed: "<p><b>Important:</b> Vous avez demandé plus de places qu'il n'y en a de disponibles. Certaines de vos places demandées sont placées sur liste d'attente.</p>"
+email.subscribeevent.message.seatsrequested: Nombre de places demandées
+email.subscribeevent.message.seatsconfirmed: Nombre de places confirmées
+email.subscribeevent.message.seatswaitinglist: Nombre de places sur liste d'attente
+email.subscribeevent.message.when: Quand
+email.subscribeevent.message.where: Où
+email.subscribeevent.message.description: Description
+email.subscribeevent.message.organizedby: Organisé par
+email.subscribeevent.message.animatedby: Animé par
+email.subscribeevent.message.eventtype: Type d'évènement
+email.subscribeevent.message.notcptevent: Cet évènement n'est pas un Chant Pour Tous.
+email.subscribeevent.message.cptevent: "Cet évènement est un Chant Pour Tous: Improvisation vocale et corporelle, Gratuit et Ouvert à Tous."
 main.about.learnmore: En savoir plus...
+main.title.chantpourtous: Chant pour tous

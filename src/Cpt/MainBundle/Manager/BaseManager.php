@@ -41,6 +41,10 @@ abstract class BaseManager {
         return $this->GetContainer()->get('fos_user.user_manager');
     }
 
+    public function getMailManager(){
+        return $this->GetContainer()->get('cpt.mailer.manager');
+    }
+            
     /**
      * 
      * @return PermissionManager
