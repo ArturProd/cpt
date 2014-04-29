@@ -1,0 +1,42 @@
+{% block subject %}
+{% autoescape false %}
+{{ 'email.newsmetter.subject'|trans({'%topic%': topic}) }}
+{% endautoescape %}
+{% endblock %}
+{% block body_text %}
+{% autoescape false %}
+{% endautoescape %}
+{% endblock %}
+{% block body_html %}
+    {% autoescape false %}
+    <html>        
+        <body>
+            <div>
+                <center><a href="{{url('cpt_main_home')}}">{{ "<img src='attachmenturl[0]'>"|raw }}</a></center>
+                
+                <h2>{{ 'email.newsmetter.title.events'|trans }}</h2>
+                <ul>
+                {% for event in events %}
+                    <li>
+                            {{ include("CptEventBundle:Event:Includes/event_datetime.html.twig") }}
+                            | {{ event.cityname }}
+                            | {{ event.title }}
+                    </li>
+                {% endfor %}                    
+                </ul>
+                <h2>{{ 'email.newsmetter.title.events'|trans }}</h2>
+                <ul>
+                {% for post in posts %}
+                    <li>
+                            {{ post.createdat|date('d/m/Y') }}
+                            | {{ post.author }}
+                            | {{ post.title }}
+                    </li>
+                {% endfor %}                    
+                </ul>                    
+                {{ 'email.general.footer'|trans }}
+            </div>
+        </body>
+    </html>
+    {% endautoescape %}
+{% endblock %}

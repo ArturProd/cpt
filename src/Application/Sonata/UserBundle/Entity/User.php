@@ -48,6 +48,48 @@ class User extends BaseUser
     
     protected $city_name;
     
+    protected $option_newsletter = true;
+    
+    protected $option_mailoncomment = true;
+    
+    protected $option_allow_phonedisplay = false;
+ 
+
+    protected $professional = false;
+    
+    public function getOptionNewsletter() {
+        return $this->option_newsletter;
+    }
+    
+    public function setOptionNewslette($option_newsletter) {
+        $this->option_newsletter = $option_newsletter;
+    }
+    
+    public function getOptionMailoncomment() {
+        return $this->option_mailoncomment;
+    }
+    
+    public function setOptionMailoncomment($option_mailoncomment) {
+        $this->option_mailoncomment = $option_mailoncomment;
+    }
+ 
+    public function getProfessional() {
+        return $this->professional;
+    }
+    
+    public function setProfessional($professional) {
+        $this->professional = $professional;
+    }
+    
+    public function getOptionAllowPhonedisplay() {
+        return $this->option_allow_phonedisplay;
+    }
+    
+    public function setOptionAllowPhonedisplay($option_allow_phonedisplay) {
+        $this->option_allow_phonedisplay = $option_allow_phonedisplay;
+    }
+    
+    
     public function getCountryCode() {
         return $this->country_code;
     }

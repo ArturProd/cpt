@@ -1,0 +1,7 @@
+{{ event.begin | date('l') | trans}}                   {# Begin date #}
+{{ event.begin|date('d/m/Y') }}                          {# Begin hour #}
+{{ event.begin |date('H:i')  | trans}}
+{% if not cpt_event_isBeginEndSameDay(event) %}
+- {{ event.end | date('l') | trans}}                   {# End date #}
+{{ event.end |date('d/m/Y') }}                           {# End hour #}
+{% endif %}

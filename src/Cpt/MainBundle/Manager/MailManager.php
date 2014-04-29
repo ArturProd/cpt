@@ -10,6 +10,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface as Container;
 use FOS\UserBundle\Model\UserInterface;
 use Cpt\EventBundle\Interfaces\Entity\RegistrationInterface;
 use Cpt\EventBundle\Interfaces\Entity\EventInterface;
+use Cpt\PublicationBundle\Interfaces\Entity\CommentInterface;
 
 /**
  * Description of MailManager
@@ -32,6 +33,11 @@ class MailManager extends BaseManager implements MailManagerInterface
         $this->parameters = $parameters;
     }
 
+    /**
+     * Email after sign-up to website
+     * 
+     * @param \FOS\UserBundle\Model\UserInterface $user
+     */
     public function sendConfirmationEmailMessage(UserInterface $user)
     {
         $template = $this->parameters['confirmation.template'];
@@ -47,6 +53,12 @@ class MailManager extends BaseManager implements MailManagerInterface
         $this->sendEmailMessage($rendered, $this->parameters['from_email']['confirmation'], $user->getEmail(), $attachements);
     }
 
+    /**
+     * 
+     * Email for resetting password
+     * 
+     * @param \FOS\UserBundle\Model\UserInterface $user
+     */
     public function sendResettingEmailMessage(UserInterface $user)
     {
         $template = $this->parameters['resetting.template'];
@@ -58,6 +70,12 @@ class MailManager extends BaseManager implements MailManagerInterface
         $this->sendEmailMessage($rendered, $this->parameters['from_email']['resetting'], $user->getEmail());
     }
 
+    /**
+     * 
+     * Email when registering to a new event (or creating an event, or being leader for an event)
+     * 
+     * @param \Cpt\EventBundle\Interfaces\Entity\RegistrationInterface $registration
+     */
     public function sendEventSubscriptionEmailMessage(RegistrationInterface $registration){
         $user = $registration->getUser();
         
@@ -73,6 +91,12 @@ class MailManager extends BaseManager implements MailManagerInterface
         $this->sendEmailMessage($rendered, $this->parameters['from_email']['confirmation'], $user->getEmail(), $attachements);
     }
     
+    /**
+     * Email when canelling the regitration to an event
+     * 
+     * @param \Cpt\EventBundle\Interfaces\Entity\EventInterface $event
+     * @param \FOS\UserBundle\Model\UserInterface $user
+     */
     public function sendEventCancelRegistrationEmailMessage(EventInterface $event, UserInterface $user){
        
         $template = 'CptMainBundle:Emails:registration_cancel_email.html.twig';
@@ -88,7 +112,14 @@ class MailManager extends BaseManager implements MailManagerInterface
         $this->sendEmailMessage($rendered, $this->parameters['from_email']['confirmation'], $user->getEmail(), $attachements);
     }
     
-     public function sendEventCancelledEmailMessage(EventInterface $event, UserInterface $user){
+    /**
+     * 
+     * Email when an event is cancelled
+     * 
+     * @param \Cpt\EventBundle\Interfaces\Entity\EventInterface $event
+     * @param \FOS\UserBundle\Model\UserInterface $user
+     */
+    public function sendEventCancelledEmailMessage(EventInterface $event, UserInterface $user){
        
         $template = 'CptMainBundle:Emails:event_cancelled_email.html.twig';
         
@@ -101,6 +132,52 @@ class MailManager extends BaseManager implements MailManagerInterface
         ));
         
         $this->sendEmailMessage($rendered, $this->parameters['from_email']['confirmation'], $user->getEmail(), $attachements);
+    }
+    
+    /**
+     * 
+     * Email when a new comment is received
+     * 
+     * @param \Cpt\MainBundle\Manager\CommentInterface $user
+     */
+    public function sendPublicationNewCommentEmailMessage(CommentInterface $comment){
+       
+        $template = 'CptMainBundle:Emails:comment_new_email.html.twig';
+        
+        $attachements = Array() ;
+        $attachements[] = $this->getCptLogo();
+
+        $rendered = $this->templating->render($template, array(
+            'comment' => $comment,
+        ));
+
+        $receiveremail = $comment->getPublication()->getAuthor()->getEmail();
+        
+        $this->sendEmailMessage($rendered, $this->parameters['from_email']['confirmation'], $receiveremail, $attachements);
+    }
+    
+     /**
+     * 
+     * Email when a new comment is received
+     * 
+     * @param \Cpt\MainBundle\Manager\CommentInterface $user
+     */
+    public function sendNewsLetterEmail($content, $events, $posts, $recipients){
+       
+        $template = 'CptMainBundle:Emails:newsletter_email.html.twig';
+        
+        $attachements = Array() ;
+        $attachements[] = $this->getCptLogo();
+
+        $rendered = $this->templating->render($template, array(
+            'content' => $content,
+            'posts' => $posts,
+            'events' => $events,
+        ));
+       
+        foreach($recipients as $user){
+            $this->sendEmailMessage($rendered, $this->parameters['from_email']['confirmation'], $user->getEmail(), $attachements);
+        }
     }
     
     /**

@@ -1,0 +1,10 @@
+Cpt\MainBundle\Entity\Newsletter:
+  type: entity
+  id:
+    id:
+      type: integer
+      generator:
+        strategy: AUTO  
+  fields:
+    content:
+        type: text

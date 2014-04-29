@@ -93,10 +93,22 @@ email.cancelevent.message: |
     <p>Bonjour %username%,</p>
     <p>L'évènement <span style="text-transform:uppercase;font-weight:bolder">"%eventname%"</span> est annulé.
     <p>Toute inscription à cet évènement est donc annulée.</p>
-    
+
+email.commentnew.subject: Nouveau commentaire pour "%publicationname%"
+email.commentnew.message: |    
+    <p>Bonjour %username%,</p>
+    <p>Un nouveau commentaire a été posté par %postername% le %date% à %time% pour votre publication <span style="text-transform:uppercase;font-weight:bolder">"%publicationname%"</span>.
+
+email.newsmetter.subject: "Chant pour Tous Newsletter: %topic%"
+email.newsmetter.title.about: News
+email.newsmetter.title.events: Evènements
+email.newsmetter.title.articles: Articles
+       
 email.general.footer: |
     <p>Cordialement,</p>
-    <p>www.chantpourtous.com</p>  
+    <p>www.chantpourtous.com</p>
+    <p font-style='font-size:small;'>Pour configurer l'envoi d'email, veuillez vous loguer sur le site et modifier les options d'envoi d'email sur votre page profil.</p>
+
 
 main.about.learnmore: En savoir plus...
 main.title.chantpourtous: Chant pour tous

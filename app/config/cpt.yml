@@ -7,6 +7,8 @@ parameters:
     cpt.event.update_ajax_delay: 400 # Delay in ms between changes in month and sending request ajax to update calendar, events etc.
     cpt.notice.slideupdelay: 20000  #delay when display a flash message, before the message is hidden
     cpt.ckeditor.ready.timeout: 1500 #delay to get the CKEDITOR ready before accessing it
+    cpt.newsletter.send: true;
+    cpt.newsletter.interval: "P7D"
     
 twig:
   globals:

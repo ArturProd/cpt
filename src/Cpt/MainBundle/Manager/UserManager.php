@@ -134,4 +134,19 @@ class UserManager extends BaseUserManager
             $this->objectManager->flush();
         }
     }
+    
+    public function findNewsLetterRecipients()
+    {
+        $qb = $this->objectManager->createQueryBuilder();
+        $qb->select('u')
+                ->from($this->class, 'u')
+                ->where('u.locked = :locked')
+                ->AndWhere('u.expired = :expired')
+                ->AndWhere('u.option_newsletter= :option_newsletter')
+                ->setParameter('locked', false)
+                ->setParameter('expired', false)
+                ->setParameter('option_newsletter', true);
+                
+        return $qb->getQuery()->getResult();
+    }
 }

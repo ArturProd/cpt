@@ -40,6 +40,31 @@ class EventManager extends BaseManager implements EventManagerInterface {
   
     // <editor-fold defaultstate="collapsed" desc="Public: Event related">
 
+    public function getPusblishedBetween($fromdate, $todate){
+               $parameters = array();
+        $query = $this->em->getRepository($this->class)
+                ->createQueryBuilder('p')
+                ->select('p')
+                ->leftJoin('p.author', 'a', Expr\Join::WITH, 'a.enabled = true')
+                ->Where('p.enabled = :enabled')
+                ->andWhere('p.desactivated = :desactivated')               
+                ->andWhere('p.publicationDateStart >= :from')
+                ->andWhere('p.publicationDateStart < :to')
+                ->addOrderby('p.publicationDateStart', 'DESC');
+
+            $parameters['enabled'] = true;
+            $parameters['desactivated'] = false;          
+            $parameters['from'] = $fromdate;
+            $parameters['to'] = $todate;
+
+      
+        $query->setParameters($parameters);
+
+        
+        return $query->getQuery()->getResult();
+
+    }
+    
     public function getAllEvents()
     {
         return $this->getEventRepository()->findAll();

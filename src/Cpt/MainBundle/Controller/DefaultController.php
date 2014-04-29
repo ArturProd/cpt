@@ -2,10 +2,8 @@
 
 namespace Cpt\MainBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
-
-class DefaultController extends Controller
+class DefaultController extends BaseController
 {
     
     public function aboutAction()
@@ -56,6 +54,25 @@ class DefaultController extends Controller
         
         return $this->render('CptMainBundle:Default:index.html.twig', $params );
         
+    }
+    
+    public function sendNewsLetterAction()
+    {
+        if (!$this->getParameter('cpt.newsletter.send'))
+                return;
+        $interval = $this->getParameter('cpt.newsletter.interval');
+        
+        $currentdate = new \DateTime();
+        $fromdate = new \DateTime();
+        $diffDays = new DateInterval($interval);        
+        $fromdate->sub($diffDays);     
+        
+        
+        $recipients = $this->getUserManager()->findNewsLetterRecipients();
+        $posts = $this->getPostManager()->getPusblishedBetween($fromdate, $currentdate);
+        $events = $this->getEventManager()->getPusblishedBetween($fromdate, $currentdate);
+
+        $this->getMailManager()->sendNewsLetterEmail($content, $events, $posts, $recipients);
     }
     
 }

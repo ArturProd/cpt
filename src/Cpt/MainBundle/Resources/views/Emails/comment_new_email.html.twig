@@ -1,0 +1,23 @@
+{% block subject %}
+{% autoescape false %}
+{{ 'email.commentnew.subject'|trans({'%publicationname%': comment.publication.title}) }}
+{% endautoescape %}
+{% endblock %}
+{% block body_text %}
+{% autoescape false %}
+{% endautoescape %}
+{% endblock %}
+{% block body_html %}
+    {% autoescape false %}
+    <html>        
+        <body>
+            <div>
+                <center><a href="{{url('cpt_main_home')}}">{{ "<img src='attachmenturl[0]'>"|raw }}</a></center>
+                {{ 'email.commentnew.message'|trans({'%username%': comment.publication.author.displayname, '%publicationname%': comment.publication.title, '%date%': comment.createdat|date('d/m/Y'), '%time%':comment.createdat|date('H:i') , '%postername%': comment.author.displayname }) }}
+
+                {{ 'email.general.footer'|trans }}
+            </div>
+        </body>
+    </html>
+    {% endautoescape %}
+{% endblock %}

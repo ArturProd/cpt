@@ -107,6 +107,9 @@ class CommentController extends BaseController {
             //$this->get('cpt.blog.mailer')->sendCommentNotification($comment);
             $comment->setCanModify($this->CanModifyComment($comment, $user));
             $this->getCommentManager()->save($comment);
+            
+            $this->getMailManager()->sendPublicationNewCommentEmailMessage($comment);
+
 
             return $this->CreateJsonOkResponse($comment->toViewArray());
         }

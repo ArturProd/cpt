@@ -1,0 +1,18 @@
+{% if cpt_event_isAuthorSingleOrganizer(event) %}
+    <div style="display:inline-block">
+    {{ 'event.organizedandanimatedby'|trans}}
+    <b>{{" " ~ event.author.displayname}}</b>              {# Organizer + Animator name #}
+    </div>
+{% else %}
+    <div style="display:inline-block">
+    {{ 'event.organizedby'|trans}}
+    <b>{{" " ~ event.author.displayname}}</b>{{" |"}}              {# Organizer name #}
+    </div>
+    <div style="display:inline-block">
+    {{ 'event.animatedby'|trans}}
+    {% for registration in event.registrations %}
+        {{ loop.last and not loop.first ? 'and'|trans ~ " " }}
+        <b>{{ registration.user.displayname ~ " "}}</b>             {# Animator name #}
+    {% endfor %}
+    </div>
+{% endif %}

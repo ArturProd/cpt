@@ -33,58 +33,43 @@
                 {% endif %}
                 <table style="border-style:solid;border-width:1px;">
                     <tr>
-                        <td>{{ 'email.subscribeevent.message.when'|trans}}</td>
+                        {# When #}
+                        <td>{{ 'email.subscribeevent.message.time'|trans}}</td>
                         <td style="color:#066FB2;font-weight: bold;">
-                            {{ event.begin | date('l') | trans}}                   {# Begin date #}
-                            {{ event.begin|date('d/m') }}                          {# Begin hour #}
-                            {% if not cpt_event_isBeginEndSameDay(event) %}
-                            - {{ event.end | date('l') | trans}}                   {# End date #}
-                            {{ event.end |date('d/m') }}                           {# End hour #}
-                            {% endif %}
+                            {{ include("CptEventBundle:Event:Includes/event_datetime.html.twig") }}
                         </td>
-                    </tr>
+                    </tr>                    
                     <tr>
+                        {# where #}
                         <td>{{ 'email.subscribeevent.message.where'|trans}}</td>
                         <td style="color:#066FB2;font-weight: bold;">{{ event.CorporateName}} | {{ event.fulladdress is not empty ?  " " ~ event.fulladdress }}</td>
                     </tr>                    
                     <tr>
+                        {# Seats requested #}
                         <td>{{ 'email.subscribeevent.message.seatsrequested'|trans}}</td>
                         <td>{{registration.numparticipant}}</td>
                     </tr>
                     <tr>
+                        {# Seats confirmed #}
                         <td>{{ 'email.subscribeevent.message.seatsconfirmed'|trans}}</td>
                         <td style="color:green;font-weight:bold">{{registration.numconfirmed}}</td>
                     </tr>
                     {% if registration.numqueuedparticipant > 0 %}
                     <tr>
+                        {# Seats on waiting list #}
                         <td>{{ 'email.subscribeevent.message.seatswaitinglist'|trans}}</td>
                         <td style="color:red;font-weight:bold">{{registration.numqueuedparticipant}}</td>
                     </tr>
                     {% endif %}
                     <tr>
+                        {# Organized by string  #}
                         <td>{{ 'email.subscribeevent.message.organizedby'|trans}}</td>
                         <td>
-                            {% if cpt_event_isAuthorSingleOrganizer(event) %}
-                                <div style="display:inline-block">
-                                {{ 'event.organizedandanimatedby'|trans}}
-                                <b>{{" " ~ event.author.displayname}}</b>              {# Organizer + Animator name #}
-                                </div>
-                            {% else %}
-                                <div style="display:inline-block">
-                                {{ 'event.organizedby'|trans}}
-                                <b>{{" " ~ event.author.displayname}}</b>{{" |"}}              {# Organizer name #}
-                                </div>
-                                <div style="display:inline-block">
-                                {{ 'event.animatedby'|trans}}
-                                {% for registration in event.registrations %}
-                                    {{ loop.last and not loop.first ? 'and'|trans ~ " " }}
-                                    <b>{{ registration.user.displayname ~ " "}}</b>             {# Animator name #}
-                                {% endfor %}
-                                </div>
-                            {% endif %}
+                            {{ include("CptEventBundle:Event:Includes/event_organizers.html.twig") }}
                         </td>
                     </tr>
                     <tr>
+                        {# event type (chant pour tous or not #}
                         <td>{{ 'email.subscribeevent.message.eventtype'|trans}}</td>
                         <td>
                             {% if event.cptevent %}
@@ -95,6 +80,7 @@
                         </td>
                     </tr>
                     <tr>
+                        {# description #}
                         <td>{{ 'email.subscribeevent.message.description'|trans}}</td>
                         <td>{{ event.content|raw }}</td>
                     </tr>

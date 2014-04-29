@@ -94,9 +94,20 @@ email.cancelevent.message: |
     <p>The event <span style="text-transform:uppercase;font-weight:bolder">"%eventname%"</span> is cancelled.
     <p>Any registration you have made for this event is therefore cancelled as well.</p>
 
+email.commentnew.subject: New comment for "%publicationname%"
+email.commentnew.message: |    
+    <p>Hello %username%,</p>
+    <p>A new comment was posted by %postername% the %date% at %time% for your publication <span style="text-transform:uppercase;font-weight:bolder">"%publicationname%"</span>.
+
+email.newsmetter.subject: "Chant pour Tous Newsletter: %topic%"
+email.newsmetter.title.about: News
+email.newsmetter.title.events: Events
+email.newsmetter.title.articles: Articles
+    
 email.general.footer: |
     <p>Regards,</p>
-    <p>www.chantpourtous.com</p>   
+    <p>www.chantpourtous.com</p><br>
+    <p font-style='font-size:smaller;'>In order not to receive emails from chantpourtous website, please login to the website and modify the email options on your profile page</p>
 
 main.about.learnmore: Learn more...
 main.title.chantpourtous: Chant pour tous
