@@ -159,6 +159,8 @@ function InitGoogleMapWidgets() {
 
     geolocate();
    // googlemap.fitBounds(bounds);
+   
+   $('#placesearch').val("{{ event.fulladdress }}");
    {% endif %}
 }
 

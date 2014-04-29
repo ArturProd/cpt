@@ -29,7 +29,7 @@
                     </tr>
                     <tr>
                         <td>{{ 'email.subscribeevent.message.where'|trans}}</td>
-                        <td style="color:#066FB2;font-weight: bold;">{{ event.CorporateName}} | {{ event.Address is not empty ?  " " ~ event.Address }}</td>
+                        <td style="color:#066FB2;font-weight: bold;">{{ event.CorporateName}} | {{ event.fulladdress is not empty ?  " " ~ event.fulladdress }}</td>
                     </tr>                                        
                     <tr>
                         <td>{{ 'email.subscribeevent.message.description'|trans}}</td>

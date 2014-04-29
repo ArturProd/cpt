@@ -412,9 +412,7 @@ function set_adress(address_num,address,postal_code,city_name,country_name,count
         address_string += city_name ? city_name + " " : "";
         address_string += country_name ? country_name : "";
         
-        {# set the fields #}
-        $('#address_display').attr('value', address_string);    
-        
+        {# set the fields #}       
         $('#address_num').attr('value',address_num);
         $('#address').attr('value',address);
         $('#country_name').attr('value',country_name);
@@ -634,7 +632,7 @@ function InitializeEventPage()
 
         {############################################}
         {# Initialize adress field #}
-        var address_num = $('#country_code').val();
+        var address_num = $('#address_num').val();
         var address = $('#address').val();
         var country_name = $('#country_name').val();
         var country_code = $('#country_code').val();

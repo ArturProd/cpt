@@ -61,6 +61,31 @@ class Event extends Publication implements EventInterface
         
         $this->setQueue($new_queue);
     }
+    
+    public function getFullAddress()
+    {
+        $adressnum = $this->getAddressNum();
+        $adress = $this->getAddress();
+        $postalcode = $this->getCityPostalCode();
+        $cityname = $this->getCityName();
+        $countryname = $this->getCountryName();
+        
+        $result = "";
+        
+        if (!empty($adressnum)){
+            $result .=  $adressnum . " ";
+        }
+        
+        if (!empty($adress)){
+            $result .=  $adress . ", " ;
+        }
+        
+        $result .=  $postalcode . " " . $cityname;
+        
+        $result .= ", " . $countryname;
+        
+        return $result;
+    }
 
     public function getResponsibleUsersIds()
     {

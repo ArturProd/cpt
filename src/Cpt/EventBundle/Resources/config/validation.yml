@@ -50,7 +50,6 @@ Cpt\EventBundle\Entity\Event:
         - Type:
                 type: bool
       cptevent:
-        - NotBlank: ~
         - Type:
                 type: bool       
       countrycode:
