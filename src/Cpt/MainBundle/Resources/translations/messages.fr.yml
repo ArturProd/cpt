@@ -88,6 +88,12 @@ email.cancelregistration.message: |
     <p>Vous avez annulé votre inscription à <span style="text-transform:uppercase;font-weight:bolder">"%eventname%"</span>.
     <p>Toutes les places initialement réservées sont annulées.</p>
 
+email.cancelevent.subject: Annulation de l'évènement "%eventname%"
+email.cancelevent.message: |
+    <p>Bonjour %username%,</p>
+    <p>L'évènement <span style="text-transform:uppercase;font-weight:bolder">"%eventname%"</span> est annulé.
+    <p>Toute inscription à cet évènement est donc annulée.</p>
+    
 email.general.footer: |
     <p>Cordialement,</p>
     <p>www.chantpourtous.com</p>  

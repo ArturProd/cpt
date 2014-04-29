@@ -346,6 +346,10 @@ class EventController extends BaseController {
         $event = $this->getEventManager()->getEventById($id);
         $this->GetPermissionManager()->RestrictResourceNotFound($event);
         
+        foreach($event->getRegistrations() as $registration){
+            $this->getMailManager()->sendEventCancelledEmailMessage($event, $registration->getUser());
+        }
+        
         $result = $this->getEventManager()->cancelEvent($event);
         
         return $this->CreateJsonOkResponse($result);

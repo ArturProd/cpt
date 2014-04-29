@@ -88,6 +88,21 @@ class MailManager extends BaseManager implements MailManagerInterface
         $this->sendEmailMessage($rendered, $this->parameters['from_email']['confirmation'], $user->getEmail(), $attachements);
     }
     
+     public function sendEventCancelledEmailMessage(EventInterface $event, UserInterface $user){
+       
+        $template = 'CptMainBundle:Emails:event_cancelled_email.html.twig';
+        
+        $attachements = Array() ;
+        $attachements[] = $this->getCptLogo();
+
+        $rendered = $this->templating->render($template, array(
+            'event' => $event,
+            'user' => $user
+        ));
+        
+        $this->sendEmailMessage($rendered, $this->parameters['from_email']['confirmation'], $user->getEmail(), $attachements);
+    }
+    
     /**
      * @param string $renderedTemplate
      * @param string $toEmail
