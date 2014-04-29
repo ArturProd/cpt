@@ -362,6 +362,8 @@ class EventController extends BaseController {
         
         $this->getRegistrationManager()->CancelRegistration($event, $user);
         
+        $this->getMailManager()->sendEventCancelRegistrationEmailMessage($event, $user);
+        
         $this->get('session')->getFlashBag()->add(
             'notice',
             $this->get('translator')->trans('registration.has_been_cancelled')

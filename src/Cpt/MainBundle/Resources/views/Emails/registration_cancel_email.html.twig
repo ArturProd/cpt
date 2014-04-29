@@ -1,0 +1,46 @@
+{% block subject %}
+{% autoescape false %}
+{{ 'email.cancelregistration.subject'|trans({'%eventname%': event.title}) }}
+{% endautoescape %}
+{% endblock %}
+{% block body_text %}
+{% autoescape false %}
+{% endautoescape %}
+{% endblock %}
+{% block body_html %}
+    {% autoescape false %}
+    <html>        
+        <body>
+            <div>
+                <center><a href="{{url('cpt_main_home')}}">{{ "<img src='attachmenturl[0]'>"|raw }}</a></center>
+                {{ 'email.cancelregistration.message'|trans({'%eventname%': event.title, '%username%': user.displayname}) }}
+          
+                <table style="border-style:solid;border-width:1px;">
+                    <tr>
+                        <td>{{ 'email.subscribeevent.message.when'|trans}}</td>
+                        <td style="color:#066FB2;font-weight: bold;">
+                            {{ event.begin | date('l') | trans}}                   {# Begin date #}
+                            {{ event.begin|date('d/m') }}                          {# Begin hour #}
+                            {% if not cpt_event_isBeginEndSameDay(event) %}
+                            - {{ event.end | date('l') | trans}}                   {# End date #}
+                            {{ event.end |date('d/m') }}                           {# End hour #}
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>{{ 'email.subscribeevent.message.where'|trans}}</td>
+                        <td style="color:#066FB2;font-weight: bold;">{{ event.CorporateName}} | {{ event.Address is not empty ?  " " ~ event.Address }}</td>
+                    </tr>                                        
+                    <tr>
+                        <td>{{ 'email.subscribeevent.message.description'|trans}}</td>
+                        <td>{{ event.content|raw }}</td>
+                    </tr>
+                </table>
+
+                {{ 'email.general.footer'|trans }}
+
+            </div>
+        </body>
+    </html>
+    {% endautoescape %}
+{% endblock %}

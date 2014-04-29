@@ -17,33 +17,9 @@
 {% endblock %}
 {% block body_html %}
     {% autoescape false %}
-    <html>
-        <head>
-            <title>
-                {% if cpt_event_isAuthor(event,user) %}
-                {{ 'email.subscribeevent.subject.author'|trans({'%eventname%': event.title}) }}
-                {% elseif cpt_event_isOrganizer(event,user) %}
-                {{ 'email.subscribeevent.subject.leader'|trans({'%eventname%': event.title}) }}
-                {% else %}
-                {{ 'email.subscribeevent.subject.attendee'|trans({'%eventname%': event.title}) }}    
-                {% endif %}
-            </title>
-            <style>
-                .maindiv{
-                    width: 400px;
-                    -webkit-border-radius: 20px;
-                    -moz-border-radius: 20px;
-                    border-radius: 20px;
-                    border:20px solid #066FB2;
-                    background:rgba(255,255,255,0.9);
-                    -webkit-box-shadow: #8299AB 11px 11px 11px;
-                    -moz-box-shadow: #8299AB 11px 11px 11px; 
-                    box-shadow: #8299AB 11px 11px 11px;
-                }
-            </style>
-        </head>        
+    <html>        
         <body>
-            <div class="maindiv">
+            <div>
                 <center><a href="{{url('cpt_main_home')}}">{{ "<img src='attachmenturl[0]'>"|raw }}</a></center>
                 {% if cpt_event_isAuthor(event,user) %}
                 {{ 'email.subscribeevent.message.header.author'|trans({'%eventname%': event.title, '%username%': user.displayname}) }}
@@ -55,22 +31,10 @@
                 {% if registration.numqueuedparticipant > 0 %}
                 {{ 'email.subscribeevent.message.allseatsnotconfirmed'|trans }}
                 {% endif %}
-                <table>
-                    <tr>
-                        <td>{{ 'email.subscribeevent.message.seatsrequested'|trans}}</td>
-                        <td>{{registration.numparticipant}}</td>
-                    </tr>
-                    <tr>
-                        <td>{{ 'email.subscribeevent.message.seatsconfirmed'|trans}}</td>
-                        <td>{{registration.numconfirmed}}</td>
-                    </tr>
-                    <tr>
-                        <td>{{ 'email.subscribeevent.message.seatswaitinglist'|trans}}</td>
-                        <td>{{registration.numqueuedparticipant}}</td>
-                    </tr>
+                <table style="border-style:solid;border-width:1px;">
                     <tr>
                         <td>{{ 'email.subscribeevent.message.when'|trans}}</td>
-                        <td>
+                        <td style="color:#066FB2;font-weight: bold;">
                             {{ event.begin | date('l') | trans}}                   {# Begin date #}
                             {{ event.begin|date('d/m') }}                          {# Begin hour #}
                             {% if not cpt_event_isBeginEndSameDay(event) %}
@@ -81,8 +45,22 @@
                     </tr>
                     <tr>
                         <td>{{ 'email.subscribeevent.message.where'|trans}}</td>
-                        <td>{{ event.CorporateName}} | {{ event.Address is not empty ?  " " ~ event.Address }}</td>
+                        <td style="color:#066FB2;font-weight: bold;">{{ event.CorporateName}} | {{ event.Address is not empty ?  " " ~ event.Address }}</td>
+                    </tr>                    
+                    <tr>
+                        <td>{{ 'email.subscribeevent.message.seatsrequested'|trans}}</td>
+                        <td>{{registration.numparticipant}}</td>
                     </tr>
+                    <tr>
+                        <td>{{ 'email.subscribeevent.message.seatsconfirmed'|trans}}</td>
+                        <td style="color:green;font-weight:bold">{{registration.numconfirmed}}</td>
+                    </tr>
+                    {% if registration.numqueuedparticipant > 0 %}
+                    <tr>
+                        <td>{{ 'email.subscribeevent.message.seatswaitinglist'|trans}}</td>
+                        <td style="color:red;font-weight:bold">{{registration.numqueuedparticipant}}</td>
+                    </tr>
+                    {% endif %}
                     <tr>
                         <td>{{ 'email.subscribeevent.message.organizedby'|trans}}</td>
                         <td>
@@ -123,11 +101,7 @@
                 </table>
 
                 {{ 'email.subscribeevent.message.footer.general'|trans }}
-                {% if event.cptevent %}
-                {{ 'email.subscribeevent.message.footer.cptevent'|trans}}
-                {% else %}
-                {{ 'email.subscribeevent.message.footer.notcptevent'|trans}}    
-                {% endif %}
+
             </div>
         </body>
     </html>

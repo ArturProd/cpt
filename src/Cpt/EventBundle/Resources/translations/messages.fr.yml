@@ -41,7 +41,7 @@ event.attendeestable.nbseatsrequested: "# demandées"
 event.attendeestable.nbseatsqueued: "# attente"
 event.attendeestable.animator:      Animateur
 event.attendeestable.actions: ""
-event.organizedby:                    Organizé par
+event.organizedby:                    Organisé par
 event.animatedby:                     Animé par
 event.organizedandanimatedby:         Organisé et animé par
 and:                                     et

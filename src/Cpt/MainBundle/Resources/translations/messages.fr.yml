@@ -58,19 +58,17 @@ email.subscribeevent.subject.author: Création de l'évènement "%eventname%"
 email.subscribeevent.subject.leader: Vous animez l'évènement "%eventname%"
 email.subscribeevent.message.header.attendee: |
     <p>Bonjour %username%,</p>
-    <p>Merci pour votre inscription à "%eventname%".<p>
+    <p>Merci pour votre inscription à <span style="text-transform:uppercase;font-weight:bolder">"%eventname%"</span>.<p>
 email.subscribeevent.message.header.author: |
     <p>Bonjour %username%,</p>
-    <p>Merci pour organiser l'évènement "%eventname%". Vous trouverez ci-dessous les détails de votre évènement tels que les participants pourront les recevoir par email lors de leur inscription:<p>
+    <p>Vous organisez l'évènement <span style="text-transform:uppercase;font-weight:bolder">"%eventname%"</span>. Vous trouverez ci-dessous les détails de votre évènement tels que les participants pourront les recevoir par email lors de leur inscription:<p>
 email.subscribeevent.message.header.leader: |
     <p>Bonjour %username%,</p>
-    <p>Merci pour votre inscription à "%eventname%".  Vous trouverez ci-dessous les détails de votre évènement tels que les participants pourront les recevoir par email lors de leur inscription:<p>      
-email.subscribeevent.message.footer: |
-    <p>Notez que les personnes ayant une place sur la liste d'attente ne sont par garanties de pouvoir participer à cet évènement.<p>
-email.subscribeevent.message.footer.cptevent:
-    <p>Cet évènement est GRATUIT pour les participants. Les organisateurs peuvent cependant accepter des donations strictement facultatives.</p>
-email.subscribeevent.message.footer.notcptevent:
-    <p>Cet évènement n'est pas un Chant pour Tous. Contrairement aux chants pour tous, il n'est pas nécessairement ni gratuit, ni concernant l'improvisation vocale et corporelle, ni ouvert à tous. Veuillez vous référer à la description ou contacter l'organisateur pour avoir plus de détail.</p>
+    <p>Vous animez l'évènement <span style="text-transform:uppercase;font-weight:bolder">"%eventname%"</span>.  Vous trouverez ci-dessous les détails de votre évènement tels que les participants pourront les recevoir par email lors de leur inscription:<p>      
+email.subscribeevent.message.footer.general: |
+    <p>Cordialement,<p>
+    <p>www.chantpourtous.com</p>
+    
 email.subscribeevent.message.allseatsnotconfirmed: "<p><b>Important:</b> Vous avez demandé plus de places qu'il n'y en a de disponibles. Certaines de vos places demandées sont placées sur liste d'attente.</p>"
 email.subscribeevent.message.seatsrequested: Nombre de places demandées
 email.subscribeevent.message.seatsconfirmed: Nombre de places confirmées
@@ -81,7 +79,18 @@ email.subscribeevent.message.description: Description
 email.subscribeevent.message.organizedby: Organisé par
 email.subscribeevent.message.animatedby: Animé par
 email.subscribeevent.message.eventtype: Type d'évènement
-email.subscribeevent.message.notcptevent: Cet évènement n'est pas un Chant Pour Tous.
-email.subscribeevent.message.cptevent: "Cet évènement est un Chant Pour Tous: Improvisation vocale et corporelle, Gratuit et Ouvert à Tous."
+email.subscribeevent.message.notcptevent: <p><b>Cet évènement n'est pas un Chant Pour Tous.</b></p><p>Contrairement aux chants pour tous, il n'est pas nécessairement gratuit, concernant l'improvisation vocale et corporelle, ou ouvert à tous. Veuillez vous référer à la description ou contacter l'organisateur pour avoir plus d'informations.</p>
+email.subscribeevent.message.cptevent: "<p>Cet évènement est un Chant Pour Tous: Improvisation vocale et corporelle, Gratuit et Ouvert à Tous.</p><p>Les organisateurs peuvent accepter des donations strictement facultatives.</p>"
+
+email.cancelregistration.subject: Annulation de votre inscription à "%eventname%"
+email.cancelregistration.message: |
+    <p>Bonjour %username%,</p>
+    <p>Vous avez annulé votre inscription à <span style="text-transform:uppercase;font-weight:bolder">"%eventname%"</span>.
+    <p>Toutes les places initialement réservées sont annulées.</p>
+
+email.general.footer: |
+    <p>Cordialement,</p>
+    <p>www.chantpourtous.com</p>  
+
 main.about.learnmore: En savoir plus...
 main.title.chantpourtous: Chant pour tous

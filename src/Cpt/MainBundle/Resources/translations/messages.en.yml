@@ -59,17 +59,16 @@ email.subscribeevent.subject.author: Creation of the event "%eventname%"
 email.subscribeevent.subject.leader: You are leading the event "%eventname%"
 email.subscribeevent.message.header.attendee: |
     <p>Hello %username%,</p>
-    <p>Thank you for registering to "%eventname%".<p>
+    <p>Thank you for registering to <span style="text-transform:uppercase;font-weight:bolder">"%eventname%"</span>.<p>
 email.subscribeevent.message.header.author:    |
     <p>Hello %username%,</p>
-    <p>Thank you for organizing the event "%eventname%". You will find bellow the event details, which will be emailed to attendees when they register:<p>
+    <p>Thank you for organizing the event <span style="text-transform:uppercase;font-weight:bolder">"%eventname%"</span>. You will find bellow the event details, which will be emailed to attendees when they register:<p>
 email.subscribeevent.message.header.leader:    |
     <p>Hello %username%,</p>
-    <p>Thank you for leading the event "%eventname%". You will find bellow the event details, which will be emailed to attendees when they register:<p>
+    <p>Thank you for leading the event <span style="text-transform:uppercase;font-weight:bolder">"%eventname%"</span>. You will find bellow the event details, which will be emailed to attendees when they register:<p>
 email.subscribeevent.message.footer.general: |
-    <p>Note that people on waiting list he might not be able to attend the event.<p>
-email.subscribeevent.message.footer.cptevent:
-    <p>The event is FREE for attendees. Organizators can however accept a strictly optional donation.</p>
+    <p>Regards,<p>
+    <p>www.chantpourtous.com</p>    
 email.subscribeevent.message.allseatsnotconfirmed: "<p><b>Important:</b> You have requested more seats than available. Some of the seats you have requested are placed in the waiting list.</p>"
 email.subscribeevent.message.seatsrequested: Number of seats requested
 email.subscribeevent.message.seatsconfirmed: Number of seats confirmed
@@ -80,8 +79,18 @@ email.subscribeevent.message.description: Description
 email.subscribeevent.message.organizedby: Organized by
 email.subscribeevent.message.animatedby: Animated by
 email.subscribeevent.message.eventtype: Event type
-email.subscribeevent.message.notcptevent: <b>This event is not a Chant Pour Tous</b>.
-email.subscribeevent.message.cptevent: "<b>This event is a Chant pour Tous</b>: Vocal and Body Improvisation, Free and Open to Anybody."
+email.subscribeevent.message.notcptevent: <p><b>This event is not a Chant Pour Tous</b>.</p><p>As such, it is not necesarily free, regarding vocal and body improvisation, or open to anybody.Please read the event description or contact the organizers to have more informations.</p>
+email.subscribeevent.message.cptevent: "<b>This event is a Chant pour Tous</b>: Vocal and Body Improvisation, Free and Open to Anybody.<br><p>The event is FREE for attendees. Organizators can however accept a strictly optional donation.</p>"
+
+email.cancelregistration.subject: Cancellation of your registration to "%eventname%"
+email.cancelregistration.message: |
+    <p>Hello %username%,</p>
+    <p>You have cancelled your registration to <span style="text-transform:uppercase;font-weight:bolder">"%eventname%"</span>.
+    <p>All requested seats are now dismissed.</p>
+
+email.general.footer: |
+    <p>Regards,</p>
+    <p>www.chantpourtous.com</p>   
 
 main.about.learnmore: Learn more...
 main.title.chantpourtous: Chant pour tous

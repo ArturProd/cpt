@@ -9,6 +9,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface as Container;
 
 use FOS\UserBundle\Model\UserInterface;
 use Cpt\EventBundle\Interfaces\Entity\RegistrationInterface;
+use Cpt\EventBundle\Interfaces\Entity\EventInterface;
 
 /**
  * Description of MailManager
@@ -60,13 +61,28 @@ class MailManager extends BaseManager implements MailManagerInterface
     public function sendEventSubscriptionEmailMessage(RegistrationInterface $registration){
         $user = $registration->getUser();
         
-        $template = 'CptMainBundle:Emails:subscribe_event_email.html.twig';
+        $template = 'CptMainBundle:Emails:registration_register_email.html.twig';
         
         $attachements = Array() ;
         $attachements[] = $this->getCptLogo();
 
         $rendered = $this->templating->render($template, array(
             'registration' => $registration
+        ));
+        
+        $this->sendEmailMessage($rendered, $this->parameters['from_email']['confirmation'], $user->getEmail(), $attachements);
+    }
+    
+    public function sendEventCancelRegistrationEmailMessage(EventInterface $event, UserInterface $user){
+       
+        $template = 'CptMainBundle:Emails:registration_cancel_email.html.twig';
+        
+        $attachements = Array() ;
+        $attachements[] = $this->getCptLogo();
+
+        $rendered = $this->templating->render($template, array(
+            'event' => $event,
+            'user' => $user
         ));
         
         $this->sendEmailMessage($rendered, $this->parameters['from_email']['confirmation'], $user->getEmail(), $attachements);
