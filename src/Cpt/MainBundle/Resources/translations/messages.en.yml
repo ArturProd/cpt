@@ -45,14 +45,48 @@ registration:
         user_created: The user has been created successfully
     email:
         subject: Activate your account at www.chantpourtous.com, %username%!
+        title.activateyouraccount: Activate your account
+        title.professional: Discover our ProSinger plan
         message: |
-            <p>Hello %username%!</p><br>
             <p>Thank you for creating a account on Chant pour Tous website!</p>
             <p><b>To activate your account - please visit %confirmationUrl%</b></p><br>
             <p>On this website, you can create events related to singing, vocal and corporal improvisation.</p>
             <p>You can also subscribe to events, publish articles, and much more!</p><br>            
-            Kind regards,<br>
-            www.chantpourtous.com
+        professional: |
+           <p>%username%, discover the benefits of our 
+           <b><span style='color:#d23e0f'>P</span>r<span style='color:#d23e0f'>o</span>S<span style='color:#d23e0f'>i</span>n<span style='color:#d23e0f'>g</span>e<span style='color:#d23e0f'>r</span></b> 
+           plan:</p>
+           <table style="margin-left:40px;">
+                <tr><td style="padding:7px;font-size:13px;">
+                    <b style="font-size:16px;">Chargeable Events</b><br>
+                    Create chargeable events related to singing or vocal improvisation
+                </td></tr>                           
+                <tr><td style="padding:7px;font-size:13px;">
+                    <b style="font-size:16px;">Newsletter Visibility</b><br>
+                    Be visible in our weekly newsletter
+                </td></tr>
+                <tr><td style="padding:7px;font-size:13px;">
+                    <b style="font-size:16px;">Pro Website Sharing</b><br>
+                    Share your professional website with our users
+                </td></tr>
+                <tr><td style="padding:7px;font-size:13px;">
+                    <b style="font-size:16px;">Pro Directory</b><br>
+                    Appear in our Professional Singer Directory
+                 </td></tr>
+                <tr><td style="padding:7px;font-size:13px;">
+                    <b style="font-size:16px;">Pro Resume</b><br>
+                    Display your resume on your profile page
+                </td></tr>                
+                <tr><td style="padding:7px;font-size:13px;">
+                    <b style="font-size:16px;">Pro Id</b><br>
+                    Be clearly identified as a Professional Singer by our users
+                    </td></tr>
+                <tr><td style="padding:7px;font-size:13px;">
+                    <b style="font-size:16px;">Pro Contact</b><br>
+                    Display your pro contact informations our website
+                </td></tr>
+           </table>
+           <p>Subscribe to ProSinger directly from your profil page!</p>
 email.subscribeevent.subject.attendee: Your registration to "%eventname%"
 email.subscribeevent.subject.author: Creation of the event "%eventname%"
 email.subscribeevent.subject.leader: You are leading the event "%eventname%"
@@ -65,6 +99,8 @@ email.subscribeevent.message.header.author:    |
 email.subscribeevent.message.header.leader:    |
     <p>Hello %username%,</p>
     <p>Thank you for leading the event <span style="text-transform:uppercase;font-weight:bolder">"%eventname%"</span>. You will find bellow the event details, which will be emailed to attendees when they register:<p>
+email.subscribeevent.message.header.general: |
+    <p>Hello %username%!</p>
 email.subscribeevent.message.footer.general: |
     <p>Regards,<p>
     <p>www.chantpourtous.com</p>    
@@ -114,6 +150,7 @@ email.general.footer: |
     <p>www.chantpourtous.com</p><br><br><br>
     <p>__________________________________________________</p>
     <p font-style='font-size:smaller;'>In order not to receive emails from chantpourtous website, please login to the website and modify the email options on your profile page</p>
-
+email.general.header: |    
+    <p>Hello %username%,</p>
 main.about.learnmore: Learn more...
 main.title.chantpourtous: Chant pour tous

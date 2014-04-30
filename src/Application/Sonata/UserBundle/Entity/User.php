@@ -54,8 +54,12 @@ class User extends BaseUser
     
     protected $option_allow_phonedisplay = false;
  
+    // Email me for each event created in my city
+    protected $option_emailme_eachevent = false;
 
     protected $professional = false;
+    
+    protected $prosubscribed = false;
     
     public function setEmail($email)
     {
@@ -63,7 +67,24 @@ class User extends BaseUser
         parent::setEmail($email);
         $this->setUsername($email);
     }
+    
+    public function getOptionEmailmeEachevent() {
+        return $this->option_emailme_eachevent;
+    }
+    
+    
+    public function setOptionEmailmeEachevent($option_emailme_eachevent) {
+        $this->option_emailme_eachevent = $option_emailme_eachevent;
+    }
 
+    public function getProsubscribed() {
+        return $this->prosubscribed;
+    }
+    
+    public function setProsubscribed($prosubscribed) {
+        $this->prosubscribed = $prosubscribed;
+    }
+    
     public function getOptionNewsletter() {
         return $this->option_newsletter;
     }
@@ -116,7 +137,7 @@ class User extends BaseUser
         
     public function getDisplayName()
     {
-        return $this->getUsername() . ($this->getLastname() ? " ".$this->getLastname() : "");
+        return ucwords($this->getFirstname() . " " . $this->getLastname());
     }
     
     public function getPublications() {

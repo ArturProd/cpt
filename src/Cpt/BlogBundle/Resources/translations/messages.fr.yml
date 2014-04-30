@@ -31,3 +31,4 @@ post.deletedmessage: L'article a été supprimé
 post.savedmessage: L'article a été sauvegardé
 event.button.manage: Gérer l'évènement
 hint.event.linktothisevent: Lien vers cet évènement
+post.publishedby: Par %username% le %date%

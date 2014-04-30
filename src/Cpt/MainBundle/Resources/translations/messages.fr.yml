@@ -44,14 +44,56 @@ registration:
         user_created: The user has been created successfully
     email:
         subject: Activez votre compte sur www.chantpourtous.com, %username%!
+        title.activateyouraccount: Activez votre compte
+        title.professional: Découvrez notre service ProSinger       
         message: |
-            <p>Bonjour %username%!</p><br>
             <p>Merci d'avoir créé votre compte sur le site web de Chant pour Tous!</p>
             <p><b>Afin d'activer votre compte, veuillez cliquer sur ce lien: %confirmationUrl%</b></p>
             <p>Sur le site, vous pourrez proposer des évènements en rapport avec le chant improvisé.</p>
             <p>Vous pouvez de meme vous inscrire aux évènements, publier des articles, et plus encore!</p><br>            
-            Cordialement,<br>
-            www.chantpourtous.com<br>
+        professional: |
+           "<p>%username%, découvrez les avantages de notre service 
+           <b><span style='color:#d23e0f'>P</span>
+           r
+           <span style='color:#d23e0f'>o</span>
+           S
+           <span style='color:#d23e0f'>i</span>
+           n
+           <span style='color:#d23e0f'>g</span>
+           e
+           <span style='color:#d23e0f'>r</span>
+           </b>:</p>
+           <table style="margin-left:40px;">
+                <tr><td style="padding:7px;font-size:13px;">
+                    <b style="font-size:16px;">Evènements Payant</b><br>
+                    Créez des évènements payant en rapport avec le chant ou l'improvisation vocale
+                </td></tr>                           
+                <tr><td style="padding:7px;font-size:13px;">
+                    <b style="font-size:16px;">Visibilité Newsletter</b><br>
+                    Soyez visible dans notre newsletter hebdomadaire
+                </td></tr>
+                <tr><td style="padding:7px;font-size:13px;">
+                    <b style="font-size:16px;">Partage Site Pro</b><br>
+                    Partagez votre site web professionel avec nos utilisateurs
+                </td></tr>
+                <tr><td style="padding:7px;font-size:13px;">
+                    <b style="font-size:16px;">Annuaire Pro</b><br>
+                    Apparaissez dans notre annuaire des professionnels du chant
+                 </td></tr>
+                <tr><td style="padding:7px;font-size:13px;">
+                    <b style="font-size:16px;">Parcours Pro</b><br>
+                    Affichez votre parcours professionnel sur notre site
+                </td></tr>                
+                <tr><td style="padding:7px;font-size:13px;">
+                    <b style="font-size:16px;">Identification Pro</b><br>
+                    Soyez clairement identifé comme un Professionnel du chant par nos utilisateurs
+                    </td></tr>
+                <tr><td style="padding:7px;font-size:13px;">
+                    <b style="font-size:16px;">Contacts Pro</b><br>
+                    Affichez vos informations de contact pro sur notre site
+                </td></tr>
+           </table>           
+           <p>Souscrivez à ProSinger directement depuis votre page profil!</p>"
 email.subscribeevent.subject.attendee: Votre inscription à "%eventname%"
 email.subscribeevent.subject.author: Création de l'évènement "%eventname%"
 email.subscribeevent.subject.leader: Vous animez l'évènement "%eventname%"
@@ -114,7 +156,8 @@ email.general.footer: |
     <p>www.chantpourtous.com</p><br><br><br>
     <p>__________________________________________________</p>
     <p font-style='font-size:small;'>Pour configurer l'envoi d'email, veuillez vous loguer sur le site et modifier les options d'envoi d'email sur votre page profil.</p>
-
+email.general.header: |
+    <p>Hello %username%!</p>
 
 main.about.learnmore: En savoir plus...
 main.title.chantpourtous: Chant pour tous

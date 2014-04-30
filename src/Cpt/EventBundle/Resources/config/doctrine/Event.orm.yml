@@ -62,4 +62,7 @@ Cpt\EventBundle\Entity\Event:
       location_lat:
         type: text
         nullable: true
+      priceinfo:
+         type: text
+         nullable: true
 

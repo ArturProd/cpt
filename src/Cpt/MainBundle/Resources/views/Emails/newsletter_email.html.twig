@@ -52,7 +52,7 @@
                                 {% if event.id in registrationarray|keys %}
                                     {% if user.id in registrationarray[event.id]|keys %}
                                         <span style="color:red">
-                                        <BR>{{ 'email.newsletter.title.events.booked.total'|transchoice(registrationarray[event.id][user.id].numparticipant) }}
+                                        <BR>{{ 'email.newsletter.title.events.bcpt_professional_activatedooked.total'|transchoice(registrationarray[event.id][user.id].numparticipant) }}
                                         {% if registrationarray[event.id][user.id].numqueuedparticipant == 0 %}
                                             {{ 'email.newsletter.title.events.booked.allconfirmed'|trans}}
                                         {% else %}

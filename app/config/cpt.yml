@@ -10,9 +10,12 @@ parameters:
     cpt.newsletter.send: true;
     cpt.newsletter.interval.post: "P8D"
     cpt.newsletter.interval.event: "P21D"
-
+    cpt.professional.activated: true
+    cpt.professional.monthlyprice.euro: 9
 twig:
   globals:
     cpt_comment_checkfornew_interval: %cpt.publication.comment.checkfornew_interval% # interval in ms to check for new comments
     cpt_notice_slideupdelay: %cpt.notice.slideupdelay%
     CKEDITOR_READY_TIMEOUT: %cpt.ckeditor.ready.timeout%
+    cpt_professional_activated: %cpt.professional.activated%
+    cpt_professional_monthlyprice_euro: %cpt.professional.monthlyprice.euro%

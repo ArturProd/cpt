@@ -54,7 +54,9 @@
     <div class="post_header_title  {{post.publishedhomepage ? 'alaune' : '' }}">{{ post.title|upper }}</div>
 </div>
 <div class="post_subheader" id="post_subheader{{post.id}}">
-    <div class="inline-block">Par {{ post.author }} le {{post.createdAt|date('d/m/Y')}}</div>
+    <div class="inline-block">
+        {{ 'post.publishedby'|trans({'%username%': post.author.displayname , '%date%': post.createdAt|date('d/m/Y') }) }}
+    </div>
     <div class="inline-block float-right"><a href="{{ url('cpt_base_article_permalink', { 'article_permalink': sonata_news_permalink(post) }, true) }}"  target='_blank' class="btn_link" name="{{'hint.post.linktothisarticle'}}"></a></div>
      {% if is_granted('EDIT', post) %}
     <div class="inline-block float-right"><a class="btn_settings" name="{{'hint.post.editarticle'}}" onclick="EditPost({{post.id}})"></a></div>

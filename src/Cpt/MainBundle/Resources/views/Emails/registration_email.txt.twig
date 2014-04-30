@@ -1,6 +1,7 @@
+{% set list_li_style = "background-color: lightyellow;padding: 16px;font-size: 16px;border-style: solid;border-width: 1px;border-color: yellow;margin: 5px;" %}
 {% block subject %}
 {% autoescape false %}
-{{ 'registration.email.subject'|trans({'%username%': user.username, '%confirmationUrl%': confirmationUrl}) }}
+{{ 'registration.email.subject'|trans({'%username%': user.displayname, '%confirmationUrl%': confirmationUrl}) }}
 {% endautoescape %}
 {% endblock %}
 {% block body_text %}
@@ -8,7 +9,26 @@
     <html>
         <body>
         <center><a href="{{confirmationUrl}}">{{ "<img src='attachmenturl[0]'>"|raw }}</a></center>
-        <p>{{ 'registration.email.message'|trans({'%username%': user.username, '%confirmationUrl%': confirmationUrl}) }}</p>
+        {{ 'email.general.header'|trans({'%username%': user.displayname}) }}
+        <h2>
+            <span style="color:#F29516;">➤&nbsp;&nbsp;
+            {{ 'registration.email.title.activateyouraccount'|trans }}
+            </span>
+        </h2>
+        <div style="padding-left:20px">
+            {{ 'registration.email.message'|trans({'%username%': user.displayname, '%confirmationUrl%': confirmationUrl}) }}
+        </div>
+        {% if cpt_professional_activated and user.professional %}
+        <h2>
+            <span style="color:#d23e0f;">➤&nbsp;&nbsp;
+            {{ 'registration.email.title.professional'|trans({'%style_li%': list_li_style }) }}
+            </span>
+        </h2>
+        <div style="padding-left:20px">
+        {{ 'registration.email.professional'|trans({'%username%': user.displayname}) }}
+        </div>
+        {% endif %}
+        {{ 'email.general.footer'|trans }}
         </body>
     </html>
 {% endautoescape %}

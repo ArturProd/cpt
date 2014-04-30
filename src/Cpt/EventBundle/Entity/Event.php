@@ -296,6 +296,11 @@ class Event extends Publication implements EventInterface
     /**
      * @Expose
      */
+    protected $priceinfo;
+    
+    /**
+     * @Expose
+     */
     protected $registrations;
      
     /**
@@ -743,6 +748,14 @@ class Event extends Publication implements EventInterface
     
     //  <editor-fold defaultstate="collapsed" desc="Getters and Setters">
  
+    public function getPriceinfo() {
+        return $this->priceinfo;
+    }
+
+    public function setPriceinfo($priceinfo) {
+        $this->priceinfo = $priceinfo;
+    }
+    
     public function getAuthor() {
         return $this->author;
     }

@@ -65,6 +65,9 @@
                 {#{ form_label(eventform.city_name, null, { 'attr': {'class': 'input_label mandatory_field_label'} }) }#}
                 {{ form_widget(form.plainPassword) }}
             </div>
+                {{ form_errors(form.professional) }}            
+                {{ form_label(form.professional) }}            
+                {{ form_widget(form.professional) }}
                 {{ form_errors(form.country_code) }}            
             <div  class="input_div">
                 {{ form_label(form.country_code) }}            

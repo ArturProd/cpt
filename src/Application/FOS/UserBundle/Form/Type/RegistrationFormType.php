@@ -38,6 +38,10 @@ class RegistrationFormType extends BaseType
          $countries = Intl::getRegionBundle()->getCountryNames();
         $builder->add('firstname', null, array('label' => 'form.registration.firstname'))
                 ->add('lastname', null, array('label' => 'form.registration.lastname'))
+                ->add('professional', 'choice', 
+                        array('label' => 'form.registration.professional',
+                            'choices' => array(true => 'form.button.yes', false => 'form.button.no')
+                    ))
                 ->add('country_code', 'country', array(
                     'label' => 'form.registration.country', 
                     'choices' => $countries,
