@@ -14,10 +14,10 @@
         <field name="city_name"    type="string"     column="city_name" length="64"    nullable="true" />
         <field name="professional"    type="boolean"     column="professional"  nullable="false" />
         <field name="option_allow_phonedisplay"    type="boolean"     column="option_allow_phonedisplay" nullable="false" />
-        <field name="option_emailme_eachevent"    type="boolean"     column="option_allow_phonedisplay" nullable="false" />
+        <field name="option_emailme_eachevent"    type="boolean"     column="option_emailme_eachevent" nullable="false" />
         <field name="option_newsletter"    type="boolean"     column="option_newsletter"    nullable="false" />
         <field name="option_mailoncomment"    type="boolean"     column="option_mailoncomment"  nullable="false" />        
-        <field name="prosubscribed"    type="boolean"     column="option_allow_phonedisplay" nullable="false" />
+        <field name="prosubscribed"    type="boolean"     column="prosubscribed" nullable="false" />
 
     
         <one-to-many field="registrations" target-entity="Cpt\EventBundle\Entity\Registration" mapped-by="user">
