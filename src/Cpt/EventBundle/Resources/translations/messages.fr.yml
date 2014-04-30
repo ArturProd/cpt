@@ -139,4 +139,4 @@ event.numconfirmed: "%count% places confirmées"
 event.numqueuedattendees: ", %count% sur la liste d'attente"
 event.button.cancel_registration: Annuler ma réservation
 
-main.title.register: Créer un compte
+main.title.register: Inscription

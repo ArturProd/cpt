@@ -58,21 +58,45 @@ class DefaultController extends BaseController
     
     public function sendNewsLetterAction()
     {
-        if (!$this->getParameter('cpt.newsletter.send'))
+        if (!$this->container->getParameter('cpt.newsletter.send'))
                 return;
-        $interval = $this->getParameter('cpt.newsletter.interval');
         
+        $intervalevent = $this->container->getParameter('cpt.newsletter.interval.event');
+        $intervalpost = $this->container->getParameter('cpt.newsletter.interval.post');
+
         $currentdate = new \DateTime();
-        $fromdate = new \DateTime();
-        $diffDays = new DateInterval($interval);        
-        $fromdate->sub($diffDays);     
+        $fromdate_post = new \DateTime();
+        $todate_event = new \DateTime();
         
+        $diffDaysEvent = new \DateInterval($intervalevent);
+        $diffDaysPost = new \DateInterval($intervalpost);
+
+        $fromdate_post->sub($diffDaysPost);     
+        $todate_event->add($diffDaysEvent);
+        
+        $content = "test contenu. test contenu. test contenu. test contenu. test contenu. test contenu. test contenu. test contenu. test contenu. ";
+        $topic = "Sujet de la newsletter";
         
         $recipients = $this->getUserManager()->findNewsLetterRecipients();
-        $posts = $this->getPostManager()->getPusblishedBetween($fromdate, $currentdate);
-        $events = $this->getEventManager()->getPusblishedBetween($fromdate, $currentdate);
+        $posts = $this->getPostManager()->getPusblishedBetween($fromdate_post, $currentdate);
+        $events = $this->getEventManager()->getNewsLetterEvents($currentdate, $todate_event);
 
-        $this->getMailManager()->sendNewsLetterEmail($content, $events, $posts, $recipients);
+        $registrationarray = Array(Array());
+        foreach($events as $event){
+            foreach($event->getRegistrations() as $registration){
+               $registrationarray[$event->getId()][$registration->getUser()->getId()] = $registration; 
+            }
+        }
+        
+        $this->getMailManager()->sendNewsLetterEmail($topic, $content, $events, $posts, $registrationarray, $recipients);
+        
+                $params = array(
+            'article_permalink' => null,
+            'event_permalink' => null,
+            );
+                
+                return $this->render('CptMainBundle:Default:index.html.twig', $params );
+
     }
     
 }

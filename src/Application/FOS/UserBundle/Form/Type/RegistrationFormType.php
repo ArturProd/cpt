@@ -33,27 +33,31 @@ class RegistrationFormType extends BaseType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        parent::buildForm($builder, $options);
+       parent::buildForm($builder, $options);
         
          $countries = Intl::getRegionBundle()->getCountryNames();
         $builder->add('firstname', null, array('label' => 'form.registration.firstname'))
-            ->add('country_code', 'country', array(
-                'label' => 'form.registration.country', 
-                'choices' => $countries,
-                'preferred_choices' => array(
-                    'FR', // France
-                    'UK', // UK
-                    'ES', // Spain
-                    'DE', // Germany
-                    'BE', // Belgium
-                    'DK', // Denmark
-                    'EL', // Greece
-                    'IT', // Greece
-                    'NL', // Netherlands
-                    'US', // USA
+                ->add('lastname', null, array('label' => 'form.registration.lastname'))
+                ->add('country_code', 'country', array(
+                    'label' => 'form.registration.country', 
+                    'choices' => $countries,
+                    'preferred_choices' => array(
+                        'FR', // France
+                        'UK', // UK
+                        'ES', // Spain
+                        'DE', // Germany
+                        'BE', // Belgium
+                        'DK', // Denmark
+                        'EL', // Greece
+                        'IT', // Greece
+                        'NL', // Netherlands
+                        'US', // USA
 
-                ),
-            ));
+                    ),
+                ));
+        
+
+        $builder->remove('username'); // it is added in parent form, but we don't want it
     }
 
     public function getName()

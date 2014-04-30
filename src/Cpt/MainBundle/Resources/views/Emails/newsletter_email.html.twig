@@ -1,6 +1,6 @@
 {% block subject %}
 {% autoescape false %}
-{{ 'email.newsmetter.subject'|trans({'%topic%': topic}) }}
+{{ 'email.newsletter.subject'|trans }}
 {% endautoescape %}
 {% endblock %}
 {% block body_text %}
@@ -13,27 +13,79 @@
         <body>
             <div>
                 <center><a href="{{url('cpt_main_home')}}">{{ "<img src='attachmenturl[0]'>"|raw }}</a></center>
-                
-                <h2>{{ 'email.newsmetter.title.events'|trans }}</h2>
-                <ul>
-                {% for event in events %}
-                    <li>
-                            {{ include("CptEventBundle:Event:Includes/event_datetime.html.twig") }}
-                            | {{ event.cityname }}
-                            | {{ event.title }}
-                    </li>
-                {% endfor %}                    
-                </ul>
-                <h2>{{ 'email.newsmetter.title.events'|trans }}</h2>
-                <ul>
-                {% for post in posts %}
-                    <li>
-                            {{ post.createdat|date('d/m/Y') }}
-                            | {{ post.author }}
-                            | {{ post.title }}
-                    </li>
-                {% endfor %}                    
-                </ul>                    
+                <br>
+                {{ 'email.newsletter.header'|trans({'%username%': user.displayname })}}
+                <br><br>
+                {% if content is not empty %}
+                <h2>
+                    <span style="color:#F29516;">➤&nbsp;&nbsp;
+                    {{ 'email.newsletter.title.news'|trans }}
+                    </span>
+                </h2>
+                <div style="padding:20px">
+                    {{ content }}
+                </div>
+                {% endif %}
+                {# Events #}
+                {% if events|length > 0 %}
+                <h2>
+                    <span style="color:#066FB2;">➤&nbsp;&nbsp;
+                    {{ 'email.newsletter.title.events'|trans }}
+                    </span>
+                </h2>
+                <div style="padding:20px">
+                    {{ 'email.newsletter.title.events.incoming'|trans}}
+                    <table style="padding:20px;">
+                    {% for event in events %}
+                        <tr>
+                            <td style="vertical-align:top;font-weight: bold;padding:5px;"><span style="color:#066FB2;">{{ event.cityname }}</span></td>
+                            <td style="padding:5px;">
+                                <span style="color:#066FB2;font-weight: bold;">
+                                {{ include("CptEventBundle:Event:Includes/event_datetime.html.twig") }}
+                                </span>
+                                <br>
+                                <span style="text-transform: uppercase;font-weight: bolder;color:#000001;">
+                                <a href="{{ url('cpt_base_event_permalink', { 'event_permalink': event_permalink(event) }, false) }}" style="text-decoration: none;color: #000001;;">
+                                    "{{ event.title }}"
+                                </a>
+                                </span>
+                                {% if event.id in registrationarray|keys %}
+                                    {% if user.id in registrationarray[event.id]|keys %}
+                                        <span style="color:red">
+                                        <BR>{{ 'email.newsletter.title.events.booked.total'|transchoice(registrationarray[event.id][user.id].numparticipant) }}
+                                        {% if registrationarray[event.id][user.id].numqueuedparticipant == 0 %}
+                                            {{ 'email.newsletter.title.events.booked.allconfirmed'|trans}}
+                                        {% else %}
+                                            {{ 'email.newsletter.title.events.booked.unconfirmed'|transchoice(registrationarray[event.id][user.id].numconfirmed, { '%queued%':registrationarray[event.id][user.id].numqueuedparticipant } )  }}
+                                        {% endif %}
+                                        </span>
+                                    {% endif %}
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}                    
+                    </table>
+                </div>
+                {% endif %}
+                {# Articles #}
+                {% if posts|length > 0 %}
+                <h2>
+                    <span style="color:#D20F1F;">➤&nbsp;&nbsp;
+                    {{ 'email.newsletter.title.articles'|trans }}
+                    </span>
+                </h2>
+                <div style="padding:20px">
+                    {{ 'email.newsletter.title.articles.recent'|trans}}
+                    <ul>                   
+                   {% for post in posts %}
+                        <li><a href="{{ url('cpt_base_article_permalink', { 'article_permalink': sonata_news_permalink(post) }, false) }}" style="text-decoration: none;">
+                                {{ post.title }}
+                            </a>
+                        </li>
+                   {% endfor %}                    
+                    </ul>
+                </div>
+                {% endif %}
                 {{ 'email.general.footer'|trans }}
             </div>
         </body>

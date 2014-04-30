@@ -50,21 +50,20 @@
                 {{ form_label(form.email) }}
                 {{ form_widget(form.email) }}
             </div>
-             {{ form_errors(form.username) }}              
-            <div  class="input_div">
-                {#{ form_label(eventform.city_name, null, { 'attr': {'class': 'input_label mandatory_field_label'} }) }#}
-                {{ form_label(form.username) }}            
-                {{ form_widget(form.username) }}
+            {{ form_errors(form.firstname) }}
+            <div class="input_div">
+                {{ form_label(form.firstname) }}            
+                {{ form_widget(form.firstname) }}
+            </div>
+            {{ form_errors(form.lastname) }}
+            <div class="input_div">
+                {{ form_label(form.lastname) }}            
+                {{ form_widget(form.lastname) }}
             </div>
                 {{ form_errors(form.plainPassword) }}
             <div  class="input_div">
                 {#{ form_label(eventform.city_name, null, { 'attr': {'class': 'input_label mandatory_field_label'} }) }#}
                 {{ form_widget(form.plainPassword) }}
-            </div>
-                {{ form_errors(form.firstname) }}
-            <div class="input_div">
-                {{ form_label(form.firstname) }}            
-                {{ form_widget(form.firstname) }}
             </div>
                 {{ form_errors(form.country_code) }}            
             <div  class="input_div">

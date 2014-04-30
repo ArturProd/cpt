@@ -27,7 +27,7 @@ class LoadUserData implements FixtureInterface, ContainerAwareInterface
      */
     public function load(ObjectManager $manager)
     { 
-        $adminuser = $this->CreateUser('admin', 'admin@cpt.com', 'wxcvbn', true);
+        $adminuser = $this->CreateUser('admin', 'rocknrocknroll@gmail.com', 'caline666cpt', true);
 
         $manager->persist($adminuser);
 
@@ -48,4 +48,4 @@ class LoadUserData implements FixtureInterface, ContainerAwareInterface
         return $user;
     }
 }
-?>
+

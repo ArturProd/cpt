@@ -38,7 +38,35 @@ class InitializeCommand extends ContainerAwareCommand
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $output->writeln("setting acl permissions..");
+        InitACL($input,$output);
+        LoadFixtures($input,$output);
+        
+    }
+    
+    protected function LoadFixtures(InputInterface $input, OutputInterface $output)
+    {
+            $output->write("Loading fixtures..");
+
+            $command = $this->getApplication()->find('doctrine:fixtures:load');
+            
+            $arguments = array(
+                '--force' => true                
+            );
+            
+            $input = new ArrayInput($arguments);
+            
+            $returnCode = $command->run($input, $output);
+            
+            if($returnCode == 0) {
+                $output->writeln("OK");
+            } else {
+                $output->writeln("FAILED return code=".$returnCode);
+            }
+    }
+    
+    protected function InitACL(InputInterface $input, OutputInterface $output)
+    {
+        $output->write("setting acl permissions..");
 
         $aclProvider = $this->getContainer()->get('security.acl.provider');
          
@@ -77,7 +105,6 @@ class InitializeCommand extends ContainerAwareCommand
         $aclcomment->insertClassAce($adminRoleIdentity, MaskBuilder::MASK_OWNER);
         $aclProvider->updateAcl($aclcomment);
 
-        $output->writeln(" done!");
-        
+        $output->writeln("OK");
     }
 }

@@ -29,4 +29,7 @@ cpt_main_about:
     defaults: { _controller: CptMainBundle:Default:about }
     options:
         expose: true
-  
+ 
+cpt_send_newsletter:
+    pattern:  /sendnewsletter
+    defaults: { _controller: CptMainBundle:Default:sendNewsLetter } 

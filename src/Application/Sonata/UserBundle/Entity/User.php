@@ -50,13 +50,20 @@ class User extends BaseUser
     
     protected $option_newsletter = true;
     
-    protected $option_mailoncomment = true;
+    protected $option_mailoncomment = false;
     
     protected $option_allow_phonedisplay = false;
  
 
     protected $professional = false;
     
+    public function setEmail($email)
+    {
+        $email = is_null($email) ? '' : $email;
+        parent::setEmail($email);
+        $this->setUsername($email);
+    }
+
     public function getOptionNewsletter() {
         return $this->option_newsletter;
     }

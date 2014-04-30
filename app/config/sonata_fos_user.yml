@@ -15,11 +15,15 @@ fos_user:
     registration:
         form:
             type: application_user_registration
+            validation_groups: [CptRegistration]            
         confirmation:
             enabled: true
             from_email:
                 address:        donotreply@chantpourtous.com
                 sender_name:    Chant Pour Tous
+    profile:
+        form:
+             validation_groups: [CptProfile]       
     resetting:
             email:
                 from_email:

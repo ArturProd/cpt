@@ -46,11 +46,10 @@ registration:
         subject: Activez votre compte sur www.chantpourtous.com, %username%!
         message: |
             <p>Bonjour %username%!</p><br>
-            <p>Merci d'avoir créé votre compte gratuit sur le site web de Chant pour Tous!</p>
+            <p>Merci d'avoir créé votre compte sur le site web de Chant pour Tous!</p>
             <p><b>Afin d'activer votre compte, veuillez cliquer sur ce lien: %confirmationUrl%</b></p>
-            <p>Sur le site, vous pourrez créer des évènements en rapport avec le chant, l'improvisation vocale et corporelle.</p>
+            <p>Sur le site, vous pourrez proposer des évènements en rapport avec le chant improvisé.</p>
             <p>Vous pouvez de meme vous inscrire aux évènements, publier des articles, et plus encore!</p><br>            
-            <p>Ha oui... tout ceci est gratuit!</p><br>            
             Cordialement,<br>
             www.chantpourtous.com<br>
 email.subscribeevent.subject.attendee: Votre inscription à "%eventname%"
@@ -99,14 +98,21 @@ email.commentnew.message: |
     <p>Bonjour %username%,</p>
     <p>Un nouveau commentaire a été posté par %postername% le %date% à %time% pour votre publication <span style="text-transform:uppercase;font-weight:bolder">"%publicationname%"</span>.
 
-email.newsmetter.subject: "Chant pour Tous Newsletter: %topic%"
-email.newsmetter.title.about: News
-email.newsmetter.title.events: Evènements
-email.newsmetter.title.articles: Articles
-       
+email.newsletter.subject: "Newsletter Chant pour Tous"
+email.newsletter.header: Bonjour %username%!
+email.newsletter.title.news: Actualité
+email.newsletter.title.events: Evènements
+email.newsletter.title.articles: Articles
+email.newsletter.title.articles.recent: "Articles récents:"
+email.newsletter.title.events.incoming: "Prochains évènements:"
+email.newsletter.title.events.booked.total: Vous avez réservé 1 place.|Vous avez réservé %count% places.
+email.newsletter.title.events.booked.allconfirmed: Toutes vos places sont confirmées.
+email.newsletter.title.events.booked.unconfirmed: (%count% confirmée, %queued% sur liste d'attente)|(%count% confirmées, %queued% sur liste d'attente)
+
 email.general.footer: |
-    <p>Cordialement,</p>
-    <p>www.chantpourtous.com</p>
+    <p>Vocalement,</p>
+    <p>www.chantpourtous.com</p><br><br><br>
+    <p>__________________________________________________</p>
     <p font-style='font-size:small;'>Pour configurer l'envoi d'email, veuillez vous loguer sur le site et modifier les options d'envoi d'email sur votre page profil.</p>
 
 

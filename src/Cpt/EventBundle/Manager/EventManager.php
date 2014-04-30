@@ -9,6 +9,8 @@ use Cpt\EventBundle\Interfaces\Entity\EventInterface as EventInterface;
 use FOS\UserBundle\Model\UserInterface as UserInterface;
 use Doctrine\Common\Collections\ArrayCollection as ArrayCollection;
 use Cpt\PublicationBundle\Manager\PermalinkDateManager as PermalinkDateManager;
+use Doctrine\ORM\Query\Expr;
+
 
 
 class EventManager extends BaseManager implements EventManagerInterface {
@@ -40,7 +42,7 @@ class EventManager extends BaseManager implements EventManagerInterface {
   
     // <editor-fold defaultstate="collapsed" desc="Public: Event related">
 
-    public function getPusblishedBetween($fromdate, $todate){
+   /* public function getPusblishedBetween($fromdate, $todate){
                $parameters = array();
         $query = $this->em->getRepository($this->class)
                 ->createQueryBuilder('p')
@@ -50,6 +52,7 @@ class EventManager extends BaseManager implements EventManagerInterface {
                 ->andWhere('p.desactivated = :desactivated')               
                 ->andWhere('p.publicationDateStart >= :from')
                 ->andWhere('p.publicationDateStart < :to')
+                ->addOrderby('p.city_name', 'ASC')
                 ->addOrderby('p.publicationDateStart', 'DESC');
 
             $parameters['enabled'] = true;
@@ -63,6 +66,24 @@ class EventManager extends BaseManager implements EventManagerInterface {
         
         return $query->getQuery()->getResult();
 
+    } */
+    
+    public function getNewsLetterEvents($begin, $end)
+    {
+        $qb = $this->getEventRepository()
+                        ->createQueryBuilder('e')
+                        ->Select('e')
+                        ->Where('(e.begin >= :from AND e.begin < :to) OR (e.end >= :from AND e.end < :to)')
+                        ->AndWhere('e.enabled = :enabled')
+                        ->addOrderby('e.city_name', 'ASC')
+                        ->addOrderby('e.begin', 'ASC');
+
+        
+        $qb->setParameter('from', $begin)
+                        ->setParameter('to', $end)
+                        ->setParameter('enabled', true);
+      
+      return $qb->getQuery()->getResult();
     }
     
     public function getAllEvents()

@@ -162,22 +162,32 @@ class MailManager extends BaseManager implements MailManagerInterface
      * 
      * @param \Cpt\MainBundle\Manager\CommentInterface $user
      */
-    public function sendNewsLetterEmail($content, $events, $posts, $recipients){
+    public function sendNewsLetterEmail($topic, $content, $events, $posts, $registrationarray, $recipients){
        
         $template = 'CptMainBundle:Emails:newsletter_email.html.twig';
         
         $attachements = Array() ;
         $attachements[] = $this->getCptLogo();
 
-        $rendered = $this->templating->render($template, array(
-            'content' => $content,
-            'posts' => $posts,
-            'events' => $events,
-        ));
-       
+        // Do not send newsletter if no content!
+        if (empty($content) && (count($events) == 0) && (count($posts) == 0)){
+            return false;
+        }
+        
         foreach($recipients as $user){
+            $rendered = $this->templating->render($template, array(
+                'content' => $content,
+                'posts' => $posts,
+                'events' => $events,
+                'topic' => $topic,
+                'user' => $user,
+                'registrationarray' => $registrationarray,
+            ));
+                    
             $this->sendEmailMessage($rendered, $this->parameters['from_email']['confirmation'], $user->getEmail(), $attachements);
         }
+        
+        return true;
     }
     
     /**

@@ -8,8 +8,9 @@ parameters:
     cpt.notice.slideupdelay: 20000  #delay when display a flash message, before the message is hidden
     cpt.ckeditor.ready.timeout: 1500 #delay to get the CKEDITOR ready before accessing it
     cpt.newsletter.send: true;
-    cpt.newsletter.interval: "P7D"
-    
+    cpt.newsletter.interval.post: "P8D"
+    cpt.newsletter.interval.event: "P21D"
+
 twig:
   globals:
     cpt_comment_checkfornew_interval: %cpt.publication.comment.checkfornew_interval% # interval in ms to check for new comments
