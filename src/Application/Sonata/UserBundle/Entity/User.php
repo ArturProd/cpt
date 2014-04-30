@@ -57,15 +57,83 @@ class User extends BaseUser
     // Email me for each event created in my city
     protected $option_emailme_eachevent = false;
 
+    protected $option_pro_includemenewsletter = true;
+    protected $option_pro_displaymyresume = true;
+    protected $option_pro_displayinprodirectory = true;
+
+    
     protected $professional = false;
     
-    protected $prosubscribed = false;
+    protected $pro_subscribed = false;
+    
+    protected $pro_job = "";
+    protected $pro_resume = "";
     
     public function setEmail($email)
     {
         $email = is_null($email) ? '' : $email;
         parent::setEmail($email);
         $this->setUsername($email);
+    }
+    
+    // <editor-fold defaultstate="collapsed" desc="Getters & Setters - Pro">
+    
+    public function getProSubscribed() {
+        return $this->pro_subscribed;
+    }
+    
+    public function setProSubscribed($prosubscribed) {
+        $this->pro_subscribed = $prosubscribed;
+    }
+    
+    public function getProJob() {
+        return $this->pro_job;
+    }
+    
+    public function setProJob($pro_job) {
+        $this->pro_job = $pro_job;
+    }
+
+    public function getProResume() {
+        return $this->pro_resume;
+    }
+    
+    public function setProResume($pro_resume) {
+        $this->pro_resume = $pro_resume;
+    }
+
+    // </editor-fold>
+
+    
+    // <editor-fold defaultstate="collapsed" desc="Getters & Setters - Options">
+
+
+    
+    public function getOptionProIncludemenewsletter() {
+        return $this->option_pro_includemenewsletter;
+    }
+    
+    
+    public function setOptionProIncludemenewsletter($option_pro_includemenewsletter) {
+        $this->option_pro_includemenewsletter = $option_pro_includemenewsletter;
+    }
+    
+    public function getOptionProDisplaymyresume() {
+        return $this->option_pro_displaymyresume;
+    }
+    
+    
+    public function setOptionProDisplaymyresume($option_pro_displaymyresume) {
+        $this->option_pro_displaymyresume = $option_pro_displaymyresume;
+    }
+    
+    public function getOptionProDisplayinprodirectory() {
+        return $this->option_pro_displayinprodirectory;
+    }
+    
+    
+    public function setOptionProDisplayinprodirectory($option_pro_displayinprodirectory) {
+        $this->option_pro_displayinprodirectory = $option_pro_displayinprodirectory;
     }
     
     public function getOptionEmailmeEachevent() {
@@ -77,14 +145,6 @@ class User extends BaseUser
         $this->option_emailme_eachevent = $option_emailme_eachevent;
     }
 
-    public function getProsubscribed() {
-        return $this->prosubscribed;
-    }
-    
-    public function setProsubscribed($prosubscribed) {
-        $this->prosubscribed = $prosubscribed;
-    }
-    
     public function getOptionNewsletter() {
         return $this->option_newsletter;
     }
@@ -100,7 +160,8 @@ class User extends BaseUser
     public function setOptionMailoncomment($option_mailoncomment) {
         $this->option_mailoncomment = $option_mailoncomment;
     }
- 
+     // </editor-fold>
+
     public function getProfessional() {
         return $this->professional;
     }

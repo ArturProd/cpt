@@ -139,11 +139,13 @@ email.newsletter.header: Hello %username%!
 email.newsletter.title.news: News
 email.newsletter.title.events: Events
 email.newsletter.title.articles: Articles
+email.newsletter.title.professional: Pro corner
 email.newsletter.title.articles.recent: "Recent articles:"
 email.newsletter.title.events.incoming: "Incoming events:"
 email.newsletter.title.events.booked.total: You have booked 1 seat.|You have booked %count% seats.
 email.newsletter.title.events.booked.allconfirmed: All seats are confirmed.
 email.newsletter.title.events.booked.unconfirmed: (%count% confirmed, %queued% on waiting list)
+email.newsletter.professional.message: "If you need a professional singer service, you can contact the following members:"
     
 email.general.footer: |
     <p>Kind regards,</p>

@@ -145,11 +145,13 @@ email.newsletter.header: Bonjour %username%!
 email.newsletter.title.news: Actualité
 email.newsletter.title.events: Evènements
 email.newsletter.title.articles: Articles
+email.newsletter.title.professional: Le coin Pro
 email.newsletter.title.articles.recent: "Articles récents:"
 email.newsletter.title.events.incoming: "Prochains évènements:"
 email.newsletter.title.events.booked.total: Vous avez réservé 1 place.|Vous avez réservé %count% places.
 email.newsletter.title.events.booked.allconfirmed: Toutes vos places sont confirmées.
 email.newsletter.title.events.booked.unconfirmed: (%count% confirmée, %queued% sur liste d'attente)|(%count% confirmées, %queued% sur liste d'attente)
+email.newsletter.professional.message: "Si vous avez besoin du service d'un chanteur professionel, vous pouvez contacter ces membres:"
 
 email.general.footer: |
     <p>Vocalement,</p>

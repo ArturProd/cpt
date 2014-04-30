@@ -15,6 +15,7 @@ form.event.city:                     Ville
 form.event.postal_code:                    Code Postal
 form.event.address:                 Adresse
 form.event.location_name:           Lieu
+form.event.priceinfo:               Prix
 event.placesearcherror:             L'adresse doit au moins inclure le pays et le nom de la ville
 event.corporatename.placeholder:    'Nom du lieu (ex: Chez moi)'
 form.event.google_map_url:          URL Google Map

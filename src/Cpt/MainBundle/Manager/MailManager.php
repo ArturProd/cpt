@@ -162,7 +162,7 @@ class MailManager extends BaseManager implements MailManagerInterface
      * 
      * @param \Cpt\MainBundle\Manager\CommentInterface $user
      */
-    public function sendNewsLetterEmail($topic, $content, $events, $posts, $registrationarray, $recipients){
+    public function sendNewsLetterEmail($topic, $content, $events, $posts, $registrationarray, $prousers, $recipients){
        
         $template = 'CptMainBundle:Emails:newsletter_email.html.twig';
         
@@ -181,6 +181,7 @@ class MailManager extends BaseManager implements MailManagerInterface
                 'events' => $events,
                 'topic' => $topic,
                 'user' => $user,
+                'prousers' => $prousers,
                 'registrationarray' => $registrationarray,
             ));
                     

@@ -78,6 +78,7 @@ class DefaultController extends BaseController
         $topic = "Sujet de la newsletter";
         
         $recipients = $this->getUserManager()->findNewsLetterRecipients();
+        $prousers = $this->getUserManager()->findNewsLetterProUsers();
         $posts = $this->getPostManager()->getPusblishedBetween($fromdate_post, $currentdate);
         $events = $this->getEventManager()->getNewsLetterEvents($currentdate, $todate_event);
 
@@ -88,7 +89,7 @@ class DefaultController extends BaseController
             }
         }
         
-        $this->getMailManager()->sendNewsLetterEmail($topic, $content, $events, $posts, $registrationarray, $recipients);
+        $this->getMailManager()->sendNewsLetterEmail($topic, $content, $events, $posts, $registrationarray, $prousers, $recipients);
         
                 $params = array(
             'article_permalink' => null,

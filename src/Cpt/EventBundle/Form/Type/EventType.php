@@ -51,6 +51,14 @@ class EventType extends AbstractType
             // GENERAL
             // ************************
 
+            // Priceinfo
+            ->add('priceinfo', 'text', array(
+                'required' => false,
+                'label' => 'form.event.priceinfo',
+                'attr' => array(
+                    'maxlength'  => '80',
+                    ),
+                ))
                 
             // Enabled
             ->add('enabled', 'checkbox', array(

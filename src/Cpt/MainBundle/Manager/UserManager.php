@@ -151,4 +151,25 @@ class UserManager extends BaseUserManager
                 
         return $qb->getQuery()->getResult();
     }
+    
+    public function findNewsLetterProUsers()
+    {
+        $qb = $this->objectManager->createQueryBuilder();
+        $qb->select('u')
+                ->from($this->class, 'u')
+                ->where('u.locked = :locked')
+                ->AndWhere('u.expired = :expired')
+                ->AndWhere('u.enabled = :enabled')
+                ->AndWhere('u.professional = :professional')
+                ->AndWhere('u.prosubscribed = :prosubscribed')                
+                ->AndWhere('u.option_pro_includemenewsletter= :option_pro_includemenewsletter')
+                ->setParameter('locked', false)
+                ->setParameter('expired', false)
+                ->setParameter('enabled', true)
+                ->setParameter('professional', true)
+                ->setParameter('prosubscribed', true)                
+                ->setParameter('option_pro_includemenewsletter', true);
+                
+        return $qb->getQuery()->getResult();
+    }
 }
