@@ -3,6 +3,8 @@
  var newer_comment_ids = new Array();  {# Contains for each post the newer comment id #}
  TIMEOUT_COMMENT_CHECK_MS = {{ cpt_comment_checkfornew_interval }};
  URL_get_new_comments = "{{ url('cpt_comment_new_list_json')}}";
+ var commentscheck_registeredpublication = new Array();
+ 
 {#****************************************************************************#}
 {# Retreives list of older comment for a post
 {#****************************************************************************#}
@@ -43,34 +45,51 @@ function get_more_comments(publicationid, callback)
   
 }
 
-{#****************************************************************************#}
-{# Retreives list of new comments for a publication
-{#****************************************************************************#}
-function get_new_comments(publicationid)
+function registerPublicationForNewCommentsCheck(publicationid)
 {
-    if (older_comment_ids[publicationid] === undefined)
+    commentscheck_registeredpublication.push(publicationid);
+}
+
+
+{#****************************************************************************#}
+{# Retreives list of new comments for all registered publications
+{#****************************************************************************#}
+function get_new_comments()
+{
+    var publicationids =  JSON.stringify(commentscheck_registeredpublication);
+    var aftercommentids_array = new Array();
+    
+    for (var i = 0; i<commentscheck_registeredpublication.length; i++ )
+    {
+       var publicationid = commentscheck_registeredpublication[i];
+       
+       if (older_comment_ids[publicationid] === undefined)
         older_comment_ids[publicationid] = null;
 
-    if (newer_comment_ids[publicationid] === undefined)
+        if (newer_comment_ids[publicationid] === undefined)
         newer_comment_ids[publicationid] = null;
-      
-    newercommentid = (newer_comment_ids[publicationid] === null) ? -1 : newer_comment_ids[publicationid];
     
+        newercommentid = (newer_comment_ids[publicationid] === null) ? -1 : newer_comment_ids[publicationid];
+        aftercommentids_array.push(newercommentid);       
+    }
+    
+    var aftercommentids = JSON.stringify(aftercommentids_array);
 
     {# Get Comment array as a json object #}
-    var jqXHR = $.getJSON( URL_get_new_comments, {publicationid:publicationid, aftercommentid:newercommentid}, function(response) {
+    var jqXHR = $.getJSON( URL_get_new_comments, {publicationids:publicationids, aftercommentids:aftercommentids}, function(response) {
+        console.log(response);
+
         if (response.status!=='ok')
           return;
-        
+      
         comments = response.data;
         
-        for (i=0; i<comments.length; ++i)
-            prepend_comment(comments[i]); {# Append each comment to the DOM #}
-        
-        if (comments.length>0)
-            newer_comment_ids[publicationid] = comments[comments.length-1].id;
-
-      });
+        for (var i=0; i<comments.length; ++i)
+        {
+           prepend_comment(comments[i]); {# Append each comment to the DOM #}        
+            newer_comment_ids[comments[i].publicationid] = comments[i].id;
+        }
+     });
       
       registerJqXHR(jqXHR);
 }
@@ -124,7 +143,7 @@ function comment_submit_callback(response)
     if (response.status === "ok")
     {
         comment = response.data;
-        get_new_comments(comment.publicationid);                               {# add the new comment to the DOM #}
+        get_new_comments();                               {# add the new comment to the DOM #}
         $('#form_comment_textarea'+comment.publicationid).val('');      {# clear comment form textarea #}
     }
     DisableControls('form_comment_'+comment.publicationid, true);  {#re-enable comment submission controls #}
@@ -169,4 +188,11 @@ function toggle_submit_comment_button(textvalue, publicationid)
         <div class="comment_body">
         </div>
     </li>
+
 </ul>
+<script type="text/javascript">
+$(function() {
+      var interval = setInterval("get_new_comments()", TIMEOUT_COMMENT_CHECK_MS);
+      registerInterval(interval);
+});
+</script>

@@ -26,14 +26,18 @@ class CommentController extends BaseController {
 
         $this->GetPermissionManager()->RestrictAccessToAjax($request);
 
-        $publicationid = $this->GetNumericParameter('publicationid');
-        $aftercommentid = $this->GetNumericParameter('aftercommentid', -1);
+        $publicationids = json_decode($this->getRequest()->get('publicationids'));
+        $aftercommentids = json_decode($this->getRequest()->get('aftercommentids'));
 
-        $comments = $this->getCommentManager()->get_newer_comments($publicationid, $aftercommentid);
-        $user = $this->getUser();
-
+        $result = $this->getCommentManager()->get_newer_comments($publicationids, $aftercommentids);
+        $user = null;
+        
+        if ($this->getPermissionManager()->isLoggedIn()){
+            $user = $this->getUser();
+        }
+        
         $view_comments = Array();
-        foreach ($comments as $comment) {
+        foreach ($result as $comment) {
             $this->SetCanModify($comment, $user);
             $view_comments[] = $comment->toViewArray();
         }

@@ -67,9 +67,8 @@
        
        {#****************************************************************************#}
        {# Check for new comments
-       {#****************************************************************************#}      
-       var interval = setInterval("get_new_comments({{publication.id}})", TIMEOUT_COMMENT_CHECK_MS);
-       registerInterval(interval);
+       {#****************************************************************************#}
+        registerPublicationForNewCommentsCheck({{publication.id}});
     });
 </script>
 {# ****************************************************************************#}

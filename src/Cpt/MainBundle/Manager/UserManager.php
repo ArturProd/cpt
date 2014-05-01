@@ -161,13 +161,15 @@ class UserManager extends BaseUserManager
                 ->AndWhere('u.expired = :expired')
                 ->AndWhere('u.enabled = :enabled')
                 ->AndWhere('u.professional = :professional')
-                ->AndWhere('u.prosubscribed = :prosubscribed')                
+                ->AndWhere('u.pro_subscribed = :pro_subscribed')                
                 ->AndWhere('u.option_pro_includemenewsletter= :option_pro_includemenewsletter')
+                ->addOrderby('u.city_name', 'ASC')
+                ->addOrderby('u.createdAt', 'ASC')
                 ->setParameter('locked', false)
                 ->setParameter('expired', false)
                 ->setParameter('enabled', true)
                 ->setParameter('professional', true)
-                ->setParameter('prosubscribed', true)                
+                ->setParameter('pro_subscribed', true)                
                 ->setParameter('option_pro_includemenewsletter', true);
                 
         return $qb->getQuery()->getResult();

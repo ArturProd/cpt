@@ -1,16 +1,35 @@
 parameters:
-    cpt.publication.comment.nbretreive: 3 # Number of comments to be retreived each time
-    cpt.publication.comment.initialnbretreive: 5 # Initial Number of comments to be retreived each time
-    cpt.publication.comment.checkfornew_interval: 120000 # interval in ms to check for new comments
-    cpt.blog.max_article_perpage: 8 # max number of articles per page
-    cpt.blog.max_page_link: 8 # Number of link in the navigation pager
-    cpt.event.update_ajax_delay: 400 # Delay in ms between changes in month and sending request ajax to update calendar, events etc.
-    cpt.notice.slideupdelay: 20000  #delay when display a flash message, before the message is hidden
-    cpt.ckeditor.ready.timeout: 1500 #delay to get the CKEDITOR ready before accessing it
+    # MAx number of publications to retreive new comments for
+    cpt.comments.maxpublication: 100
+    # Number of comments to be retreived each time
+    cpt.publication.comment.nbretreive: 3 
+    # Initial Number of comments to be retreived each time
+    cpt.publication.comment.initialnbretreive: 5 
+    # interval in ms to check for new comments
+    cpt.publication.comment.checkfornew_interval: 200000 
+    # max number of articles per page
+    cpt.blog.max_article_perpage: 8 
+    # Number of link in the navigation pager
+    cpt.blog.max_page_link: 8
+    # Delay in ms between changes in month and sending request ajax to update calendar, events etc.
+    cpt.event.update_ajax_delay: 400 
+    #delay when display a flash message, before the message is hidden
+    cpt.notice.slideupdelay: 20000
+    #delay to get the CKEDITOR ready before accessing it    
+    cpt.ckeditor.ready.timeout: 1500 
+    # Activate newsletter sending
     cpt.newsletter.send: true;
+    # Number of days (interval) in the past to include post.publicationdate in newsletter
     cpt.newsletter.interval.post: "P8D"
+    # Number of days (interval) in the future to include event.begin in newsletter
     cpt.newsletter.interval.event: "P21D"
+    # Activate professional mode? (Pro users)
     cpt.professional.activated: true
+    # include Pro users in news letter?     
+    cpt.professional.newsletter: true
+    # allow pro users to create non-free events?
+    cpt.professional.paidevent: true
+    # Price to subscribe to professional service in euro
     cpt.professional.monthlyprice.euro: 9
 twig:
   globals:
@@ -18,4 +37,5 @@ twig:
     cpt_notice_slideupdelay: %cpt.notice.slideupdelay%
     CKEDITOR_READY_TIMEOUT: %cpt.ckeditor.ready.timeout%
     cpt_professional_activated: %cpt.professional.activated%
+    cpt_professional_newsletter: %cpt.professional.newsletter%    
     cpt_professional_monthlyprice_euro: %cpt.professional.monthlyprice.euro%

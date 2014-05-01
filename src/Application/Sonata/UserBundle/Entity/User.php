@@ -52,6 +52,7 @@ class User extends BaseUser
     
     protected $option_mailoncomment = false;
     
+    // Affichage du numéro de téléphone uniquement aux organisateurs/animateurs d'un évènement
     protected $option_allow_phonedisplay = false;
  
     // Email me for each event created in my city
@@ -60,7 +61,9 @@ class User extends BaseUser
     protected $option_pro_includemenewsletter = true;
     protected $option_pro_displaymyresume = true;
     protected $option_pro_displayinprodirectory = true;
-
+    
+    // Display phone number on profile page
+    protected $option_pro_phonedisplay = true;
     
     protected $professional = false;
     
@@ -77,6 +80,13 @@ class User extends BaseUser
     }
     
     // <editor-fold defaultstate="collapsed" desc="Getters & Setters - Pro">
+    public function getOptionProPhoneDisplay() {
+        return $this->option_pro_phonedisplay;
+    }
+    
+    public function setOptionProPhoneDisplay($option_pro_phonedisplay) {
+        $this->option_pro_phonedisplay = $option_pro_phonedisplay;
+    }
     
     public function getProSubscribed() {
         return $this->pro_subscribed;

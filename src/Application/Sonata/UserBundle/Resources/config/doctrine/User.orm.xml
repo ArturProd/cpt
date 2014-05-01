@@ -21,6 +21,7 @@
         <field name="option_pro_displaymyresume"    type="boolean"     column="option_pro_displaymyresume"    nullable="false" />
         <field name="option_pro_displayinprodirectory"    type="boolean"     column="option_pro_displayinprodirectory"  nullable="false" />                  
         <field name="pro_subscribed"    type="boolean"     column="pro_subscribed" nullable="false" />
+        <field name="option_pro_phonedisplay"    type="boolean"     column="option_pro_phonedisplay" nullable="false" />        
         <field name="pro_job"    type="string"     column="pro_job" nullable="false" />
         <field name="pro_resume"    type="string"     column="pro_resume" nullable="false" />
 

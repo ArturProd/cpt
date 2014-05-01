@@ -93,6 +93,44 @@ class CommentManager extends BaseManager implements CommentManagerInterface {
         
     }
 
+    public function get_newer_comments($publicationids, $newerthanids) {
+        
+        if (count($publicationids) != count($newerthanids)) {
+                        throw new \InvalidArgumentException("get_newer_comments: array size do not match");
+        }
+        
+        // Limiting size of $publicationids and $newerthanids
+        $maxpublication = $this->container->getParameter('cpt.comments.maxpublication');
+        $publicationids = array_slice($publicationids,0,$maxpublication);
+        $newerthanids = array_slice($newerthanids,0,$maxpublication);
+       
+
+        $query = $this->em->getRepository($this->class)
+                ->createQueryBuilder('c')
+                ->select('c');
+        
+                $orModule = $query->expr()->orx();
+
+                for($i = 0; $i<count($publicationids); $i++)
+                {
+                    $orModule->add("IDENTITY(c.publication) = :publicationid$i AND (c.id > :newerthanids$i)");
+                    $query->setParameter("publicationid$i", $publicationids[$i]);
+                    $query->setParameter("newerthanids$i", $newerthanids[$i]);                            
+                }
+                
+                $query->andWhere($orModule)
+                      ->andWhere('c.status = :status')
+                ->orderby('IDENTITY(c.publication)', 'ASC')
+                ->orderby('c.id', 'ASC')
+                ->setMaxResults(100)
+                ->setParameter("status", CommentInterface::STATUS_VALID);         
+                        
+
+        return $query->getQuery()->getResult();
+    }
+    
+  
+    /*
     public function get_newer_comments($publicationid, $newerthanid) {
         if (!is_numeric($newerthanid)) {
             throw new \InvalidArgumentException("newerthanid must be numeric");
@@ -116,7 +154,7 @@ class CommentManager extends BaseManager implements CommentManagerInterface {
                 ->andWhere('c.id > :newerthanid');
 
         return $query->setParameters($parameters)->getQuery()->getResult();
-    }
+    } */
 
     public function get_older_comments($publicationid, $number, $olderthanid = -1) {
         $parameters['status'] = CommentInterface::STATUS_VALID;

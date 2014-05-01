@@ -13,9 +13,11 @@
         <body>
             <div>
                 <center><a href="{{url('cpt_main_home')}}">{{ "<img src='attachmenturl[0]'>"|raw }}</a></center>
+                {# Header (welcome message) #}
                 <br>
                 {{ 'email.newsletter.header'|trans({'%username%': user.displayname })}}
                 <br><br>
+                {# Variable content #}
                 {% if content is not empty %}
                 <h2>
                     <span style="color:#F29516;">➤&nbsp;&nbsp;
@@ -40,19 +42,22 @@
                         <tr>
                             <td style="vertical-align:top;font-weight: bold;padding:5px;"><span style="color:#066FB2;">{{ event.cityname }}</span></td>
                             <td style="padding:5px;">
+                                {# event dates (begin - end) #}
                                 <span style="color:#066FB2;font-weight: bold;">
                                 {{ include("CptEventBundle:Event:Includes/event_datetime.html.twig") }}
                                 </span>
                                 <br>
+                                {# Event Title #}
                                 <span style="text-transform: uppercase;font-weight: bolder;color:#000001;">
                                 <a href="{{ url('cpt_base_event_permalink', { 'event_permalink': event_permalink(event) }, false) }}" style="text-decoration: none;color: #000001;;">
                                     "{{ event.title }}"
                                 </a>
                                 </span>
+                                {# Recipient registration to event #}
                                 {% if event.id in registrationarray|keys %}
                                     {% if user.id in registrationarray[event.id]|keys %}
                                         <span style="color:red">
-                                        <BR>{{ 'email.newsletter.title.events.bcpt_professional_activatedooked.total'|transchoice(registrationarray[event.id][user.id].numparticipant) }}
+                                        <BR>{{ 'email.newsletter.title.events.booked.total'|transchoice(registrationarray[event.id][user.id].numparticipant) }}
                                         {% if registrationarray[event.id][user.id].numqueuedparticipant == 0 %}
                                             {{ 'email.newsletter.title.events.booked.allconfirmed'|trans}}
                                         {% else %}
@@ -87,17 +92,36 @@
                 </div>
                 {% endif %}
                 {# Pro users #}
-                {% if cpt_professional_activated and (prousers|length > 0) %}                
+                {% if cpt_professional_activated and cpt_professional_newsletter and (prousers|length > 0) %}                
                 <h2>
-                    <span style="color:#066FB2;">➤&nbsp;&nbsp;
+                    <span style="color:#d23e0f;">➤&nbsp;&nbsp;
                     {{ 'email.newsletter.title.professional'|trans }}
                     </span>
                 </h2>
-                {{ 'email.newsletter.professional.message'|trans }}
-                {% for prouser in prousers %}
-                
-                {% endfor %}                    
-                    
+                    {{ 'email.newsletter.professional.message'|trans }}
+                <div style="display:block;margin:20px;">
+                    {% set current_city = "" %}
+                    {% for prouser in prousers %}
+                        {% if prouser.countryCode == user.countryCode %}
+                            {% if current_city != prouser.cityName %}
+                               {% set current_city = prouser.cityName %}
+                                   <div style="display:block;">- <b>{{ prouser.cityName }}</b></div>
+                            {% endif %}
+                        <div style="display:inline-block; margin: 15px;">
+                                <b>{{ prouser.displayname }}</b>
+                                {% if  prouser.proJob is not empty %}
+                                <br>{{ prouser.proJob}}
+                                {% endif %}
+                                {% if  (prouser.phone is not empty) and (prouser.optionProPhoneDisplay) %}
+                                <br>{{ 'email.newsletter.professional.tel'|trans }}: {{ prouser.phone }}
+                                {% endif %}
+                                {% if  prouser.website is not empty %}
+                                <br><a href="{{prouser.website}}" target="_blank">{{ 'email.newsletter.professional.website'|trans }}</a>
+                                {% endif %}
+                        </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
                 {% endif %}                    
                 {{ 'email.general.footer'|trans }}
             </div>
