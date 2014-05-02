@@ -9,7 +9,19 @@ const MESSAGE_TYPE_ERROR = 2;
 var registreredjqXHR = []; {# all ajax request (jqXHR) should be stored in here so that they can be cancelled #}
 var registeredTimers = [];
 var registeredIntervals = [];
-                           
+
+{# Remove all occurences of item from the array #}
+Array.prototype.removeItem = function (item) {
+    var deleted;
+    var index = 0;
+    while ((index = this.indexOf(item, index)) != -1) {
+       deleted = this.splice(index, 1);
+    }
+    if (deleted) {
+        return deleted[0];
+    }
+};
+
 function ModalDialog(callback_function, callbackdata, title, text, buttonOK_text, buttonCANCEL_text, button3_text)
 {
     var buttons = Array();

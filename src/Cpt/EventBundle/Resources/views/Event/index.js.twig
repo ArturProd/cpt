@@ -32,6 +32,18 @@ month_names[11] = "{{'november'|trans}}";
 month_names[12] = "{{'december'|trans}}";
 
 {#***********************************************#}
+{# Removes the events in event_list from the list of watched publication for new comments
+{#***********************************************#}
+function removeEventsFromNewCommentWatch()
+{
+    if (event_list  === null)
+        return;
+    
+    for (var i=0; i<event_list.length;++i){
+        removePublicationForNewCommentCheck(event_list[i].id);
+    }
+}
+{#***********************************************#}
 {# Affiche un message informatif à l'utilisateur
 {#***********************************************#}
 function show_event_usermessage(message)
@@ -248,6 +260,7 @@ function RetrieveEvents(year,month,country)
       
       if (response.status === "ok")
       {
+        removeEventsFromNewCommentWatch();
         event_list = $.parseJSON(response.data).events;
 
         for(i=0;i<event_list.length;++i) {

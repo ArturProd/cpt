@@ -13,6 +13,19 @@ var article_permalink = "{{ article_permalink|default(null) is null ? null : art
 count_article_loaded = 0;
 
 {#***********************************************#}
+{# Removes the posts in post_list from the list of watched publication for new comments
+{#***********************************************#}
+function removePostsFromNewCommentWatch()
+{
+    if (post_list  === null)
+        return;
+    
+    for (var i=0; i<post_list.length;++i){
+        removePublicationForNewCommentCheck(post_list[i].id);
+    }
+}
+
+{#***********************************************#}
 {# Affiche un message informatif à l'utilisateur
 {#***********************************************#}
 function show_article_usermessage(message)
@@ -63,7 +76,8 @@ function PopulateArticles(response, opendefault)
 {
     if (response.status!=="ok")
         return;
-
+    
+    removePostsFromNewCommentWatch();
     post_list = $.parseJSON(response.data.posts);
     post_pager = $.parseJSON(response.data.pager);
 

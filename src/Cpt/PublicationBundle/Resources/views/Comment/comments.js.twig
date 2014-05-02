@@ -50,8 +50,12 @@ function registerPublicationForNewCommentsCheck(publicationid)
     commentscheck_registeredpublication.push(publicationid);
 }
 
+function removePublicationForNewCommentCheck(publicationid)
+{
+    commentscheck_registeredpublication.removeItem(publicationid);
+}
 
-{#****************************************************************************#}
+            {#****************************************************************************#}
 {# Retreives list of new comments for all registered publications
 {#****************************************************************************#}
 function get_new_comments()
@@ -77,7 +81,6 @@ function get_new_comments()
 
     {# Get Comment array as a json object #}
     var jqXHR = $.getJSON( URL_get_new_comments, {publicationids:publicationids, aftercommentids:aftercommentids}, function(response) {
-        console.log(response);
 
         if (response.status!=='ok')
           return;
