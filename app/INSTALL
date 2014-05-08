@@ -1,0 +1,2 @@
+1. GET SYSTEM READY
+sudo apt-get install php5-curl

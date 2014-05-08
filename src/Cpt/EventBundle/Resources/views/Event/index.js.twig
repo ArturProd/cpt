@@ -160,6 +160,8 @@ function update_arrows(year,month,country)
 {
     
     abort_ajax(UpdateArrowjqXHR);
+   
+    {# Retreive arrow types #}
     UpdateArrowjqXHR = $.getJSON( Routing.generate('event_get_calendar_arrow_type', {year:year,month:month,_locale:_locale}),{country_code:country}, function(response){
         {# Ensure that received response matches with current month and year#}
         if ((response.data.month != current_month)||(response.data.year != current_year)){
@@ -282,6 +284,10 @@ function RetrieveEvents(year,month,country)
 {#**************************************************************************#}
 function UpdateEventInterface()
 {
+    {# Set arrows with loading images #}
+    $("#monthselector_uparrow").attr("class","calendar_arrow_up_loading_btn");
+    $("#monthselector_downarrow").attr("class","calendar_arrow_down_loading_btn");
+    
     var selected_country = $('#country_select').val();
 
     UpdateSelectorDate();
@@ -358,9 +364,6 @@ $(function() {
     // DisplayEventEditPanel(false);
     Set_filter_events(FILTER_FUTUREEVENTS);
     UpdateEventInterface();
-    {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-        {# Event Dialog setup #}
-    {% endif %}
     
     {# Display flash messages if any #}
     {% if app.session.flashbag.has('notice') %}

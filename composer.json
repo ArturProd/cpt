@@ -30,7 +30,8 @@
         "frequence-web/calendr-bundle" : "dev-master",
         "friendsofsymfony/jsrouting-bundle": "@stable",
         "sonata-project/core-bundle": "~2.2@dev",
-        "jms/serializer-bundle": "dev-master"
+        "jms/serializer-bundle": "dev-master", 
+        "facebook/php-sdk-v4" : "4.0.*"
     },
     "scripts": {
         "post-install-cmd": [

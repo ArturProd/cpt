@@ -56,6 +56,11 @@ class DefaultController extends BaseController
         
     }
     
+    public function postFacebookAction()
+    {
+        $this->getFacebookManager()->PublishToFacebook('');
+    }
+    
     public function sendNewsLetterAction()
     {
         if (!$this->container->getParameter('cpt.newsletter.send'))

@@ -2,6 +2,7 @@
 parameters:
     cpt.manager.permissionManager.class:      Cpt\MainBundle\Manager\PermissionsManager
     cpt.manager.mailerManager.class:           Cpt\MainBundle\Manager\MailManager
+    cpt.manager.facebookManager.class:           Cpt\MainBundle\Manager\FacebookManager    
     cpt.mailer.template.resetting:              CptMainBundle:Emails:resetting_email.txt.twig
     cpt.mailer.template.registration:              CptMainBundle:Emails:registration_email.txt.twig
     cpt.mail.from_email:                        donotreply@chantpourtous.com
@@ -9,6 +10,10 @@ parameters:
 services:
     cpt.permission.manager:
         class:        "%cpt.manager.permissionManager.class%"
+        arguments: ['@service_container']
+ 
+    cpt.facebook.manager:
+        class:        "%cpt.manager.facebookManager.class%"
         arguments: ['@service_container']
         
     cpt_form_user:

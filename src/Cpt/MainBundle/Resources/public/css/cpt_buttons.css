@@ -86,6 +86,34 @@
     text-decoration: none;
 }
 
+.calendar_arrow_up_loading_btn{
+      background: url('../images/evenements/fleche-haut-animation.gif') no-repeat;
+      min-height: 38px;
+      min-width: 38px;
+      display: inline-block;
+      color: white;
+      margin-bottom: 15px;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      -o-user-select: none;
+      user-select: none;    
+}
+
+.calendar_arrow_down_loading_btn{
+      background: url('../images/evenements/fleche-bas-animation.gif') no-repeat;
+      min-height: 38px;
+      min-width: 38px;
+      display: inline-block;
+      color: white;
+      margin-top: 15px;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      -o-user-select: none;
+      user-select: none;    
+}
+
 .calendar_arrow_up_withevents_btn{
       background: url('../images/evenements/bouton-mois-avant.png') no-repeat;
       min-height: 38px;

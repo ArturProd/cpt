@@ -33,3 +33,7 @@ cpt_main_about:
 cpt_send_newsletter:
     pattern:  /sendnewsletter
     defaults: { _controller: CptMainBundle:Default:sendNewsLetter } 
+    
+cpt_post_facebook:
+    pattern:  /postfacebook
+    defaults: { _controller: CptMainBundle:Default:postFacebook } 

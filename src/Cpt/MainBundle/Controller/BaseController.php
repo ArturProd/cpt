@@ -66,6 +66,11 @@ class BaseController extends Controller {
     {
         return $this->get("cpt.calendar.manager");
     }
+    
+    public function getFacebookManager()
+    {
+        return $this->get("cpt.facebook.manager");
+    }
 
     /**
      * @return PermissionManagerInterface
