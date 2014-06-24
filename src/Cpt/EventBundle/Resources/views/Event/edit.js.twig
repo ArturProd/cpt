@@ -27,11 +27,17 @@ function InitRegistrations()
 
    {############################################}
    {# Adding existing reservations to the list #} 
+    var integrity_check_numpart = 0;
     {% for registration in event.registrations %}
         reservation_existing = CreateReservationItem({{  registration.id }}, {{ registration.user.id }}, {{ event.id }}, '{{ registration.user.username }}', {{ registration.numparticipant }}, {{ registration.numqueuedparticipant }}, {{ registration.organizer ? 1 : 0 }}, {{ registration.createdAt|date('U') }});
         AddReservationItem(reservation_existing, true);
+        integrity_check_numpart += {{ registration.numparticipant }};
     {% endfor %}
 
+    if (integrity_check_numpart != Queue.length ){
+        alert("An error occured.")
+    }
+    
     UpdateInterface();
 }
   

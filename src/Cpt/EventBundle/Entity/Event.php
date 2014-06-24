@@ -134,7 +134,7 @@ class Event extends Publication implements EventInterface
             $countQueuedAttendees += $count_queued;
             
             // Checking if a non-queued attendee is the organizer
-            if (($count_queued < $this->getMaxnumattendees()) && $registration->getOrganizer()){
+            if ((($count_registration_attendees - $count_queued) > 0) && $registration->getOrganizer()){
                 $count_organizers++;
             }
         }

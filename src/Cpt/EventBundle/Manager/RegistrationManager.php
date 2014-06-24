@@ -19,6 +19,9 @@ use Cpt\EventBundle\Entity\Registration as Registration;
  */
 class RegistrationManager extends BaseManager implements RegistrationManagerInterface {
     
+    
+    // <editor-fold defaultstate="collapsed" desc="Public">
+
     /**
      * 
      * Register a user for an event, or update the registration
@@ -30,13 +33,15 @@ class RegistrationManager extends BaseManager implements RegistrationManagerInte
      * @param type $numparticipants
      * @return boolean
      */
-    public function RegisterUserForEvent(EventInterface $event, UserInterface $user, $numparticipants = 1)
+    public function RegisterUserForEvent(EventInterface $event, UserInterface $user, $numparticipants = 1, $animator = false, $and_save_event = true)
     {
       
-        $dummy_registration = $this->CreateRegistration($event, $user, $numparticipants, false);
-        $registration = $this->AddRegistrationAndUpdateQueue($event, $dummy_registration);
+        $dummy_registration = $this->CreateRegistration($event, $user, $numparticipants, $animator);
+        $registration = $this->UpdateRegistration($event, $dummy_registration);
         
-        $this->getEventManager()->SaveEvent($event);
+        if ($and_save_event){
+            $this->getEventManager()->SaveEvent($event);
+        }
         
         return $registration;
     }
@@ -82,95 +87,7 @@ class RegistrationManager extends BaseManager implements RegistrationManagerInte
         $this->getEventManager()->SaveEvent($event);
 
     }
-
-    
-    protected function AddRegistrationAndUpdateQueue(EventInterface $event, RegistrationInterface $p_registration)
-    {
-        $old_num_participant = 0;
-        $user_id = $p_registration->getUserId();
-        $found_registration = null;
-        
-        // Searching for an existing registration for this user to this event
-        foreach($event->getRegistrations() as $registration)
-        {
-            if ($registration->getUserId() == $user_id)
-            {   // If the registration exists, organizer is not modified
-                $old_num_participant = $registration->getNumParticipant();
-                $found_registration = $registration;                
-                break;
-            }
-        }
-        
-        // If not found, we add the registration as provided and fill the queue (new registrations are necessarily at the end)
-        if (!$found_registration){
-            $event->addRegistration($p_registration);
-            $this->FillQueue($event, $p_registration->getNumparticipant(),$user_id);
-            
-            $event->UpdateCounters();
-            
-            return $p_registration;
-        } 
-        else if ($p_registration->getNumparticipant() == $old_num_participant){
-            // Same num of participant, nothing to do
-            return $found_registration;
-        } else {
-
-            // Update the event queue
-            $this->UpdateEventQueue($event, $user_id, $p_registration->getNumparticipant(), $old_num_participant );
-            
-            $event->UpdateCounters();
-            
-            return $found_registration;            
-        }
-    }
-    
-    
-    /**
-     * 
-     * Updates the event.queue for a given event and a user_id, changing the number of attendees
-     * 
-     * @param type $event The event having the queue to be updated
-     * @param type $user_id The user id to consider
-     * @param type $new_num_attendees The new number of attendees
-     * @param type $old_num_attendees The old number of attendees
-     */
-    protected function UpdateEventQueue(EventInterface $event, $user_id, $new_num_attendees, $old_num_attendees)
-    {
-            $old_queue = $event->getQueue();
-            $new_queue = Array();
-            $count_user_id = 0;
-            
-            // Shrink the queue
-            if ($new_num_attendees < $old_num_attendees)
-            {
-                // Going through the old queue
-                for ($i = 0; $i<count($old_queue);++$i)
-                {
-                    // If it is an attendee from a different user, push it to new queue
-                    if ($old_queue[$i] != $user_id)
-                    {
-                        array_push($new_queue,$old_queue[$i]);
-                    // Else, push it to new queue only to the point tota number does not exceed the new count
-                    } else {
-                        $count_user_id++;
-
-                        if ($count_user_id <= $new_num_attendees)
-                        {
-                            array_push($new_queue,$old_queue[$i]);
-                        } 
-                    }
-                }
-                
-                // Assign the new queue
-                $event->setQueue($new_queue);
-   
-            } else if ($new_num_attendees > $old_num_attendees) {
-                $count_to_be_added = $new_num_attendees - $old_num_attendees;
-                $this->FillQueue($event, $count_to_be_added ,$user_id);
-            }
-    }
-    
-    
+     
     public function getRegistration(EventInterface $event, UserInterface $user)
     {
         return $this->getRegistrationRepository()
@@ -180,33 +97,6 @@ class RegistrationManager extends BaseManager implements RegistrationManagerInte
                 ->setParameter('event_id', $event->getId())
             ->getQuery()
             ->getOneOrNullResult();
-    }
-    
-    protected function RemoveRegistration(EventInterface $event, $user)
-    {
-        return $this->getRegistrationRepository()
-            ->createQueryBuilder('u')
-                ->delete()
-                ->Where('u.user = :user_id AND u.event = :event_id')
-                ->setParameter('user_id', $user->getId())
-                ->setParameter('event_id', $event->getId())
-            ->getQuery()
-            ->execute();
-    }
-
-    public function CreateRegistration(EventInterface $event, $user, $numparticipants, $organizer)
-    {
-        if (!is_integer($numparticipants)) {
-            throw new \Symfony\Component\Security\Core\Exception\InvalidArgumentException("num participants must be an integer");
-        }
-        
-        if (!is_bool($organizer)) {
-            throw new \Symfony\Component\Security\Core\Exception\InvalidArgumentException("organizer must be boolean");
-        }
-        
-        $registration = new Registration($user, $event, $numparticipants, $organizer);
-  
-        return $registration; 
     }
     
     public function getAttendees(EventInterface $event, $organizers_only = false)
@@ -306,7 +196,6 @@ class RegistrationManager extends BaseManager implements RegistrationManagerInte
         return false;
     }
     
-    
     public function AddDefaultRegistration(EventInterface $event, $registred_user = null)
     {
         if (!$registred_user){
@@ -316,11 +205,9 @@ class RegistrationManager extends BaseManager implements RegistrationManagerInte
         // By default, creator is also an organizer
         $registration = new Registration($registred_user, $event, 1, true);
         
-        $this->AddRegistrationAndUpdateQueue($event,$registration);
+        $this->UpdateRegistration($event,$registration);
 
     }
-    // <editor-fold defaultstate="collapsed" desc="Protected">
-
 
     public function DeleteAllRegistrations(EventInterface $event)
     {
@@ -332,7 +219,23 @@ class RegistrationManager extends BaseManager implements RegistrationManagerInte
             ->getQuery()
             ->execute();    
     }
- 
+    // </editor-fold>
+
+    // <editor-fold defaultstate="collapsed" desc="Protected">
+    protected function CreateRegistration(EventInterface $event, $user, $numparticipants, $organizer)
+    {
+        if (!is_integer($numparticipants)) {
+            throw new \Symfony\Component\Security\Core\Exception\InvalidArgumentException("num participants must be an integer");
+        }
+        
+        if (!is_bool($organizer)) {
+            throw new \Symfony\Component\Security\Core\Exception\InvalidArgumentException("organizer must be boolean");
+        }
+        
+        $registration = new Registration($user, $event, $numparticipants, $organizer);
+  
+        return $registration; 
+    }
     
     protected function FillQueue(EventInterface $event, $num_item, $item_value)
     {
@@ -341,6 +244,104 @@ class RegistrationManager extends BaseManager implements RegistrationManagerInte
         $new_queue = array_merge($old_queue, $added_queue);
         $event->setQueue($new_queue);
     }
- 
+      
+    protected function UpdateRegistration(EventInterface $event, RegistrationInterface $p_registration)
+    {
+        $old_num_participant = 0;
+        $user_id = $p_registration->getUserId();
+        $found_registration = null;
+        
+        // Searching for an existing registration for this user to this event
+        foreach($event->getRegistrations() as $registration)
+        {
+            if ($registration->getUserId() == $user_id)
+            {   // If the registration exists, organizer is not modified
+                $old_num_participant = $registration->getNumParticipant();
+                $found_registration = $registration;                
+                break;
+            }
+        }
+        
+        // If not found, we add the registration as provided and fill the queue (new registrations are necessarily at the end)
+        if (!$found_registration){
+            $event->addRegistration($p_registration);
+            $this->FillQueue($event, $p_registration->getNumparticipant(),$user_id);
+            
+            //$event->UpdateCounters();
+            
+            return $p_registration;
+        } 
+        //else if ($p_registration->getNumparticipant() == $old_num_participant){
+            // Same num of participant, nothing to do
+        //    return $found_registration;
+        else {
+
+            $found_registration->setNumparticipant($p_registration->getNumparticipant());
+            $found_registration->setOrganizer($p_registration->getOrganizer());
+            // Update the event queue
+            $this->ModifyNumberOfAttendeesForUser($event, $user_id, $p_registration->getNumparticipant(), $old_num_participant );
+            
+            //$event->UpdateCounters();
+            
+            return $found_registration;
+        }
+    }
+        
+    /**
+     * 
+     * Updates the event.queue for a given event and a user_id, changing the number of attendees
+     * 
+     * @param type $event The event having the queue to be updated
+     * @param type $user_id The user id to consider
+     * @param type $new_num_attendees The new number of attendees
+     * @param type $old_num_attendees The old number of attendees
+     */
+    protected function ModifyNumberOfAttendeesForUser(EventInterface $event, $user_id, $new_num_attendees, $old_num_attendees)
+    {
+            $old_queue = $event->getQueue();
+            $new_queue = Array();
+            $count_user_id = 0;
+            
+            // Shrink the queue
+            if ($new_num_attendees < $old_num_attendees)
+            {
+                // Going through the old queue
+                for ($i = 0; $i<count($old_queue);++$i)
+                {
+                    // If it is an attendee from a different user, push it to new queue
+                    if ($old_queue[$i] != $user_id)
+                    {
+                        array_push($new_queue,$old_queue[$i]);
+                    // Else, push it to new queue only to the point tota number does not exceed the new count
+                    } else {
+                        $count_user_id++;
+
+                        if ($count_user_id <= $new_num_attendees)
+                        {
+                            array_push($new_queue,$old_queue[$i]);
+                        } 
+                    }
+                }
+                
+                // Assign the new queue
+                $event->setQueue($new_queue);
+   
+            } else if ($new_num_attendees > $old_num_attendees) {
+                $count_to_be_added = $new_num_attendees - $old_num_attendees;
+                $this->FillQueue($event, $count_to_be_added ,$user_id);
+            }
+    }
     
+    protected function RemoveRegistration(EventInterface $event, $user)
+    {
+        return $this->getRegistrationRepository()
+            ->createQueryBuilder('u')
+                ->delete()
+                ->Where('u.user = :user_id AND u.event = :event_id')
+                ->setParameter('user_id', $user->getId())
+                ->setParameter('event_id', $event->getId())
+            ->getQuery()
+            ->execute();
+    }
+    // </editor-fold>
 }

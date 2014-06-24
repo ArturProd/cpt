@@ -65,7 +65,6 @@ class EventController extends BaseController {
         $this->getPermissionManager()->RestrictAccessToLoggedIn();
         $this->getPermissionManager()->RestrictAccessToAjax($request);
 
-
         // ****************************************************
         // Checking if new event or if it has to be loaded from db
         $event = null;
@@ -111,7 +110,7 @@ class EventController extends BaseController {
                     $this->SetJsonRegistrationCollection($event, $registrationlist_json_array);
                     
                    if ($form->isValid()) {
-                        $this->getRegistrationManager()->DeleteAllRegistrations($event); // The registrations are recreated from scratch, so we delete the old ones
+                      //  $this->getRegistrationManager()->DeleteAllRegistrations($event); // The registrations are recreated from scratch, so we delete the old ones
                         $this->getEventManager()->SaveEvent($event);
                         
                         // send an email for each registration
@@ -432,16 +431,33 @@ class EventController extends BaseController {
         if ($registration_json_array === null) {
             throw new \InvalidArgumentException("Registration list is null or is not an array");
         }
-//        if ($eventqueue_json_array === null)
-//            throw new \InvalidArgumentException("Event queue is null or is not an array");
-        // Creates Registration entity list from the json array (throws exceptions)
-        $RegistrationList = null;
-        foreach ($registration_json_array as $userid => $registration_json) {
-            $RegistrationList[] = $this->get_registration_from_json($registration_json, $event);
-        }
 
-        $event->setRegistrations($RegistrationList);
-//        $this->get("EventManager")->ReplaceRegistrationCollection($event, $RegistrationList, $eventqueue_json_array);
+        // Creates Registration entity list from the json array (throws exceptions)
+        //$RegistrationList = null;
+        foreach ($registration_json_array as $userid => $registration_json) {
+            //$RegistrationList[] = $this->get_registration_from_json($registration_json, $event);
+
+            if ((!is_integer($registration_json->user)) || (!is_integer($registration_json->event)) || (!is_integer($registration_json->numparticipants)) || (!is_integer($registration_json->numqueuedparticipants)) || (!is_integer($registration_json->organizer))) {
+                $this->RestrictBusinessRuleError("Registration_json_array is malformed");
+            }
+
+            if ($registration_json->numparticipants <= 0) {
+                $this->RestrictBusinessRuleError("numparticipants for a registration cannot be <=0 (" . $registration_json->numparticipants . " given)");
+            }
+
+            $user = $this->getUserManager()->findUserBy(Array("id" => $registration_json->user));
+            
+            if (!$user) {
+                $this->RestrictBusinessRuleError("User with id " . $registration_json->user . " does not exists.");
+            }
+        
+            $this->getRegistrationManager()->RegisterUserForEvent($event, $user, $registration_json->numparticipants, $registration_json->organizer ? true : false, false );
+
+        }
+        
+        // $this->getEventManager()->SaveEvent($event);
+
+        //$event->setRegistrations($RegistrationList);
     }
 
     protected function get_registration_from_json($registration_json, $event) {
@@ -459,7 +475,7 @@ class EventController extends BaseController {
             $this->RestrictBusinessRuleError("User with id " . $registration_json->user . " does not exists.");
         }
 
-        return $this->getRegistrationManager()->CreateRegistration($event, $user, $registration_json->numparticipants, $registration_json->organizer ? true : false );
+        //return $this->getRegistrationManager()->CreateRegistration($event, $user, $registration_json->numparticipants, $registration_json->organizer ? true : false );
     }
   
     // </editor-fold>
