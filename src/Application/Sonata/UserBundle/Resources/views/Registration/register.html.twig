@@ -65,14 +65,16 @@
                 {#{ form_label(eventform.city_name, null, { 'attr': {'class': 'input_label mandatory_field_label'} }) }#}
                 {{ form_widget(form.plainPassword) }}
             </div>
-                {{ form_errors(form.professional) }}            
-                {{ form_label(form.professional) }}            
-                {{ form_widget(form.professional) }}
-                {{ form_errors(form.country_code) }}            
+                {{ form_errors(form.country_code) }}                        
             <div  class="input_div">
                 {{ form_label(form.country_code) }}            
                 {{ form_widget(form.country_code) }}
-            </div>        
+            </div>
+                {{ form_errors(form.professional) }}                        
+            <div  class="input_div">
+                {{ form_label(form.professional) }}
+                {{ form_widget(form.professional) }}
+            </div>
             <div style="text-align:right">
                 <button id="register_button" type="button" class="btn_account" >{{ 'registration.submit'|trans({}) }}</button>
             </div>                

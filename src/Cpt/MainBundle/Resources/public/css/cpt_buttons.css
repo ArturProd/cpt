@@ -211,7 +211,7 @@
 
 .btn_logout{
     display: inline-block;
-    background: url('../images/boutons/bouton-generique-vert-milieu.png') repeat-x;
+    background: url('../images/bandeau/bandeau-bouton-connecte.jpg') repeat-x;
     height: 12px;
     color: white;
     cursor: pointer; cursor: hand;

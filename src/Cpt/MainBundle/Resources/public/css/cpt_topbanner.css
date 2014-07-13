@@ -26,9 +26,12 @@
 .banner_usercorner ul li{
     
 }
+.banner_usercorner li:nth-child(2) {
+    text-align: right;
+}
 
 .banner_usercorner li:nth-child(1) {
-    font-size: 25px;    
+    font-size: 20px;    
     margin-top: 30px;
 }
 .banner_usercorner li:nth-child(1) a {

@@ -20,24 +20,27 @@ input[disabled]{
 
 .input_div label { 
     display: table-cell;
-    width: 80px!important; 
+    width: 100px!important; 
     -moz-border-radius: 5px 0 0 5px; 
     -webkit-border-radius: 5px 0 0 5px; 
     background: #EEE; 
     border: 1px solid #CCC; 
     border-radius: 5px 0 0 5px; 
     border-right: 1px solid #FFF;  
-    height: 38px; 
+    height: 36px; 
     width: 275px; 
     line-height: 36px; 
     margin-right: 0; 
     margin-bottom: 0; 
+    font-size: 12px;
+    padding: 0 10px 0 10px;
 }
 
 .controls{
     display: table-cell;
 }
 
+.input_div select,
 .input_div input[type=password],
 .input_div input[type=email],
 .input_div input[type=text] { 
@@ -49,7 +52,7 @@ input[disabled]{
     border: 1px solid #CCC; 
     border-radius: 0 5px 5px 0; 
     color: #333; 
-    height: 38px; 
+    height: 38px;
     line-height: 24px; 
     margin: 0px 8px 0px -5px; 
     outline: none; 

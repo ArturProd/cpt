@@ -13,5 +13,7 @@ registration.confirmed: Votre compte est maintenant activé.
 register.mandatoryfields: Créez votre compte
 register.explain: Aprés avoir créé votre compte, vous pourrez créer des évènements et vous y inscrire, publier des articles, et plus encore gratuitement!
 form.registration.lastname: Nom
+form.registration.professional.label: Pro
 form.registration.professional: Je suis un chanteur professionnel
+form.registration.notprofessional: Je suis chanteur amateur
 form.registration.email: Email

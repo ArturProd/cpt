@@ -13,5 +13,7 @@ registration.confirmed: Your account is now activated.
 register.mandatoryfields: Create your account
 register.explain: After creating your account, you will be able to create and attend events, publish articles, and more for free!
 form.registration.lastname: Lastname
+form.registration.professional.label: Pro
 form.registration.professional: I am a professional singer
+form.registration.notprofessional: I am an amateur singer
 form.registration.email: Email

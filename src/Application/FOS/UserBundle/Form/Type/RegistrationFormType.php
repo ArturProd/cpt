@@ -39,8 +39,8 @@ class RegistrationFormType extends BaseType
         $builder->add('firstname', null, array('label' => 'form.registration.firstname'))
                 ->add('lastname', null, array('label' => 'form.registration.lastname'))
                 ->add('professional', 'choice', 
-                        array('label' => 'form.registration.professional',
-                            'choices' => array(true => 'form.button.yes', false => 'form.button.no')
+                        array('label' => 'form.registration.professional.label',
+                            'choices' => array(true => 'form.registration.professional', false => 'form.registration.notprofessional')
                     ))
                 ->add('country_code', 'country', array(
                     'label' => 'form.registration.country', 
