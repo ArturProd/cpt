@@ -23,13 +23,16 @@ cpt_main_userprofile_show:
     defaults: { _controller: CptMainBundle:User:showProfile }
     requirements:
         userid:  \d+
-
+    options:
+        expose: true
+     
 cpt_main_about:
     pattern:  /about
     defaults: { _controller: CptMainBundle:Default:about }
     options:
         expose: true
- 
+     
+    
 cpt_send_newsletter:
     pattern:  /sendnewsletter
     defaults: { _controller: CptMainBundle:Default:sendNewsLetter } 

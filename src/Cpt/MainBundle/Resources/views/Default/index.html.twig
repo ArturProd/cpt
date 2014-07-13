@@ -16,5 +16,13 @@
 
 
 {% block rightcol %}
+    <div class="main_section">
+        <div class="column_title_article">
+            <div id="column_title_article_title"></div>
+            <div id="rightcol_button"></div>
+        </div>
+        <div id="rightcol_article">
         {% render controller("CptBlogBundle:Post:view", {"article_permalink": article_permalink, "_locale": app.request.locale}) %}
+        </div>
+    </div>
 {% endblock %}

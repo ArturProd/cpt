@@ -5,11 +5,18 @@ var PAGE_ABOUT = 1;
 var PAGE_REGISTER = 2;
 var PAGE_PROFILE = 3;
 var PAGE_EDIT_EVENT = 4;
+var PAGE_ARTICLE_NEW = 5;
+var PAGE_ARTICLE_LIST = 6;
+var PAGE_ARTICLE_EDIT = 7;
 {# ************************************************************************************************************************ #} 
 {# Set the html of the left column button (back, new event etc.)
 {# ************************************************************************************************************************ #} 
 function SetLeftcolButton(html){
     $('#leftcol_button').html(html);
+}
+
+function SetRightcolButton(html){
+    $('#rightcol_button').html(html);
 }
 
 {# ************************************************************************************************************************ #} 
@@ -48,8 +55,12 @@ function ShowPage(page_type, page_id)
     } else if (page_type === PAGE_PROFILE) {
         $('#leftcol_event').hide();
         $('#leftcol_registration').hide();
-        showProfilePage();
+        $('#leftcol_about').show();
+        $('#column_title_event_title').html("{{'main.title.profile'|trans}}");
+        SetLeftcolButton("<a class='event_new_btn' onclick='ShowPage(PAGE_EVENT);'>{{'main.button.back'|trans}}</a>"); {# set the left column button to go back to PAGE_EVENT #}
+        showProfilePage(page_id);
     } else if (page_type === PAGE_EDIT_EVENT){
+        {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}        
         $('#leftcol_registration').hide();
         $('#leftcol_event').show();
 
@@ -63,22 +74,40 @@ function ShowPage(page_type, page_id)
         manage_event(page_id);
         //etLeftcolButton("<a  class='btn_blue' onclick='DisplayEventEditPanel(false);'>{{'event.button.backtoevent'|trans}}</a>");
         SetLeftcolButton("<a id='close_edit_event' class='event_new_btn' onclick='ShowPage(PAGE_EVENT);'>{{'main.button.back'|trans}}</a>"); {# set the left column button to go back to PAGE_EVENT #}
+        {% endif %}
+    } else if (page_type === PAGE_ARTICLE_NEW){
+        {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}                
+        SetRightcolButton("<a class='article_new_btn' onclick='ShowPage(PAGE_ARTICLE_LIST);'>{{'main.button.back'|trans}}</a>"); {# set the left column button to go back to PAGE_EVENT #}
+        EditPost(-1);
+        {% endif %}
+    } else if (page_type === PAGE_ARTICLE_LIST){
+        {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+        SetRightcolButton("<a class='article_new_btn' onclick='ShowPage(PAGE_ARTICLE_NEW);'>{{'main.button.new'|trans}}</a>");
+        {% else %}
+        SetRightcolButton("");
+        {% endif %}
+        ArticleEditDisplay(false);
+    } else if (page_type === PAGE_ARTICLE_EDIT){
+        {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}                
+        SetRightcolButton("<a class='article_new_btn' onclick='ShowPage(PAGE_ARTICLE_LIST);'>{{'main.button.back'|trans}}</a>"); {# set the left column button to go back to PAGE_EVENT #}
+        EditPost(page_id);
+        {% endif %}
     }
 }
 
 function showAboutPage()
-{    {# Retreive the event view from server and add it to previously created DOM element #}
+{
     $.get( Routing.generate('cpt_main_about', {_locale:_locale}), function(response){
              $('#leftcol_about').html( response );
      });
 }
-/*
-function showProfilePage()
+
+function showProfilePage(userid)
 {
-    $.get( '{{ path('sonata_user_profile_show') }}', {_locale:_locale}), function(response){
-             $('#leftcol_about').html( response );
+    $.get( Routing.generate('cpt_main_userprofile_show', {_locale:_locale,userid:userid}), function(response){
+         $('#leftcol_about').html( response );
      });
-}*/
+}
 
 
 {# ************************************************************************************************************************ #} 
@@ -86,7 +115,7 @@ function showProfilePage()
 {#************************************************************************************************************************ #}      
  $(function() {
     ShowPage(PAGE_EVENT);
-    
+    ShowPage(PAGE_ARTICLE_LIST);
 });
           
 </script>

@@ -209,6 +209,21 @@
     line-height: 15px;
 }
 
+.btn_logout{
+    display: inline-block;
+    background: url('../images/boutons/bouton-generique-vert-milieu.png') repeat-x;
+    height: 12px;
+    color: white;
+    cursor: pointer; cursor: hand;
+    border-style: none;
+    vertical-align: middle;
+    margin: 2px;
+    padding: 3px;
+    line-height: 12px;
+    margin-top: 20px;
+}
+
+
 .btn_csv{
     display: inline-block;
     cursor: pointer; cursor: hand;

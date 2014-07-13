@@ -62,7 +62,7 @@
                             <li><a href="#"></a></li>
                             <li><a href="https://www.facebook.com/chantpourtous" target="_blank"></a></li>
                             <li><a href="http://www.youtube.com/user/chantpourtous" target="_blank"></a></li>
-                            <li>
+                           <!-- <li>
                                 {# Paypal donate button #}
                                 {% if app.request.locale == 'fr' %}                                 {# Paypal donate button => FRENCH (Euro) #}        
                                 <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
@@ -80,18 +80,19 @@
                                 <img alt="" border="0" src="https://www.paypalobjects.com/fr_FR/i/scr/pixel.gif" width="1" height="1">
                                 </form>
                                 {% endif %}
-                            </li>
-                         </ul>
+                            </li>-->
+                        </ul>
+                     {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                         <div class="banner_usercorner">
+                            <ul>
+                               <li><a onclick="ShowPage(PAGE_PROFILE, {{ app.user.id }})">{{ app.user.username|upper }}</a></li>
+                               <li ><a class="btn_logout" href="{{ path('fos_user_security_logout') }}">{{ 'layout.logout'|trans({}, 'FOSUserBundle') }}</a></li>
+                            </ul>
+                         </div>
+                      {% endif %}
                      {% if (not is_granted("IS_AUTHENTICATED_REMEMBERED")) %}
                         {% render controller("FOSUserBundle:Security:login") %}
                      {% endif %}
-                    {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-                        <ul class="nav">
-                            <li><a href="#">{{ app.user.username|upper }}</a></li>
-                            <li><a href="{{ path('sonata_user_profile_show') }}">{{"main.menu.item.profile"|trans}}</a></li>
-                            <li><a href="{{ path('fos_user_security_logout') }}">{{ 'layout.logout'|trans({}, 'FOSUserBundle') }}</a></li>
-                        </ul>
-                    {% endif %}
                      </div>
                   </div>
                </header>

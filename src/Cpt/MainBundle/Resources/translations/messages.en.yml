@@ -94,7 +94,7 @@ email.subscribeevent.message.header.attendee: |
     <p>Hello %username%,</p>
     <p>Thank you for registering to <span style="text-transform:uppercase;font-weight:bolder">"%eventname%"</span>.<p>
 email.subscribeevent.message.header.author:    |
-    <p>Hello %usernam'%queued%':e%,</p>
+    <p>Hello %username%,</p>
     <p>Thank you for organizing the event <span style="text-transform:uppercase;font-weight:bolder">"%eventname%"</span>. You will find bellow the event details, which will be emailed to attendees when they register:<p>
 email.subscribeevent.message.header.leader:    |
     <p>Hello %username%,</p>
@@ -168,3 +168,4 @@ email.general.header: |
     <p>Hello %username%,</p>
 main.about.learnmore: Learn more...
 main.title.chantpourtous: Chant pour tous
+main.title.profile: My account

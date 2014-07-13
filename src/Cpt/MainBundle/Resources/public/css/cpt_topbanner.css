@@ -8,6 +8,33 @@
     background-position:left bottom, right bottom, right bottom;
 }
 
+.banner_usercorner{
+    position: absolute;    
+    top: 10px;
+    right: 0px;
+    width: 180px;
+    height: 86px;
+    text-align: center;
+}
+.banner_usercorner ul{
+    list-style-type: none;
+    top: 20px;
+    width: 80%;
+    margin: 0 auto;
+}
+
+.banner_usercorner ul li{
+    
+}
+
+.banner_usercorner li:nth-child(1) {
+    font-size: 25px;    
+    margin-top: 30px;
+}
+.banner_usercorner li:nth-child(1) a {
+    color: white;
+}
+
 .banner_icons{
      list-style-type: none;
     position: absolute;    

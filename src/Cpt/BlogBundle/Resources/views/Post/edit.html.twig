@@ -112,7 +112,6 @@ function save_post_callback(response)
     
 {{ form_start(posteditform, {'action': path('cpt_blog_post_edit', { 'id': post.id }), 'method': 'POST' }) }}
 <div class="cpt_page">
-    <a id="close_edit_article" class="btn_red" onclick='ArticleEditDisplay(false);'>{{'post.button.backtoarticlelist'|trans}}</a>
 
     {# Controls #}
     <h2><span class="cpt_red">➤&nbsp;&nbsp;</span>{{'post.actions'|trans}}</h2>

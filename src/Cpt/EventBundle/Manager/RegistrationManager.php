@@ -211,11 +211,12 @@ class RegistrationManager extends BaseManager implements RegistrationManagerInte
 
     public function DeleteAllRegistrations(EventInterface $event)
     {
-            $event->getRegistrations()->clear();
+          /*  $event->getRegistrations()->clear();
            $this->em->persist($event);
-           $this->em->flush();
+           $this->em->flush(); */
 
-        /*
+        $event->getRegistrations()->clear();
+        
             return $this->getRegistrationRepository()
             ->createQueryBuilder('u')
                 ->delete()
@@ -223,8 +224,8 @@ class RegistrationManager extends BaseManager implements RegistrationManagerInte
                 ->setParameter('event_id', $event->getId())
             ->getQuery()
             ->execute();    
-         * 
-         */
+          
+         
     }
     
     public function CreateRegistration(EventInterface $event, $user, $numparticipants, $organizer)

@@ -4,6 +4,8 @@
 {{ 'email.cancelregistration.subject'|trans({'%eventname%': event.title}) }}    
 {% elseif to_orga%}
 {{ 'email.subscribeevent.subject.leader'|trans({'%eventname%': event.title}) }}
+{% elseif reg_added%}
+{{ 'email.subscribeevent.subject.attendee'|trans({'%eventname%': event.title}) }}
 {% else %}
 {{ 'email.registrationchanged.subject'|trans({'%eventname%': event.title}) }}
 {% endif %}
@@ -29,6 +31,11 @@
                 {% if reg_cancelled %}          <li>{{ 'email.registrationchanged.reg_cancelled'|trans }}</li> {% endif %}
                 {% if reg_added %}          <li>{{ 'email.registrationchanged.reg_added'|trans }}</li> {% endif %}
                 </ul>
+                {% if registration is not null %}
+                    {% if registration.numqueuedparticipant > 0 %}
+                    {{ 'email.subscribeevent.message.allseatsnotconfirmed'|trans }}
+                    {% endif %}
+                {% endif %}
                 <table style="border-style:solid;border-width:1px;">
                     <tr>
                         {# When #}

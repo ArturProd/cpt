@@ -15,10 +15,8 @@ use Ivory\GoogleMap\Events\Event as GMapEvent;
 use Ivory\GoogleMap\Helper\MapHelper;
 
 class EventController extends BaseController {
+    // <editor-fold defaultstate="collapsed" desc="Main Actions">
 
-    // <editor-fold defaultstate="collapsed" desc="Actions">
-
-  
     /**
      * Displays the whole Event Section
      * 
@@ -28,19 +26,17 @@ class EventController extends BaseController {
         $currentdate = $this->getCalendarManager()->GetNextEventDateOrCurrent(new \Datetime);
         $update_ajax_delay = $this->container->getParameter("cpt.event.update_ajax_delay");
         $permalink_event_id = null;
-        
-        if (!empty($event_permalink)) // Permalink was provided
-        {
-                if (!preg_match('/.+?/', $event_permalink)) {
-                    $this->GetPermissionManager()->RestrictResourceNotFound();
-                }
 
-                $events = Array();
-                $events[] = $this->getEventManager()->findOneByPermalink($event_permalink);
-                $permalink_event_id = $events[0]['id'];
+        if (!empty($event_permalink)) { // Permalink was provided
+            if (!preg_match('/.+?/', $event_permalink)) {
+                $this->GetPermissionManager()->RestrictResourceNotFound();
+            }
 
+            $events = Array();
+            $events[] = $this->getEventManager()->findOneByPermalink($event_permalink);
+            $permalink_event_id = $events[0]['id'];
         }
-        
+
         //$countries = $this->getEventManager()->getCountries();
         $countryform = $this->get('form.factory')->createNamed('country', 'cpt_country', null, Array('attr' => Array('id' => 'countryform')));
 
@@ -48,7 +44,7 @@ class EventController extends BaseController {
                     'currentdate' => $currentdate,
                     'update_ajax_delay' => $update_ajax_delay,
                     'permalink_event_id' => $permalink_event_id,
-                  //  'countries' => $countries,
+                    //  'countries' => $countries,
                     'countryform' => $countryform->createView()
         ));
     }
@@ -93,31 +89,37 @@ class EventController extends BaseController {
             // Get the organizers and event queue
             try {
                 // If it is a copy action, copy the event
-                if (($event->getId() != -1) && ( $request->request->get('copy_field') == 1)){
+                if (($event->getId() != -1) && ( $request->request->get('copy_field') == 1)) {
                     $event = $this->getEventManager()->CopyEvent($event);
                     $form = $this->get('form.factory')->createNamed('event', 'cpt_edit_event', $event, Array('attr' => Array('id' => 'eventform')));
                     return $this->CreateJsonResponse($this->GetEventEditView($event, $form), "copy");
                 }
-                
-                    // If not, process the event queue
-                    $eventqueue_json_array = json_decode($request->get('event_queue_json'));
-                    $organizers_json_array = json_decode($request->get('event_organizers_json'));
-                    
-                    if ((!$organizers_json_array ) || (!$eventqueue_json_array)){
-                        throw new \InvalidArgumentException("decoded json is null");
-                    }
-                    
-                    $event->setQueue($eventqueue_json_array);
-                    $this->setRegistrations($event, $eventqueue_json_array, $organizers_json_array);
-                    
-                   if ($form->isValid()) {
-                        $changes = $this->getEventManager()->SaveEvent($event,$oldevent);
-                        $this->sendEventModificationEmails($event, $changes);
-                        
-                        return $this->CreateJsonOkResponse(null);
-                    } else {
-                       return $this->CreateJsonFailedResponse($this->GetEventEditView($event, $form));
-                    }
+
+                // If not, process the event queue
+                $eventqueue_json_array = json_decode($request->get('event_queue_json'));
+                $organizers_json_array = json_decode($request->get('event_organizers_json'));
+
+                if ((!$organizers_json_array ) || (!$eventqueue_json_array)) {
+                    throw new \InvalidArgumentException("decoded json is null");
+                }
+
+                $event->setQueue($eventqueue_json_array);
+                $this->setRegistrations($event, $eventqueue_json_array, $organizers_json_array);
+
+                if ($form->isValid()) {
+                    // Save events
+                    $changes = $this->getEventManager()->SaveEvent($event, $oldevent);
+
+                    // Send emails
+                    $userid = $this->getUser()->getId();
+                    $this->sendEventModificationEmails($event, $changes, $userid);
+                    $authorregistration = $event->getRegistration($userid);
+                    $this->getMailManager()->sendEventSubscriptionEmailMessage($authorregistration);
+
+                    return $this->CreateJsonOkResponse(null);
+                } else {
+                    return $this->CreateJsonFailedResponse($this->GetEventEditView($event, $form));
+                }
             } catch (Exception $e) {
                 return new Response("Paramètre incorrects", 400);
             }
@@ -126,10 +128,109 @@ class EventController extends BaseController {
         // Display page
         return new Response($this->GetEventEditView($event, $form));
     }
-  
+
+    public function registerForEventAction($eventid, $numattendees) {
+        try {
+            $request = $this->getRequest();
+
+            $this->getPermissionManager()->RestrictAccessToLoggedIn();
+            $this->getPermissionManager()->RestrictAccessToAjax($request);
+
+            $numattendees = intval($numattendees);
+            $eventid = intval($eventid);
+
+            $oldevent = $this->getEventManager()->getDetachedEvent($event->getId());
+
+            $event = $this->getEventManager()->getEventById($eventid);
+            $this->GetPermissionManager()->RestrictResourceNotFound($event);
+
+            $user = $this->getUser();
+
+            $changes = $this->getRegistrationManager()
+                    ->RegisterUserForEvent($event, $user, $numattendees, false, $oldevent);
+
+            //$event = $this->getEventManager()->getEventById($eventid);
+
+            $registration = $event->getRegistration($user->getId());
+
+            $this->getMailManager()->sendEventSubscriptionEmailMessage($registration);
+            $this->sendEventModificationEmails($event, $changes, $user->getId());
+
+            $html_string = $this->renderView('CptEventBundle:Event:eventdisplay.html.twig', array(
+                'event' => $event,
+            ));
+
+            return $this->CreateJsonOkResponse($html_string);
+        } catch (\Exception $e) {
+            return $this->CreateJsonFailedResponse();
+        }
+
+        //$responsedata = $this->getSerializer()->serialize($registration, 'json');
+        // return $this->CreateJsonOkResponse($responsedata);
+        //return $this->getEventAction($eventid);
+    }
+
+    public function cancelEventAction($id) {
+        try {
+            $request = $this->getRequest();
+
+            $this->getPermissionManager()->RestrictAccessToLoggedIn();
+            $this->getPermissionManager()->RestrictAccessToAjax($request);
+
+
+            $event = $this->getEventManager()->getEventById($id);
+            $this->GetPermissionManager()->RestrictResourceNotFound($event);
+
+            foreach ($event->getRegistrations() as $registration) {
+                $this->getMailManager()->sendEventCancelledEmailMessage($event, $registration->getUser());
+            }
+
+            $result = $this->getEventManager()->cancelEvent($event);
+
+            return $this->CreateJsonOkResponse($result);
+        } catch (\Exception $e) {
+            return $this->CreateJsonFailedResponse();
+        }
+    }
+
+    public function cancelRegistrationAction($eventid) {
+        try {
+            $request = $this->getRequest();
+
+            $this->getPermissionManager()->RestrictAccessToLoggedIn();
+            $this->getPermissionManager()->RestrictAccessToAjax($request);
+
+            $user = $this->getUser();
+            $oldevent = $this->getEventManager()->getDetachedEvent($eventid); // Always get the detached event before the new event!
+            $event = $this->getEventManager()->getEventById($eventid);
+
+            $changes = $this->getRegistrationManager()->CancelRegistration($event, $user, $oldevent);
+
+            $this->getMailManager()->sendEventCancelRegistrationEmailMessage($event, $user);
+            $this->sendEventModificationEmails($event, $changes, $user->getId());
+
+
+            $this->get('session')->getFlashBag()->add(
+                    'notice', $this->get('translator')->trans('registration.has_been_cancelled')
+            );
+
+            $html_string = $this->renderView('CptEventBundle:Event:eventdisplay.html.twig', array(
+                'event' => $event,
+            ));
+
+            return $this->CreateJsonOkResponse($html_string);
+        } catch (\Exception $e) {
+            return $this->CreateJsonFailedResponse();
+        }
+    }
+
+    // </editor-fold>
+    
+    // <editor-fold defaultstate="collapsed" desc="Other Actions">
+
     /*
 
-    /**
+      /**
      * Compares the last update timestamp of an event with the provided timestamp.
      * Returns a json object with value "true" if the event was updated in db since the provided timestamp, "false" otherwise
      *
@@ -183,23 +284,26 @@ class EventController extends BaseController {
      * @return JsonResponse
      */
     public function getEventsForMonthAction(Request $request, $year, $month) {
-        if ($month > 12){
+        if ($month > 12) {
             $this->ThrowBadRequestException();
         }
-        
+
         $options = Array();
-        if ($request->query->has('filter')){
-            switch($request->query->get('filter')){
-                case 'myevents':  $options['myevents'] = true; break;
-                case 'pastevents':  $options['pastevents'] = true; break;
-                case 'futureevents':  $options['futureevents'] = true; break;
+        if ($request->query->has('filter')) {
+            switch ($request->query->get('filter')) {
+                case 'myevents': $options['myevents'] = true;
+                    break;
+                case 'pastevents': $options['pastevents'] = true;
+                    break;
+                case 'futureevents': $options['futureevents'] = true;
+                    break;
             }
         }
-        
-        if ($request->query->has('country_code')){
+
+        if ($request->query->has('country_code')) {
             $options['country_code'] = $request->query->get('country_code');
         }
-        
+
         $month = $this->getCalendR()->getMonth($year, $month);
         $eventCollection = $this->getCalendR()->getEvents($month, $options);
 
@@ -208,8 +312,8 @@ class EventController extends BaseController {
 
         return $this->CreateJsonOkResponse($serializedevents);
     }
-    
-      /**
+
+    /**
      * Get one event per id
      * Returns a Json response
      * 
@@ -222,16 +326,16 @@ class EventController extends BaseController {
      * @return JsonResponse
      */
     public function getEventsForIdAction(Request $request, $id) {
-       $eventCollection = Array();
-       $eventCollection['events'] = Array();
-       $eventCollection['events'][0] = $this->getEventManager()->getEventById($id);
-       $this->GetPermissionManager()->RestrictResourceNotFound( $eventCollection['events'][0]);
+        $eventCollection = Array();
+        $eventCollection['events'] = Array();
+        $eventCollection['events'][0] = $this->getEventManager()->getEventById($id);
+        $this->GetPermissionManager()->RestrictResourceNotFound($eventCollection['events'][0]);
 
 
-       $serializer = $this->getSerializer();
-       $serializedevents = $serializer->serialize($eventCollection, 'json');
+        $serializer = $this->getSerializer();
+        $serializedevents = $serializer->serialize($eventCollection, 'json');
 
-       return $this->CreateJsonOkResponse($serializedevents);
+        return $this->CreateJsonOkResponse($serializedevents);
     }
 
     /**
@@ -289,112 +393,9 @@ class EventController extends BaseController {
             return new Response("Mauvaise méthode d accés", 404);
         }
     }
-    
-    public function registerForEventAction($eventid, $numattendees)
-    {
-        try
-        {
-            $request = $this->getRequest();
 
-            $this->getPermissionManager()->RestrictAccessToLoggedIn();
-            $this->getPermissionManager()->RestrictAccessToAjax($request);
-
-            $numattendees = intval($numattendees);
-            $eventid = intval($eventid);
-
-            $oldevent = $this->getEventManager()->getDetachedEvent($event->getId());
-
-            $event = $this->getEventManager()->getEventById($eventid);
-            $this->GetPermissionManager()->RestrictResourceNotFound($event);
-
-            $user = $this->getUser();
-
-            $changes = $this->getRegistrationManager()
-                    ->RegisterUserForEvent($event, $user, $numattendees, false, $oldevent);
-
-            //$event = $this->getEventManager()->getEventById($eventid);
-
-            $registration = $event->getRegistration($user->getId());
-            
-            $this->getMailManager()->sendEventSubscriptionEmailMessage($registration);
-            $this->sendEventModificationEmails($event, $changes, $user->getId());
-
-            $html_string = $this->renderView('CptEventBundle:Event:eventdisplay.html.twig', array(
-                    'event' => $event,
-            ));
-
-            return $this->CreateJsonOkResponse($html_string);
-
-        } catch( \Exception $e) {
-            return $this->CreateJsonFailedResponse();
-        }
-        
-        //$responsedata = $this->getSerializer()->serialize($registration, 'json');
-
-        // return $this->CreateJsonOkResponse($responsedata);
-        //return $this->getEventAction($eventid);
-    }
-    
-    public function cancelEventAction($id)
-    {
-        try{
-            $request = $this->getRequest();
-
-            $this->getPermissionManager()->RestrictAccessToLoggedIn();
-            $this->getPermissionManager()->RestrictAccessToAjax($request);
-
-
-            $event = $this->getEventManager()->getEventById($id);
-            $this->GetPermissionManager()->RestrictResourceNotFound($event);
-
-            foreach($event->getRegistrations() as $registration){
-                $this->getMailManager()->sendEventCancelledEmailMessage($event, $registration->getUser());
-            }
-
-            $result = $this->getEventManager()->cancelEvent($event);
-
-            return $this->CreateJsonOkResponse($result);
-
-
-        } catch( \Exception $e) {
-            return $this->CreateJsonFailedResponse();
-        }
-    }
-    
-    public function cancelRegistrationAction($eventid){
-        try{
-            $request = $this->getRequest();
-
-            $this->getPermissionManager()->RestrictAccessToLoggedIn();
-            $this->getPermissionManager()->RestrictAccessToAjax($request);
-
-            $user = $this->getUser();
-            $oldevent = $this->getEventManager()->getDetachedEvent($eventid); // Always get the detached event before the new event!
-            $event = $this->getEventManager()->getEventById($eventid);
-
-            $changes = $this->getRegistrationManager()->CancelRegistration($event, $user, $oldevent);
-
-            $this->getMailManager()->sendEventCancelRegistrationEmailMessage($event, $user);
-            $this->sendEventModificationEmails($event, $changes, $user->getId());
-
-
-            $this->get('session')->getFlashBag()->add(
-                'notice',
-                $this->get('translator')->trans('registration.has_been_cancelled')
-            );
-
-            $html_string = $this->renderView('CptEventBundle:Event:eventdisplay.html.twig', array(
-                    'event' => $event,
-                ));
-
-            return $this->CreateJsonOkResponse($html_string);
-        }
-        catch( \Exception $e) {
-            return $this->CreateJsonFailedResponse();
-        }
-    }
     // </editor-fold>
-
+    
     // <editor-fold defaultstate="collapsed" desc="Protected">
 
     /**
@@ -405,28 +406,26 @@ class EventController extends BaseController {
      * @param type $changes
      * @param type $not_for_userid
      */
-    protected function sendEventModificationEmails($event, $changes, $not_for_userid = null){
-        foreach($changes as $userid => $change){
-            if ($userid != $not_for_userid){
-               
-                $to_orga=REGISTRATION_CHANGE_ORGA_ADDED & $change;
-                $to_notorga=REGISTRATION_CHANGE_ORGA_REMOVED & $change;
+    protected function sendEventModificationEmails($event, $changes, $not_for_userid = null) {
+        foreach ($changes as $userid => $change) {
+            if ($userid != $not_for_userid) {
+
+                $to_orga = REGISTRATION_CHANGE_ORGA_ADDED & $change;
+                $to_notorga = REGISTRATION_CHANGE_ORGA_REMOVED & $change;
                 $queue_changed = REGISTRATION_CHANGE_NUMQUEUED & $change;
                 $num_attendeechanged = REGISTRATION_CHANGE_NUMATT & $change;
                 $reg_cancelled = REGISTRATION_CHANGE_REMOVED & $change;
                 $reg_added = REGISTRATION_CHANGE_ADDED & $change;
-                
-                if ($to_orga || $to_notorga || $queue_changed || $num_attendeechanged || $reg_cancelled || $reg_added)
-                {
+
+                if ($to_orga || $to_notorga || $queue_changed || $num_attendeechanged || $reg_cancelled || $reg_added) {
                     $registration = $event->getRegistration($userid);
                     $user = $this->getUserManager()->findUserBy(Array("id" => $userid));
-                    $this->getMailManager()->sendEventSubscriptionModificationEmailMessage($user,$event,$registration, $to_orga, $to_notorga, $queue_changed, $num_attendeechanged, $reg_cancelled, $reg_added);
+                    $this->getMailManager()->sendEventSubscriptionModificationEmailMessage($user, $event, $registration, $to_orga, $to_notorga, $queue_changed, $num_attendeechanged, $reg_cancelled, $reg_added);
                 }
-               
             }
         }
     }
-  
+
     /**
      * Get the view to edit an event
      * 
@@ -435,8 +434,8 @@ class EventController extends BaseController {
      * @return type
      */
     protected function GetEventEditView($event, $form) {
-    //    $map = $this->get('ivory_google_map.map');
-    //    $map->setLanguage($this->get('request')->getLocale());
+        //    $map = $this->get('ivory_google_map.map');
+        //    $map->setLanguage($this->get('request')->getLocale());
 //        $autocomplete = new Autocomplete();
 //
 //        $autocomplete->setPrefixJavascriptVariable('place_autocomplete_');
@@ -449,23 +448,18 @@ class EventController extends BaseController {
 //        $autocomplete->setAsync(true);
 //        $autocomplete->setLanguage('en');
         //$autocompleteHelper = new AutocompleteHelper();
-        
-      //  $mapHelper = new MapHelper();
-       // $mapHelper->setExtensionHelper('places', $autocompleteHelper);
-
-
-       // $googlejavascript = $mapHelper->renderJavascripts($map);
-
-       // $autocompleteHTML = $autocompleteHelper->renderHtmlContainer($autocomplete);
-       // $autocompleteJS = $autocompleteHelper->renderJavascripts($autocomplete);
+        //  $mapHelper = new MapHelper();
+        // $mapHelper->setExtensionHelper('places', $autocompleteHelper);
+        // $googlejavascript = $mapHelper->renderJavascripts($map);
+        // $autocompleteHTML = $autocompleteHelper->renderHtmlContainer($autocomplete);
+        // $autocompleteJS = $autocompleteHelper->renderJavascripts($autocomplete);
         return $this->renderView('CptEventBundle:Event:edit.html.twig', array(
                     'event' => $event,
                     'eventform' => $form->createView(),
-      //              'map' => $map,
+                        //              'map' => $map,
         ));
     }
 
-    
     /**
      * Sets the Registration for the event for a given queue and organizers array
      * 
@@ -474,28 +468,26 @@ class EventController extends BaseController {
      * @param type $organizers array userid => bool (true: is organizer, false: is not organizer)
      * @return array
      */
-    protected function setRegistrations($event, $queue, $organizers)
-    {
+    protected function setRegistrations($event, $queue, $organizers) {
         $registrations = Array();
-        
+
         $this->getRegistrationManager()->DeleteAllRegistrations($event);
-        
+
         $numattendees = array_count_values($queue);
-        
-        foreach($numattendees as $user_id => $num_attendees)
-        {
+
+        foreach ($numattendees as $user_id => $num_attendees) {
             $user = $this->getUserManager()->findUserBy(Array("id" => $user_id));
-            
+
             if (!$user) {
-                $this->RestrictBusinessRuleError("User with id " . $user_id. " does not exists.");
+                $this->RestrictBusinessRuleError("User with id " . $user_id . " does not exists.");
             }
-            
+
             $registration = $this->getRegistrationManager()->CreateRegistration($event, $user, $num_attendees, $organizers[$user_id] ? true : false );
             $event->addRegistration($registration);
         }
-        
+
         return $registrations;
     }
-    
+
     // </editor-fold>
 }

@@ -64,7 +64,7 @@ class PermissionsManager extends BaseManager {
             return;
         }
 
-        throw new SymfonyException\ForbiddenHttpException("Access denied.");
+        throw new AccessDeniedException("Access denied.");
     }
     
     /**
@@ -89,7 +89,7 @@ class PermissionsManager extends BaseManager {
             }
         }
 
-        throw new SymfonyException\ForbiddenHttpException("Access denied.");
+        throw new AccessDeniedException("Access denied.");
     }
 
     public function ensureGrantedPublication($permission, $domainobject=null) {
