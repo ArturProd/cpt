@@ -65,7 +65,9 @@ class Registration implements RegistrationInterface
         $this->numparticipant = $numparticipant;
         $this->organizer = $organizer;
         $this->numqueuedparticipant = 0;
-        $this->id = -1;
+        $this->id = null;
+        $this->createdAt = new \DateTime();
+        $this->updatedAt = new \DateTime();
     }
     
 

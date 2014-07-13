@@ -13,64 +13,11 @@
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/MainBundle/Resources/config/services.yml</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/MainBundle/Manager/UserManager.php</file>
-            <file>file:/home/cyril/dev/cpt/vendor/composer/autoload_real.php</file>
-            <file>file:/home/cyril/dev/cpt/app/autoload.php</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/PublicationBundle/Manager/CommentManager.php</file>
-            <file>file:/home/cyril/dev/cpt/app/config/sonata_fos_user.yml</file>
-            <file>file:/home/cyril/dev/cpt/src/Application/Sonata/UserBundle/Entity/User.php</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/PublicationBundle/Resources/views/Comment/comments.html.twig</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/BlogBundle/Resources/views/Post/articles.js.twig</file>
-            <file>file:/home/cyril/dev/cpt/src/Application/Sonata/UserBundle/Resources/config/doctrine/User.orm.xml</file>
-            <file>file:/home/cyril/dev/cpt/vendor/facebook/php-sdk-v4/README.md</file>
-            <file>file:/home/cyril/dev/cpt/app/config/config.yml</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/MainBundle/Manager/FacebookManager.php</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/PublicationBundle/Controller/CommentController.php</file>
-            <file>file:/home/cyril/dev/cpt/composer.json</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/BlogBundle/Resources/translations/messages.fr.yml</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Resources/views/Event/index.js.twig</file>
-            <file>file:/home/cyril/dev/cpt/vendor/facebook/php-sdk-v4/src/Facebook/FacebookRequest.php</file>
-            <file>file:/home/cyril/dev/cpt/vendor/friendsofsymfony/user-bundle/FOS/UserBundle/Resources/config/validation.xml</file>
-            <file>file:/home/cyril/dev/cpt/vendor/facebook/php-sdk-v4/src/Facebook/GraphUser.php</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/MainBundle/Resources/translations/messages.en.yml</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/PublicationBundle/Resources/views/Comment/comments.js.twig</file>
-            <file>file:/home/cyril/dev/cpt/src/Application/FOS/UserBundle/ApplicationFOSUserBundle.php</file>
-            <file>file:/home/cyril/dev/cpt/src/Application/Sonata/UserBundle/Resources/views/Registration/register.html.twig</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/MainBundle/Controller/BaseController.php</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/MainBundle/Manager/MailManager.php</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/MainBundle/Controller/DefaultController.php</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/MainBundle/Resources/views/Emails/resetting_email.txt.twig</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/MainBundle/Resources/translations/messages.fr.yml</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/MainBundle/Manager/PermissionsManager.php</file>
-            <file>file:/home/cyril/dev/cpt/vendor/facebook/php-sdk-v4/tests/bootstrap.php</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Resources/translations/messages.fr.yml</file>
-            <file>file:/home/cyril/dev/cpt/src/Application/Sonata/UserBundle/Resources/views/Security/login.html.twig</file>
+            <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Controller/EventController.php</file>
             <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Entity/Event.php</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/BlogBundle/Form/Type/PostType.php</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/PublicationBundle/Resources/config/config.yml</file>
-            <file>file:/home/cyril/dev/cpt/src/Application/Sonata/UserBundle/Controller/RegistrationController.php</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Resources/config/doctrine/Event.orm.yml</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/PublicationBundle/Resources/config/routing.yml</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Form/Type/EventType.php</file>
-            <file>file:/home/cyril/dev/cpt/vendor/facebook/php-sdk-v4/src/Facebook/FacebookSession.php</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/MainBundle/Resources/views/Emails/comment_new_email.html.twig</file>
-            <file>file:/home/cyril/dev/cpt/vendor/autoload.php</file>
-            <file>file:/home/cyril/dev/cpt/vendor/facebook/php-sdk-v4/src/Facebook/GraphObject.php</file>
-            <file>file:/home/cyril/dev/cpt/vendor/facebook/php-sdk-v4/src/Facebook/fb_ca_chain_bundle.crt</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/MainBundle/Controller/UserController.php</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/BlogBundle/Resources/views/Post/preview_post.html.twig</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Resources/translations/messages.en.yml</file>
-            <file>file:/home/cyril/dev/cpt/app/bootstrap.php.cache</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/MainBundle/Resources/views/Emails/registration_cancel_email.html.twig</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/MainBundle/Resources/views/Emails/EmailLayout.twig</file>
-            <file>file:/home/cyril/dev/cpt/app/config/security.yml</file>
-            <file>file:/home/cyril/dev/cpt/src/Application/Sonata/UserBundle/Resources/translations/messages.en.yml</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/BlogBundle/Resources/translations/messages.en.yml</file>
-            <file>file:/home/cyril/dev/cpt/src/Application/FOS/UserBundle/Form/Type/RegistrationFormType.php</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/MainBundle/Resources/config/routing.yml</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/MainBundle/Resources/views/Emails/newsletter_email.html.twig</file>
-            <file>file:/home/cyril/dev/cpt/vendor/facebook/php-sdk-v4/composer.json</file>
+            <file>file:/home/cyril/dev/cpt/app/logs/dev.log</file>
+            <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Resources/views/Event/edit.js.twig</file>
+            <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Manager/EventManager.php</file>
         </group>
     </open-files>
 </project-private>

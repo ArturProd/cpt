@@ -112,6 +112,35 @@ class MailManager extends BaseManager implements MailManagerInterface
         $this->sendEmailMessage($rendered, $this->parameters['from_email']['confirmation'], $user->getEmail(), $attachements);
     }
     
+     /**
+     * 
+     * Email when registering to a new event (or creating an event, or being leader for an event)
+     * 
+     * @param \Cpt\EventBundle\Interfaces\Entity\RegistrationInterface $registration
+     */
+    public function sendEventSubscriptionModificationEmailMessage($user, $event, $registration, $to_orga=false, $to_notorga=false, $queue_changed = false, $num_attendeechanged = false, $reg_cancelled = false, $reg_added = false){
+        
+        
+        $template = 'CptMainBundle:Emails:registration_registerchanged_email.html.twig';
+        
+        $attachements = Array() ;
+        $attachements[] = $this->getCptLogo();
+
+        $rendered = $this->templating->render($template, array(
+            'registration' => $registration,
+            'user' => $user,
+            'event' => $event,
+            'to_orga' => $to_orga, 
+            'to_notorga' => $to_notorga, 
+            'queue_changed' => $queue_changed, 
+            'num_attendeechanged' => $num_attendeechanged,
+            'reg_cancelled' => $reg_cancelled,
+            'reg_added' => $reg_added
+        ));
+        
+        $this->sendEmailMessage($rendered, $this->parameters['from_email']['confirmation'], $user->getEmail(), $attachements);
+    }
+    
     /**
      * 
      * Email when an event is cancelled

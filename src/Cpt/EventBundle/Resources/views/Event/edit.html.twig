@@ -59,6 +59,7 @@
         {{ form_widget(eventform.locationlat) }}
         <input id="copy_field" name="copy_field" type="hidden" value="0"/>
         <input type="hidden" value="{{ event.queue|join(',') }}" id="event_queue_json" name="event_queue_json" /> {# populated with the array of event.queu #}
+        <input type="hidden" value="" id="event_organizers_json" name="event_organizers_json" /> {# populated on submission only with the array of organizers #}
         <input type="hidden" id="registration_list_json" name="registration_list_json" /> {# will hold the json value of the list_participant array before submitting the form  #}
 {#***********************************************#}
 {# SECTION: DESCRIPTION

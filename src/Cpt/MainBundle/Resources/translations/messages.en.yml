@@ -103,7 +103,8 @@ email.subscribeevent.message.header.general: |
     <p>Hello %username%!</p>
 email.subscribeevent.message.footer.general: |
     <p>Regards,<p>
-    <p>www.chantpourtous.com</p>    
+    <p>www.chantpourtous.com</p>  
+email.subscribeevent.message.time: Date and Time
 email.subscribeevent.message.allseatsnotconfirmed: "<p><b>Important:</b> You have requested more seats than available. Some of the seats you have requested are placed in the waiting list.</p>"
 email.subscribeevent.message.seatsrequested: Number of seats requested
 email.subscribeevent.message.seatsconfirmed: Number of seats confirmed
@@ -122,6 +123,15 @@ email.cancelregistration.message: |
     <p>Hello %username%,</p>
     <p>You have cancelled your registration to <span style="text-transform:uppercase;font-weight:bolder">"%eventname%"</span>.
     <p>All requested seats are now dismissed.</p>
+
+email.registrationchanged.subject: Changes in your registration to "%eventname%"
+email.registrationchanged.general: Hello %username%, <BR><BR>Please note the changes in your registration to "%eventname%":<BR>
+email.registrationchanged.to_orga: You are now leading this event
+email.registrationchanged.to_notorga: You are not leading this event anymore
+email.registrationchanged.queuechanged: The number of your attendees on waiting list have changed. 
+email.registrationchanged.numattchanged: The number of attendees for your registration have changed.
+email.registrationchanged.reg_added: Your are now registered to this event
+email.registrationchanged.reg_cancelled: Your registration to this event is cancelled
 
 email.cancelevent.subject: Cancellation of event "%eventname%"
 email.cancelevent.message: |

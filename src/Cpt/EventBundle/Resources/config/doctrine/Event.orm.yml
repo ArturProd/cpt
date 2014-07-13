@@ -9,7 +9,8 @@ Cpt\EventBundle\Entity\Event:
       registrations:
         targetEntity: Registration
         mappedBy: event
-        cascade: ["persist"]
+        indexBy: user_id
+        cascade: ["persist","detach","merge"]
         orphanRemoval: true
     indexes:
         country_code_index:

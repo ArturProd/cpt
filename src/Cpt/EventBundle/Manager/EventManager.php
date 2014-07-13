@@ -12,6 +12,15 @@ use Cpt\PublicationBundle\Manager\PermalinkDateManager as PermalinkDateManager;
 use Doctrine\ORM\Query\Expr;
 
 
+    
+define("REGISTRATION_CHANGE_NUMATT", 1);
+define("REGISTRATION_CHANGE_NUMQUEUED", 2);
+define("REGISTRATION_CHANGE_REMOVED", 4);
+define("REGISTRATION_CHANGE_ADDED", 8);
+define("REGISTRATION_CHANGE_ORGA", 16);
+define("REGISTRATION_CHANGE_ORGA_ADDED", 32);    
+define("REGISTRATION_CHANGE_ORGA_REMOVED", 64);
+
 
 class EventManager extends BaseManager implements EventManagerInterface {
 
@@ -48,7 +57,7 @@ class EventManager extends BaseManager implements EventManagerInterface {
                 ->createQueryBuilder('p')
                 ->select('p')
                 ->leftJoin('p.author', 'a', Expr\Join::WITH, 'a.enabled = true')
-                ->Where('p.enabled = :enabled')
+                ->Where('p.enabld = :enabled')
                 ->andWhere('p.desactivated = :desactivated')               
                 ->andWhere('p.publicationDateStart >= :from')
                 ->andWhere('p.publicationDateStart < :to')
@@ -67,6 +76,7 @@ class EventManager extends BaseManager implements EventManagerInterface {
         return $query->getQuery()->getResult();
 
     } */
+
     
     public function getNewsLetterEvents($begin, $end)
     {
@@ -108,20 +118,44 @@ class EventManager extends BaseManager implements EventManagerInterface {
         return $event;
     }
 
-    public function SaveEvent(EventInterface $event) {
+    public function SaveEvent(EventInterface $event, EventInterface $oldevent = null) {
         try {
         $event->UpdateCounters();
+
+        $changes = $this->getRegistrationChanges($event, $oldevent);
 
         $this->em->persist($event);
 
         $this->em->flush();
         
+        return $changes;
             
         } catch (\Exception $e) {
             $this->em->getConnection()->rollback();
             $this->em->close();
             throw $e;
         }
+    }
+    
+    /**
+     * Get an event by Id and DETACH it from the entity manager
+     * !!!! Retreiveing detached event should ALWAYS BE DONE BEFORE (meaning not after) retreiving the new event !!!!!!
+     * 
+     * @param type $id
+     * @return null
+     */
+    public function getDetachedEvent($id)
+    {
+        if ($id==-1){
+            return null;
+        }
+        
+        $event = $this->getEventRepository()->find($id);
+        $registrations = $event->getRegistrations()->Count();
+        
+        $this->em->detach($event);
+            
+        return $event;
     }
 
     public function CopyEvent(EventInterface $event) {
@@ -156,6 +190,63 @@ class EventManager extends BaseManager implements EventManagerInterface {
 
         return $event;
     }
+    
+    public function getRegistrationChanges($event, $old_event)
+    {
+        
+        if (($event->getId()!=-1)&&($old_event)){
+            $changes = Array();
+
+            foreach($old_event->getRegistrations() as $old_registration){
+                $user_id = $old_registration->getUser()->getId();
+                $changes[$user_id] = 0;
+                // Checking if registration has been removed
+                if (!$event->getRegistration($user_id)){
+                    $changes[$user_id] = REGISTRATION_CHANGE_REMOVED;
+                } else {
+                    // Checking for other changes
+                    $new_registration = $event->getRegistration($user_id);
+                    // Changes in number of participants
+                    if ($old_registration->getNumparticipant() != $new_registration->getNumparticipant())
+                    {
+                        $changes[$user_id] = $changes[$user_id] | REGISTRATION_CHANGE_NUMATT;
+                    }
+                    // Changes in number of queued participants
+                    if ($old_registration->getNumqueuedparticipant() != $new_registration->getNumqueuedparticipant())
+                    {
+                        $changes[$user_id] = $changes[$user_id] | REGISTRATION_CHANGE_NUMQUEUED;
+                    }
+                    // Changes in Organizer
+                    if ($old_registration->getOrganizer() != $new_registration->getOrganizer())
+                    {
+                        $changes[$user_id] = $changes[$user_id] | REGISTRATION_CHANGE_ORGA;
+                        if ($old_registration->getOrganizer()){
+                            $changes[$user_id] = $changes[$user_id] | REGISTRATION_CHANGE_ORGA_REMOVED;
+                        } else {
+                            $changes[$user_id] = $changes[$user_id] | REGISTRATION_CHANGE_ORGA_ADDED;
+                        }
+                    }
+                }
+            }
+
+            // Checking for added registrations
+            foreach($event->getRegistrations() as $registration){
+                $user_id = $registration->getUser()->getId();
+                if (!$old_event->getRegistration($user_id)){
+                    $changes[$user_id] = REGISTRATION_CHANGE_ADDED;
+                } 
+            }
+            
+        
+        } else { // If this is a new event
+            foreach($event->getRegistrations() as $registration){
+                $changes[$registration->getUser()->getId()] = REGISTRATION_CHANGE_ADDED;
+            }
+        }
+      
+        return $changes;
+    }
+     
 
     public function cancelEvent(EventInterface $event){
         // To do: add email sending

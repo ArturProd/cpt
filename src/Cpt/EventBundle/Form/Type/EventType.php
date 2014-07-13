@@ -199,7 +199,7 @@ class EventType extends AbstractType
              // Country name
              ->add('countryname', 'text', array(
                 'label' => 'form.event.address',
-                'required' => false,
+                'required' => true,
                 'attr' => array(
                     'class' => 'input_text',
                     'style'=>'display:none;',
@@ -210,7 +210,7 @@ class EventType extends AbstractType
              // Country code
              ->add('countrycode', 'text', array(
                 'label' => 'form.event.address',
-                'required' => false,
+                'required' => true,
                 'attr' => array(
                     'class' => 'input_text',
                     'style'=>'display:none;',

@@ -33,20 +33,18 @@ class RegistrationManager extends BaseManager implements RegistrationManagerInte
      * @param type $numparticipants
      * @return boolean
      */
-    public function RegisterUserForEvent(EventInterface $event, UserInterface $user, $numparticipants = 1, $animator = false, $and_save_event = true)
+    public function RegisterUserForEvent(EventInterface $event, UserInterface $user, $numparticipants = 1, $animator = false, $oldevent = null)
     {
       
         $dummy_registration = $this->CreateRegistration($event, $user, $numparticipants, $animator);
         $registration = $this->UpdateRegistration($event, $dummy_registration);
         
-        if ($and_save_event){
-            $this->getEventManager()->SaveEvent($event);
-        }
+        $changes = $this->getEventManager()->SaveEvent($event, $oldevent);        
         
-        return $registration;
+        return $changes;
     }
     
-    public function CancelRegistration(EventInterface $event, UserInterface $user){
+    public function CancelRegistration(EventInterface $event, UserInterface $user, $oldevent = null){
         // The author cannot cancel his registration
         if ($event->getAuthor()->getId() == $user->getId()){
             throw new \Exception("The author of the event cannot cancel his registration.");
@@ -84,10 +82,12 @@ class RegistrationManager extends BaseManager implements RegistrationManagerInte
         $event->setQueue($new_queue);
         
         // Save event
-        $this->getEventManager()->SaveEvent($event);
-
+        $changes = $this->getEventManager()->SaveEvent($event,$oldevent);
+        
+        return $changes;
     }
-     
+    
+
     public function getRegistration(EventInterface $event, UserInterface $user)
     {
         return $this->getRegistrationRepository()
@@ -211,6 +211,11 @@ class RegistrationManager extends BaseManager implements RegistrationManagerInte
 
     public function DeleteAllRegistrations(EventInterface $event)
     {
+            $event->getRegistrations()->clear();
+           $this->em->persist($event);
+           $this->em->flush();
+
+        /*
             return $this->getRegistrationRepository()
             ->createQueryBuilder('u')
                 ->delete()
@@ -218,11 +223,11 @@ class RegistrationManager extends BaseManager implements RegistrationManagerInte
                 ->setParameter('event_id', $event->getId())
             ->getQuery()
             ->execute();    
+         * 
+         */
     }
-    // </editor-fold>
-
-    // <editor-fold defaultstate="collapsed" desc="Protected">
-    protected function CreateRegistration(EventInterface $event, $user, $numparticipants, $organizer)
+    
+    public function CreateRegistration(EventInterface $event, $user, $numparticipants, $organizer)
     {
         if (!is_integer($numparticipants)) {
             throw new \Symfony\Component\Security\Core\Exception\InvalidArgumentException("num participants must be an integer");
@@ -236,6 +241,10 @@ class RegistrationManager extends BaseManager implements RegistrationManagerInte
   
         return $registration; 
     }
+    // </editor-fold>
+
+    // <editor-fold defaultstate="collapsed" desc="Protected">
+
     
     protected function FillQueue(EventInterface $event, $num_item, $item_value)
     {

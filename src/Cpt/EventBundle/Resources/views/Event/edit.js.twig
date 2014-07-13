@@ -7,6 +7,7 @@
 {# Global variables initialization
 {# ************************************************************************************************************************ #} 
     var Registration_list = {};         {# the list that contains the registration objects #}
+    var Organizers = [];                {# Array of organizers #}
     var Total_number_participant = 0;   {# total number of participants of the event #}
     var Max_number_participant = 0;     {# maximum number of participants of the event #}
     var Count_organizer = 0;            {# total number of organizers in the event #}
@@ -29,7 +30,7 @@ function InitRegistrations()
    {# Adding existing reservations to the list #} 
     var integrity_check_numpart = 0;
     {% for registration in event.registrations %}
-        reservation_existing = CreateReservationItem({{  registration.id }}, {{ registration.user.id }}, {{ event.id }}, '{{ registration.user.username }}', {{ registration.numparticipant }}, {{ registration.numqueuedparticipant }}, {{ registration.organizer ? 1 : 0 }}, {{ registration.createdAt|date('U') }});
+        reservation_existing = CreateReservationItem({{  registration.id|default('null') }}, {{ registration.user.id }}, {{ event.id }}, '{{ registration.user.username }}', {{ registration.numparticipant }}, {{ registration.numqueuedparticipant }}, {{ registration.organizer ? 1 : 0 }}, {{ registration.createdAt|date('U') }});
         AddReservationItem(reservation_existing, true);
         integrity_check_numpart += {{ registration.numparticipant }};
     {% endfor %}
@@ -51,7 +52,7 @@ function UpdateInterface()
 
     {# Clear search field #}
     $( "#user_search" ).value = "";
-    
+    Organizers = [];
     count_orga_notqueued = 0;
     last_orga_user = -1;
     Total_number_participant = 0;
@@ -65,6 +66,7 @@ function UpdateInterface()
          {
              count_orga_notqueued ++;
              last_orga_user = registration.user;
+            
          }
          {# updates global counters #}
          Total_number_participant += registration.numparticipants;
@@ -96,6 +98,10 @@ function UpdateInterface()
         index++;
     });
 
+    {# Updating the Organizer array #}
+    for (userid in Registration_list) {
+        Organizers[userid] = ($( "#resa_organizer_" + userid ).is(':checked'));
+    }
  }
 
 {# ************************************************************************************************************************ #}  
@@ -104,7 +110,7 @@ function UpdateInterface()
 function CreateReservationItem(id, user, event, username, numparticipants, numqueuedparticipants, organizer, createdAt)
 {
     var reservation = new Object();
-    reservation.id = -1;
+    reservation.id = null;
     reservation.user = user;
     reservation.event = event;
     reservation.username = username;  
@@ -241,7 +247,7 @@ function AddRowToTable(reservation)
  function CreateReservationFromUser(user)
  {
      {# Math.round(new Date().getTime() / 1000)  ===> UNIX TimeStamp (same as twig filter |date('U') #}
-     return CreateReservationItem(-1 , user.id, {{ event.id }}, user.username, 1 , 0 , 0, Math.round(new Date().getTime() / 1000) );
+     return CreateReservationItem(null , user.id, {{ event.id }}, user.username, 1 , 0 , 0, Math.round(new Date().getTime() / 1000) );
  }
  
 {# ************************************************************************************************************************ #} 
@@ -320,6 +326,8 @@ function PrepareEventFormSubmission()
 {
     $('#event_queue_json').val(JSON.stringify(Queue));                      {# insert the json queue in the field #}
     $('#registration_list_json').val(JSON.stringify(Registration_list));    {# insert the json registration list in the field #}
+    $('#event_organizers_json').val(JSON.stringify(Organizers));    {# insert the json registration list in the field #}
+
     CKEDITOR.instances['event_content'].updateElement();                {# update the entity field with CKEDIOR content #}
 }
 

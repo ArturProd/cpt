@@ -68,9 +68,10 @@ class EventController extends BaseController {
         // ****************************************************
         // Checking if new event or if it has to be loaded from db
         $event = null;
+        $oldevent = null;
         if ((null != $id) && (-1 != $id)) {
+            $oldevent = $this->getEventManager()->getDetachedEvent($id);
             $event = $this->getEventManager()->getEventById($id);
-
             $this->getPermissionManager()->RestrictAccessToUsers($event->getResponsibleUsersIds());
         } else {
             $author = $this->container->get('security.context')->getToken()->getUser();
@@ -98,26 +99,20 @@ class EventController extends BaseController {
                     return $this->CreateJsonResponse($this->GetEventEditView($event, $form), "copy");
                 }
                 
-                 // If not, process the event queue
-                    $registrationlist_json_array = json_decode($request->get('registration_list_json'));
+                    // If not, process the event queue
                     $eventqueue_json_array = json_decode($request->get('event_queue_json'));
-
-                    if ((!$registrationlist_json_array ) || (!$eventqueue_json_array)){
+                    $organizers_json_array = json_decode($request->get('event_organizers_json'));
+                    
+                    if ((!$organizers_json_array ) || (!$eventqueue_json_array)){
                         throw new \InvalidArgumentException("decoded json is null");
                     }
                     
                     $event->setQueue($eventqueue_json_array);
-                    $this->SetJsonRegistrationCollection($event, $registrationlist_json_array);
+                    $this->setRegistrations($event, $eventqueue_json_array, $organizers_json_array);
                     
                    if ($form->isValid()) {
-                      //  $this->getRegistrationManager()->DeleteAllRegistrations($event); // The registrations are recreated from scratch, so we delete the old ones
-                        $this->getEventManager()->SaveEvent($event);
-                        
-                        // send an email for each registration
-                        foreach ($event->getRegistrations() as $registration)
-                        {
-                            $this->getMailManager()->sendEventSubscriptionEmailMessage($registration);
-                        }
+                        $changes = $this->getEventManager()->SaveEvent($event,$oldevent);
+                        $this->sendEventModificationEmails($event, $changes);
                         
                         return $this->CreateJsonOkResponse(null);
                     } else {
@@ -131,7 +126,7 @@ class EventController extends BaseController {
         // Display page
         return new Response($this->GetEventEditView($event, $form));
     }
-
+  
     /*
 
     /**
@@ -296,35 +291,41 @@ class EventController extends BaseController {
     }
     
     public function registerForEventAction($eventid, $numattendees)
-    {        
-        $request = $this->getRequest();
-
-        $this->getPermissionManager()->RestrictAccessToLoggedIn();
-        $this->getPermissionManager()->RestrictAccessToAjax($request);
-        
-        $numattendees = intval($numattendees);
-        $eventid = intval($eventid);
-        
-        $event = $this->getEventManager()->getEventById($eventid);
-        $this->GetPermissionManager()->RestrictResourceNotFound($event);
-
-        $user = $this->getUser();
-        
-        $registration = $this->getRegistrationManager()
-                ->RegisterUserForEvent($event, $user, $numattendees, false);
-        
-        if ($registration)
+    {
+        try
         {
+            $request = $this->getRequest();
+
+            $this->getPermissionManager()->RestrictAccessToLoggedIn();
+            $this->getPermissionManager()->RestrictAccessToAjax($request);
+
+            $numattendees = intval($numattendees);
+            $eventid = intval($eventid);
+
+            $oldevent = $this->getEventManager()->getDetachedEvent($event->getId());
+
             $event = $this->getEventManager()->getEventById($eventid);
+            $this->GetPermissionManager()->RestrictResourceNotFound($event);
+
+            $user = $this->getUser();
+
+            $changes = $this->getRegistrationManager()
+                    ->RegisterUserForEvent($event, $user, $numattendees, false, $oldevent);
+
+            //$event = $this->getEventManager()->getEventById($eventid);
+
+            $registration = $event->getRegistration($user->getId());
             
             $this->getMailManager()->sendEventSubscriptionEmailMessage($registration);
-            
+            $this->sendEventModificationEmails($event, $changes, $user->getId());
+
             $html_string = $this->renderView('CptEventBundle:Event:eventdisplay.html.twig', array(
-                'event' => $event,
+                    'event' => $event,
             ));
-        
+
             return $this->CreateJsonOkResponse($html_string);
-        } else {
+
+        } catch( \Exception $e) {
             return $this->CreateJsonFailedResponse();
         }
         
@@ -335,53 +336,97 @@ class EventController extends BaseController {
     }
     
     public function cancelEventAction($id)
-    {        
-        $request = $this->getRequest();
+    {
+        try{
+            $request = $this->getRequest();
 
-        $this->getPermissionManager()->RestrictAccessToLoggedIn();
-        $this->getPermissionManager()->RestrictAccessToAjax($request);
+            $this->getPermissionManager()->RestrictAccessToLoggedIn();
+            $this->getPermissionManager()->RestrictAccessToAjax($request);
 
-        
-        $event = $this->getEventManager()->getEventById($id);
-        $this->GetPermissionManager()->RestrictResourceNotFound($event);
-        
-        foreach($event->getRegistrations() as $registration){
-            $this->getMailManager()->sendEventCancelledEmailMessage($event, $registration->getUser());
+
+            $event = $this->getEventManager()->getEventById($id);
+            $this->GetPermissionManager()->RestrictResourceNotFound($event);
+
+            foreach($event->getRegistrations() as $registration){
+                $this->getMailManager()->sendEventCancelledEmailMessage($event, $registration->getUser());
+            }
+
+            $result = $this->getEventManager()->cancelEvent($event);
+
+            return $this->CreateJsonOkResponse($result);
+
+
+        } catch( \Exception $e) {
+            return $this->CreateJsonFailedResponse();
         }
-        
-        $result = $this->getEventManager()->cancelEvent($event);
-        
-        return $this->CreateJsonOkResponse($result);
     }
     
     public function cancelRegistrationAction($eventid){
-        $request = $this->getRequest();
+        try{
+            $request = $this->getRequest();
 
-        $this->getPermissionManager()->RestrictAccessToLoggedIn();
-        $this->getPermissionManager()->RestrictAccessToAjax($request);
-        
-        $user = $this->getUser();
-        $event = $this->getEventManager()->getEventById($eventid);
-        
-        $this->getRegistrationManager()->CancelRegistration($event, $user);
-        
-        $this->getMailManager()->sendEventCancelRegistrationEmailMessage($event, $user);
-        
-        $this->get('session')->getFlashBag()->add(
-            'notice',
-            $this->get('translator')->trans('registration.has_been_cancelled')
-        );
-        
-        $html_string = $this->renderView('CptEventBundle:Event:eventdisplay.html.twig', array(
-                'event' => $event,
-            ));
-            
-        return $this->CreateJsonOkResponse($html_string);
+            $this->getPermissionManager()->RestrictAccessToLoggedIn();
+            $this->getPermissionManager()->RestrictAccessToAjax($request);
+
+            $user = $this->getUser();
+            $oldevent = $this->getEventManager()->getDetachedEvent($eventid); // Always get the detached event before the new event!
+            $event = $this->getEventManager()->getEventById($eventid);
+
+            $changes = $this->getRegistrationManager()->CancelRegistration($event, $user, $oldevent);
+
+            $this->getMailManager()->sendEventCancelRegistrationEmailMessage($event, $user);
+            $this->sendEventModificationEmails($event, $changes, $user->getId());
+
+
+            $this->get('session')->getFlashBag()->add(
+                'notice',
+                $this->get('translator')->trans('registration.has_been_cancelled')
+            );
+
+            $html_string = $this->renderView('CptEventBundle:Event:eventdisplay.html.twig', array(
+                    'event' => $event,
+                ));
+
+            return $this->CreateJsonOkResponse($html_string);
+        }
+        catch( \Exception $e) {
+            return $this->CreateJsonFailedResponse();
+        }
     }
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="Protected">
 
+    /**
+     * Sends emails according to the event Registrations modifications
+     * If $not_for_userid is specified, emails will not be sent to this user
+     * 
+     * @param type $event
+     * @param type $changes
+     * @param type $not_for_userid
+     */
+    protected function sendEventModificationEmails($event, $changes, $not_for_userid = null){
+        foreach($changes as $userid => $change){
+            if ($userid != $not_for_userid){
+               
+                $to_orga=REGISTRATION_CHANGE_ORGA_ADDED & $change;
+                $to_notorga=REGISTRATION_CHANGE_ORGA_REMOVED & $change;
+                $queue_changed = REGISTRATION_CHANGE_NUMQUEUED & $change;
+                $num_attendeechanged = REGISTRATION_CHANGE_NUMATT & $change;
+                $reg_cancelled = REGISTRATION_CHANGE_REMOVED & $change;
+                $reg_added = REGISTRATION_CHANGE_ADDED & $change;
+                
+                if ($to_orga || $to_notorga || $queue_changed || $num_attendeechanged || $reg_cancelled || $reg_added)
+                {
+                    $registration = $event->getRegistration($userid);
+                    $user = $this->getUserManager()->findUserBy(Array("id" => $userid));
+                    $this->getMailManager()->sendEventSubscriptionModificationEmailMessage($user,$event,$registration, $to_orga, $to_notorga, $queue_changed, $num_attendeechanged, $reg_cancelled, $reg_added);
+                }
+               
+            }
+        }
+    }
+  
     /**
      * Get the view to edit an event
      * 
@@ -420,63 +465,37 @@ class EventController extends BaseController {
         ));
     }
 
+    
     /**
-     * Set the Event#Registrations from a json encoded array (??)
+     * Sets the Registration for the event for a given queue and organizers array
      * 
      * @param type $event
-     * @param type $registration_json_array
-     * @throws \InvalidArgumentException
+     * @param type $queue
+     * @param type $organizers array userid => bool (true: is organizer, false: is not organizer)
+     * @return array
      */
-    protected function SetJsonRegistrationCollection($event, $registration_json_array) {
-        if ($registration_json_array === null) {
-            throw new \InvalidArgumentException("Registration list is null or is not an array");
-        }
-
-        // Creates Registration entity list from the json array (throws exceptions)
-        //$RegistrationList = null;
-        foreach ($registration_json_array as $userid => $registration_json) {
-            //$RegistrationList[] = $this->get_registration_from_json($registration_json, $event);
-
-            if ((!is_integer($registration_json->user)) || (!is_integer($registration_json->event)) || (!is_integer($registration_json->numparticipants)) || (!is_integer($registration_json->numqueuedparticipants)) || (!is_integer($registration_json->organizer))) {
-                $this->RestrictBusinessRuleError("Registration_json_array is malformed");
-            }
-
-            if ($registration_json->numparticipants <= 0) {
-                $this->RestrictBusinessRuleError("numparticipants for a registration cannot be <=0 (" . $registration_json->numparticipants . " given)");
-            }
-
-            $user = $this->getUserManager()->findUserBy(Array("id" => $registration_json->user));
+    protected function setRegistrations($event, $queue, $organizers)
+    {
+        $registrations = Array();
+        
+        $this->getRegistrationManager()->DeleteAllRegistrations($event);
+        
+        $numattendees = array_count_values($queue);
+        
+        foreach($numattendees as $user_id => $num_attendees)
+        {
+            $user = $this->getUserManager()->findUserBy(Array("id" => $user_id));
             
             if (!$user) {
-                $this->RestrictBusinessRuleError("User with id " . $registration_json->user . " does not exists.");
+                $this->RestrictBusinessRuleError("User with id " . $user_id. " does not exists.");
             }
-        
-            $this->getRegistrationManager()->RegisterUserForEvent($event, $user, $registration_json->numparticipants, $registration_json->organizer ? true : false, false );
-
+            
+            $registration = $this->getRegistrationManager()->CreateRegistration($event, $user, $num_attendees, $organizers[$user_id] ? true : false );
+            $event->addRegistration($registration);
         }
         
-        // $this->getEventManager()->SaveEvent($event);
-
-        //$event->setRegistrations($RegistrationList);
+        return $registrations;
     }
-
-    protected function get_registration_from_json($registration_json, $event) {
-        if ((!is_integer($registration_json->user)) || (!is_integer($registration_json->event)) || (!is_integer($registration_json->numparticipants)) || (!is_integer($registration_json->numqueuedparticipants)) || (!is_integer($registration_json->organizer))
-        ) {
-            $this->RestrictBusinessRuleError("Registration_json_array is malformed");
-        }
-
-        if ($registration_json->numparticipants <= 0) {
-            $this->RestrictBusinessRuleError("numparticipants for a registration cannot be <=0 (" . $registration_json->numparticipants . " given)");
-        }
-
-        $user = $this->getUserManager()->findUserBy(Array("id" => $registration_json->user));
-        if (!$user) {
-            $this->RestrictBusinessRuleError("User with id " . $registration_json->user . " does not exists.");
-        }
-
-        //return $this->getRegistrationManager()->CreateRegistration($event, $user, $registration_json->numparticipants, $registration_json->organizer ? true : false );
-    }
-  
+    
     // </editor-fold>
 }

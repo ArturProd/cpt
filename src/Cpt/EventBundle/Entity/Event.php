@@ -61,6 +61,18 @@ class Event extends Publication implements EventInterface
         
         $this->setQueue($new_queue);
     }
+  
+    
+    public function getRegistration($user_id)
+    {
+        foreach($this->getRegistrations() as $registration){
+            if ($registration->getUser()->getId() == $user_id){
+                return $registration;
+            }
+        }
+        
+        return null;
+    }
     
     public function getFullAddress()
     {
@@ -452,6 +464,7 @@ class Event extends Publication implements EventInterface
     public function removeRegistration(\Cpt\EventBundle\Entity\Registration $registrations)
     {
         $this->registrations->removeElement($registrations);
+        $registrations->setEvent(null);
     }
     /**
      * @var \Doctrine\Common\Collections\Collection

@@ -109,7 +109,7 @@ email.subscribeevent.message.header.leader: |
 email.subscribeevent.message.footer.general: |
     <p>Cordialement,<p>
     <p>www.chantpourtous.com</p>
-    
+email.subscribeevent.message.time: Date et heure    
 email.subscribeevent.message.allseatsnotconfirmed: "<p><b>Important:</b> Vous avez demandé plus de places qu'il n'y en a de disponibles. Certaines de vos places demandées sont placées sur liste d'attente.</p>"
 email.subscribeevent.message.seatsrequested: Nombre de places demandées
 email.subscribeevent.message.seatsconfirmed: Nombre de places confirmées
@@ -122,6 +122,15 @@ email.subscribeevent.message.animatedby: Animé par
 email.subscribeevent.message.eventtype: Type d'évènement
 email.subscribeevent.message.notcptevent: <p><b>Cet évènement n'est pas un Chant Pour Tous.</b></p><p>Contrairement aux chants pour tous, il n'est pas nécessairement gratuit, concernant l'improvisation vocale et corporelle, ou ouvert à tous. Veuillez vous référer à la description ou contacter l'organisateur pour avoir plus d'informations.</p>
 email.subscribeevent.message.cptevent: "<p>Cet évènement est un Chant Pour Tous: Improvisation vocale et corporelle, Gratuit et Ouvert à Tous.</p><p>Les organisateurs peuvent accepter des donations strictement facultatives.</p>"
+
+email.registrationchanged.subject: Changement dans votre inscription à "%eventname%"
+email.registrationchanged.general: Bonjour %username%, <BR><BR>Veuillez noter les modifications à votre inscription pour l'évènement "%eventname%":<br>
+email.registrationchanged.to_orga: Vous animez dorénavant cet évènement
+email.registrationchanged.to_notorga: Vous n'êtes plus animateur de cet évènement
+email.registrationchanged.queuechanged: Le nombre de vos participants dans la file d'attente a changé
+email.registrationchanged.numattchanged: Le nombre de vos participants a changé
+email.registrationchanged.reg_added: Vous êtes maintenant inscrit pour cet évènement.
+email.registrationchanged.reg_cancelled: Votre participation à cet évènement est annulée.
 
 email.cancelregistration.subject: Annulation de votre inscription à "%eventname%"
 email.cancelregistration.message: |
