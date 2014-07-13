@@ -7,7 +7,8 @@
 
  <script type="text/javascript">
  function displayAboutArticle(postid){
-     displaySingleArticleById(postid);
+     // displaySingleArticleById(postid);
+     ShowPage(PAGE_ARTICLE_VIEW, postid);
  }
  $(function() {
      $('#aboutlink1').on('click', function(){displayAboutArticle(30);});

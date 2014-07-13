@@ -304,6 +304,29 @@ class EventManager extends BaseManager implements EventManagerInterface {
     {
         return $this->getCountryRepository()->findAll();
     }
+    
+    public function getPublishedEvents($userid)
+    {
+
+        $parameters = array();
+        $query = $this->em->getRepository($this->class)
+                ->createQueryBuilder('p')
+                ->select('p')
+                ->leftJoin('p.author', 'a', Expr\Join::WITH, 'a.enabled = true')
+                ->Where('p.enabled = :enabled')
+                ->andWhere('p.desactivated = :desactivated')
+                ->andWhere('p.author = ' . $userid)
+                ->addOrderby('p.publicationDateStart', 'DESC');
+
+            $parameters['enabled'] = true;
+            $parameters['desactivated'] = false;          
+        
+      
+        $query->setParameters($parameters);
+        
+        return $query->getQuery()->getResult();      
+    }
+
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="Protected">

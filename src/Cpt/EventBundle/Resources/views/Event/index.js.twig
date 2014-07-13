@@ -238,6 +238,47 @@ function LoadCalendar(year,month,country)
     });
 }
 {#**************************************************************************#}
+{# Show a single event directly in the current page
+{#**************************************************************************#}
+function ShowSingleEvent(eventid){
+    EventlistjqXHR = $.getJSON( Routing.generate('event_get_events_for_id', {id:eventid, _locale:_locale}),{}, function(response){
+            
+      $('#eventcontainer').html('');
+      toggle_event_container(false);
+      count_retreived_event = 0;
+      
+      if (response.status === "ok")
+      {
+        removeEventsFromNewCommentWatch();
+        event_list = $.parseJSON(response.data).events;
+
+        for(i=0;i<event_list.length;++i) {
+            retrieveEventView(event_list[i].id);
+        }
+        
+        if (event_list.length === 0) {
+            $('#eventcontainer').html("{{'event.noevent_todisplay'|trans }}");
+            toggle_event_container(true);
+        }
+       
+       $('#calendar_container').hide();
+       $('#events_filter').hide();
+       
+      }
+  });
+  
+  registerJqXHR(EventlistjqXHR);
+}
+{#**************************************************************************#}
+{# Shows the event list
+{#**************************************************************************#}
+function ShowAllEvents()
+{
+    $('#calendar_container').show();
+    $('#events_filter').show();
+    UpdateEventInterface();
+}
+{#**************************************************************************#}
 {# Retreives a list of events from server
 {#**************************************************************************#}
 function RetrieveEvents(year,month,country)

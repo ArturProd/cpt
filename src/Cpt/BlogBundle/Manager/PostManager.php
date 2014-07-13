@@ -150,11 +150,35 @@ class PostManager extends BaseManager implements PostManagerInterface {
         $this->em->flush();
     }
 
-    public function getMyArticlesPager($page, $maxPerPage = 10, $maxPageLinks = 5) {
+    public function getPublishedArticles($userid)
+    {
         if ((!$this->getSecurityContext()->isGranted('VIEW', $this->GetPostClassIdentity())) || (!$this->getSecurityContext()->isGranted('ROLE_USER')))
             throw new AccessDeniedException();
 
-        $criteria['author'] = $this->getUser()->getId();
+        $parameters = array();
+        $query = $this->em->getRepository($this->class)
+                ->createQueryBuilder('p')
+                ->select('p')
+                ->leftJoin('p.author', 'a', Expr\Join::WITH, 'a.enabled = true')
+                ->Where('p.enabled = :enabled')
+                ->andWhere('p.desactivated = :desactivated')
+                ->andWhere('p.author = ' . $userid)
+                ->addOrderby('p.publicationDateStart', 'DESC');
+
+            $parameters['enabled'] = true;
+            $parameters['desactivated'] = false;          
+        
+      
+        $query->setParameters($parameters);
+        
+        return $query->getQuery()->getResult();      
+    }
+
+    public function getMyArticlesPager($page, $maxPerPage = 10, $maxPageLinks = 5, $userid = null) {
+        if ((!$this->getSecurityContext()->isGranted('VIEW', $this->GetPostClassIdentity())) || (!$this->getSecurityContext()->isGranted('ROLE_USER')))
+            throw new AccessDeniedException();
+
+        $criteria['author'] = $userid ? $userid : $this->getUser()->getId();
         $criteria['publishedhomepage'] = false;
 
         $pager = $this->getPager($criteria, $page, $maxPerPage);
@@ -162,7 +186,8 @@ class PostManager extends BaseManager implements PostManagerInterface {
 
         return $pager;
     }
-
+    
+ 
     public function getAlauneArticlesPager($page = 1, $maxPerPage = 100, $maxPageLinks = 5) {
         return $this->getArticlesPager($page, true, $maxPerPage, $maxPageLinks);
     }

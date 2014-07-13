@@ -8,6 +8,8 @@ var PAGE_EDIT_EVENT = 4;
 var PAGE_ARTICLE_NEW = 5;
 var PAGE_ARTICLE_LIST = 6;
 var PAGE_ARTICLE_EDIT = 7;
+var PAGE_ARTICLE_VIEW = 8;
+var PAGE_EVENT_VIEW = 9;
 {# ************************************************************************************************************************ #} 
 {# Set the html of the left column button (back, new event etc.)
 {# ************************************************************************************************************************ #} 
@@ -46,6 +48,7 @@ function ShowPage(page_type, page_id)
         $('#leftcol_about').show();
         $('#column_title_event_title').html('{{'main.title.chantpourtous'|trans}}');
         SetLeftcolButton("<a class='event_new_btn' onclick='InitArticlesColumn();ShowPage(PAGE_EVENT);'>{{'main.button.back'|trans}}</a>"); {# set the left column button to go back to PAGE_EVENT #}
+        SetRightcolButton("<a class='article_new_btn' onclick='ShowPage(PAGE_ARTICLE_LIST);InitArticlesColumn();'>{{'main.button.back'|trans}}</a>"); 
         showAboutPage();
     } else if (page_type === PAGE_REGISTER) {
         $('#leftcol_event').hide();
@@ -75,6 +78,12 @@ function ShowPage(page_type, page_id)
         //etLeftcolButton("<a  class='btn_blue' onclick='DisplayEventEditPanel(false);'>{{'event.button.backtoevent'|trans}}</a>");
         SetLeftcolButton("<a id='close_edit_event' class='event_new_btn' onclick='ShowPage(PAGE_EVENT);'>{{'main.button.back'|trans}}</a>"); {# set the left column button to go back to PAGE_EVENT #}
         {% endif %}
+    } else if (page_type === PAGE_EVENT_VIEW){
+        ShowSingleEvent(page_id);
+        $('#leftcol_event').show();
+        $('#leftcol_registration').hide();
+        $('#leftcol_about').hide();
+        SetLeftcolButton("<a class='event_new_btn' onclick='ShowAllEvents();'>{{'main.button.back'|trans}}</a>"); {# set the left column button to go back to PAGE_EVENT #}
     } else if (page_type === PAGE_ARTICLE_NEW){
         {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}                
         SetRightcolButton("<a class='article_new_btn' onclick='ShowPage(PAGE_ARTICLE_LIST);'>{{'main.button.back'|trans}}</a>"); {# set the left column button to go back to PAGE_EVENT #}
@@ -92,6 +101,9 @@ function ShowPage(page_type, page_id)
         SetRightcolButton("<a class='article_new_btn' onclick='ShowPage(PAGE_ARTICLE_LIST);'>{{'main.button.back'|trans}}</a>"); {# set the left column button to go back to PAGE_EVENT #}
         EditPost(page_id);
         {% endif %}
+    } else if (page_type === PAGE_ARTICLE_VIEW){
+        displaySingleArticleById(page_id);
+        SetRightcolButton("<a class='article_new_btn' onclick='ShowPage(PAGE_ARTICLE_LIST);InitArticlesColumn();'>{{'main.button.back'|trans}}</a>"); {# set the left column button to go back to PAGE_EVENT #}
     }
 }
 
