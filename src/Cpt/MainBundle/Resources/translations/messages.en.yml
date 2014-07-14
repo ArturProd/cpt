@@ -159,6 +159,14 @@ email.newsletter.professional.message: "The following members are professional s
 email.newsletter.professional.website: Website
 email.newsletter.professional.tel: tel
 
+email.privateemail.subject: Private message from %sendername%
+email.privateemail.content: |
+    <p>%sendername% says:</p>
+    <hr>
+    <p><b>%content%</b></p>
+    <hr>
+    <p>Please do not reply to this current email: contact this user through www.chantpourtous.com instead.</p>    
+
 email.general.footer: |
     <p>Kind regards,</p>
     <p>www.chantpourtous.com</p><br><br><br>
@@ -169,3 +177,7 @@ email.general.header: |
 main.about.learnmore: Learn more...
 main.title.chantpourtous: Chant pour tous
 main.title.profile: My account
+
+main.user.profile.sendemailbutton: Send message
+main.user.profile.emailsent: Your message was successfully sent
+main.user.profile.emailfailed: An error occured when sending your message

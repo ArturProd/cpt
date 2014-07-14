@@ -25,13 +25,20 @@ cpt_main_userprofile_show:
         userid:  \d+
     options:
         expose: true
+
+cpt_main_sendprivateemail:
+    pattern:  /profile/{userid}/sendemail
+    defaults: { _controller: CptMainBundle:User:sendPrivateEmail}
+    requirements:
+        userid:  \d+
+    
      
 cpt_main_about:
     pattern:  /about
     defaults: { _controller: CptMainBundle:Default:about }
     options:
         expose: true
-     
+
     
 cpt_send_newsletter:
     pattern:  /sendnewsletter

@@ -85,7 +85,7 @@
                      {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
                          <div class="banner_usercorner">
                             <ul>
-                               <li><a onclick="ShowPage(PAGE_PROFILE, {{ app.user.id }})">{{ app.user.displayname|upper }}</a></li>
+                               <li><a onclick="ShowPage(PAGE_PROFILE_VIEW, {{ app.user.id }})">{{ app.user.displayname|upper }}</a></li>
                                <li ><a class="btn_logout" href="{{ path('fos_user_security_logout') }}">{{ 'layout.logout'|trans({}, 'FOSUserBundle') }}</a></li>
                             </ul>
                          </div>

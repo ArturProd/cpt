@@ -31,4 +31,31 @@ class UserController extends BaseController
         
         return $this->render('CptMainBundle:User:profile_show.html.twig', $params );
     }
+    
+    public function sendPrivateEmailAction($userid)
+    {
+        try{
+            $this->getPermissionManager()->RestrictAccessToLoggedIn();
+           $request = $this->getRequest();
+           $this->GetPermissionManager()->RestrictAccessToAjax($request);
+
+           $to_userid = $request->get('userid');
+           if (!is_numeric($to_userid)) {
+               $this->GetPermissionManager()->RestrictResourceNotFound();
+           }
+
+           $to_user = $this->getUserManager()->findUserBy(Array("id" => $to_userid));
+
+           $content = $request->get('sendemail_content');
+
+           // Show only for existing, enabled users
+           $this->getPermissionManager()->RestrictResourceNotFound($to_user);
+
+           $this->getMailManager()->sendPrivateEmail($to_user,$content);
+
+           return $this->CreateJsonOkResponse("");
+        } catch (\Exception $e){
+            return $this->CreateJsonFailedResponse();
+        }
+    }
 }

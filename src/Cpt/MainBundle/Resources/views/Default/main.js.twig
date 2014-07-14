@@ -3,13 +3,21 @@
 var PAGE_EVENT = 0;
 var PAGE_ABOUT = 1;
 var PAGE_REGISTER = 2;
-var PAGE_PROFILE = 3;
+var PAGE_PROFILE_VIEW = 3;
 var PAGE_EDIT_EVENT = 4;
 var PAGE_ARTICLE_NEW = 5;
 var PAGE_ARTICLE_LIST = 6;
 var PAGE_ARTICLE_EDIT = 7;
 var PAGE_ARTICLE_VIEW = 8;
 var PAGE_EVENT_VIEW = 9;
+{#***********************************************#}
+{# Affiche un message informatif à l'utilisateur
+{#***********************************************#}
+function show_event_usermessage(message)
+{
+    $('#event_user_messages').html(message);
+    $('#event_user_messages').show().delay(EVENT_MESSAGE_SLIDE_UP_DELAY).slideUp(1000);
+}
 {# ************************************************************************************************************************ #} 
 {# Set the html of the left column button (back, new event etc.)
 {# ************************************************************************************************************************ #} 
@@ -55,7 +63,7 @@ function ShowPage(page_type, page_id)
         $('#leftcol_registration').show();
         $('#column_title_event_title').html("{{'main.title.register'|trans}}");
        SetLeftcolButton("<a class='event_new_btn' onclick='ShowPage(PAGE_EVENT);'>{{'main.button.back'|trans}}</a>"); {# set the left column button to go back to PAGE_EVENT #}
-    } else if (page_type === PAGE_PROFILE) {
+    } else if (page_type === PAGE_PROFILE_VIEW) {
         $('#leftcol_event').hide();
         $('#leftcol_registration').hide();
         $('#leftcol_about').show();

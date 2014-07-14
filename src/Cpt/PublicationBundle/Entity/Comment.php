@@ -29,6 +29,7 @@ class Comment implements CommentInterface
     return Array(
         "id" => $this->getId(),
         "authorname" => $this->getAuthor()->getDisplayName(),
+        "authorid" => $this->getAuthor()->getId(),
         "canmodify" => $this->getCanModify(),
         "message" => $this->getMessage(),
         "createdat" => $this->getCreatedAt()->format('d/m/Y  H:i'),

@@ -1,7 +1,7 @@
 <div class="cpt_page">
     <div class="row-fluid">
-        <div class="span4">Name</div>
-        <div class="span4">{{user.displayname}}</div>
+        <div class="span12"><h1>{{user.displayname}}</h1></div>
+        {{ user.displayname|account_link(2) }}
     </div>
     <div class="row-fluid">
         <div class="span4">Location</div>
@@ -13,7 +13,12 @@
     </div>
     <div class="row-fluid">
         <div class="span4">Contact</div>
-        <div class="span4"></div>
+        <div class="span4" id="div_sendemail">
+            <form name="sendprivateemail" method="post" action="{{path('cpt_main_sendprivateemail', {'userid':user.id})}}" id="sendprivateemail">
+                <textarea rows="4" cols="50" name="sendemail_content" id="sendemail_content"></textarea>
+                <button type="submit">{{'main.user.profile.sendemailbutton'|trans}}</button>
+            </form>
+        </div>
     </div>
     <div class="row-fluid">
         <div class="span2">Articles</div>
@@ -41,3 +46,24 @@
     </div>
 
 </div>
+        
+<script type="text/javascript">
+    
+    function emailsent_callback(response)
+    {
+        if (response.status==="ok")
+        {
+            $('#div_sendemail').hide();
+            show_event_usermessage('{{'main.user.profile.emailsent'|trans}}');            
+        }
+        else
+        {
+            DisableControls('div_sendemail',true);
+            show_event_usermessage('{{'main.user.profile.emailfailed'|trans}}');
+        }
+    }
+    
+    $(function(){
+        AjaxForm( 'sendprivateemail', null, emailsent_callback);
+    });
+</script>

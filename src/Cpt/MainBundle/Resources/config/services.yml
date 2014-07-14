@@ -36,6 +36,11 @@ services:
             - '@templating'
             - { confirmation.template: %cpt.mailer.template.registration%, resetting.template: %cpt.mailer.template.resetting%, from_email: {confirmation: %cpt.mail.from_email%, resetting: %cpt.mail.from_email%} }
 
+    cpt.twig.cpt_account_link:
+        class: Cpt\MainBundle\Twig\UserAccountLinkExtension
+        tags:
+            - { name: twig.extension }
+            
     cpt.twig.make_js_string_extension:
         class: Cpt\EventBundle\Twig\MakeJsStringExtension
         tags:

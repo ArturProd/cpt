@@ -33,18 +33,18 @@
 {% if cpt_event_isAuthorSingleOrganizer(event) %}
     <div style="display:inline-block">
     {{ 'event.organizedandanimatedby'|trans}}
-    <b>{{" " ~ event.author.displayname}}</b>{{" |"}}              {# Organizer + Animator name #}
+    <b>{{(" " ~ event.author.displayname|account_link(event.author.id))|raw}}</b>{{" |"}}              {# Organizer + Animator name #}
     </div>
 {% else %}
     <div style="display:inline-block">
     {{ 'event.organizedby'|trans}}
-    <b>{{" " ~ event.author.displayname}}</b>{{" |"}}              {# Organizer name #}
+    <b>{{(" " ~ event.author.displayname|account_link(event.author.id))|raw}}</b>{{" |"}}              {# Organizer name #}
     </div>
     <div style="display:inline-block">
     {{ 'event.animatedby'|trans}}
     {% for registration in event.registrations %}
         {{ loop.last and not loop.first ? 'and'|trans ~ " " }}
-        <b>{{ registration.user.displayname ~ " "}}</b>             {# Animator name #}
+        <b>{{ (registration.user.displayname|account_link(registration.user.id)~ " ")|raw}}</b>             {# Animator name #}
         {{ loop.last ? " |" }}
     {% endfor %}
     </div>
@@ -87,10 +87,10 @@
                 <input type="number" name="numparticipant{{event.id}}" id="numparticipant{{event.id}}" value="{{registration.numparticipant}}" min="1" max="999" class="event_numattendee_select" title="{{'hint.event.numattendeebooked'|trans}}">
                 {{'event.seats'|trans}}
         &nbsp;<a id="registrationmodify_btn{{event.id}}" class="btn_blue" title="{{'hint.event.modifyregistration'|trans}}">{{'event.button.modify_registration'|trans}}</a>
+        <a id="registrationcancel_btn{{event.id}}" class="btn_blue">{{'event.button.cancel_registration'|trans}}</a>
         {# Number of booked seats and Flash messages #}
         <span class="cpt_red">
-            <br/><b>{{ 'event.numconfirmed'|trans({'%count%': registration.numconfirmed}) }}{% if registration.numqueuedparticipant >0 %}{{ 'event.numqueuedattendees'|trans({'%count%': registration.numqueuedparticipant}) }}{% endif %}</b>
-            <br/><a id="registrationcancel_btn{{event.id}}" class="btn_blue">{{'event.button.cancel_registration'|trans}}</a>
+            <br/><b>{{ 'event.numconfirmed'|trans({'%count%': registration.numconfirmed}) }}{% if registration.numqueuedparticipant >0 %}{{ 'event.numqueuedattendees'|trans({'%count%': registration.numqueuedparticipant}) }}{% endif %}</b>            
         </span>
     {% endif %}
 {% endif %}

@@ -1,0 +1,20 @@
+{% block subject %}
+{% autoescape false %}
+{{ 'email.privateemail.subject'|trans({'%sendername%': sender.displayname}) }}
+{% endautoescape %}
+{% endblock %}
+{% block body_text %}
+{% autoescape false %}
+{% endautoescape %}
+{% endblock %}
+{% block body_html %}
+    {% autoescape false %}
+    <html>        
+        <body>
+            <div>
+                {{ 'email.privateemail.content'|trans({'%sendername%': sender.displayname, '%content%': content|escape}) }}
+            </div>
+        </body>
+    </html>
+    {% endautoescape %}
+{% endblock %}

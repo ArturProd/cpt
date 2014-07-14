@@ -133,7 +133,7 @@ function get_comment_dom(comment)
 {
     var new_comment_dom = $("#comment_template").clone();
     new_comment_dom.attr('id', 'comment_'+comment.id);
-    new_comment_dom.children(".comment_header").html("<ul><li>" + comment.authorname + "</li><li><a onclick='delete_comment(" + comment.id + ")'>{{'comment.delete'|trans}}</a></li><li>" + comment.createdat + "</li></ul>");
+    new_comment_dom.children(".comment_header").html("<ul><li><a href='#' onclick='ShowPage(PAGE_PROFILE_VIEW," + comment.authorid + ");'>" + comment.authorname + "</a></li><li><a onclick='delete_comment(" + comment.id + ")'>{{'comment.delete'|trans}}</a></li><li>" + comment.createdat + "</li></ul>");
     new_comment_dom.children(".comment_body").append(comment.message);
     new_comment_dom.hide();
     return new_comment_dom;

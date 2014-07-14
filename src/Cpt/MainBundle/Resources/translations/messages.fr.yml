@@ -164,6 +164,15 @@ email.newsletter.professional.message: "Les membres suivants sont des chanteurs 
 email.newsletter.professional.website: Site Web
 email.newsletter.professional.tel: tel
 
+email.privateemail.subject: Message privé de %sendername%
+email.privateemail.content: |
+    <p>%sendername% dit:</p>
+    <hr>
+    <p><b>%content%</b></p>
+    <hr>
+    <p>Veuillez ne pas répondre au présent email: pour contacter cet utilisateur, rendez vous sur le site www.chantpourtous.com</p>    
+
+
 email.general.footer: |
     <p>Vocalement,</p>
     <p>www.chantpourtous.com</p><br><br><br>
@@ -175,3 +184,7 @@ email.general.header: |
 main.about.learnmore: En savoir plus...
 main.title.chantpourtous: Chant pour tous
 main.title.profile: Mon compte
+
+main.user.profile.sendemailbutton: Envoyer un message
+main.user.profile.emailsent: Votre message a bien été envoyé
+main.user.profile.emailfailed: Une erreur est survenue lors de l'envoi de votre message

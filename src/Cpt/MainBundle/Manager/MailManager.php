@@ -33,6 +33,21 @@ class MailManager extends BaseManager implements MailManagerInterface
         $this->parameters = $parameters;
     }
 
+    public function sendPrivateEmail($sender,$content){
+        $template = 'CptMainBundle:Emails:private_email.html.twig';
+
+        $user = $this->getUser();
+        
+        $rendered = $this->templating->render($template, array(
+            'user' => $user,
+            'sender' =>  $sender,
+            'content' => $content
+        ));
+        
+        $this->sendEmailMessage($rendered, $this->parameters['from_email']['confirmation'], $user->getEmail());
+       
+    }
+    
     /**
      * Email after sign-up to website
      * 

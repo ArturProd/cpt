@@ -43,15 +43,6 @@ function removeEventsFromNewCommentWatch()
         removePublicationForNewCommentCheck(event_list[i].id);
     }
 }
-{#***********************************************#}
-{# Affiche un message informatif à l'utilisateur
-{#***********************************************#}
-function show_event_usermessage(message)
-{
-    $('#event_user_messages').html(message);
-    $('#event_user_messages').show().delay(EVENT_MESSAGE_SLIDE_UP_DELAY).slideUp(1000);
-}
-
 
 {#****************************************************************************#}
 {# Switches event filter

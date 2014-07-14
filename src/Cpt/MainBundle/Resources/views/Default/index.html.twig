@@ -6,11 +6,17 @@
             <div id="column_title_event_title">{{'main.title.register'|trans}}</div>
             <div id="leftcol_button"></div>
         </div>
+        {# Flash messages #}        
+        <div id="event_user_messages" class="row-fluid message_information" >
+            {% for flashMessage in app.session.flashbag.get('notice') %}
+                {{ flashMessage }}
+            {% endfor %}
+        </div>
         <div id="leftcol_event">
             {% render controller("CptEventBundle:Event:index", {"event_permalink": event_permalink, "_locale": app.request.locale }) %}
         </div>
         <div id="leftcol_about">
-        </div>
+        </div>        
     </div>
 {% endblock %}
 
