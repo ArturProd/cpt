@@ -54,8 +54,8 @@ event.button.manage:                   gérer l'évènement
 event.button.cancel:                    Supprimer
 event.button.save:                    Enregistrer
 event.button.copy:                    "Copier"
-event.readmore:                         lire la suite
-event.readless:                         replier
+event.readmore:                         Voir le détail
+event.readless:                         Voir moins
 event.noevent_todisplay:               Il n'y a pas d'évènement à afficher pour ce mois.
 event.filter.future:                   Evènements du mois
 event.filter.myevents:                 Mes évènements

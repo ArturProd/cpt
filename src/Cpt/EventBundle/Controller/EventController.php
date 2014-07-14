@@ -139,7 +139,7 @@ class EventController extends BaseController {
             $numattendees = intval($numattendees);
             $eventid = intval($eventid);
 
-            $oldevent = $this->getEventManager()->getDetachedEvent($event->getId());
+            $oldevent = $this->getEventManager()->getDetachedEvent($eventid);
 
             $event = $this->getEventManager()->getEventById($eventid);
             $this->GetPermissionManager()->RestrictResourceNotFound($event);

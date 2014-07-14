@@ -314,3 +314,28 @@
     margin-right: 8px;
     font-size: large;
 }
+
+.btn_event_seemore{
+    background: url('../images/evenements/bouton-voir-plus.png') no-repeat;
+    border: none;
+    background-color: white;
+    background-position-y: 2px;
+    min-height: 16px;
+    min-width: 16px;
+    background-size: 16px 16px;
+    padding-left: 20px;
+    margin-right: 8px;
+}
+
+
+.btn_event_seeless{
+    background: url('../images/evenements/bouton-voir-moins.png') no-repeat;
+    border: none;
+    background-color: white;
+    background-position-y: 2px;
+    min-height: 16px;
+    min-width: 16px;
+    background-size: 16px 16px;
+    padding-left: 20px;
+    margin-right: 8px;
+}

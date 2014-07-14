@@ -17,8 +17,8 @@ event.button.manage:                    Manage event
 event.button.cancel:                    Delete
 event.button.save:                    Save
 event.button.copy:                    Copy
-event.readmore:                         read more
-event.readless:                         read less
+event.readmore:                         See more
+event.readless:                         See less
 event.noevent_todisplay:                There is no event to display for this month.
 event.filter.future:                   Month events
 event.filter.myevents:                 My events

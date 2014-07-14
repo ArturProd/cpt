@@ -62,43 +62,45 @@
     </div>
 &nbsp;
     </div>
+    <div style="display:inline-block">
+        <a id="event_readmore_btn{{event.id}}" class="btn_event_seeless">{{'event.readmore'|trans}}</a>
+     </div>
      {# <div style="display:inline-block">                          // number of avalaible seats 
          {% transchoice event.AvailableSeats %}event.availableseats{% endtranschoice %} 
          {{event.AvailableSeats }} / {{event.maxnumattendees }} ({{event.CountQueuedAttendees }} {{ 'event.queuedseats'|trans }})&nbsp;|&nbsp;
      </div> #} 
-     <div style="display:inline-block">
-        <a id="event_readmore_btn{{event.id}}">{{'event.readmore'|trans}}</a>
-     </div>
 {#****************************************************************************#}
 {# Action panel
 {#****************************************************************************#}
-<div>
 {% if is_granted("IS_AUTHENTICATED_REMEMBERED") and (event.end|date('U') > "now"|date('U') )%}
     {% set registration = cpt_event_getRegistration(event,app.user) %}
     {% if (registration is null) %}                                   {# case: user logged in but no reservation done #}
         {% if (not cpt_event_isAuthor(event, app.user)) %}
-        {{'event.book'|trans}}
-        <input type="number" name="numparticipant{{event.id}}" id="numparticipant{{event.id}}" value="1" min="1" max="999" class="event_numattendee_select">
-        {{'event.seats'|trans}}
-        <a id="registrationmodify_btn{{event.id}}" class="btn_blue">{{'event.button.validate'|trans}}</a>
+        <div class="event_booking">
+            {{'event.book'|trans}}
+            <input type="number" name="numparticipant{{event.id}}" id="numparticipant{{event.id}}" value="1" min="1" max="999" class="event_numattendee_select">
+            {{'event.seats'|trans}}
+            <a id="registrationmodify_btn{{event.id}}" class="btn_blue">{{'event.button.validate'|trans}}</a>
+        </div>
         {% endif %}
     {% elseif not registration.organizer and not cpt_event_isAuthor(event, app.user) %}                         {# case: user logged in, is not organizer and not author, has booked #}
+        <div class="event_booking_resa event_booking">
             {{'event.youhavebooked'|trans}}
-                <input type="number" name="numparticipant{{event.id}}" id="numparticipant{{event.id}}" value="{{registration.numparticipant}}" min="1" max="999" class="event_numattendee_select" title="{{'hint.event.numattendeebooked'|trans}}">
-                {{'event.seats'|trans}}
-        &nbsp;<a id="registrationmodify_btn{{event.id}}" class="btn_blue" title="{{'hint.event.modifyregistration'|trans}}">{{'event.button.modify_registration'|trans}}</a>
-        <a id="registrationcancel_btn{{event.id}}" class="btn_blue">{{'event.button.cancel_registration'|trans}}</a>
-        {# Number of booked seats and Flash messages #}
-        <span class="cpt_red">
-            <br/><b>{{ 'event.numconfirmed'|trans({'%count%': registration.numconfirmed}) }}{% if registration.numqueuedparticipant >0 %}{{ 'event.numqueuedattendees'|trans({'%count%': registration.numqueuedparticipant}) }}{% endif %}</b>            
-        </span>
+            <input type="number" name="numparticipant{{event.id}}" id="numparticipant{{event.id}}" value="{{registration.numparticipant}}" min="1" max="999" class="event_numattendee_select" title="{{'hint.event.numattendeebooked'|trans}}">
+            {{'event.seats'|trans}}
+            &nbsp;<a id="registrationmodify_btn{{event.id}}" class="btn_blue" title="{{'hint.event.modifyregistration'|trans}}">{{'event.button.modify_registration'|trans}}</a>
+            <a id="registrationcancel_btn{{event.id}}" class="btn_blue">{{'event.button.cancel_registration'|trans}}</a>
+            {# Number of booked seats and Flash messages #}
+            <span class="cpt_red">
+                <br/><b>{{ 'event.numconfirmed'|trans({'%count%': registration.numconfirmed}) }}{% if registration.numqueuedparticipant >0 %}{{ 'event.numqueuedattendees'|trans({'%count%': registration.numqueuedparticipant}) }}{% endif %}</b>            
+            </span>
+        </div>
     {% endif %}
 {% endif %}
     {% for flashMessage in app.session.flashbag.get('notice') %}
         <div class="cpt_red">{{ flashMessage }}</div>
     {% endfor %}
     <div id="loading_event_{{event.id}}" class="loading-mini"></div>
-</div>
 {#****************************************************************************#}
 {# Event content
 {#****************************************************************************#}

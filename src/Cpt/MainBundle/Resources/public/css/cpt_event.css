@@ -99,3 +99,19 @@
     text-align: right;
     padding: 0px;
 }
+
+.event_booking{
+    background-color: #F2F2F2;
+    padding: 5px;
+}
+
+.event_booking_resa{
+    border-color: red;
+    border-style: solid;
+    border-width: 1px;
+}
+
+.event_booking input{
+    vertical-align: baseline;
+    margin-bottom: 0px;
+}

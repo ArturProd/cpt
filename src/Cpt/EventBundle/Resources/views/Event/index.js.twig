@@ -137,11 +137,15 @@ function event_content_toggle(id,open)
 {
     {# toggles readless <=> readmore text #}
     open ? $("#event_readmore_btn"+id).html("{{'event.readless'|trans}}") : $("#event_readmore_btn"+id).html("{{'event.readmore'|trans}}");
-
+    
     if (open){
         $('#event_content'+id).slideDown(500);
+        $("#event_readmore_btn"+id).addClass("btn_event_seeless");
+        $("#event_readmore_btn"+id).removeClass("btn_event_seemore");
     } else {
-        $('#event_content'+id).slideUp(500);        
+        $('#event_content'+id).slideUp(500);
+        $("#event_readmore_btn"+id).removeClass("btn_event_seeless");
+        $("#event_readmore_btn"+id).addClass("btn_event_seemore");        
     }
 }
 {#**************************************************************************#}
