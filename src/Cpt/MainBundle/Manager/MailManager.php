@@ -186,6 +186,16 @@ class MailManager extends BaseManager implements MailManagerInterface
      */
     public function sendPublicationNewCommentEmailMessage(CommentInterface $comment){
        
+        // Checking if the publication author want to receive emails
+        if (!$comment->getPublication()->getAuthor()->getOptions()->getOptionMailoncomment()){
+            return;
+        }
+        
+        // If publication is the actual user, do not send email
+        if ($this->getUser()->getId() == $comment->getPublication()->getAuthor()->getId()){
+            return;
+        }
+        
         $template = 'CptMainBundle:Emails:comment_new_email.html.twig';
         
         $attachements = Array() ;

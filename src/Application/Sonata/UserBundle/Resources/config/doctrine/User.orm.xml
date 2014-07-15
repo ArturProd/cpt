@@ -13,15 +13,6 @@
         <field name="country_code"    type="string"     column="country_code" length="4"    nullable="true" />
         <field name="city_name"    type="string"     column="city_name" length="64"    nullable="true" />
         <field name="professional"    type="boolean"     column="professional"  nullable="false" />
-        <field name="option_allow_phonedisplay"    type="boolean"     column="option_allow_phonedisplay" nullable="false" />
-        <field name="option_emailme_eachevent"    type="boolean"     column="option_emailme_eachevent" nullable="false" />
-        <field name="option_newsletter"    type="boolean"     column="option_newsletter"    nullable="false" />
-        <field name="option_mailoncomment"    type="boolean"     column="option_mailoncomment"  nullable="false" />
-        <field name="option_pro_includemenewsletter"    type="boolean"     column="option_pro_includemenewsletter" nullable="false" />
-        <field name="option_pro_displaymyresume"    type="boolean"     column="option_pro_displaymyresume"    nullable="false" />
-        <field name="option_pro_displayinprodirectory"    type="boolean"     column="option_pro_displayinprodirectory"  nullable="false" />                  
-        <field name="pro_subscribed"    type="boolean"     column="pro_subscribed" nullable="false" />
-        <field name="option_pro_phonedisplay"    type="boolean"     column="option_pro_phonedisplay" nullable="false" />        
         <field name="pro_job"    type="string"     column="pro_job" nullable="false" />
         <field name="pro_resume"    type="string"     column="pro_resume" nullable="false" />
 
@@ -45,6 +36,11 @@
             </cascade>
         </one-to-many>
     
+        <one-to-one field="options" target-entity="UserOption">
+            <cascade><cascade-all /></cascade>
+            <join-column name="option_id" referenced-column-name="id" />
+        </one-to-one>
+        
     </entity>
 
 </doctrine-mapping>

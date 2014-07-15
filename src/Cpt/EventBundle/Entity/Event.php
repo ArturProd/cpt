@@ -74,14 +74,11 @@ class Event extends Publication implements EventInterface
         return null;
     }
     
-    public function getFullAddress()
+    public function getShortAddress()
     {
         $adressnum = $this->getAddressNum();
         $adress = $this->getAddress();
-        $postalcode = $this->getCityPostalCode();
-        $cityname = $this->getCityName();
-        $countryname = $this->getCountryName();
-        
+
         $result = "";
         
         if (!empty($adressnum)){
@@ -89,8 +86,21 @@ class Event extends Publication implements EventInterface
         }
         
         if (!empty($adress)){
-            $result .=  $adress . ", " ;
+            $result .=  $adress ;
         }
+        
+        return $result;
+    }
+    
+    public function getFullAddress()
+    {
+        $postalcode = $this->getCityPostalCode();
+        $cityname = $this->getCityName();
+        $countryname = $this->getCountryName();
+        
+        $result = "";
+        
+        $result .= $this->getShortAddress() . ", ";
         
         $result .=  $postalcode . " " . $cityname;
         

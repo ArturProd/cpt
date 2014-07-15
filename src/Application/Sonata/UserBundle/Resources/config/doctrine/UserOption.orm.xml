@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                  http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+
+    <entity name="Application\Sonata\UserBundle\Entity\UserOption" table="cpt_user_option">
+
+        <id name="id" column="id" type="integer">
+            <generator strategy="AUTO" />
+        </id>
+
+        <field name="option_allow_phonedisplay"    type="boolean"     column="option_allow_phonedisplay" nullable="false" />
+        <field name="option_emailme_eachevent"    type="boolean"     column="option_emailme_eachevent" nullable="false" />
+        <field name="option_newsletter"    type="boolean"     column="option_newsletter"    nullable="false" />
+        <field name="option_mailoncomment"    type="boolean"     column="option_mailoncomment"  nullable="false" />
+        <field name="option_pro_includemenewsletter"    type="boolean"     column="option_pro_includemenewsletter" nullable="false" />
+        <field name="option_pro_displaymyresume"    type="boolean"     column="option_pro_displaymyresume"    nullable="false" />
+        <field name="option_pro_displayinprodirectory"    type="boolean"     column="option_pro_displayinprodirectory"  nullable="false" />                  
+        <field name="pro_subscribed"    type="boolean"     column="pro_subscribed" nullable="false" />
+        <field name="option_pro_phonedisplay"    type="boolean"     column="option_pro_phonedisplay" nullable="false" />        
+
+    </entity>
+
+</doctrine-mapping>

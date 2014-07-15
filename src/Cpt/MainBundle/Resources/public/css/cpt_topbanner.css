@@ -8,6 +8,10 @@
     background-position:left bottom, right bottom, right bottom;
 }
 
+.usermenu{
+    
+}
+
 .banner_usercorner{
     position: absolute;    
     top: 10px;
@@ -16,25 +20,16 @@
     height: 86px;
     text-align: center;
 }
-.banner_usercorner ul{
-    list-style-type: none;
-    top: 20px;
-    width: 80%;
-    margin: 0 auto;
-}
 
-.banner_usercorner ul li{
-    
+.user_name {
+    position: absolute;        
+    top: 25px;
+    right: 0px;
+    width: 175px;
+    font-size: 16px;
+    text-align: center;
 }
-.banner_usercorner li:nth-child(2) {
-    text-align: right;
-}
-
-.banner_usercorner li:nth-child(1) {
-    font-size: 20px;    
-    margin-top: 30px;
-}
-.banner_usercorner li:nth-child(1) a {
+.user_name a {
     color: white;
 }
 

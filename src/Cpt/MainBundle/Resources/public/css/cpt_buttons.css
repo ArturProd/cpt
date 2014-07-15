@@ -209,9 +209,17 @@
     line-height: 15px;
 }
 
-.btn_logout{
+.btn_logout:hover,
+.btn_profile:hover,
+.btn_parameters:hover { 
+    color: white;
+}
+
+.btn_logout,
+.btn_profile,
+.btn_parameters {    
     display: inline-block;
-    background: url('../images/bandeau/bandeau-bouton-connecte.jpg') repeat-x;
+    position: absolute;    
     height: 12px;
     color: white;
     cursor: pointer; cursor: hand;
@@ -220,7 +228,26 @@
     margin: 2px;
     padding: 3px;
     line-height: 12px;
-    margin-top: 20px;
+    min-width: 100px;
+}
+
+.btn_logout
+{    
+    background: url('../images/bandeau/bandeau-bouton-connecte.jpg') repeat-x;
+    right: 0px;
+    top: 110px;    
+}
+
+.btn_profile{    
+    right: 0px;
+    top: 65px;
+    background: url('../images/boutons/bouton-generique-vert-milieu.png') repeat-x;
+}
+
+.btn_parameters{    
+    right: 0px;
+    top: 88px;
+    background: url('../images/boutons/bouton-generique-bleu.png') repeat-x;
 }
 
 

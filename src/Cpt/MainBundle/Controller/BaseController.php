@@ -20,6 +20,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 class BaseController extends Controller {
 
     const JsonResponseOk = "ok";
+    const JsonResponseRedirect = "redirect";
     const JsonResponseFailed = "failed";
 
     public function getCommentManager() {
@@ -140,11 +141,15 @@ class BaseController extends Controller {
         return ($result === true);
     }
 
-    public function CreateJsonFailedResponse($data, JsonResponse $response = null) {
+    public function CreateJsonRedirectResponse($data=null, JsonResponse $response = null) {
+        return $this->CreateJsonResponse($data, BaseController::JsonResponseRedirect, $response);
+    }
+    
+    public function CreateJsonFailedResponse($data=null, JsonResponse $response = null) {
         return $this->CreateJsonResponse($data, BaseController::JsonResponseFailed, $response);
     }
 
-    public function CreateJsonOkResponse($data, JsonResponse $response = null) {
+    public function CreateJsonOkResponse($data=null, JsonResponse $response = null) {
         return $this->CreateJsonResponse($data, BaseController::JsonResponseOk, $response);
     }
 

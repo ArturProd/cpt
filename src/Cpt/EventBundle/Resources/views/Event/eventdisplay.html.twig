@@ -35,15 +35,24 @@
     {{ 'event.organizedandanimatedby'|trans}}
     <b>{{(" " ~ event.author.displayname|account_link(event.author.id))|raw}}</b>{{" |"}}              {# Organizer + Animator name #}
     </div>
+    <div style="display:inline-block">
+        <a id="event_readmore_btn{{event.id}}" class="btn_event_seeless">{{'event.readmore'|trans}}</a>
+    </div>
+    <br>
 {% else %}
     <div style="display:inline-block">
     {{ 'event.organizedby'|trans}}
     <b>{{(" " ~ event.author.displayname|account_link(event.author.id))|raw}}</b>{{" |"}}              {# Organizer name #}
     </div>
     <div style="display:inline-block">
+        <a id="event_readmore_btn{{event.id}}" class="btn_event_seeless">{{'event.readmore'|trans}}</a>
+    </div>
+    <br>
+    <div style="display:inline-block">
     {{ 'event.animatedby'|trans}}
     {% for registration in event.registrations %}
         {{ loop.last and not loop.first ? 'and'|trans ~ " " }}
+        {{ not loop.last and not loop.first ? ', ' }}
         <b>{{ (registration.user.displayname|account_link(registration.user.id)~ " ")|raw}}</b>             {# Animator name #}
         {{ loop.last ? " |" }}
     {% endfor %}
@@ -55,16 +64,13 @@
     </div>
 {% endif %}
     <div style="display:inline-block">
-{{ event.Address is not empty ?  " " ~ event.Address ~ " |"}}       {# Location address #}
+        {{ event.ShortAddress is not empty ?  " " ~ event.ShortAddress ~ " |"}}       {# Location address #}
     </div>
     <div style="display:inline-block">
-{{ 'at_hour'|trans ~ " " ~ event.begin|date('H:i') ~ " |" }}        {# Time #}
+        {{ 'at_hour'|trans ~ " " ~ event.begin|date('H:i') }}        {# Time #}
     </div>
 &nbsp;
-    </div>
-    <div style="display:inline-block">
-        <a id="event_readmore_btn{{event.id}}" class="btn_event_seeless">{{'event.readmore'|trans}}</a>
-     </div>
+
      {# <div style="display:inline-block">                          // number of avalaible seats 
          {% transchoice event.AvailableSeats %}event.availableseats{% endtranschoice %} 
          {{event.AvailableSeats }} / {{event.maxnumattendees }} ({{event.CountQueuedAttendees }} {{ 'event.queuedseats'|trans }})&nbsp;|&nbsp;
@@ -104,7 +110,7 @@
 {#****************************************************************************#}
 {# Event content
 {#****************************************************************************#}
- <div id="event_content{{event.id}}" class="event_content">
+ <div id="event_content{{event.id}}" class="event_content">    
  {{ event.content|raw }}
  {% render controller("CptPublicationBundle:Comment:getCommentsContainer", { 'publication': event, '_locale': app.request.locale }) %}
 </div>

@@ -15,6 +15,8 @@ main.title.events_edit: Événement > Édition
 main.title.about: A propos...
 main.title.articles: Articles
 main.title.profile: Profil
+main.menu.profile: Profil
+main.menu.parameters: Paramètres
 main.about.subtitle: C'est quoi un «CHANT POUR TOUS»?
 main.about.text: Un chant pour tous est un évènement <b>collectif, gratuit</b> et <b>ouvert à tous</b>, où l'on chante de la musique entièrement improvisée. L'évènement est dirigé (et généralement organisé) par un ou plusieurs <b>animateurs</b> qui décident librement des règles et du déroulement...
 home.herounit.title: Improvisation vocale a capella
@@ -188,3 +190,16 @@ main.title.profile: Mon compte
 main.user.profile.sendemailbutton: Envoyer un message
 main.user.profile.emailsent: Votre message a bien été envoyé
 main.user.profile.emailfailed: Une erreur est survenue lors de l'envoi de votre message
+
+useroptionform.option_newsletter.header: Newsletter
+useroptionform.option_mailoncomment.header: Commentaires
+useroptionform.option_allow_phonedisplay.header: Téléphone
+useroptionform.option_emailme_eachevent.header: Evènements
+useroptionform.option_newsletter: Recevoir la newsletter
+useroptionform.option_mailoncomment: Recevoir un email à chaque nouveau commentaire de mes publications
+useroptionform.option_allow_phonedisplay: Autoriser les organisateurs des évènements auxquels je me suis inscrit à voir mon numéro de téléphone
+useroptionform.option_emailme_eachevent: Recevoir un email lorsqu'un nouvel évènement est créé dans mon pays
+useroptionform.title.email: Options emails
+useroptionform.title.divers: Options diverses
+useroptionform.submit.ok: Vos paramètres ont été enregistrés
+useroptionform.submit.failed: Une erreur est survenue lors de l'enregistrement de vos paramètres

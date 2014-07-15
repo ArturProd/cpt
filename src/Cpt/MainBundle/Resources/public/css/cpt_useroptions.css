@@ -1,0 +1,17 @@
+.useroption{
+    background-color: #F2F2F2;
+    padding: 5px;
+    margin: 5px;
+}
+
+.useroption label{
+    line-height: normal;
+    height: auto;
+    padding: 0px 0px 0px 0px;
+}
+
+.useroption input[type="checkbox"]{
+    width: 25px;
+    height: 25px;
+    float: right;
+}

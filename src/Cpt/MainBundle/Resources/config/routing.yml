@@ -26,6 +26,15 @@ cpt_main_userprofile_show:
     options:
         expose: true
 
+cpt_main_userprofile_edit:
+    pattern:  /profile/edit
+    defaults: { _controller: CptMainBundle:User:editProfile }
+
+cpt_main_userparameters:
+    pattern:  /profile/parameters
+    defaults: { _controller: CptMainBundle:User:editParameters }
+
+
 cpt_main_sendprivateemail:
     pattern:  /profile/{userid}/sendemail
     defaults: { _controller: CptMainBundle:User:sendPrivateEmail}

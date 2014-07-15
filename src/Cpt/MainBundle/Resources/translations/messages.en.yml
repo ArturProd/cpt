@@ -15,6 +15,8 @@ main.title.events_edit: Events > Edit
 main.title.about: About...
 main.title.articles: Articles
 main.title.profile: Profile
+main.menu.profile: Profile
+main.menu.parameters: Parameters
 main.about.subtitle: What is a «CHANT POUR TOUS»?
 main.about.text: A "chant pour tous" is a <b>collective, free</b> event <b>open to everybody</b>, where we sing improvised music. L'évènement est dirigé (et généralement organisé) par un ou plusieurs <b>animateurs</b> qui décident librement des règles et du déroulement...
 home.herounit.title: Improvisation vocale a capella
@@ -181,3 +183,16 @@ main.title.profile: My account
 main.user.profile.sendemailbutton: Send message
 main.user.profile.emailsent: Your message was successfully sent
 main.user.profile.emailfailed: An error occured when sending your message
+
+useroptionform.option_newsletter.header: Newsletter
+useroptionform.option_mailoncomment.header: Comments
+useroptionform.option_allow_phonedisplay.header: Phone
+useroptionform.option_emailme_eachevent.header: Events
+useroptionform.option_newsletter: Receive newsletter
+useroptionform.option_mailoncomment: Receive email when someone comment my publications
+useroptionform.option_allow_phonedisplay: Allow my phone number to be communicated to organizers of the events I have registered to
+useroptionform.option_emailme_eachevent: Email me when a new event is created in my country
+useroptionform.title.email: Emails options
+useroptionform.title.divers: Various options
+useroptionform.submit.ok: Your parameters have been saved
+useroptionform.submit.failed: An error occured when saving your parameters

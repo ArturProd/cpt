@@ -1,0 +1,66 @@
+{{ form_start(useroptionform, {'action': path('cpt_main_userparameters'), 'method': 'POST' }) }}
+   
+<div class="cpt_page">
+    <div class="button_container">
+        <button id="save_button" title="{{'hint.event.button.save'|trans}}" class="btn_save" type="button">{{'event.button.save'|trans}}</button>
+    </div>
+    <BR>
+    <h1>{{'useroptionform.title.email'|trans}}</h1>
+    {{ form_errors(useroptionform.option_newsletter) }}
+    <div class="row-fluid useroption">
+        <div class="span2">{{ form_widget(useroptionform.option_newsletter) }}</div>
+        <div class="span10">
+            <b>{{'useroptionform.option_newsletter.header'|trans}}</b><br>
+            {{ form_label(useroptionform.option_newsletter) }}</div>
+    </div>
+
+    {{ form_errors(useroptionform.option_mailoncomment) }}
+    <div class="row-fluid useroption">
+        <div class="span2">{{ form_widget(useroptionform.option_mailoncomment) }}</div>
+        <div class="span10">
+            <b>{{'useroptionform.option_mailoncomment.header'|trans}}</b><br>
+            {{ form_label(useroptionform.option_mailoncomment) }}</div>
+    </div>
+
+    {{ form_errors(useroptionform.option_emailme_eachevent) }}
+    <div class="row-fluid useroption">
+        <div class="span2">{{ form_widget(useroptionform.option_emailme_eachevent) }}</div>    
+        <div class="span10">
+            <b>{{'useroptionform.option_emailme_eachevent.header'|trans}}</b><br>
+            {{ form_label(useroptionform.option_emailme_eachevent) }}</div>
+    </div>
+    <h1>{{'useroptionform.title.divers'|trans}}</h1>    
+    {{ form_errors(useroptionform.option_allow_phonedisplay) }}
+    <div class="row-fluid useroption">
+        <div class="span2">{{ form_widget(useroptionform.option_allow_phonedisplay) }}</div>    
+        <div class="span10">
+            <b>{{'useroptionform.option_allow_phonedisplay.header'|trans}}</b><br>
+            {{ form_label(useroptionform.option_allow_phonedisplay) }}</div>
+    </div>
+</div>
+{{ form_end(useroptionform) }}
+
+<script type="text/javascript">
+function useroption_post_callback(response)
+{
+    switch(response.status){
+        default:
+        case "ok":
+        case "failed":
+            show_event_usermessage('{{'useroptionform.submit.failed'|trans}}');
+            $("#leftcol_about").html(response.data);
+            break;
+        case "redirect":
+            ShowPage(PAGE_EVENT);
+            show_event_usermessage('{{'useroptionform.submit.ok'|trans}}');
+    }
+}
+
+$(function() {
+    AjaxForm("useroptionform", null, useroption_post_callback);
+    $('#save_button').click(function(){
+         //AjaxPostForm('cpt_blog_post_edit', delete_article_callback);
+         $('#useroptionform').submit();
+     });
+});
+</script>

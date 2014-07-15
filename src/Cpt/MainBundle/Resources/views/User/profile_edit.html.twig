@@ -1,14 +1,1 @@
-{% extends 'CptMainBundle::main.html.twig' %}
-
-{% block leftcol %}
-    Edit Profile
-    
-    {{ form_start(userform, {'action': '', 'method': 'POST' }) }}
-    {{ form_end(userform) }}
-
-{% endblock %}
-
-
-{% block rightcol %}
-        {% render controller("CptBlogBundle:Post:view", {"article_permalink": null, "_locale": app.request.locale}) %}
-{% endblock %}
+Edit Profile

@@ -2,6 +2,7 @@
 
 namespace Cpt\MainBundle\Controller;
 
+use Application\Sonata\UserBundle\Entity\UserOption;
 
 class UserController extends BaseController
 {
@@ -31,6 +32,43 @@ class UserController extends BaseController
         
         return $this->render('CptMainBundle:User:profile_show.html.twig', $params );
     }
+    
+    public function editProfileAction()
+    {
+        $this->getPermissionManager()->RestrictAccessToLoggedIn();
+
+        $user = $this->getUser();
+        
+        $params = array(
+            'user' => $user ,
+            );
+        
+        return $this->render('CptMainBundle:User:profile_edit.html.twig', $params );
+    }
+    
+    public function editParametersAction()
+    {
+        $this->getPermissionManager()->RestrictAccessToLoggedIn();
+
+        $user = $this->getUser();
+        
+        $form = $this->container->get('cpt.useroption.form');
+        $formHandler = $this->container->get('cpt.useroption.form.handler');
+
+        $process = $formHandler->process($user);
+        
+        if ($process) {
+            return $this->CreateJsonRedirectResponse();
+        }
+        
+        $params = array(
+            'useroptionform' => $form->createView()
+        );
+            
+        $render =  $this->renderView('CptMainBundle:User:profile_parameters.html.twig', $params );
+        return $this->CreateJsonOkResponse($render);
+    }
+    
     
     public function sendPrivateEmailAction($userid)
     {

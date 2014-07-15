@@ -6,6 +6,7 @@ parameters:
     cpt.mailer.template.resetting:              CptMainBundle:Emails:resetting_email.txt.twig
     cpt.mailer.template.registration:              CptMainBundle:Emails:registration_email.txt.twig
     cpt.mail.from_email:                        donotreply@chantpourtous.com
+    cpt.entity.useroption.class:                Application\Sonata\UserBundle\Entity\UserOption
 
 services:
     cpt.permission.manager:
@@ -15,17 +16,6 @@ services:
     cpt.facebook.manager:
         class:        "%cpt.manager.facebookManager.class%"
         arguments: ['@service_container']
-        
-    cpt_form_user:
-      class: Cpt\MainBundle\Form\Type\UserType
-      tags:
-         -  { name: form.type }
-         
-    cpt.registration.form.type:
-        class: Application\FOS\UserBundle\Form\Type\RegistrationFormType
-        arguments: [%fos_user.model.user.class%]
-        tags:
-            - { name: form.type, alias: application_user_registration }         
 
     cpt.mailer.manager:
         class:   "%cpt.manager.mailerManager.class%"

@@ -83,12 +83,12 @@
                             </li>-->
                         </ul>
                      {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-                         <div class="banner_usercorner">
-                            <ul>
-                               <li><a onclick="ShowPage(PAGE_PROFILE_VIEW, {{ app.user.id }})">{{ app.user.displayname|upper }}</a></li>
-                               <li ><a class="btn_logout" href="{{ path('fos_user_security_logout') }}">{{ 'layout.logout'|trans({}, 'FOSUserBundle') }}</a></li>
-                            </ul>
-                         </div>
+                         <div class="user_name"><a onclick="ShowPage(PAGE_PROFILE_VIEW, {{ app.user.id }});">{{ app.user.displayname|upper }}</a></div>
+                         <a class="btn_profile" href="#" onclick="ShowPage(PAGE_PROFILE_EDIT);">{{ 'main.menu.profile'|trans() }}</a>
+                         <a class="btn_parameters" href="#" onclick="ShowPage(PAGE_PARAMETERS);">{{ 'main.menu.parameters'|trans() }}</a>
+                         <a class="btn_logout" href="{{ path('fos_user_security_logout') }}">{{ 'layout.logout'|trans({}, 'FOSUserBundle') }}</a>
+                         
+                                                  
                       {% endif %}
                      {% if (not is_granted("IS_AUTHENTICATED_REMEMBERED")) %}
                         {% render controller("FOSUserBundle:Security:login") %}
