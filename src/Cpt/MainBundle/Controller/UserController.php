@@ -2,7 +2,7 @@
 
 namespace Cpt\MainBundle\Controller;
 
-use Application\Sonata\UserBundle\Entity\UserOption;
+use Symfony\Component\HttpFoundation\Response;
 
 class UserController extends BaseController
 {
@@ -96,4 +96,42 @@ class UserController extends BaseController
             return $this->CreateJsonFailedResponse();
         }
     }
+    
+        /**
+     * Displays a user search field
+     * 
+     * @return type
+     */
+    public function userSearchAction() {
+        $params = Array();
+        return $this->render('CptMainBundle:Default:searchuser.html.twig', $params);
+    }
+
+    /**
+     * Returns the user search results
+     * 
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function userGetSearchResultAction() {
+        $request = $this->getRequest();
+
+        if ($request->isXmlHttpRequest()) {
+            $search_string = $request->query->get('search_string');
+
+            $users = $this->getUserManager()->searchUser($search_string);
+
+            $result = Array();
+            foreach ($users as $user) {
+                $result[] = Array("id" => $user->getId(), "displayname" => $user->getDisplayName());
+            }
+
+            $response = new Response(json_encode($result));
+            $response->headers->set('Content-Type', 'application/json');
+
+            return $response;
+        } else {
+            return new Response("Mauvaise méthode d accés", 404);
+        }
+    }
+    
 }

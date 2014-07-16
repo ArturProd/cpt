@@ -79,12 +79,8 @@ class EventController extends BaseController {
         // Creating the form
         $form = $this->get('form.factory')->createNamed('event', 'cpt_edit_event', $event, Array('attr' => Array('id' => 'eventform')));
 
-
-        // ****************************************************        
-        // POSTing form: save the event
         if ($request->isMethod('POST')) {
             $form->bind($request);
-
 
             // Get the organizers and event queue
             try {
@@ -149,8 +145,6 @@ class EventController extends BaseController {
             $changes = $this->getRegistrationManager()
                     ->RegisterUserForEvent($event, $user, $numattendees, false, $oldevent);
 
-            //$event = $this->getEventManager()->getEventById($eventid);
-
             $registration = $event->getRegistration($user->getId());
 
             $this->getMailManager()->sendEventSubscriptionEmailMessage($registration);
@@ -164,10 +158,6 @@ class EventController extends BaseController {
         } catch (\Exception $e) {
             return $this->CreateJsonFailedResponse();
         }
-
-        //$responsedata = $this->getSerializer()->serialize($registration, 'json');
-        // return $this->CreateJsonOkResponse($responsedata);
-        //return $this->getEventAction($eventid);
     }
 
     public function cancelEventAction($id) {
@@ -354,44 +344,6 @@ class EventController extends BaseController {
         ));
 
         return $this->CreateJsonOkResponse($html_string);
-    }
-
-    /**
-     * Displays a user search field
-     * 
-     * @return type
-     */
-    public function userSearchAction() {
-        $params = Array();
-        return $this->render('CptMainBundle:Default:searchuser.html.twig', $params);
-    }
-
-    /**
-     * Returns the user search results
-     * 
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function userGetSearchResultAction() {
-        $request = $this->getRequest();
-
-        if ($request->isXmlHttpRequest()) {
-            $search_string = $request->query->get('search_string');
-            //$exclude_id = $request->query->get('exclude_id');
-
-            $users = $this->getUserManager()->searchUser($search_string);
-
-            $result = Array();
-            foreach ($users as $user) {
-                $result[] = Array("id" => $user->getId(), "username" => $user->getUserName(), "firstname" => $user->getFirstname(), "lastname" => $user->getLastname());
-            }
-
-            $response = new Response(json_encode($result));
-            $response->headers->set('Content-Type', 'application/json');
-
-            return $response;
-        } else {
-            return new Response("Mauvaise méthode d accés", 404);
-        }
     }
 
     // </editor-fold>

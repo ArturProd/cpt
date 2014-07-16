@@ -1,2 +1,4 @@
 1. GET SYSTEM READY
 sudo apt-get install php5-curl
+sudo apt-get install wkhtmltopdf
+ln -s /usr/bin/wkhtmltopdf.sh /usr/local/bin/wkhtmltopdf

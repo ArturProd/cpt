@@ -30,7 +30,7 @@ function InitRegistrations()
    {# Adding existing reservations to the list #} 
     var integrity_check_numpart = 0;
     {% for registration in event.registrations %}
-        reservation_existing = CreateReservationItem({{  registration.id|default('null') }}, {{ registration.user.id }}, {{ event.id }}, '{{ registration.user.username }}', {{ registration.numparticipant }}, {{ registration.numqueuedparticipant }}, {{ registration.organizer ? 1 : 0 }}, {{ registration.createdAt|date('U') }});
+        reservation_existing = CreateReservationItem({{  registration.id|default('null') }}, {{ registration.user.id }}, {{ event.id }}, '{{ registration.user.displayname }}', {{ registration.numparticipant }}, {{ registration.numqueuedparticipant }}, {{ registration.organizer ? 1 : 0 }}, {{ registration.createdAt|date('U') }});
         AddReservationItem(reservation_existing, true);
         integrity_check_numpart += {{ registration.numparticipant }};
     {% endfor %}
@@ -247,7 +247,7 @@ function AddRowToTable(reservation)
  function CreateReservationFromUser(user)
  {
      {# Math.round(new Date().getTime() / 1000)  ===> UNIX TimeStamp (same as twig filter |date('U') #}
-     return CreateReservationItem(null , user.id, {{ event.id }}, user.username, 1 , 0 , 0, Math.round(new Date().getTime() / 1000) );
+     return CreateReservationItem(null , user.id, {{ event.id }}, user.displayname, 1 , 0 , 0, Math.round(new Date().getTime() / 1000) );
  }
  
 {# ************************************************************************************************************************ #} 
@@ -617,9 +617,9 @@ function InitializeEventPage()
                                 if (!(user.id in Registration_list)){ {# adding user in the result list only if not already contained #}
                                     return {
                                         id: user.id,
-                                        username: user.username,
+                                        displayname: user.displayname,
                                         value: user.id,
-                                        label: user.username
+                                        label: user.displayname
                                     };
                                 }
                               }));

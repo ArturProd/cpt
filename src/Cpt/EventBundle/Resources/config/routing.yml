@@ -67,15 +67,6 @@ event_download_attendees:
     defaults: { _controller: CptEventBundle:Event:downloadAttendees  }
     requirements:
         eventid:  \d+
-    
-cpt_search_user:
-    pattern: /usersearch
-    defaults: { _controller: CptEventBundle:Event:userSearch }
-    
-cpt_user_getsearchresult:
-    pattern: /usersearch/query
-    defaults: { _controller: CptEventBundle:Event:userGetSearchResult }
-
         
 event_view_calendar:
     path:     /calendar/{year}/{month}

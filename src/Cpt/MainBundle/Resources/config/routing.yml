@@ -55,4 +55,12 @@ cpt_send_newsletter:
     
 cpt_post_facebook:
     pattern:  /postfacebook
-    defaults: { _controller: CptMainBundle:Default:postFacebook } 
+    defaults: { _controller: CptMainBundle:Default:postFacebook }
+    
+cpt_search_user:
+    pattern: /usersearch
+    defaults: { _controller: CptMainBundle:User:userSearch }
+    
+cpt_user_getsearchresult:
+    pattern: /usersearch/query
+    defaults: { _controller: CptMainBundle:User:userGetSearchResult }

@@ -31,7 +31,13 @@ class UserOptionFormType extends AbstractType {
                 ->add('option_emailme_eachevent', 'checkbox', array(
                     'label' => 'useroptionform.option_emailme_eachevent',
                     'required'  => false,
-        ));
+                ))
+                ->add('locale', 'language', array(
+                    'label'     => 'user.locale',
+                    'required'  => true,
+                    'choices'   => array('fr' => 'French', 'en' => 'English'),
+                    'mapped' => false
+                ));
     }
 
     public function getName() {

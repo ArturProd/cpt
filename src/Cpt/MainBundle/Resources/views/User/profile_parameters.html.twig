@@ -37,6 +37,14 @@
             <b>{{'useroptionform.option_allow_phonedisplay.header'|trans}}</b><br>
             {{ form_label(useroptionform.option_allow_phonedisplay) }}</div>
     </div>
+    {{ form_errors(useroptionform.locale) }}
+    <div class="row-fluid useroption">
+        <div class="span2"></div>
+        <div class="span2">
+            <b>{{ form_label(useroptionform.locale) }}</b>
+        </div>            
+        <div class="span3">{{ form_widget(useroptionform.locale) }}</div>    
+    </div>    
 </div>
 {{ form_end(useroptionform) }}
 
