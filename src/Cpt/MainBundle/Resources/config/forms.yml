@@ -1,4 +1,5 @@
 services:
+    # UserOption
     cpt.useroption.form:
         factory_method: createNamed
         factory_service: form.factory
@@ -22,13 +23,38 @@ services:
             - @cpt.useroption.form
             - @request_stack
             - @fos_user.user_manager
-            - @cpt.mailer.manager
-
+            
+    # User All Options
+    cpt.useralloptions.form:
+        factory_method: createNamed
+        factory_service: form.factory
+        class: Symfony\Component\Form\Form
+        arguments:
+            - cpt_useralloptions                         # name of the form
+            - cpt_useralloptions_form_type               # alias of the form type
+            - null                                   # data to bind, this is where your entity could go if you have that defined as a service
+            - { attr: {id: useralloptionsform} , validation_groups: [Default] }       # validation groups
+            
+    cpt.useralloptions.form.type:
+      class: Cpt\MainBundle\Form\Type\UserAllOptionsFormType
+      arguments: [%cpt.entity.user.class%, @cpt.useroption.form.type]
+      tags:
+         -  { name: form.type, alias: cpt_useralloptions_form_type }    #alias of for tag as referenced by cpt.useroption.form
+         
+    cpt.useralloptions.form.handler:
+      class: Cpt\MainBundle\Form\Handler\UserAllOptionsFormHandler
+      arguments: 
+            - @cpt.useralloptions.form
+            - @request_stack
+            - @fos_user.user_manager
+   
+    # User
     cpt_form_user:
       class: Cpt\MainBundle\Form\Type\UserType
       tags:
          -  { name: form.type }
-         
+    
+    # Registration
     cpt.registration.form.type:
         class: Application\FOS\UserBundle\Form\Type\RegistrationFormType
         arguments: [%fos_user.model.user.class%]

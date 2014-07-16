@@ -152,9 +152,12 @@ class PostManager extends BaseManager implements PostManagerInterface {
 
     public function getPublishedArticles($userid)
     {
+        /*
+         * Every body can see this! this creates bug for nothing..
+         
         if ((!$this->getSecurityContext()->isGranted('VIEW', $this->GetPostClassIdentity())) || (!$this->getSecurityContext()->isGranted('ROLE_USER')))
             throw new AccessDeniedException();
-
+        */
         $parameters = array();
         $query = $this->em->getRepository($this->class)
                 ->createQueryBuilder('p')

@@ -8,8 +8,6 @@ class UserController extends BaseController
 {
     public function showProfileAction($userid)
     {
-        $this->getPermissionManager()->RestrictAccessToLoggedIn();
-        
         $userform = $this->get('form.factory')->createNamed('userform', 'cpt_form_user', null, Array('attr' => Array('id' => 'userform')));
                     
         $user = $this->getUserManager()->findUserBy(Array("id" => $userid));
@@ -52,8 +50,8 @@ class UserController extends BaseController
 
         $user = $this->getUser();
         
-        $form = $this->container->get('cpt.useroption.form');
-        $formHandler = $this->container->get('cpt.useroption.form.handler');
+        $form = $this->container->get('cpt.useralloptions.form');
+        $formHandler = $this->container->get('cpt.useralloptions.form.handler');
 
         $process = $formHandler->process($user);
         
@@ -62,7 +60,7 @@ class UserController extends BaseController
         }
         
         $params = array(
-            'useroptionform' => $form->createView()
+            'form' => $form->createView()
         );
             
         $render =  $this->renderView('CptMainBundle:User:profile_parameters.html.twig', $params );

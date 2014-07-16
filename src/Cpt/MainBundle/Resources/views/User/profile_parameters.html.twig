@@ -1,4 +1,4 @@
-{{ form_start(useroptionform, {'action': path('cpt_main_userparameters'), 'method': 'POST' }) }}
+{{ form_start(form, {'action': path('cpt_main_userparameters'), 'method': 'POST' }) }}
    
 <div class="cpt_page">
     <div class="button_container">
@@ -6,47 +6,47 @@
     </div>
     <BR>
     <h1>{{'useroptionform.title.email'|trans}}</h1>
-    {{ form_errors(useroptionform.option_newsletter) }}
+    {{ form_errors(form.options.option_newsletter) }}
     <div class="row-fluid useroption">
-        <div class="span2">{{ form_widget(useroptionform.option_newsletter) }}</div>
+        <div class="span2">{{ form_widget(form.options.option_newsletter) }}</div>
         <div class="span10">
             <b>{{'useroptionform.option_newsletter.header'|trans}}</b><br>
-            {{ form_label(useroptionform.option_newsletter) }}</div>
+            {{ form_label(form.options.option_newsletter) }}</div>
     </div>
 
-    {{ form_errors(useroptionform.option_mailoncomment) }}
+    {{ form_errors(form.options.option_mailoncomment) }}
     <div class="row-fluid useroption">
-        <div class="span2">{{ form_widget(useroptionform.option_mailoncomment) }}</div>
+        <div class="span2">{{ form_widget(form.options.option_mailoncomment) }}</div>
         <div class="span10">
             <b>{{'useroptionform.option_mailoncomment.header'|trans}}</b><br>
-            {{ form_label(useroptionform.option_mailoncomment) }}</div>
+            {{ form_label(form.options.option_mailoncomment) }}</div>
     </div>
 
-    {{ form_errors(useroptionform.option_emailme_eachevent) }}
+    {{ form_errors(form.options.option_emailme_eachevent) }}
     <div class="row-fluid useroption">
-        <div class="span2">{{ form_widget(useroptionform.option_emailme_eachevent) }}</div>    
+        <div class="span2">{{ form_widget(form.options.option_emailme_eachevent) }}</div>    
         <div class="span10">
             <b>{{'useroptionform.option_emailme_eachevent.header'|trans}}</b><br>
-            {{ form_label(useroptionform.option_emailme_eachevent) }}</div>
+            {{ form_label(form.options.option_emailme_eachevent) }}</div>
     </div>
     <h1>{{'useroptionform.title.divers'|trans}}</h1>    
-    {{ form_errors(useroptionform.option_allow_phonedisplay) }}
+    {{ form_errors(form.options.option_allow_phonedisplay) }}
     <div class="row-fluid useroption">
-        <div class="span2">{{ form_widget(useroptionform.option_allow_phonedisplay) }}</div>    
+        <div class="span2">{{ form_widget(form.options.option_allow_phonedisplay) }}</div>    
         <div class="span10">
             <b>{{'useroptionform.option_allow_phonedisplay.header'|trans}}</b><br>
-            {{ form_label(useroptionform.option_allow_phonedisplay) }}</div>
+            {{ form_label(form.options.option_allow_phonedisplay) }}</div>
     </div>
-    {{ form_errors(useroptionform.locale) }}
+    {{ form_errors(form.locale) }}
     <div class="row-fluid useroption">
         <div class="span2"></div>
         <div class="span2">
-            <b>{{ form_label(useroptionform.locale) }}</b>
+            <b>{{ form_label(form.locale) }}</b>
         </div>            
-        <div class="span3">{{ form_widget(useroptionform.locale) }}</div>    
+        <div class="span3">{{ form_widget(form.locale) }}</div>    
     </div>    
 </div>
-{{ form_end(useroptionform) }}
+{{ form_end(form) }}
 
 <script type="text/javascript">
 function useroption_post_callback(response)
@@ -65,10 +65,10 @@ function useroption_post_callback(response)
 }
 
 $(function() {
-    AjaxForm("useroptionform", null, useroption_post_callback);
+    AjaxForm("useralloptionsform", null, useroption_post_callback);
     $('#save_button').click(function(){
          //AjaxPostForm('cpt_blog_post_edit', delete_article_callback);
-         $('#useroptionform').submit();
+         $('#useralloptionsform').submit();
      });
 });
 </script>

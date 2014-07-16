@@ -7,6 +7,7 @@ parameters:
     cpt.mailer.template.registration:              CptMainBundle:Emails:registration_email.txt.twig
     cpt.mail.from_email:                        donotreply@chantpourtous.com
     cpt.entity.useroption.class:                Application\Sonata\UserBundle\Entity\UserOption
+    cpt.entity.user.class:                Application\Sonata\UserBundle\Entity\User
 
 services:
     cpt.permission.manager:

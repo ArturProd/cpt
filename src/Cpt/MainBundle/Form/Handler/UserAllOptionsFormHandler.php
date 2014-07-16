@@ -13,11 +13,10 @@ namespace Cpt\MainBundle\Form\Handler;
 
 use FOS\UserBundle\Model\UserManagerInterface;
 use FOS\UserBundle\Model\UserInterface;
-use FOS\UserBundle\Mailer\MailerInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 
-class UserOptionFormHandler
+class UserAllOptionsFormHandler
 {
     protected $requestStack;
     protected $userManager;
@@ -34,10 +33,9 @@ class UserOptionFormHandler
     public function process(UserInterface $user)
     {
         $request = $this->requestStack->getCurrentRequest();
-        $useroptions = $user->getOptions();
         
-        $this->form->setData($useroptions);
-        
+        $this->form->setData($user);
+
         if ($request->isMethod('POST')) {
             $this->form->bind($request);
             if ($this->form->isValid()) {
