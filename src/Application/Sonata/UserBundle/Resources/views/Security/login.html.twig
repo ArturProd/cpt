@@ -6,7 +6,7 @@
         <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
 
     <ul>
-        <li>S'identifier</li>
+        <li>{{'security.login.login'|trans}}</li>
         <li><input type="text" id="username" name="_username" value="{{ last_username }}" required="required" placeholder="{{ 'security.login.username'|trans({}) }}" /></li>
         <li><input type="password" id="password" name="_password" required="required" placeholder="{{ 'security.login.password'|trans({}) }}"/></li>
         <li><input type="checkbox" id="remember_me" name="_remember_me" value="on" /><label for="remember_me">{{ 'security.login.remember_me'|trans({}) }}</label>

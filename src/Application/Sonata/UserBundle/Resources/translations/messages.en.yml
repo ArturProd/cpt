@@ -1,5 +1,6 @@
 security:
   login:
+    login:        "Log in"
     username:     "User"
     password:     "Password"
     remember_me:  "Stay connected"

@@ -58,6 +58,11 @@
                     <div class="span8">
                      </div>
                      <div class="span4">
+                         {% if app.request.locale == 'fr' %}
+                         <a class="btn_lang_en" href="{{path('cpt_main_home',{'_locale':'en'})}}"></a>
+                         {% else %}
+                         <a class="btn_lang_fr" href="{{path('cpt_main_home',{'_locale':'fr'})}}"></a>
+                         {% endif %}
                          <ul class="banner_icons">
                             <li><a href="#"></a></li>
                             <li><a href="https://www.facebook.com/chantpourtous" target="_blank"></a></li>

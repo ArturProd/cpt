@@ -42,11 +42,11 @@ security:
             form_login:
                 provider: fos_userbundle
                 csrf_provider: form.csrf_provider
-                login_path:     cpt_main_home
+                login_path:     cpt_login_success
                 use_forward:    false
                 check_path:     /login_check
                 failure_path:   null
-                default_target_path: cpt_main_home
+                default_target_path: cpt_login_success
                 use_referer: false
                 always_use_default_target_path: true
             logout:       

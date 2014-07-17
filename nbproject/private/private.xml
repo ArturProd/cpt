@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <coverage xmlns="http://www.netbeans.org/ns/code-coverage/1" enabled="true"/>
-    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="3">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="7">
         <file>
             <url>src/Cpt/MainBundle/Controller/BaseController.php</url>
             <bookmark id="1">
@@ -10,22 +10,54 @@
                 <key/>
             </bookmark>
         </file>
+        <file>
+            <url>src/Cpt/MainBundle/Resources/views/User/profile_parameters.html.twig</url>
+            <bookmark id="6">
+                <name/>
+                <line>3</line>
+                <key/>
+            </bookmark>
+        </file>
+        <file>
+            <url>src/Application/Sonata/UserBundle/Entity/UserOption.php</url>
+            <bookmark id="4">
+                <name/>
+                <line>9</line>
+                <key/>
+            </bookmark>
+        </file>
+        <file>
+            <url>src/Application/Sonata/UserBundle/Entity/User.php</url>
+            <bookmark id="7">
+                <name/>
+                <line>33</line>
+                <key/>
+            </bookmark>
+        </file>
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Controller/EventController.php</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Manager/RegistrationManager.php</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Form/Type/EventType.php</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/MainBundle/Manager/MailManager.php</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Entity/Registration.php</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/MainBundle/Resources/translations/messages.fr.yml</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/MainBundle/Manager/PermissionsManager.php</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/MainBundle/Resources/views/Emails/registration_registerchanged_email.html.twig</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Manager/EventManager.php</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Interfaces/Manager/RegistrationManagerInterface.php</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/MainBundle/Resources/views/Emails/registration_register_email.html.twig</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/MainBundle/Resources/translations/messages.en.yml</file>
-            <file>file:/home/cyril/dev/cpt/src/Cpt/EventBundle/Resources/config/routing.yml</file>
+            <file>file:/home/cyril/dev/cpt/src/Cpt/MainBundle/Form/Handler/UserAllOptionsFormHandler.php</file>
+            <file>file:/home/cyril/dev/cpt/src/Cpt/MainBundle/Form/Type/UserAllOptionsFormType.php</file>
+            <file>file:/home/cyril/dev/cpt/src/Cpt/MainBundle/Controller/BaseController.php</file>
+            <file>file:/home/cyril/dev/cpt/src/Cpt/MainBundle/Resources/config/services.yml</file>
+            <file>file:/home/cyril/dev/cpt/src/Cpt/MainBundle/Controller/DefaultController.php</file>
+            <file>file:/home/cyril/dev/cpt/src/Cpt/MainBundle/Form/Type/UserOptionFormType.php</file>
+            <file>file:/home/cyril/dev/cpt/composer.lock.bak</file>
+            <file>file:/home/cyril/dev/cpt/vendor/friendsofsymfony/user-bundle/FOS/UserBundle/Security/LoginManager.php</file>
+            <file>file:/home/cyril/dev/cpt/src/Application/Sonata/UserBundle/Entity/User.php</file>
+            <file>file:/home/cyril/dev/cpt/app/INSTALL</file>
+            <file>file:/home/cyril/dev/cpt/src/Cpt/MainBundle/Form/Handler/UserOptionFormHandler.php</file>
+            <file>file:/home/cyril/dev/cpt/src/Cpt/MainBundle/Resources/public/css/cpt_topbanner.css</file>
+            <file>file:/home/cyril/dev/cpt/vendor/friendsofsymfony/user-bundle/FOS/UserBundle/Resources/config/security.xml</file>
+            <file>file:/home/cyril/dev/cpt/src/Cpt/MainBundle/Resources/views/User/profile_parameters.html.twig</file>
+            <file>file:/home/cyril/dev/cpt/src/Cpt/BlogBundle/Manager/PostManager.php</file>
+            <file>file:/home/cyril/dev/cpt/src/Cpt/MainBundle/Form/Type/UserType.php</file>
+            <file>file:/home/cyril/dev/cpt/app/config/routing.yml</file>
+            <file>file:/home/cyril/dev/cpt/app/config/config.yml</file>
+            <file>file:/home/cyril/dev/cpt/src/Cpt/MainBundle/Resources/config/forms.yml</file>
+            <file>file:/home/cyril/dev/cpt/composer.lock</file>
+            <file>file:/home/cyril/dev/cpt/composer.json</file>
         </group>
     </open-files>
 </project-private>

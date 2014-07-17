@@ -1,5 +1,6 @@
 security:
   login:
+    login:        "S'identifier"
     username:     "Utilisateur"
     password:     "Mot de passe"
     remember_me:  "Rester connecté"

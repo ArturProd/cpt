@@ -4,6 +4,14 @@ cpt_home:
     requirements:
         _locale: en|fr
 
+cpt_no_locale:
+    pattern:  /
+    defaults:
+        _controller: FrameworkBundle:Redirect:urlRedirect
+        path: /%defaultlocale%/
+        permanent: true
+
+        
 cpt_publication:
     resource: "@CptPublicationBundle/Resources/config/routing.yml"
     prefix:   /{_locale}/publication

@@ -2,6 +2,8 @@
 
 namespace Cpt\MainBundle\Controller;
 
+use Symfony\Component\HttpFoundation\Request;
+
 
 class DefaultController extends BaseController
 {
@@ -13,13 +15,29 @@ class DefaultController extends BaseController
         
     public function indexAction()
     {
-         
         $params = array(
             'article_permalink' => null,
             'event_permalink' => null,
             );
         
         return $this->render('CptMainBundle:Default:index.html.twig', $params );
+    }
+    
+    public function loginSuccessAction(Request $request)
+    {
+        $securityContext = $this->container->get('security.context');
+        if( $securityContext->isGranted('IS_AUTHENTICATED_REMEMBERED') ){
+            // Set user locale and redirect to home
+            $locale = $this->getUser()->getLocale();
+            if ($locale){
+                
+                $request->setLocale($locale);
+                return $this->redirect($this->generateUrl('cpt_main_home', Array('_locale' => $locale))); 
+
+            }
+        }
+        
+        return $this->redirect($this->generateUrl('cpt_main_home')); 
     }
     
     /**

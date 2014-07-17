@@ -1,3 +1,12 @@
+cpt_main_home:
+    pattern:  /
+    defaults: { _controller: CptMainBundle:Default:index }
+
+cpt_login_success:
+    pattern:  /login_success
+    defaults: { _controller: CptMainBundle:Default:loginSuccess }
+
+
 cpt_base_article_permalink:
     pattern:  /permalink/article/{article_permalink}
     defaults: { _controller: CptMainBundle:Default:showArticle }
@@ -9,10 +18,6 @@ cpt_base_event_permalink:
     defaults: { _controller: CptMainBundle:Default:showEvent }
     requirements:
         event_permalink:  .+?
-        
-cpt_main_home:
-    pattern:  /home
-    defaults: { _controller: CptMainBundle:Default:index }
         
 cpt_main_useradmin:
   pattern:  /useradmin

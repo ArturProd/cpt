@@ -56,12 +56,13 @@
 }
 
 .banner_icons li:nth-child(1) a
-{   background-image:url('../images/bandeau/bandeau-picto-contact.png');
-
+{  
+    background-image:url('../images/bandeau/bandeau-picto-facebook.png');
 }
 
 .banner_icons li:nth-child(2) a
-{   background-image:url('../images/bandeau/bandeau-picto-facebook.png');
+{
+    background-image:url('../images/bandeau/bandeau-picto-contact.png');
 }
 
 .banner_icons li:nth-child(3) a
@@ -70,4 +71,21 @@
 
 .banner_icons li:nth-child(4)
 {   margin-top: 7px;
+}
+
+.btn_lang_en,
+.btn_lang_fr{
+    height:16px;
+    width:22px;
+    position: absolute;    
+    top: 0px;
+    right: 0px;
+}
+
+.btn_lang_en{
+    background-image:url('../images/boutons/language-english.png');
+}
+
+.btn_lang_fr{
+    background-image:url('../images/boutons/language-french.png');
 }
